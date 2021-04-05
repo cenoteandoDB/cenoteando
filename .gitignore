@@ -1,0 +1,19 @@
+# Avoid sharing sensitive data
+database/dumps/*
+# TODO: Add config files here (may contain tokens)
+
+# Avoid sharing development artifacts
+dist/
+node_modules/
+config/nginx/access.log
+config/nginx/error.log
+tsconfig.tsbuildinfo
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

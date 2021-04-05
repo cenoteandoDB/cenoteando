@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "type-arango": "^1.3.2"
+  }
+}

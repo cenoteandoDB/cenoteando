@@ -1,0 +1,19 @@
+version: '3.9'
+services:
+  database:
+    # Makefile fills PROJECT_NAME to current directory name.
+    container_name: ${PROJECT_NAME}
+    hostname: ${PROJECT_NAME}
+    image: ${PROJECT_NAME}:${HOST_USER:-nodummy}
+    build:
+      context: ./database
+      target: database
+      dockerfile: Dockerfile
+    ports:
+      - 8529:8529
+    restart: unless-stopped
+    env_file:
+      - ./config/env/database.dev.env
+    volumes:
+      - /var/lib/arangodb3
+      - /var/lib/arangodb3-apps

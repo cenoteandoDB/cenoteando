@@ -1,0 +1,54 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "RESTful API for cenoteando.org backend",
+  "scripts": {
+    "clean": "rm -rf node_modules package-lock.json dist tsconfig.buildinfo",
+    "cp": "mkdir -p dist && cp -r scripts/ dist/scripts/  && cp -r node_modules/ dist/node_modules/ && cp package.json dist/ && cp manifest.json dist/",
+    "cleanbuild": "rm -rf dist",
+    "prebuild": "npm run cleanbuild && npm run cp",
+    "build": "tsc -b",
+    "predev": "tsc -b && npm run cp && npm run upgrade -- --dev",
+    "dev": "(tsc -b --watch &) && (chokidar dist/src -c 'npm run upgrade -- --dev' &)",
+    "mount": "foxx install /api dist --database cenoteando",
+    "unmount": "foxx uninstall /api dist --database cenoteando",
+    "replace": "foxx replace /api dist --database cenoteando",
+    "upgrade": "foxx upgrade /api dist --database cenoteando -f",
+    "test": "foxx test /api --database cenoteando",
+    "lint": "eslint . --fix --ext .ts",
+    "prettier": "prettier --config .prettierrc --write \"src/**/*.ts\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cenoteandoDB/cenoteando.git"
+  },
+  "keywords": [
+    "ArangoDB",
+    "Foxx",
+    "TypeScript",
+    "Cenoteando"
+  ],
+  "author": "Cenoteando <cenoteando@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cenoteandoDB/cenoteando/issues"
+  },
+  "homepage": "https://github.com/cenoteandoDB/cenoteando#readme",
+  "devDependencies": {
+    "@types/arangodb": "^3.5.10",
+    "@types/geojson": "^7946.0.7",
+    "@types/joi": "^14.3.4",
+    "@types/node": "^14.14.37",
+    "@typescript-eslint/eslint-plugin": "^4.20.0",
+    "@typescript-eslint/parser": "^4.20.0",
+    "chokidar-cli": "^2.1.0",
+    "eslint": "^7.23.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "foxx-cli": "^2.0.0",
+    "joi": "^14.3.1",
+    "prettier": "^2.2.1",
+    "type-arango": "^1.3.2",
+    "typescript": "^4.2.3"
+  }
+}

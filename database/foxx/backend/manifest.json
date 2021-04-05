@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json.schemastore.org/foxx-manifest",
+  "main": "src/main.js",
+  "engines": {
+    "arangodb": "^3.0.0"
+  },
+  "name": "backend",
+  "version": "1.0.0",
+  "provides": {
+    "@cenoteando/backend": "1.0.0"
+  },
+  "author": "Cenoteando <cenoteando@gmail.com>",
+  "description": "RESTful API for cenoteando.org backend",
+  "license": "MIT",
+  "scripts": {
+    "setup": "scripts/setup.js",
+    "teardown": "scripts/teardown.js"
+  },
+  "tests": "tests/**/*.js"
+}
