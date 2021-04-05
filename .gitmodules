@@ -1,0 +1,3 @@
+[submodule "database/dumps"]
+	path = database/dumps
+	url = https://github.com/cenoteandoDB/database.git
