@@ -31,7 +31,8 @@ RUN npm run build
 # Setup database
 FROM arangodb/arangodb:${ARANGODB_VERSION} AS database
 EXPOSE 8529
-COPY ./scripts/entrypoint/ /docker-entrypoint-initdb.d
-COPY --from=oai-pmh /opt/oai-pmh/dist /opt/oai/
-COPY --from=backend /opt/backend/dist /opt/api/
+COPY ./scripts/entrypoint /docker-entrypoint-initdb.d
+COPY ./dumps /docker-entrypoint-initdb.d/dumps
+COPY --from=oai-pmh /opt/oai-pmh/dist /opt/oai
+COPY --from=backend /opt/backend/dist /opt/api
 CMD ["--log.level", "debug"]
