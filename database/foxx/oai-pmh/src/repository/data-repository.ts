@@ -66,7 +66,41 @@ export enum SETS {
 //holaaaaaaaaaaaaaa
 export interface Identifier {
   _id: string;
+  creatorN: string;
+  title: string;
+  publisher: string;
+  subject: string;
+  contributorName: string;
+  date: string;
+  dataDescription:string;
+  rights: string;
+} 
+
+function initialize_variables(options: Identifier){
+  let _id = options._id;
+  //_id:'http://uniciencias.fciencias.unam.mx:8080/xmlui/handle/123456789/2020'
+  let creatorN = options.creatorN;
+  let title = options.title;
+  let publisher = options.publisher;
+  let subject = options.subject;
+  let contributorName = options.contributorName;
+  let date = options.date;
+  let dataDescription = options.dataDescription;
+  let rights = options.rights;
 }
+
+initialize_variables({
+  _id: 'http://uniciencias.fciencias.unam.mx:8080/xmlui/handle/123456789/2020',
+  creatorN: 'Fernando Nuno Dias Marques Simoes', 
+  title:'dede',
+  publisher:'frr',
+  subject:'fgtgt',
+  contributorName:'tgtgt',
+  date:'fvcfvf',
+  dataDescription:'fvfvf',
+  rights:'fcfcf'
+});
+
 
 export type Record = Identifier;
 

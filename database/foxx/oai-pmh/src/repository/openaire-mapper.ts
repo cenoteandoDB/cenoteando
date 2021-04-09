@@ -36,88 +36,131 @@ export class OpenaireMapper implements ProviderDCMapper {
         {
           metadata: [
             {
-              'datacite:resource': [
-                {
-                  _attr: {
-                    'xmlns:rdf': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
-                    'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
-                    'xmlns:dcterms': 'http://purl.org/dc/terms/',
-                    'xmlns:datacite': 'http://datacite.org/schema/kernel-4',
-                    xmlns: 'http://namespace.openaire.eu/schema/oaire/',
-                    'xsi:schemaLocation':
-                      'http://www.openarchives.org/OAI/2.0/oai_dc/ ' +
-                      'https://www.openaire.eu/schema/repo-lit/4.0/openaire.xsd',
+              'oai_datacite':[ {
+                _attr: {
+                  xmlns: 'http://www.openarchives.org/OAI/2.0/oai_dc/',
+                  'xsi:schemaLocation':
+                    'http://schema.datacite.org/oai/oai-1.1 ' +
+                    'http://schema.datacite.org/oai/oai-1.1/oai.xsd',
+                },
+              },
+                {'schemaVersion':'2.1'},
+                {'datacentreSymbol':'TIB.WDCC'},
+                {'payload':[{
+                  'resource': [
+                    {
+                      _attr: {
+                        xmlns: 'http://namespace.openaire.eu/schema/oaire/',
+                        'xsi:schemaLocation':
+                          'http://www.openarchives.org/OAI/2.0/oai_dc/ ' +
+                          'https://www.openaire.eu/schema/repo-lit/4.0/openaire.xsd',
+                      },
+                    },
+                    // ......does it matter what these fields are called?
+                    {
+                      'creators': [
+                        {
+                          'creator': [
+                            {
+                              creatorName: record.creatorN,
+                            },
+                            {
+                              'nameIdentifier':[ {
+                                _attr: {
+                                  
+                                  'nameIdentifierScheme': 'RNCTIMX',
+                                  'schemeURI':'http://repositorionacionalcti.mx/'
+                                },
+                                'info:eu-repo/dai/mx/cvu/208814',
+                              }
+                            ]
+                            }
+                          ]
+                        },
+                      ],
+                    },
+                    {
+                      'titles': [{ title: record.title }],
+                    },
+                    { 'publisher':record.publisher },
+                    { 'publicationYear': record.publicationYear },
+                    {
+                      'subjects': [{subject: {_attr: {
+                        'subjectScheme':'CONABIO',
+                        'schemeURI':'http://enciclovida.mx/'
+                      },
+                      record.subject}],
+                    },
+                    {
+                      'contributors': [{contributor: {_attr: {
+                        'contributorType':'DataCurator'
+                      },
+                      'contributorName':record.contributorName,
+                      'nameIdentifier':[{_attr: {
+                        'nameIdentifierScheme':'RNCTIMX',
+                      },'info:eu-repo/dai/mx/cvu/42278'
+
+                      }]
+                    },
+                    }]
                   },
-                },
-                // ......does it matter what these fields are called?
-                {
-                  'datacite:titles': [{ title: record.title }],
-                },
-                {
-                  'datacite:identifier': [
-                    { _attr: { identifierType: 'URL' } },
-                    'https://doi.org/' + record._id.toString(),
-                  ],
-                },
-                {
-                  'datacite:descriptions': [
+                  {
+                    dates: [
+                      {
+                        'date': [
+                          { _attr: { dateType: 'Created' },
+                        record.date }
+                        ],
+                      }
+                    ],
+                  },
                     {
-                      description: [
-                        { _attr: { descriptionType: 'Abstract' } },
-                        record.dataDescription,
-                      ],
+                      'resourceType' :[{_attr: { resourceTypeGeneral: 'Dataset' },
+                      'Ficha informativa'
+                      }]
+
                     },
-                  ],
-                },
-                {
-                  'datacite:dates': [
+                    //{
+                      //'datacite:relatedIdentifier': [
+                        //{ _attr: { 'relationType': 'URL',
+                        //'relatedIdentifierType' } ,
+                        //'https://doi.org/' + record._id.toString(),
+                      //}
+                     // ],
+                    //},
+
                     {
-                      'datacite:date': [
-                        { _attr: { dateType: 'Issued' } },
-                        '2020-01-01',
-                      ],
-                    },
-                    {
-                      'datacite:date': [
-                        { _attr: { dateType: 'Available' } },
-                        '2020-01-01',
-                      ],
-                    },
-                  ],
-                },
-                { 'datacite:publicationYear': record.publicationYear },
-                {
-                  'datacite:creators': [
-                    {
-                      creator: [
+                      'descriptions': [
                         {
-                          creatorName: record.creator,
-                        },
-                        {
-                          affiliation: record.affiliation,
+                          description: [
+                            { _attr: { descriptionType: 'Abstract' } },
+                            record.dataDescription,
+                          ],
                         },
                       ],
                     },
-                  ],
-                },
-                { 'datacite:publisher': record.publisher }, //category?/ source?
-                { 'datacite:version': 1 }, //category?/ source?
-                {
-                  'datacite:rightsList': [
+                    
+                    
+                    
+                     //category?/ source?
+                    { 'version': 1 }, //category?/ source?
                     {
-                      'datacite:rights': [
+                      'rightsList': [
                         {
-                          _attr: {
-                            rightsURI: 'info:eu-repo/semantics/openAccess',
-                          },
+                          'rights': [
+                            {
+                              _attr: {
+                                rightsURI: 'http://creativecommons.org/licenses/by-nc/4.0/',
+                              },
+                            },
+                            record.rights,
+                          ],
                         },
-                        'OpenAccess',
                       ],
                     },
-                  ],
-                },
-              ], //rights?
-              // .....add more fields here
+                  ], //rights?
+                }]
+              ]// .....add more fields here
             },
           ],
         },
