@@ -19,7 +19,7 @@ export class OpenaireMapper implements ProviderDCMapper {
   // TODO: Implement this
   private static createItemRecord(record: any): any {
     //const updatedAt: string = this.setTimeZoneOffset(record);
-    return {
+    return {  
       record: [
         {
           header: [
@@ -71,8 +71,8 @@ export class OpenaireMapper implements ProviderDCMapper {
                                   'nameIdentifierScheme': 'RNCTIMX',
                                   'schemeURI':'http://repositorionacionalcti.mx/'
                                 },
-                                'info:eu-repo/dai/mx/cvu/208814',
-                              }
+                              },
+                              'info:eu-repo/dai/mx/cvu/208814'
                             ]
                             }
                           ]
@@ -85,12 +85,15 @@ export class OpenaireMapper implements ProviderDCMapper {
                     { 'publisher':record.publisher },
                     { 'publicationYear': record.publicationYear },
                     {
-                      'subjects': [{subject: {_attr: {
+                      'subjects': [{subject:[ {_attr: {
                         'subjectScheme':'CONABIO',
                         'schemeURI':'http://enciclovida.mx/'
-                      },
-                      record.subject}],
-                    },
+                      }
+                      }, record.subject
+                    ]
+                    }],
+                    }
+                    ,
                     {
                       'contributors': [{contributor: {_attr: {
                         'contributorType':'DataCurator'
@@ -98,9 +101,7 @@ export class OpenaireMapper implements ProviderDCMapper {
                       'contributorName':record.contributorName,
                       'nameIdentifier':[{_attr: {
                         'nameIdentifierScheme':'RNCTIMX',
-                      },'info:eu-repo/dai/mx/cvu/42278'
-
-                      }]
+                      }},'info:eu-repo/dai/mx/cvu/42278']
                     },
                     }]
                   },
@@ -109,15 +110,16 @@ export class OpenaireMapper implements ProviderDCMapper {
                       {
                         'date': [
                           { _attr: { dateType: 'Created' },
-                        record.date }
+                         },
+                         record.date
                         ],
                       }
                     ],
                   },
                     {
                       'resourceType' :[{_attr: { resourceTypeGeneral: 'Dataset' },
-                      'Ficha informativa'
-                      }]
+                      },
+                      'Ficha informativa']
 
                     },
                     //{
@@ -160,13 +162,13 @@ export class OpenaireMapper implements ProviderDCMapper {
                     },
                   ], //rights?
                 }]
+              }
               ]// .....add more fields here
             },
           ],
         },
-      ],
-    };
-  }
+    ]  
+  };
 
   public mapOaiDcListRecords(records: any[]): any {
     const list = [];
