@@ -69,28 +69,32 @@ export interface Identifier {
   creatorN: string;
   title: string;
   publisher: string;
+  publicationYear: string;  
   subject: string;
   contributorName: string;
   date: string;
   dataDescription:string;
   rights: string;
+  geoLocationPoint:Array<number>;
 } 
 
+/*
 function initialize_variables(options: Identifier){
-  let _id = options._id;
+  options._id;
   //_id:'http://uniciencias.fciencias.unam.mx:8080/xmlui/handle/123456789/2020'
-  let creatorN = options.creatorN;
-  let title = options.title;
-  let publisher = options.publisher;
-  let subject = options.subject;
-  let contributorName = options.contributorName;
-  let date = options.date;
-  let dataDescription = options.dataDescription;
-  let rights = options.rights;
+  options.creatorN;
+  options.title;
+  options.publisher;
+  options.subject;
+  options.contributorName;
+  options.date;
+  options.dataDescription;
+  options.rights;
+  option
 }
 
 initialize_variables({
-  _id: 'http://uniciencias.fciencias.unam.mx:8080/xmlui/handle/123456789/2020',
+  _id: 'oai:oai.datacite.org:32161',
   creatorN: 'Fernando Nuno Dias Marques Simoes', 
   title:'dede',
   publisher:'frr',
@@ -100,7 +104,7 @@ initialize_variables({
   dataDescription:'fvfvf',
   rights:'fcfcf'
 });
-
+*/
 
 export type Record = Identifier;
 
@@ -130,10 +134,25 @@ export function factory(options = {}): DataRepository {
      * @returns {Promise<any>} Resolves with a {@link record}
      */
     // @ts-ignore TODO: Implement this (including each parameter)
-    getRecord: (parameters: any): Record => {
-      return query`
-        RETURN DOCUMENT(${parameters.identifier})
-      `.next();
+    getRecord: (parameters: any, ): Record => {
+
+      creatorN: 'Fernando Nuno Dias Marques Simoes';
+      title: query 
+      `for Document in v1_cenotes
+      Filter Document.properties.code == '${parameters.identifier}'
+      return Document.properties.name`.next();
+      publisher: 'Cenoteando, Facultad de Ciencias, UNAM (cenoteando.mx)';
+      publicationYear: '2021';  
+      subject: 'BIODIVERSIDAD';
+      contributorName: 'Ricardo Merlos Riestra';
+      date: '2021-03-01';
+      dataDescription:'Registro de informacion general multidisciplinaria de cenotes de la peninsula de yucatan, proveniente de la base de datos de cenoteando.mx';
+      rights: 'Attribution-NonCommercial';
+      geoLocationPoint: query 
+      `for Document in v1_cenotes
+      Filter Document.properties.code == '${parameters.identifier}'
+      return Document.geometry.coordinates`;
+      return [creatorN, title, publisher, publicationYear, subject, subject, contributorName, date, dataDescription,rights];
     },
 
     /**
@@ -147,6 +166,7 @@ export function factory(options = {}): DataRepository {
         METADATA_FORMAT_DC,
         METADATA_FORMAT_PANOSC,
         METADATA_FORMAT_OAI_DATACITE,
+        
       ]);
     },
 
