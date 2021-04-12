@@ -184,7 +184,7 @@ export class OpenaireMapper implements ProviderDCMapper {
     response.ListRecords = list;
 
     return response;
-  }
+  }  
 
   public mapOaiDcGetRecord(record: any): any {
     if (!record) {
