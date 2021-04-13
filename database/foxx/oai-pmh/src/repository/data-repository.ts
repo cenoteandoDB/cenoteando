@@ -43,15 +43,14 @@
  * @property {string} searchUrl
  */
 
-import { DataRepository, METADATA_FORMAT_DC } from '../core/core-oai-provider';
+import {
+  DataRepository,
+  METADATA_FORMAT_DC,
+  RecordParameters,
+  ListParameters,
+} from '../core/core-oai-provider';
 
 import { query } from '@arangodb';
-
-export enum METADATA_FORMAT_PANOSC {
-  prefix = 'panosc',
-  schema = 'https://github.com/panosc-eu/fair-data-api/blob/master/panosc.xsd',
-  namespace = 'http://scicat.esss.se/panosc',
-}
 
 export enum METADATA_FORMAT_OAI_DATACITE {
   prefix = 'oai_datacite',
@@ -63,57 +62,32 @@ export enum SETS {
   setspec = 'openaire_data',
   setname = 'openaire_data',
 }
-//holaaaaaaaaaaaaaa
+
 export interface Identifier {
   _id: string;
-  creatorN: string;
+}
+
+export interface Record extends Identifier {
+  creatorName: string;
   title: string;
   publisher: string;
-  publicationYear: string;  
+  publicationYear: string;
   subject: string;
   contributorName: string;
   date: string;
-  dataDescription:string;
+  dataDescription: string;
   rights: string;
-  geoLocationPoint:Array<number>;
-} 
-
-/*
-function initialize_variables(options: Identifier){
-  options._id;
-  //_id:'http://uniciencias.fciencias.unam.mx:8080/xmlui/handle/123456789/2020'
-  options.creatorN;
-  options.title;
-  options.publisher;
-  options.subject;
-  options.contributorName;
-  options.date;
-  options.dataDescription;
-  options.rights;
-  option
+  geoLocationPoint: Array<number>;
 }
-
-initialize_variables({
-  _id: 'oai:oai.datacite.org:32161',
-  creatorN: 'Fernando Nuno Dias Marques Simoes', 
-  title:'dede',
-  publisher:'frr',
-  subject:'fgtgt',
-  contributorName:'tgtgt',
-  date:'fvcfvf',
-  dataDescription:'fvfvf',
-  rights:'fcfcf'
-});
-*/
-
-export type Record = Identifier;
 
 /**
  * Factory function to create the oai provider
  * @param {Object} [options={}] - Implementation-specific configuration
  * @returns {DataRepository}
  */
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore We are not using these options at the moment
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function factory(options = {}): DataRepository {
   const backend = module.context.dependencies.backend;
 
@@ -133,26 +107,25 @@ export function factory(options = {}): DataRepository {
      * @param parameters (identifier, metadataPrefix)
      * @returns {Promise<any>} Resolves with a {@link record}
      */
-    // @ts-ignore TODO: Implement this (including each parameter)
-    getRecord: (parameters: any, ): Record => {
-
-      creatorN: 'Fernando Nuno Dias Marques Simoes';
-      title: query 
-      `for Document in v1_cenotes
-      Filter Document.properties.code == '${parameters.identifier}'
-      return Document.properties.name`.next();
-      publisher: 'Cenoteando, Facultad de Ciencias, UNAM (cenoteando.mx)';
-      publicationYear: '2021';  
-      subject: 'BIODIVERSIDAD';
-      contributorName: 'Ricardo Merlos Riestra';
-      date: '2021-03-01';
-      dataDescription:'Registro de informacion general multidisciplinaria de cenotes de la peninsula de yucatan, proveniente de la base de datos de cenoteando.mx';
-      rights: 'Attribution-NonCommercial';
-      geoLocationPoint: query 
-      `for Document in v1_cenotes
-      Filter Document.properties.code == '${parameters.identifier}'
-      return Document.geometry.coordinates`;
-      return [creatorN, title, publisher, publicationYear, subject, subject, contributorName, date, dataDescription,rights];
+    // TODO: Implement this
+    getRecord: (parameters: RecordParameters): Record => {
+      const cenote_id = parameters.identifier.split(':')[2];
+      return query`
+        LET cenote = DOCUMENT(${cenote_id})
+        RETURN {
+          _id: CONCAT('oai:cenoteando.org:', cenote._id),
+          creatorName: 'Fernando Nuno Dias Marques Simoes',
+          title: cenote.properties.name,
+          publisher: 'Cenoteando, Facultad de Ciencias, UNAM (cenoteando.mx)',
+          publicationYear: '2021',
+          subject: 'BIODIVERSIDAD',
+          contributorName: 'Ricardo Merlos Riestra',
+          date: '2021-03-01',
+          dataDescription:
+            'Registro de informacion general multidisciplinaria de cenotes de la peninsula de yucatan, proveniente de la base de datos de cenoteando.mx',
+          rights: 'Attribution-NonCommercial',
+          geoLocationPoint: cenote.geometry.coordinates
+        }`.next();
     },
 
     /**
@@ -160,13 +133,13 @@ export function factory(options = {}): DataRepository {
      * @param {string} identifier (not used)
      * @returns {Promise<METADATA_FORMAT_DC[]>}
      */
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore Since only DC is supported, safe to ignore the identifier param.
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getMetadataFormats: (identifier: string = undefined) => {
       return Promise.resolve([
         METADATA_FORMAT_DC,
-        METADATA_FORMAT_PANOSC,
         METADATA_FORMAT_OAI_DATACITE,
-        
       ]);
     },
 
@@ -175,7 +148,9 @@ export function factory(options = {}): DataRepository {
      * @param identifier
      * @returns {Promise<any[]>}
      */
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore Since only DC is supported, safe to ignore the identifier param.
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getSets: (identifier: string | undefined = undefined) => {
       return Promise.resolve([SETS]);
     },
@@ -187,10 +162,10 @@ export function factory(options = {}): DataRepository {
      * @returns {Promise<any>} an array of {@link record}
      */
     // @ts-ignore TODO: Implement this (including each parameter)
-    getIdentifiers: (parameters: any): Identifier[] => {
+    getIdentifiers: (parameters: ListParameters): Identifier[] => {
       return query`
         FOR cenote IN ${backend.collection('cenotes')}
-          RETURN { _id: cenote._id }
+          RETURN { _id: CONCAT('oai:cenoteando.org:', cenote._id) }
       `.toArray();
     },
 
@@ -201,9 +176,9 @@ export function factory(options = {}): DataRepository {
      * @returns {Promise<any>} an array of {@link record}
      */
     // @ts-ignore TODO: Implement this (including each parameter)
-    getRecords: (parameters: any): Record[] => {
+    getRecords: (parameters: ListParameters): Record[] => {
       return query`
-        FOR cenote IN ${backend.services.CenotesService.getCollection}
+        FOR cenote IN ${backend.collection('cenotes')}
           RETURN cenote
       `.toArray();
     },

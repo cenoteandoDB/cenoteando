@@ -1,5 +1,7 @@
 import Console from 'console';
 import { ProviderDCMapper } from '../core/core-oai-provider';
+import { Record } from './data-repository';
+import { XmlObject } from 'xml';
 
 export class OpenaireMapper implements ProviderDCMapper {
   /**
@@ -17,160 +19,175 @@ export class OpenaireMapper implements ProviderDCMapper {
   }
 
   // TODO: Implement this
-  private static createItemRecord(record: any): any {
+  private static createItemRecord(record: Record): XmlObject {
     //const updatedAt: string = this.setTimeZoneOffset(record);
-    return {  
-      record: [
+    const header: XmlObject = {
+      header: [
         {
-          header: [
-            {
-              identifier: [
-                { _attr: { identifierType: 'doi' } },
-                record._id.toString(),
-              ],
-            },
-            { setSpec: 'openaire_data' },
-            { datestamp: '2020-01-01' },
+          identifier: [
+            { _attr: { identifierType: 'doi' } },
+            record._id.toString(),
           ],
         },
+        { setSpec: 'openaire_data' },
+        { datestamp: '2020-01-01' },
+      ],
+    };
+
+    const creators: XmlObject = {
+      creators: [
+        {
+          creator: [
+            { creatorName: record.creatorName },
+            {
+              nameIdentifier: [
+                {
+                  _attr: {
+                    nameIdentifierScheme: 'RNCTIMX',
+                    schemeURI: 'http://repositorionacionalcti.mx/',
+                  },
+                },
+                'info:eu-repo/dai/mx/cvu/208814',
+              ],
+            },
+          ],
+        },
+      ],
+    };
+
+    const titles: XmlObject = { titles: [{ title: record.title }] };
+
+    const publisher: XmlObject = { publisher: record.publisher };
+
+    const publicationYear: XmlObject = {
+      publicationYear: record.publicationYear,
+    };
+
+    const subjects: XmlObject = {
+      subjects: [
+        {
+          subject: [
+            {
+              _attr: {
+                subjectScheme: 'CONABIO',
+                schemeURI: 'http://enciclovida.mx/',
+              },
+            },
+            record.subject,
+          ],
+        },
+      ],
+    };
+
+    const contributors: XmlObject = {
+      contributors: [
+        {
+          contributor: [
+            {
+              _attr: { contributorType: 'DataCurator' },
+              contributorName: record.contributorName,
+              nameIdentifier: [
+                { _attr: { nameIdentifierScheme: 'RNCTIMX' } },
+                'info:eu-repo/dai/mx/cvu/42278',
+              ],
+            },
+          ],
+        },
+      ],
+    };
+
+    const dates: XmlObject = {
+      dates: [{ date: [{ _attr: { dateType: 'Created' } }, record.date] }],
+    };
+
+    const resourceType: XmlObject = {
+      resourceType: [
+        { _attr: { resourceTypeGeneral: 'Dataset' } },
+        'Ficha informativa',
+      ],
+    };
+
+    const descriptions: XmlObject = {
+      descriptions: [
+        {
+          description: [
+            { _attr: { descriptionType: 'Abstract' } },
+            record.dataDescription,
+          ],
+        },
+      ],
+    };
+
+    const version: XmlObject = { version: 1 };
+
+    const rightsList: XmlObject = {
+      rightsList: [
+        {
+          rights: [
+            {
+              _attr: {
+                rightsURI: 'http://creativecommons.org/licenses/by-nc/4.0/',
+              },
+            },
+            record.rights,
+          ],
+        },
+      ],
+    };
+
+    return {
+      record: [
+        header,
         {
           metadata: [
             {
-              'oai_datacite':[ {
-                _attr: {
-                  xmlns: 'http://www.openarchives.org/OAI/2.0/oai_dc/',
-                  'xsi:schemaLocation':
-                    'http://schema.datacite.org/oai/oai-1.1 ' +
-                    'http://schema.datacite.org/oai/oai-1.1/oai.xsd',
+              oai_datacite: [
+                {
+                  _attr: {
+                    xmlns: 'http://www.openarchives.org/OAI/2.0/oai_dc/',
+                    'xsi:schemaLocation':
+                      'http://schema.datacite.org/oai/oai-1.1 http://schema.datacite.org/oai/oai-1.1/oai.xsd',
+                  },
                 },
-              },
-                {'schemaVersion':'2.1'},
-                {'datacentreSymbol':'TIB.WDCC'},
-                {'payload':[{
-                  'resource': [
+                { schemaVersion: '2.1' },
+                { datacentreSymbol: 'TIB.WDCC' },
+                {
+                  payload: [
                     {
-                      _attr: {
-                        xmlns: 'http://namespace.openaire.eu/schema/oaire/',
-                        'xsi:schemaLocation':
-                          'http://www.openarchives.org/OAI/2.0/oai_dc/ ' +
-                          'https://www.openaire.eu/schema/repo-lit/4.0/openaire.xsd',
-                      },
-                    },
-                    // ......does it matter what these fields are called?
-                    {
-                      'creators': [
+                      resource: [
                         {
-                          'creator': [
-                            {
-                              creatorName: record.creatorN,
-                            },
-                            {
-                              'nameIdentifier':[ {
-                                _attr: {
-                                  
-                                  'nameIdentifierScheme': 'RNCTIMX',
-                                  'schemeURI':'http://repositorionacionalcti.mx/'
-                                },
-                              },
-                              'info:eu-repo/dai/mx/cvu/208814'
-                            ]
-                            }
-                          ]
+                          _attr: {
+                            xmlns: 'http://namespace.openaire.eu/schema/oaire/',
+                            'xsi:schemaLocation':
+                              'http://www.openarchives.org/OAI/2.0/oai_dc/ ' +
+                              'https://www.openaire.eu/schema/repo-lit/4.0/openaire.xsd',
+                          },
                         },
+                        creators,
+                        titles,
+                        publisher,
+                        publicationYear,
+                        subjects,
+                        contributors,
+                        dates,
+                        resourceType,
+                        descriptions,
+                        descriptions,
+                        version,
+                        rightsList,
                       ],
                     },
-                    {
-                      'titles': [{ title: record.title }],
-                    },
-                    { 'publisher':record.publisher },
-                    { 'publicationYear': record.publicationYear },
-                    {
-                      'subjects': [{subject:[ {_attr: {
-                        'subjectScheme':'CONABIO',
-                        'schemeURI':'http://enciclovida.mx/'
-                      }
-                      }, record.subject
-                    ]
-                    }],
-                    }
-                    ,
-                    {
-                      'contributors': [{contributor: {_attr: {
-                        'contributorType':'DataCurator'
-                      },
-                      'contributorName':record.contributorName,
-                      'nameIdentifier':[{_attr: {
-                        'nameIdentifierScheme':'RNCTIMX',
-                      }},'info:eu-repo/dai/mx/cvu/42278']
-                    },
-                    }]
-                  },
-                  {
-                    dates: [
-                      {
-                        'date': [
-                          { _attr: { dateType: 'Created' },
-                         },
-                         record.date
-                        ],
-                      }
-                    ],
-                  },
-                    {
-                      'resourceType' :[{_attr: { resourceTypeGeneral: 'Dataset' },
-                      },
-                      'Ficha informativa']
-
-                    },
-                    //{
-                      //'datacite:relatedIdentifier': [
-                        //{ _attr: { 'relationType': 'URL',
-                        //'relatedIdentifierType' } ,
-                        //'https://doi.org/' + record._id.toString(),
-                      //}
-                     // ],
-                    //},
-
-                    {
-                      'descriptions': [
-                        {
-                          description: [
-                            { _attr: { descriptionType: 'Abstract' } },
-                            record.dataDescription,
-                          ],
-                        },
-                      ],
-                    },
-                    
-                    
-                    
-                     //category?/ source?
-                    { 'version': 1 }, //category?/ source?
-                    {
-                      'rightsList': [
-                        {
-                          'rights': [
-                            {
-                              _attr: {
-                                rightsURI: 'http://creativecommons.org/licenses/by-nc/4.0/',
-                              },
-                            },
-                            record.rights,
-                          ],
-                        },
-                      ],
-                    },
-                  ], //rights?
-                }]
-              }
-              ]// .....add more fields here
+                  ],
+                },
+              ],
             },
           ],
         },
-    ]  
-  };
+      ],
+    };
+  }
 
-  public mapOaiDcListRecords(records: any[]): any {
+  public mapOaiDcListRecords(records: Record[]): any {
     const list = [];
     const response = {
       ListRecords: <any>[],
@@ -186,9 +203,9 @@ export class OpenaireMapper implements ProviderDCMapper {
     response.ListRecords = list;
 
     return response;
-  }  
+  }
 
-  public mapOaiDcGetRecord(record: any): any {
+  public mapOaiDcGetRecord(record: Record): any {
     if (!record) {
       throw new Error('Record not found');
     }
@@ -211,10 +228,7 @@ export class OpenaireMapper implements ProviderDCMapper {
       const item = {
         record: [
           {
-            header: [
-              { identifier: record.id.toString() },
-              { datestamp: updatedAt },
-            ],
+            header: [{ identifier: record._id }, { datestamp: updatedAt }],
           },
         ],
       };
@@ -229,7 +243,7 @@ export class OpenaireMapper implements ProviderDCMapper {
 
   // TODO: Implement this ?
   // @ts-ignore because it is not fully implemented (records are not used)
-  public mapOaiDcListSets(records: any[]): any {
+  public mapOaiDcListSets(records: Record[]): any {
     const response = {
       ListSets: <any>[],
     };
