@@ -6,7 +6,6 @@ import Joi from 'joi';
 const router = createRouter();
 
 // TODO: Query Parameters
-// TODO: Convert Joi to set
 router
   .get('/request', oai, 'OAI-PMH Request')
   .queryParam(
@@ -18,10 +17,42 @@ router
         'ListIdentifiers',
         'ListRecords',
         'ListSets',
-        ' GetRecord',
+        'GetRecord',
       )
       .required(),
     'The OAI-PMH request verb',
+  )
+  .queryParam(
+    'identifier',
+    Joi.string().optional(),
+    'The OAI-PMH record unique identifier',
+  )
+  .queryParam(
+    'metadataPrefix',
+    Joi.string().optional(),
+    'The metadata format prefix',
+  )
+  .queryParam(
+    'from',
+    Joi.string().optional(),
+    'A UTCdatetime value, which specifies a lower bound for datestamp-based selective harvesting.',
+  )
+  .queryParam(
+    'until',
+    Joi.string().optional(),
+    'a UTCdatetime value, which specifies a upper bound for datestamp-based selective harvesting.',
+  )
+  // TODO: Implement sets
+  .queryParam(
+    'set',
+    Joi.string().optional(),
+    ' A setSpec value , which specifies set criteria for selective harvesting.',
+  )
+  // TODO: Implement resumption tokens
+  .queryParam(
+    'resumptionToken',
+    Joi.string().optional(),
+    'A value that is the flow control token returned by a previous request that issued an incomplete list.',
   )
   .response(
     'ok',
@@ -44,10 +75,42 @@ router
         'ListIdentifiers',
         'ListRecords',
         'ListSets',
-        ' GetRecord',
+        'GetRecord',
       )
       .required(),
     'The OAI-PMH request verb',
+  )
+  .queryParam(
+    'identifier',
+    Joi.string().optional(),
+    'The OAI-PMH record unique identifier',
+  )
+  .queryParam(
+    'metadataPrefix',
+    Joi.string().optional(),
+    'The metadata format prefix',
+  )
+  .queryParam(
+    'from',
+    Joi.string().optional(),
+    'A UTCdatetime value, which specifies a lower bound for datestamp-based selective harvesting.',
+  )
+  .queryParam(
+    'until',
+    Joi.string().optional(),
+    'a UTCdatetime value, which specifies a upper bound for datestamp-based selective harvesting.',
+  )
+  // TODO: Implement sets
+  .queryParam(
+    'set',
+    Joi.string().optional(),
+    ' A setSpec value , which specifies set criteria for selective harvesting.',
+  )
+  // TODO: Implement resumption tokens
+  .queryParam(
+    'resumptionToken',
+    Joi.string().optional(),
+    'A value that is the flow control token returned by a previous request that issued an incomplete list.',
   )
   .response(
     'ok',
