@@ -44,40 +44,40 @@
  */
 
 import {
-  DataRepository,
-  METADATA_FORMAT_DC,
-  RecordParameters,
-  ListParameters,
+    DataRepository,
+    METADATA_FORMAT_DC,
+    RecordParameters,
+    ListParameters,
 } from '../core/core-oai-provider';
 
 import { query } from '@arangodb';
 
 export enum METADATA_FORMAT_OAI_DATACITE {
-  prefix = 'oai_datacite',
-  schema = 'http://schema.datacite.org/meta/kernel-3/metadata.xsd',
-  namespace = 'http://datacite.org/schema/kernel-3',
+    prefix = 'oai_datacite',
+    schema = 'http://schema.datacite.org/meta/kernel-3/metadata.xsd',
+    namespace = 'http://datacite.org/schema/kernel-3',
 }
 
 export enum SETS {
-  setspec = 'openaire_data',
-  setname = 'openaire_data',
+    setspec = 'openaire_data',
+    setname = 'openaire_data',
 }
 
 export interface Identifier {
-  _id: string;
+    _id: string;
 }
 
 export interface Record extends Identifier {
-  creatorName: string;
-  title: string;
-  publisher: string;
-  publicationYear: string;
-  subject: string;
-  contributorName: string;
-  date: string;
-  dataDescription: string;
-  rights: string;
-  geoLocationPoint: Array<number>;
+    creatorName: string;
+    title: string;
+    publisher: string;
+    publicationYear: string;
+    subject: string;
+    contributorName: string;
+    date: string;
+    dataDescription: string;
+    rights: string;
+    geoLocationPoint: Array<number>;
 }
 
 /**
@@ -89,30 +89,30 @@ export interface Record extends Identifier {
 // @ts-ignore We are not using these options at the moment
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function factory(options = {}): DataRepository {
-  const backend = module.context.dependencies.backend;
+    const backend = module.context.dependencies.backend;
 
-  return Object.freeze({
-    /**
-     * Defines whether this repository supports sets.
-     */
-    setSupport: true,
+    return Object.freeze({
+        /**
+         * Defines whether this repository supports sets.
+         */
+        setSupport: true,
 
-    /**
-     * Defines whether this repository supports resumption tokens.
-     */
-    resumptionSupport: false,
+        /**
+         * Defines whether this repository supports resumption tokens.
+         */
+        resumptionSupport: false,
 
-    /**
-     * Get individual record.
-     * @param parameters (identifier, metadataPrefix)
-     * @returns {any} Resolves with a {@link record}
-     */
-    getRecord: (parameters: RecordParameters): Record | undefined => {
-      // TODO: Throw error if parameters are invalid (check if corresponding entity exists in database)
-      const identifier_parts = parameters.identifier.split(':');
-      if (identifier_parts.length != 3) return undefined;
-      const cenote_id = identifier_parts[2];
-      return query`
+        /**
+         * Get individual record.
+         * @param parameters (identifier, metadataPrefix)
+         * @returns {any} Resolves with a {@link record}
+         */
+        getRecord: (parameters: RecordParameters): Record | undefined => {
+            // TODO: Throw error if parameters are invalid (check if corresponding entity exists in database)
+            const identifier_parts = parameters.identifier.split(':');
+            if (identifier_parts.length != 3) return undefined;
+            const cenote_id = identifier_parts[2];
+            return query`
         LET cenote = DOCUMENT(${cenote_id})
         RETURN {
           _id: CONCAT('oai:cenoteando.org:', cenote._id),
@@ -128,58 +128,58 @@ export function factory(options = {}): DataRepository {
           rights: 'Attribution-NonCommercial',
           geoLocationPoint: cenote.geometry.coordinates
         }`.next();
-    },
+        },
 
-    /**
-     * Returns the metadata formats supported by this repository (DC only)
-     * @param {string} identifier (not used)
-     * @returns METADATA_FORMAT_DC[]}
-     */
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore Since only DC is supported, safe to ignore the identifier param.
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    getMetadataFormats: (identifier: string = undefined) => {
-      return [METADATA_FORMAT_DC, METADATA_FORMAT_OAI_DATACITE];
-    },
+        /**
+         * Returns the metadata formats supported by this repository (DC only)
+         * @param {string} identifier (not used)
+         * @returns METADATA_FORMAT_DC[]}
+         */
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore Since only DC is supported, safe to ignore the identifier param.
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        getMetadataFormats: (identifier: string = undefined) => {
+            return [METADATA_FORMAT_DC, METADATA_FORMAT_OAI_DATACITE];
+        },
 
-    /**
-     * Used to retrieve the set structure of a repository. Not supported currently.
-     * @param identifier
-     * @returns {any[]}
-     */
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore Since only DC is supported, safe to ignore the identifier param.
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    getSets: (identifier: string | undefined = undefined) => {
-      return [SETS];
-    },
+        /**
+         * Used to retrieve the set structure of a repository. Not supported currently.
+         * @param identifier
+         * @returns {any[]}
+         */
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore Since only DC is supported, safe to ignore the identifier param.
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        getSets: (identifier: string | undefined = undefined) => {
+            return [SETS];
+        },
 
-    /**
-     * Gets list of identifiers.
-     * @param parameters (metadataPrefix, from (optional), until (optional), set (not supported),
-     *        resumptionToken (not supported))
-     * @returns {any} an array of {@link record}
-     */
-    // @ts-ignore TODO: Implement parameters
-    getIdentifiers: (parameters: ListParameters): Identifier[] => {
-      return query`
+        /**
+         * Gets list of identifiers.
+         * @param parameters (metadataPrefix, from (optional), until (optional), set (not supported),
+         *        resumptionToken (not supported))
+         * @returns {any} an array of {@link record}
+         */
+        // @ts-ignore TODO: Implement parameters
+        getIdentifiers: (parameters: ListParameters): Identifier[] => {
+            return query`
         FOR cenote IN ${backend.collection('cenotes')}
           RETURN { _id: CONCAT('oai:cenoteando.org:', cenote._id) }
       `.toArray();
-    },
+        },
 
-    /**
-     * Gets list of records
-     * @param parameters (metadataPrefix, from (optional), until (optional), set (not supported),
-     *        resumptionToken (not supported))
-     * @returns {any} an array of {@link record}
-     */
-    // @ts-ignore TODO: Implement this (including each parameter)
-    getRecords: (parameters: ListParameters): Record[] => {
-      return query`
+        /**
+         * Gets list of records
+         * @param parameters (metadataPrefix, from (optional), until (optional), set (not supported),
+         *        resumptionToken (not supported))
+         * @returns {any} an array of {@link record}
+         */
+        // @ts-ignore TODO: Implement this (including each parameter)
+        getRecords: (parameters: ListParameters): Record[] => {
+            return query`
         FOR cenote IN ${backend.collection('cenotes')}
           RETURN cenote
       `.toArray();
-    },
-  });
+        },
+    });
 }

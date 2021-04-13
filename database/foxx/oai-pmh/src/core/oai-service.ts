@@ -34,52 +34,53 @@ import { DataRepository } from './core-oai-provider';
  * Configuration classes.
  */
 export interface ProviderConfiguration {
-  repositoryName: string;
-  baseURL: string;
-  protocolVersion: string;
-  adminEmail: string;
-  port: number;
-  description: string;
-  deletedRecord: string;
-  granularity: string;
-  earliestDatestamp: string;
+    repositoryName: string;
+    baseURL: string;
+    protocolVersion: string;
+    adminEmail: string;
+    port: number;
+    description: string;
+    deletedRecord: string;
+    granularity: string;
+    earliestDatestamp: string;
 }
 
 export class OaiService {
-  public static instance: OaiService;
+    public static instance: OaiService;
 
-  oaiProvider: DataRepository;
+    oaiProvider: DataRepository;
 
-  parameters: ProviderConfiguration;
+    parameters: ProviderConfiguration;
 
-  /**
-   * The service constructor requires a factory method and configuration
-   * parameters for an repository provider module.
-   * @param factory
-   * @param {ProviderConfiguration} configuration
-   */
-  public constructor(factory: any, configuration: ProviderConfiguration) {
-    Console.debug(
-      'Creating the OAI data provider for: ' + configuration.repositoryName,
-    );
+    /**
+     * The service constructor requires a factory method and configuration
+     * parameters for an repository provider module.
+     * @param factory
+     * @param {ProviderConfiguration} configuration
+     */
+    public constructor(factory: any, configuration: ProviderConfiguration) {
+        Console.debug(
+            'Creating the OAI data provider for: ' +
+                configuration.repositoryName,
+        );
 
-    this.parameters = configuration;
-    this.oaiProvider = factory(this.parameters);
-  }
+        this.parameters = configuration;
+        this.oaiProvider = factory(this.parameters);
+    }
 
-  /**
-   * Returns the repository configuration for this instance.
-   * @returns {ProviderConfiguration}
-   */
-  public getParameters(): ProviderConfiguration {
-    return this.parameters;
-  }
+    /**
+     * Returns the repository configuration for this instance.
+     * @returns {ProviderConfiguration}
+     */
+    public getParameters(): ProviderConfiguration {
+        return this.parameters;
+    }
 
-  /**
-   * Returns the OAI data provider configured for this instance.
-   * @returns {DataRepository}
-   */
-  public getProvider(): DataRepository {
-    return this.oaiProvider;
-  }
+    /**
+     * Returns the OAI data provider configured for this instance.
+     * @returns {DataRepository}
+     */
+    public getProvider(): DataRepository {
+        return this.oaiProvider;
+    }
 }
