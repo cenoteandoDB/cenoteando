@@ -105,11 +105,13 @@ export function factory(options = {}): DataRepository {
     /**
      * Get individual record.
      * @param parameters (identifier, metadataPrefix)
-     * @returns {Promise<any>} Resolves with a {@link record}
+     * @returns {any} Resolves with a {@link record}
      */
-    // TODO: Implement this
-    getRecord: (parameters: RecordParameters): Record => {
-      const cenote_id = parameters.identifier.split(':')[2];
+    getRecord: (parameters: RecordParameters): Record | undefined => {
+      // TODO: Throw error if parameters are invalid (check if corresponding entity exists in database)
+      const identifier_parts = parameters.identifier.split(':');
+      if (identifier_parts.length != 3) return undefined;
+      const cenote_id = identifier_parts[2];
       return query`
         LET cenote = DOCUMENT(${cenote_id})
         RETURN {
@@ -131,37 +133,34 @@ export function factory(options = {}): DataRepository {
     /**
      * Returns the metadata formats supported by this repository (DC only)
      * @param {string} identifier (not used)
-     * @returns {Promise<METADATA_FORMAT_DC[]>}
+     * @returns METADATA_FORMAT_DC[]}
      */
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore Since only DC is supported, safe to ignore the identifier param.
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getMetadataFormats: (identifier: string = undefined) => {
-      return Promise.resolve([
-        METADATA_FORMAT_DC,
-        METADATA_FORMAT_OAI_DATACITE,
-      ]);
+      return [METADATA_FORMAT_DC, METADATA_FORMAT_OAI_DATACITE];
     },
 
     /**
      * Used to retrieve the set structure of a repository. Not supported currently.
      * @param identifier
-     * @returns {Promise<any[]>}
+     * @returns {any[]}
      */
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore Since only DC is supported, safe to ignore the identifier param.
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getSets: (identifier: string | undefined = undefined) => {
-      return Promise.resolve([SETS]);
+      return [SETS];
     },
 
     /**
      * Gets list of identifiers.
      * @param parameters (metadataPrefix, from (optional), until (optional), set (not supported),
      *        resumptionToken (not supported))
-     * @returns {Promise<any>} an array of {@link record}
+     * @returns {any} an array of {@link record}
      */
-    // @ts-ignore TODO: Implement this (including each parameter)
+    // @ts-ignore TODO: Implement parameters
     getIdentifiers: (parameters: ListParameters): Identifier[] => {
       return query`
         FOR cenote IN ${backend.collection('cenotes')}
@@ -173,7 +172,7 @@ export function factory(options = {}): DataRepository {
      * Gets list of records
      * @param parameters (metadataPrefix, from (optional), until (optional), set (not supported),
      *        resumptionToken (not supported))
-     * @returns {Promise<any>} an array of {@link record}
+     * @returns {any} an array of {@link record}
      */
     // @ts-ignore TODO: Implement this (including each parameter)
     getRecords: (parameters: ListParameters): Record[] => {

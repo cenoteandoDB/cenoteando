@@ -24,10 +24,7 @@ export class OpenaireMapper implements ProviderDCMapper {
     const header: XmlObject = {
       header: [
         {
-          identifier: [
-            { _attr: { identifierType: 'doi' } },
-            record._id.toString(),
-          ],
+          identifier: [{ _attr: { identifierType: 'doi' } }, record._id],
         },
         { setSpec: 'openaire_data' },
         { datestamp: '2020-01-01' },
@@ -171,7 +168,6 @@ export class OpenaireMapper implements ProviderDCMapper {
                         contributors,
                         dates,
                         resourceType,
-                        descriptions,
                         descriptions,
                         version,
                         rightsList,
