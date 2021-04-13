@@ -1,5 +1,3 @@
-import Console from 'console';
-
 import {
   CoreOaiProvider,
   EXCEPTION_CODES,
@@ -44,7 +42,6 @@ export const oai = (req: Foxx.Request, res: Foxx.Response): void => {
 
   switch (req.queryParams.verb) {
     case 'Identify':
-      Console.debug('Identify request.');
       provider
         .identify(req.queryParams)
         .then((response) => {
@@ -59,7 +56,6 @@ export const oai = (req: Foxx.Request, res: Foxx.Response): void => {
       break;
 
     case 'ListMetadataFormats':
-      Console.debug('ListMetadataFormats request.');
       provider
         .listMetadataFormats(req.queryParams as MetadataFormatParameters)
         .then((response) => {
@@ -74,7 +70,6 @@ export const oai = (req: Foxx.Request, res: Foxx.Response): void => {
       break;
 
     case 'ListIdentifiers':
-      Console.debug('ListIdentifiers request.');
       provider
         .listIdentifiers(req.queryParams as ListParameters)
         .then((response) => {
@@ -89,7 +84,6 @@ export const oai = (req: Foxx.Request, res: Foxx.Response): void => {
       break;
 
     case 'ListRecords':
-      Console.debug('ListRecords request.');
       provider
         .listRecords(req.queryParams as ListParameters)
         .then((response) => {
@@ -104,7 +98,6 @@ export const oai = (req: Foxx.Request, res: Foxx.Response): void => {
       break;
 
     case 'ListSets':
-      Console.debug('ListSet request.');
       provider
         .listSets(req.queryParams as ListParameters)
         .then((response) => {
@@ -118,7 +111,6 @@ export const oai = (req: Foxx.Request, res: Foxx.Response): void => {
       break;
 
     case 'GetRecord':
-      Console.debug('GetRecord request.');
       provider
         .getRecord(req.queryParams as RecordParameters)
         .then((response) => {
