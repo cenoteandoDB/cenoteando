@@ -69,11 +69,13 @@ export interface Identifier {
 
 export interface Record extends Identifier {
     creatorName: string;
+    creator_identifier: string;
     title: string;
     publisher: string;
     publicationYear: string;
     subject: string;
     contributorName: string;
+    Contribuidor_identifier: string;
     date: string;
     dataDescription: string;
     rights: string;
@@ -108,7 +110,7 @@ export function factory(options = {}): DataRepository {
          * @returns {any} Resolves with a {@link record}
          */
         getRecord: (parameters: RecordParameters): Record | undefined => {
-            // TODO: Throw error if parameters are invalid (check if corresponding entity exists in database)
+            // TODO: Throw error if parameters are invalid (check if corresponding entity exists in database)cenote.properties.name
             const identifier_parts = parameters.identifier.split(':');
             if (identifier_parts.length != 3) return undefined;
             const cenote_id = identifier_parts[2];
@@ -117,11 +119,13 @@ export function factory(options = {}): DataRepository {
         RETURN {
           _id: CONCAT('oai:cenoteando.org:', cenote._id),
           creatorName: 'Fernando Nuno Dias Marques Simoes',
-          title: cenote.properties.name,
+          creator_identifier: 'info:eu-repo/dai/mx/cvu/208814',         
+          title: 'cenote sambula',
           publisher: 'Cenoteando, Facultad de Ciencias, UNAM (cenoteando.mx)',
           publicationYear: '2021',
           subject: 'BIODIVERSIDAD',
           contributorName: 'Ricardo Merlos Riestra',
+          Contribuidor_identifier:info:eu-repo/dai/mx/cvu/42278,
           date: '2021-03-01',
           dataDescription:
             'Registro de informacion general multidisciplinaria de cenotes de la peninsula de yucatan, proveniente de la base de datos de cenoteando.mx',

@@ -48,7 +48,7 @@ export class OpenaireMapper implements ProviderDCMapper {
                                             'http://repositorionacionalcti.mx/',
                                     },
                                 },
-                                'info:eu-repo/dai/mx/cvu/208814',
+                                record.creator_identifier,
                             ],
                         },
                     ],
@@ -86,10 +86,31 @@ export class OpenaireMapper implements ProviderDCMapper {
                     contributor: [
                         {
                             _attr: { contributorType: 'DataCurator' },
+                            
+                        },
+                        {contributorName: record.contributorName},
+                        {nameIdentifier: [
+                                { _attr: { nameIdentifierScheme: 'RNCTIMX' } },
+                                record.Contribuidor_identifier,
+                            ]},
+                    ],
+                    contributor:[
+                        {
+                            _attr: { contributorType: 'DataCurator' },
                             contributorName: record.contributorName,
                             nameIdentifier: [
                                 { _attr: { nameIdentifierScheme: 'RNCTIMX' } },
-                                'info:eu-repo/dai/mx/cvu/42278',
+                                record.Contribuidor_identifier,
+                            ],   
+                        },
+                    ],
+                    contributor:[
+                        {
+                            _attr: { contributorType: 'DataCurator' },
+                            contributorName: record.contributorName,
+                            nameIdentifier: [
+                                { _attr: { nameIdentifierScheme: 'RNCTIMX' } },
+                                record.Contribuidor_identifier,
                             ],
                         },
                     ],
@@ -120,6 +141,10 @@ export class OpenaireMapper implements ProviderDCMapper {
                 },
             ],
         };
+
+        const format: XmlObject = { format: 'csv' };
+
+        const size: XmlObject = { size: '3 MB' };
 
         const version: XmlObject = { version: 1 };
 
@@ -178,6 +203,8 @@ export class OpenaireMapper implements ProviderDCMapper {
                                                 dates,
                                                 resourceType,
                                                 descriptions,
+                                                format,
+                                                size,
                                                 version,
                                                 rightsList,
                                             ],
