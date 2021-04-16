@@ -94,25 +94,27 @@ export class OpenaireMapper implements ProviderDCMapper {
                                 record.Contribuidor_identifier,
                             ]},
                     ],
-                    contributor:[
+                    contributor_1:[
                         {
                             _attr: { contributorType: 'DataCurator' },
-                            contributorName: record.contributorName,
-                            nameIdentifier: [
+                            
+                        },
+                        {contributorName: record.contributorName},
+                        {nameIdentifier: [
                                 { _attr: { nameIdentifierScheme: 'RNCTIMX' } },
                                 record.Contribuidor_identifier,
-                            ],   
-                        },
+                            ]},
                     ],
-                    contributor:[
+                    contributor_2:[
                         {
                             _attr: { contributorType: 'DataCurator' },
-                            contributorName: record.contributorName,
-                            nameIdentifier: [
+                            
+                        },
+                        {contributorName: record.contributorName},
+                        {nameIdentifier: [
                                 { _attr: { nameIdentifierScheme: 'RNCTIMX' } },
                                 record.Contribuidor_identifier,
-                            ],
-                        },
+                            ]},
                     ],
                 },
             ],
