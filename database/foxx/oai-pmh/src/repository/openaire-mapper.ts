@@ -97,28 +97,113 @@ export class OpenaireMapper implements ProviderDCMapper {
                     {
                     contributor:[
                         {
-                            _attr: { contributorType: 'DataCurator' },
+                            _attr: { contributorType: 'DataManager' },
                             
                         },
-                        {contributorName: record.contributorName},
+                        {contributorName: 'Isaac Chacon Gomez'},
                         {nameIdentifier: [
-                                { _attr: { nameIdentifierScheme: 'RNCTIMX' } },
-                                record.Contribuidor_identifier,
+                                { _attr: { nameIdentifierScheme: 'CURP' } },
+                                'CAGI831107HDFHMS04',
                             ]},
                     ]},
-                    {contributor :[
+                {
+                    contributor:[
                         {
-                            _attr: { contributorType: 'DataCurator' },
+                            _attr: { contributorType: 'DataCollector' },
                             
                         },
-                        {contributorName: record.contributorName},
+                        {contributorName: 'Nori Velázquez Juárez '},
                         {nameIdentifier: [
-                                { _attr: { nameIdentifierScheme: 'RNCTIMX' } },
-                                record.Contribuidor_identifier,
+                                { _attr: { nameIdentifierScheme: 'CURP' } },
+                                'VEJN950421MDFLRR05',
                             ]},
-                    ]
-                },
-            ],
+                    ]},
+                    {
+                        contributor:[
+                            {
+                                _attr: { contributorType: 'Researcher' },
+                                
+                            },
+                            {contributorName: 'Maite Mascaro Miquelajauregui'},
+                            {nameIdentifier: [
+                                    { _attr: { nameIdentifierScheme: 'ORCID' } },
+                                    '0000-0003-3614-4383',
+                                ]},
+                        ]},
+                        {
+                            contributor:[
+                                {
+                                    _attr: { contributorType: 'DataCollector' },
+                                    
+                                },
+                                {contributorName: 'Luis Arturo Liévano Beltrán'},
+                                {nameIdentifier: [
+                                        { _attr: { nameIdentifierScheme: 'ORCID' } },
+                                        '0000-0003-0073-9203',
+                                    ]},
+                            ]},
+                            {
+                                contributor:[
+                                    {
+                                        _attr: { contributorType: 'DataCollector' },
+                                        
+                                    },
+                                    {contributorName: 'Efrain Chavez Solis'},
+                                    {nameIdentifier: [
+                                            { _attr: { nameIdentifierScheme: 'ORCID' } },
+                                            '0000-0001-9423-9335',
+                                        ]},
+                                ]},
+                                {
+                                    contributor:[
+                                        {
+                                            _attr: { contributorType: 'DataCollector' },
+                                            
+                                        },
+                                        {contributorName: 'Dorottya Flora Angyal'},
+                                        {nameIdentifier: [
+                                                { _attr: { nameIdentifierScheme: 'ORCID ' } },
+                                                '0000-0002-2380-2482',
+                                            ]},
+                                    ]},
+                                    {contributor :[
+                                        {
+                                            _attr: { contributorType: 'ProjectMember' },
+                                            
+                                        },
+                                        {contributorName: 'Diogo Secca Repas'},
+                                        {nameIdentifier: [
+                                                { _attr: { nameIdentifierScheme: 'DNI' } },
+                                                '15996476',
+                                            ]}
+                                    ]
+                                },
+                                {contributor :[
+                                    {
+                                        _attr: { contributorType: 'ProjectMember' },
+                                        
+                                    },
+                                    {contributorName: 'Luis Angel Yerbes Rodriguez'},
+                                    {nameIdentifier: [
+                                            { _attr: { nameIdentifierScheme: 'CURP' } },
+                                            'YERL961125HYNRDS09',
+                                        ]}
+                                ]
+                            },
+                            {contributor :[
+                                {
+                                    _attr: { contributorType: 'ProjectMember' },
+                                    
+                                },
+                                {contributorName: 'Charly Joan Llanes Euan'},
+                                {nameIdentifier: [
+                                        { _attr: { nameIdentifierScheme: 'RNCTIMX' } },
+                                        'LAEC930819HYNLNH07',
+                                    ]},
+                            ]
+                        }
+
+            ]
         };
 
         const dates: XmlObject = {
@@ -167,6 +252,21 @@ export class OpenaireMapper implements ProviderDCMapper {
             ],
         };
 
+        const geoLocations: XmlObject = {
+            geoLocations: [
+                {
+                    geoLocation: [
+                        {
+                            geoLocationPoint: record.geoLocationPoint 
+                        },
+                        {
+                            geoLocationPlace:'Peninsula de Yucatán, Mexico'
+
+                        }
+                    ],
+                },
+            ],
+        };
         return {
             record: [
                 header,
@@ -210,6 +310,7 @@ export class OpenaireMapper implements ProviderDCMapper {
                                                 size,
                                                 version,
                                                 rightsList,
+                                                geoLocations,
                                             ],
                                         },
                                     ],
