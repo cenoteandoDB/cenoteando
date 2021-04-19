@@ -74,10 +74,14 @@ export interface Record extends Identifier {
     publisher: string;
     publicationYear: string;
     subject: string;
-    contributorName: string;
-    Contribuidor_identifier: string;
+    contributors: Array<{
+        type: string;
+        name: string;
+        id_scheme: string;
+        id: string;
+    }>;
     date: string;
-    dataDescription: string;
+    description: string;
     rights: string;
     geoLocationPoint: Array<number>;
 }
@@ -114,24 +118,93 @@ export function factory(options = {}): DataRepository {
             const identifier_parts = parameters.identifier.split(':');
             if (identifier_parts.length != 3) return undefined;
             const cenote_id = identifier_parts[2];
-            return query`
-        LET cenote = DOCUMENT(${cenote_id})
-        RETURN {
-          _id: CONCAT('oai:cenoteando.org:', cenote._id),
-          creatorName: 'Fernando Nuno Dias Marques Simoes',
-          creator_identifier: 'info:eu-repo/dai/mx/cvu/208814',         
-          title: 'cenote sambula',
-          publisher: 'Cenoteando, Facultad de Ciencias, UNAM (cenoteando.mx)',
-          publicationYear: '2021',
-          subject: 'BIODIVERSIDAD',
-          contributorName: 'Ricardo Merlos Riestra',
-          Contribuidor_identifier:info:eu-repo/dai/mx/cvu/42278,
-          date: '2021-03-01',
-          dataDescription:
-            'Registro de informacion general multidisciplinaria de cenotes de la peninsula de yucatan, proveniente de la base de datos de cenoteando.mx',
-          rights: 'Attribution-NonCommercial',
-          geoLocationPoint: cenote.geometry.coordinates
-        }`.next();
+            const cenote_data = query`
+                LET cenote = DOCUMENT(${cenote_id})
+                RETURN {
+                  _id: CONCAT('oai:cenoteando.org:', cenote._id),
+                  title: cenote.properties.name,
+                  geoLocationPoint: cenote.geometry.coordinates
+                }`.next();
+
+            // TODO: Ideally store this in the database and retrieve here
+            function get_contributors() {
+                return [
+                    {
+                        type: 'DataManager',
+                        name: 'Isaac Chacon Gomez',
+                        id_scheme: 'CURP',
+                        id: 'CAGI831107HDFHMS04',
+                    },
+                    {
+                        type: 'DataCurator',
+                        name: 'Ricardo Merlos Riestra',
+                        id_scheme: 'RNCTIMX',
+                        id: 'info:eu-repo/dai/mx/cvu/42278',
+                    },
+                    {
+                        type: 'DataCollector',
+                        name: 'Nori Velázquez Juárez',
+                        id_scheme: 'CURP',
+                        id: 'VEJN950421MDFLRR05',
+                    },
+                    {
+                        type: 'Researcher',
+                        name: 'Maite Mascaro Miquelajauregui',
+                        id_scheme: 'ORCID',
+                        id: '0000-0003-3614-4383',
+                    },
+                    {
+                        type: 'DataCollector',
+                        name: 'Luis Arturo Liévano Beltrán',
+                        id_scheme: 'ORCID',
+                        id: '0000-0003-0073-9203',
+                    },
+                    {
+                        type: 'DataCollector',
+                        name: 'Efrain Chavez Solis',
+                        id_scheme: 'ORCID',
+                        id: '0000-0001-9423-9335',
+                    },
+                    {
+                        type: 'DataCollector',
+                        name: 'Dorottya Flora Angyal',
+                        id_scheme: 'ORCID',
+                        id: '0000-0002-2380-2482',
+                    },
+                    {
+                        type: 'ProjectMember',
+                        name: 'Diogo Seca Repas Gonçalves',
+                        id_scheme: 'DNI',
+                        id: '15996476',
+                    },
+                    {
+                        type: 'ProjectMember',
+                        name: 'Luis Angel Yerbes Rodriguez',
+                        id_scheme: 'CURP',
+                        id: 'YERL961125HYNRDS09',
+                    },
+                    {
+                        type: 'ProjectMember',
+                        name: 'Charly Joan Llanes Euan',
+                        id_scheme: 'RNCTIMX',
+                        id: 'LAEC930819HYNLNH07',
+                    },
+                ];
+            }
+
+            return Object.assign(cenote_data, {
+                publisher:
+                    'Cenoteando, Facultad de Ciencias, UNAM (cenoteando.mx)',
+                publicationYear: '2021',
+                subject: 'BIODIVERSIDAD',
+                date: '2021-03-01',
+                description:
+                    'Registro de informacion general multidisciplinaria de cenotes de la peninsula de yucatan, proveniente de la base de datos de cenoteando.mx',
+                rights: 'Attribution-NonCommercial',
+                creatorName: 'Fernando Nuno Dias Marques Simoes',
+                creator_identifier: 'info:eu-repo/dai/mx/cvu/208814',
+                contributors: get_contributors(),
+            });
         },
 
         /**
