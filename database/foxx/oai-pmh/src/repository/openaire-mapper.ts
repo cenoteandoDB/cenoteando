@@ -93,8 +93,9 @@ export class OpenaireMapper implements ProviderDCMapper {
                                 { _attr: { nameIdentifierScheme: 'RNCTIMX' } },
                                 record.Contribuidor_identifier,
                             ]},
-                    ],
-                    contributor_1:[
+                    ]},
+                    {
+                    contributor:[
                         {
                             _attr: { contributorType: 'DataCurator' },
                             
@@ -104,8 +105,8 @@ export class OpenaireMapper implements ProviderDCMapper {
                                 { _attr: { nameIdentifierScheme: 'RNCTIMX' } },
                                 record.Contribuidor_identifier,
                             ]},
-                    ],
-                    contributor_2:[
+                    ]},
+                    {contributor:[
                         {
                             _attr: { contributorType: 'DataCurator' },
                             
@@ -115,7 +116,7 @@ export class OpenaireMapper implements ProviderDCMapper {
                                 { _attr: { nameIdentifierScheme: 'RNCTIMX' } },
                                 record.Contribuidor_identifier,
                             ]},
-                    ],
+                    ]
                 },
             ],
         };
@@ -144,9 +145,9 @@ export class OpenaireMapper implements ProviderDCMapper {
             ],
         };
 
-        const format: XmlObject = { format: 'csv' };
+        const format: XmlObject = { format: record.format };
 
-        const size: XmlObject = { size: '3 MB' };
+        const size: XmlObject = { size: record.size};
 
         const version: XmlObject = { version: 1 };
 
