@@ -106,7 +106,7 @@ export class OpenaireMapper implements ProviderDCMapper {
                                 record.Contribuidor_identifier,
                             ]},
                     ]},
-                    {contributor:[
+                    {contributor :[
                         {
                             _attr: { contributorType: 'DataCurator' },
                             
@@ -145,9 +145,9 @@ export class OpenaireMapper implements ProviderDCMapper {
             ],
         };
 
-        const format: XmlObject = { format: record.format };
+        const format: XmlObject = { format: 'csv' };
 
-        const size: XmlObject = { size: record.size};
+        const size: XmlObject = { size: '2mb'};
 
         const version: XmlObject = { version: 1 };
 
