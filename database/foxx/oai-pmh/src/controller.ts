@@ -68,7 +68,7 @@ export const oai = (req: Foxx.Request, res: Foxx.Response): void => {
         case 'ListMetadataFormats':
             try {
                 const response = provider.listMetadataFormats(
-                    req.queryParams as MetadataFormatParameters,
+                    queryParameters as MetadataFormatParameters,
                 );
                 res.status('ok');
                 res.send(response);
@@ -81,7 +81,7 @@ export const oai = (req: Foxx.Request, res: Foxx.Response): void => {
         case 'ListIdentifiers':
             try {
                 const response = provider.listIdentifiers(
-                    req.queryParams as ListParameters,
+                    queryParameters as ListParameters,
                 );
                 res.status('ok');
                 res.send(response);
@@ -95,7 +95,7 @@ export const oai = (req: Foxx.Request, res: Foxx.Response): void => {
         case 'ListRecords':
             try {
                 const response = provider.listRecords(
-                    req.queryParams as ListParameters,
+                    queryParameters as ListParameters,
                 );
                 res.status('ok');
                 res.send(response);
@@ -109,7 +109,7 @@ export const oai = (req: Foxx.Request, res: Foxx.Response): void => {
         case 'ListSets':
             try {
                 const response = provider.listSets(
-                    req.queryParams as ListParameters,
+                    queryParameters as ListParameters,
                 );
                 res.status('ok');
                 res.send(response);
@@ -122,7 +122,7 @@ export const oai = (req: Foxx.Request, res: Foxx.Response): void => {
         case 'GetRecord':
             try {
                 const response = provider.getRecord(
-                    req.queryParams as RecordParameters,
+                    queryParameters as RecordParameters,
                 );
                 res.status('ok');
                 res.send(response);
