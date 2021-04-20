@@ -65,6 +65,7 @@ export enum SETS {
 
 export interface Identifier {
     _id: string;
+    updatedAt: string;
 }
 
 export interface Record extends Identifier {
@@ -86,6 +87,94 @@ export interface Record extends Identifier {
     geoLocationPoint: Array<number>;
 }
 
+type CenoteData = {
+    _id: string;
+    updatedAt: string;
+    title: string;
+    geoLocationPoint: [number, number];
+};
+
+function createRecord(cenote_data: CenoteData): Record {
+    // TODO: Ideally store this in the database and retrieve here
+    function get_contributors() {
+        return [
+            {
+                type: 'DataManager',
+                name: 'Isaac Chacon Gomez',
+                id_scheme: 'CURP',
+                id: 'CAGI831107HDFHMS04',
+            },
+            {
+                type: 'DataCurator',
+                name: 'Ricardo Merlos Riestra',
+                id_scheme: 'RNCTIMX',
+                id: 'info:eu-repo/dai/mx/cvu/42278',
+            },
+            {
+                type: 'DataCollector',
+                name: 'Nori Velázquez Juárez',
+                id_scheme: 'CURP',
+                id: 'VEJN950421MDFLRR05',
+            },
+            {
+                type: 'Researcher',
+                name: 'Maite Mascaro Miquelajauregui',
+                id_scheme: 'ORCID',
+                id: '0000-0003-3614-4383',
+            },
+            {
+                type: 'DataCollector',
+                name: 'Luis Arturo Liévano Beltrán',
+                id_scheme: 'ORCID',
+                id: '0000-0003-0073-9203',
+            },
+            {
+                type: 'DataCollector',
+                name: 'Efrain Chavez Solis',
+                id_scheme: 'ORCID',
+                id: '0000-0001-9423-9335',
+            },
+            {
+                type: 'DataCollector',
+                name: 'Dorottya Flora Angyal',
+                id_scheme: 'ORCID',
+                id: '0000-0002-2380-2482',
+            },
+            {
+                type: 'ProjectMember',
+                name: 'Diogo Seca Repas Gonçalves',
+                id_scheme: 'DNI',
+                id: '15996476',
+            },
+            {
+                type: 'ProjectMember',
+                name: 'Luis Angel Yerbes Rodriguez',
+                id_scheme: 'CURP',
+                id: 'YERL961125HYNRDS09',
+            },
+            {
+                type: 'ProjectMember',
+                name: 'Charly Joan Llanes Euan',
+                id_scheme: 'RNCTIMX',
+                id: 'LAEC930819HYNLNH07',
+            },
+        ];
+    }
+
+    return Object.assign(cenote_data, {
+        publisher: 'Cenoteando, Facultad de Ciencias, UNAM (cenoteando.mx)',
+        publicationYear: '2021',
+        subject: 'BIODIVERSIDAD',
+        date: '2021-03-01',
+        description:
+            'Registro de informacion general multidisciplinaria de cenotes de la peninsula de yucatan, proveniente de la base de datos de cenoteando.mx',
+        rights: 'Attribution-NonCommercial',
+        creatorName: 'Fernando Nuno Dias Marques Simoes',
+        creator_identifier: 'info:eu-repo/dai/mx/cvu/208814',
+        contributors: get_contributors(),
+    });
+}
+
 /**
  * Factory function to create the oai provider
  * @param {Object} [options={}] - Implementation-specific configuration
@@ -95,7 +184,7 @@ export interface Record extends Identifier {
 // @ts-ignore We are not using these options at the moment
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function factory(options = {}): DataRepository {
-    const backend = module.context.dependencies.backend;
+    const backend = new module.context.dependencies.backend.service();
 
     return Object.freeze({
         /**
@@ -114,10 +203,11 @@ export function factory(options = {}): DataRepository {
          * @returns {any} Resolves with a {@link record}
          */
         getRecord: (parameters: RecordParameters): Record | undefined => {
-            // TODO: Throw error if parameters are invalid (check if corresponding entity exists in database)cenote.properties.name
+            // TODO: Throw error if parameters are invalid (check if corresponding entity exists in database)
             const identifier_parts = parameters.identifier.split(':');
             if (identifier_parts.length != 3) return undefined;
             const cenote_id = identifier_parts[2];
+
             const cenote_data = query`
                 LET cenote = DOCUMENT(${cenote_id})
                 RETURN {
@@ -126,85 +216,7 @@ export function factory(options = {}): DataRepository {
                   geoLocationPoint: cenote.geometry.coordinates
                 }`.next();
 
-            // TODO: Ideally store this in the database and retrieve here
-            function get_contributors() {
-                return [
-                    {
-                        type: 'DataManager',
-                        name: 'Isaac Chacon Gomez',
-                        id_scheme: 'CURP',
-                        id: 'CAGI831107HDFHMS04',
-                    },
-                    {
-                        type: 'DataCurator',
-                        name: 'Ricardo Merlos Riestra',
-                        id_scheme: 'RNCTIMX',
-                        id: 'info:eu-repo/dai/mx/cvu/42278',
-                    },
-                    {
-                        type: 'DataCollector',
-                        name: 'Nori Velázquez Juárez',
-                        id_scheme: 'CURP',
-                        id: 'VEJN950421MDFLRR05',
-                    },
-                    {
-                        type: 'Researcher',
-                        name: 'Maite Mascaro Miquelajauregui',
-                        id_scheme: 'ORCID',
-                        id: '0000-0003-3614-4383',
-                    },
-                    {
-                        type: 'DataCollector',
-                        name: 'Luis Arturo Liévano Beltrán',
-                        id_scheme: 'ORCID',
-                        id: '0000-0003-0073-9203',
-                    },
-                    {
-                        type: 'DataCollector',
-                        name: 'Efrain Chavez Solis',
-                        id_scheme: 'ORCID',
-                        id: '0000-0001-9423-9335',
-                    },
-                    {
-                        type: 'DataCollector',
-                        name: 'Dorottya Flora Angyal',
-                        id_scheme: 'ORCID',
-                        id: '0000-0002-2380-2482',
-                    },
-                    {
-                        type: 'ProjectMember',
-                        name: 'Diogo Seca Repas Gonçalves',
-                        id_scheme: 'DNI',
-                        id: '15996476',
-                    },
-                    {
-                        type: 'ProjectMember',
-                        name: 'Luis Angel Yerbes Rodriguez',
-                        id_scheme: 'CURP',
-                        id: 'YERL961125HYNRDS09',
-                    },
-                    {
-                        type: 'ProjectMember',
-                        name: 'Charly Joan Llanes Euan',
-                        id_scheme: 'RNCTIMX',
-                        id: 'LAEC930819HYNLNH07',
-                    },
-                ];
-            }
-
-            return Object.assign(cenote_data, {
-                publisher:
-                    'Cenoteando, Facultad de Ciencias, UNAM (cenoteando.mx)',
-                publicationYear: '2021',
-                subject: 'BIODIVERSIDAD',
-                date: '2021-03-01',
-                description:
-                    'Registro de informacion general multidisciplinaria de cenotes de la peninsula de yucatan, proveniente de la base de datos de cenoteando.mx',
-                rights: 'Attribution-NonCommercial',
-                creatorName: 'Fernando Nuno Dias Marques Simoes',
-                creator_identifier: 'info:eu-repo/dai/mx/cvu/208814',
-                contributors: get_contributors(),
-            });
+            return createRecord(cenote_data);
         },
 
         /**
@@ -238,11 +250,16 @@ export function factory(options = {}): DataRepository {
          * @returns {any} an array of {@link record}
          */
         // @ts-ignore TODO: Implement parameters
-        getIdentifiers: (parameters: ListParameters): Identifier[] => {
+        getIdentifiers: (parameters: ListParameters): Array<Identifier> => {
+            // TODO: Remove limit of 100 results
             return query`
-        FOR cenote IN ${backend.collection('cenotes')}
-          RETURN { _id: CONCAT('oai:cenoteando.org:', cenote._id) }
-      `.toArray();
+                FOR cenote IN ${backend.collection('cenotes')}
+                    LIMIT 100
+                    RETURN { 
+                        _id: CONCAT('oai:cenoteando.org:', cenote._id),
+                        updatedAt: cenote.properties.date
+                    }
+              `.toArray();
         },
 
         /**
@@ -253,10 +270,18 @@ export function factory(options = {}): DataRepository {
          */
         // @ts-ignore TODO: Implement this (including each parameter)
         getRecords: (parameters: ListParameters): Record[] => {
-            return query`
-        FOR cenote IN ${backend.collection('cenotes')}
-          RETURN cenote
-      `.toArray();
+            // TODO: Remove limit of 100 results
+            const cenotes_data: Array<CenoteData> = query`
+            FOR cenote IN ${backend.collection('cenotes')}
+                LIMIT 100
+                RETURN { 
+                    _id: CONCAT('oai:cenoteando.org:', cenote._id),
+                    title: cenote.properties.name,
+                    geoLocationPoint: cenote.geometry.coordinates
+                }
+            `.toArray();
+
+            return cenotes_data.map(createRecord);
         },
     });
 }

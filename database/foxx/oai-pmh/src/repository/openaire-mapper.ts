@@ -166,7 +166,7 @@ export class OpenaireMapper implements ProviderDCMapper {
                 {
                     geoLocation: [
                         {
-                            geoLocationPoint: record.geoLocationPoint,
+                            geoLocationPoint: record.geoLocationPoint.join(),
                         },
                         {
                             geoLocationPlace: 'Peninsula de Yucatán, Mexico',
@@ -257,10 +257,14 @@ export class OpenaireMapper implements ProviderDCMapper {
             throw new Error('Record not found');
         }
 
-        const item = OpenaireMapper.createItemRecord(record);
+        const item = {
+            GetRecord: [OpenaireMapper.createItemRecord(record)],
+        };
+
         Console.debug(
             'Got item with id ' + record._id + ', title: ' + record.title,
         );
+
         return item;
     }
 
