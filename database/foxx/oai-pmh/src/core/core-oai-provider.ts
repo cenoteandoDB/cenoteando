@@ -319,7 +319,9 @@ export class CoreOaiProvider {
         const exception: ExceptionParams = {
             baseUrl: this.parameters.baseURL,
             verb: VERBS.LIST_IDENTIFIERS,
-            metadataPrefix: METADATA_FORMAT_DC.prefix,
+            metadataPrefix: CoreOaiProvider.hasKey(query, 'metadataPrefix')
+                ? query.metadataPrefix
+                : METADATA_FORMAT_DC.prefix,
         };
 
         // Valid parameter count.
@@ -327,7 +329,7 @@ export class CoreOaiProvider {
             return generateException(exception, EXCEPTION_CODES.BAD_ARGUMENT);
         }
         // Verify that query parameters are valid for this repository.
-        if (this.hasInvalidListParameter(queryParameters, query)) {
+        if (this.hasInvalidListParameter(query)) {
             return generateException(exception, EXCEPTION_CODES.BAD_ARGUMENT);
         }
 
@@ -380,7 +382,9 @@ export class CoreOaiProvider {
         const exception: ExceptionParams = {
             baseUrl: this.parameters.baseURL,
             verb: VERBS.LIST_RECORDS,
-            metadataPrefix: METADATA_FORMAT_DC.prefix,
+            metadataPrefix: CoreOaiProvider.hasKey(query, 'metadataPrefix')
+                ? query.metadataPrefix
+                : METADATA_FORMAT_DC.prefix,
         };
 
         // Valid parameter count.
@@ -388,7 +392,7 @@ export class CoreOaiProvider {
             return generateException(exception, EXCEPTION_CODES.BAD_ARGUMENT);
         }
         // Verify that query parameters are valid for this repository.
-        if (this.hasInvalidListParameter(queryParameters, query)) {
+        if (this.hasInvalidListParameter(query)) {
             return generateException(exception, EXCEPTION_CODES.BAD_ARGUMENT);
         }
 
@@ -560,24 +564,22 @@ export class CoreOaiProvider {
         );
     }
 
-    private hasExclusiveParameterViolation(queryParameters: any, query: any) {
+    private hasExclusiveParameterViolation(query: any) {
         return (
-            queryParameters.length === 2 &&
-            !CoreOaiProvider.hasKey(query, 'metadataPrefix') &&
-            !CoreOaiProvider.hasKey(query, 'resumptionToken')
+            CoreOaiProvider.hasKey(query, 'metadataPrefix') &&
+            CoreOaiProvider.hasKey(query, 'resumptionToken')
         );
     }
 
-    private hasInvalidListParameter(queryParameters: any, query: any): boolean {
+    private hasInvalidListParameter(query: any): boolean {
         if (this.isNotRecognizedParameter(query)) {
             return true;
-        } else if (CoreOaiProvider.hasKey(query, 'resumptionToken')) {
-            if (!this.hasResumptionTokenSupport()) {
-                return true;
-            }
         } else if (
-            this.hasExclusiveParameterViolation(queryParameters, query)
+            CoreOaiProvider.hasKey(query, 'resumptionToken') &&
+            !this.hasResumptionTokenSupport()
         ) {
+            return true;
+        } else if (this.hasExclusiveParameterViolation(query)) {
             return true;
         } else if (!CoreOaiProvider.hasValidSelectiveParams(query)) {
             return true;
