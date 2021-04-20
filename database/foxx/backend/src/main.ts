@@ -8,4 +8,4 @@ import createRouter from '@arangodb/foxx/router';
 // Derive the routes from your entities after they have been decorated and export the router to Foxx
 context.use(createRoutes(createRouter()));
 
-export * as default from './services/CenoteandoBackendService';
+module.exports.service = require('./services/CenoteandoBackendService');

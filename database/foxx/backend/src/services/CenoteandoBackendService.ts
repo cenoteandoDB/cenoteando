@@ -1,5 +1,5 @@
 import { BackendService } from '../../../shared/src';
-export default class CenoteandoBackendService implements BackendService {
+module.exports = class CenoteandoBackendService implements BackendService {
     collection(name: string): ArangoDB.Collection | null {
         return module.context.collection(name);
     }
@@ -7,4 +7,4 @@ export default class CenoteandoBackendService implements BackendService {
     collectionName(name: string): string {
         return module.context.collectionName(name);
     }
-}
+};
