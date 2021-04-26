@@ -101,8 +101,8 @@ function createRecord(cenote_data: CenoteData): Record {
             {
                 type: 'DataManager',
                 name: 'Isaac Chacon Gomez',
-                id_scheme: 'CURP',
-                id: 'CAGI831107HDFHMS04',
+                id_scheme: 'RNCTIMX',
+                id: 'info:eu-repo/dai/mx/curp/CAGI831107HDFHMS04',
             },
             {
                 type: 'DataCurator',
@@ -113,8 +113,8 @@ function createRecord(cenote_data: CenoteData): Record {
             {
                 type: 'DataCollector',
                 name: 'Nori Velázquez Juárez',
-                id_scheme: 'CURP',
-                id: 'VEJN950421MDFLRR05',
+                id_scheme: 'RNCTIMX',
+                id: 'info:eu-repo/dai/mx/curp/VEJN950421MDFLRR05',
             },
             {
                 type: 'Researcher',
@@ -140,23 +140,23 @@ function createRecord(cenote_data: CenoteData): Record {
                 id_scheme: 'ORCID',
                 id: '0000-0002-2380-2482',
             },
-            {
-                type: 'ProjectMember',
-                name: 'Diogo Seca Repas Gonçalves',
-                id_scheme: 'DNI',
-                id: '15996476',
-            },
+            //{
+            //    type: 'ProjectMember',
+            //    name: 'Diogo Seca Repas Gonçalves',
+            //    id_scheme: 'DNI',
+            //    id: '15996476',
+            //},
             {
                 type: 'ProjectMember',
                 name: 'Luis Angel Yerbes Rodriguez',
-                id_scheme: 'CURP',
-                id: 'YERL961125HYNRDS09',
+                id_scheme: 'RNCTIMX',
+                id: 'info:eu-repo/dai/mx/curp/YERL961125HYNRDS09',
             },
             {
                 type: 'ProjectMember',
                 name: 'Charly Joan Llanes Euan',
                 id_scheme: 'RNCTIMX',
-                id: 'LAEC930819HYNLNH07',
+                id: 'info:eu-repo/dai/mx/curp/LAEC930819HYNLNH07',
             },
         ];
     }
