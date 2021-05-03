@@ -17,11 +17,13 @@ methods.forEach((method) =>
         .description(
             'Responds to Identify, ListMetadataFormats, ListIdentifiers, ListRecords, ListSets and GetRecord requests',
         )
+        /*
         .response(
             'ok',
             ['text/xml;charset=UTF-8'],
             'The response to the request specified in the "verb" param',
         )
+       */
         .queryParam(
             'verb',
             Joi.string()

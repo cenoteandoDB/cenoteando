@@ -35,7 +35,7 @@ const provider = new CoreOaiProvider(
  * @param {Response} res
  */
 export const oai = (req: Foxx.Request, res: Foxx.Response): void => {
-    res.set('Content-Type', 'text/xml');
+    res.set({ 'Content-Type': 'text/xml;charset=UTF-8' });
 
     // Remove undefined parameters
     const queryParameters = Object.entries(req.queryParams).reduce(
