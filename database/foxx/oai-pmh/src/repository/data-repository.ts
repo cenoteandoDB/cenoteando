@@ -96,6 +96,7 @@ type CenoteData = {
 
 function createRecord(cenote_data: CenoteData): Record {
     // TODO: Ideally store this in the database and retrieve here
+    // FIXME: Error in name field of all contributors
     function get_contributors() {
         return [
             {
@@ -105,56 +106,57 @@ function createRecord(cenote_data: CenoteData): Record {
                 id: 'info:eu-repo/dai/mx/curp/CAGI831107HDFHMS04',
             },
             {
+                // FIXME: Error in type
                 type: 'DataCurator',
-                name: 'Ricardo Merlos Riestra',
+                name: 'Merlos Riestra, Ricardo',
                 id_scheme: 'RNCTIMX',
                 id: 'info:eu-repo/dai/mx/cvu/42278',
             },
             {
                 type: 'DataCollector',
-                name: 'Nori Velázquez Juárez',
+                name: 'Velázquez Juárez, Nori',
                 id_scheme: 'RNCTIMX',
                 id: 'info:eu-repo/dai/mx/curp/VEJN950421MDFLRR05',
             },
             {
-                type: 'Researcher',
-                name: 'Maite Mascaro Miquelajauregui',
-                id_scheme: 'ORCID',
-                id: '0000-0003-3614-4383',
-            },
-            {
                 type: 'DataCollector',
-                name: 'Luis Arturo Liévano Beltrán',
+                name: 'Liévano Beltrán, Luis Arturo',
                 id_scheme: 'ORCID',
                 id: '0000-0003-0073-9203',
             },
             {
                 type: 'DataCollector',
-                name: 'Efrain Chavez Solis',
+                name: 'Chavez Solis, Efrain',
                 id_scheme: 'ORCID',
                 id: '0000-0001-9423-9335',
             },
             {
                 type: 'DataCollector',
-                name: 'Dorottya Flora Angyal',
+                name: 'Flora Angyal, Dorottya',
                 id_scheme: 'ORCID',
                 id: '0000-0002-2380-2482',
             },
-            //{
-            //    type: 'ProjectMember',
-            //    name: 'Diogo Seca Repas Gonçalves',
-            //    id_scheme: 'DNI',
-            //    id: '15996476',
-            //},
+            {
+                type: 'Researcher',
+                name: 'Mascaro Miquelajauregui, Maite',
+                id_scheme: 'ORCID',
+                id: '0000-0003-3614-4383',
+            },
             {
                 type: 'ProjectMember',
-                name: 'Luis Angel Yerbes Rodriguez',
+                name: 'Seca Repas Gonçalves, Diogo',
+                id_scheme: 'DNI',
+                id: '15996476',
+            },
+            {
+                type: 'ProjectMember',
+                name: 'Yerbes Rodriguez, Luis Angel',
                 id_scheme: 'RNCTIMX',
                 id: 'info:eu-repo/dai/mx/curp/YERL961125HYNRDS09',
             },
             {
                 type: 'ProjectMember',
-                name: 'Charly Joan Llanes Euan',
+                name: 'Llanes Euan, Charly Joan',
                 id_scheme: 'RNCTIMX',
                 id: 'info:eu-repo/dai/mx/curp/LAEC930819HYNLNH07',
             },
