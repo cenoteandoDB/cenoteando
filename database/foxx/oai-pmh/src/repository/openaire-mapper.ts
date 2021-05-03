@@ -46,13 +46,10 @@ export class OpenaireMapper implements ProviderDCMapper {
         const header: XmlObject = {
             header: [
                 {
-                    identifier: [
-                        { _attr: { identifierType: 'doi' } },
-                        record._id,
-                    ],
+                    identifier: record._id,
                 },
-                { setSpec: 'openaire_data' },
                 { datestamp: '2020-01-01' },
+                { setSpec: 'openaire_data' },
             ],
         };
 
@@ -138,10 +135,10 @@ export class OpenaireMapper implements ProviderDCMapper {
         };
 
         // TODO: Check this
-        const format: XmlObject = { format: 'csv' };
+        const format: XmlObject = { format: 'CSV' };
 
         // TODO: Check this
-        const size: XmlObject = { size: '2mb' };
+        const size: XmlObject = { size: '2 MB' };
 
         const version: XmlObject = { version: 1 };
 
@@ -166,7 +163,10 @@ export class OpenaireMapper implements ProviderDCMapper {
                 {
                     geoLocation: [
                         {
-                            geoLocationPoint: record.geoLocationPoint.join(),
+                            // We use reverse because GeoJSON stores [long, lat] and we need "lat long"
+                            geoLocationPoint: record.geoLocationPoint
+                                .reverse()
+                                .join(' '),
                         },
                         {
                             geoLocationPlace: 'Peninsula de Yucatán, Mexico',
@@ -188,7 +188,8 @@ export class OpenaireMapper implements ProviderDCMapper {
                                         xmlns:
                                             'http://www.openarchives.org/OAI/2.0/oai_dc/',
                                         'xsi:schemaLocation':
-                                            'http://schema.datacite.org/oai/oai-1.1 http://schema.datacite.org/oai/oai-1.1/oai.xsd',
+                                            'http://schema.datacite.org/oai/oai-1.1 ' +
+                                            '\nhttp://schema.datacite.org/oai/oai-1.1/oai.xsd',
                                     },
                                 },
                                 { schemaVersion: '2.1' },
@@ -203,8 +204,19 @@ export class OpenaireMapper implements ProviderDCMapper {
                                                             'http://namespace.openaire.eu/schema/oaire/',
                                                         'xsi:schemaLocation':
                                                             'http://www.openarchives.org/OAI/2.0/oai_dc/ ' +
-                                                            'https://www.openaire.eu/schema/repo-lit/4.0/openaire.xsd',
+                                                            '\nhttps://www.openaire.eu/schema/repo-lit/4.0/openaire.xsd',
                                                     },
+                                                },
+                                                {
+                                                    identifier: [
+                                                        {
+                                                            _attr: {
+                                                                identifierType:
+                                                                    'URN',
+                                                            },
+                                                        },
+                                                        record._id,
+                                                    ],
                                                 },
                                                 creators,
                                                 titles,
@@ -277,14 +289,7 @@ export class OpenaireMapper implements ProviderDCMapper {
         for (const record of records) {
             const updatedAt: string = OpenaireMapper.setTimeZoneOffset(record);
             const item = {
-                record: [
-                    {
-                        header: [
-                            { identifier: record._id },
-                            { datestamp: updatedAt },
-                        ],
-                    },
-                ],
+                header: [{ identifier: record._id }, { datestamp: updatedAt }],
             };
 
             list.push(item);
@@ -303,7 +308,7 @@ export class OpenaireMapper implements ProviderDCMapper {
         };
         const list = [];
         const item = {
-            set: [{ setName: 'openaire_data' }, { setSpec: 'openaire_data' }],
+            set: [{ setSpec: 'openaire_data' }, { setName: 'openaire_data' }],
         };
         list.push(item);
 
