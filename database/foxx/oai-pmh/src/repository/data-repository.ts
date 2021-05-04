@@ -70,11 +70,10 @@ export interface Identifier {
 
 export interface Record extends Identifier {
     creatorName: string;
-    creator_identifier: string;
+    creatorIdentifier: string;
     title: string;
     publisher: string;
     publicationYear: string;
-    subject: string;
     contributors: Array<{
         type: string;
         name: string;
@@ -83,7 +82,6 @@ export interface Record extends Identifier {
     }>;
     date: string;
     description: string;
-    rights: string;
     geoLocationPoint: Array<number>;
 }
 
@@ -91,7 +89,7 @@ type CenoteData = {
     _id: string;
     updatedAt: string;
     title: string;
-    geoLocationPoint: [number, number];
+    geoLocationPoint: [number, number]; // [long, lat]
 };
 
 function createRecord(cenote_data: CenoteData): Record {
@@ -108,55 +106,55 @@ function createRecord(cenote_data: CenoteData): Record {
             {
                 // FIXME: Error in type
                 type: 'DataCurator',
-                name: 'Merlos Riestra, Ricardo',
+                name: 'Ricardo Merlos Riestra',
                 id_scheme: 'RNCTIMX',
-                id: 'info:eu-repo/dai/mx/cvu/42278',
+                id: 'info:eu-repo/dai/mx/curp/MERR880417HDFRSC06',
             },
             {
                 type: 'DataCollector',
-                name: 'Velázquez Juárez, Nori',
+                name: 'Nori Velázquez Juárez',
                 id_scheme: 'RNCTIMX',
                 id: 'info:eu-repo/dai/mx/curp/VEJN950421MDFLRR05',
             },
             {
                 type: 'DataCollector',
-                name: 'Liévano Beltrán, Luis Arturo',
-                id_scheme: 'ORCID',
-                id: '0000-0003-0073-9203',
+                name: 'Luis Arturo Liévano Beltrán',
+                id_scheme: 'RNCTIMX',
+                id: 'info:eu-repo/dai/mx/orcid/0000-0003-0073-9203',
             },
             {
                 type: 'DataCollector',
-                name: 'Chavez Solis, Efrain',
-                id_scheme: 'ORCID',
-                id: '0000-0001-9423-9335',
+                name: 'Efrain Chavez Solis',
+                id_scheme: 'RNCTIMX',
+                id: 'info:eu-repo/dai/mx/orcid/0000-0001-9423-9335',
             },
             {
                 type: 'DataCollector',
-                name: 'Flora Angyal, Dorottya',
-                id_scheme: 'ORCID',
-                id: '0000-0002-2380-2482',
+                name: 'Dorottya Flora Angyal',
+                id_scheme: 'RNCTIMX',
+                id: 'info:eu-repo/dai/mx/orcid/0000-0002-2380-2482',
             },
             {
                 type: 'Researcher',
-                name: 'Mascaro Miquelajauregui, Maite',
-                id_scheme: 'ORCID',
-                id: '0000-0003-3614-4383',
+                name: 'Maite Mascaro Miquelajauregui',
+                id_scheme: 'RNCTIMX',
+                id: 'info:eu-repo/dai/mx/orcid/0000-0003-3614-4383',
             },
             {
                 type: 'ProjectMember',
-                name: 'Seca Repas Gonçalves, Diogo',
-                id_scheme: 'DNI',
-                id: '15996476',
+                name: 'Diogo Seca Repas Gonçalves',
+                id_scheme: 'RNCTIMX',
+                id: 'info:eu-repo/dai/mx/dni/15996476',
             },
             {
                 type: 'ProjectMember',
-                name: 'Yerbes Rodriguez, Luis Angel',
+                name: 'Luis Angel Yerbes Rodriguez',
                 id_scheme: 'RNCTIMX',
                 id: 'info:eu-repo/dai/mx/curp/YERL961125HYNRDS09',
             },
             {
                 type: 'ProjectMember',
-                name: 'Llanes Euan, Charly Joan',
+                name: 'Charly Joan Llanes Euan',
                 id_scheme: 'RNCTIMX',
                 id: 'info:eu-repo/dai/mx/curp/LAEC930819HYNLNH07',
             },
@@ -166,13 +164,11 @@ function createRecord(cenote_data: CenoteData): Record {
     return Object.assign(cenote_data, {
         publisher: 'Cenoteando, Facultad de Ciencias, UNAM (cenoteando.mx)',
         publicationYear: '2021',
-        subject: 'BIODIVERSIDAD',
         date: '2021-03-01',
         description:
             'Registro de informacion general multidisciplinaria de cenotes de la peninsula de yucatan, proveniente de la base de datos de cenoteando.mx',
-        rights: 'Attribution-NonCommercial',
         creatorName: 'Fernando Nuno Dias Marques Simoes',
-        creator_identifier: 'info:eu-repo/dai/mx/cvu/208814',
+        creatorIdentifier: 'info:eu-repo/dai/mx/cvu/208814',
         contributors: get_contributors(),
     });
 }

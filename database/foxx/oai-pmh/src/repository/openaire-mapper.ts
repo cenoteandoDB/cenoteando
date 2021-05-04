@@ -40,7 +40,6 @@ export class OpenaireMapper implements ProviderDCMapper {
         };
     }
 
-    // TODO: Implement this
     private static createItemRecord(record: Record): XmlObject {
         //const updatedAt: string = this.setTimeZoneOffset(record);
         const header: XmlObject = {
@@ -67,7 +66,7 @@ export class OpenaireMapper implements ProviderDCMapper {
                                             'http://repositorionacionalcti.mx/',
                                     },
                                 },
-                                record.creator_identifier,
+                                record.creatorIdentifier,
                             ],
                         },
                     ],
@@ -89,11 +88,10 @@ export class OpenaireMapper implements ProviderDCMapper {
                     subject: [
                         {
                             _attr: {
-                                subjectScheme: 'CONABIO',
-                                schemeURI: 'http://enciclovida.mx/',
+                                subjectScheme: 'CTI',
                             },
                         },
-                        record.subject,
+                        1, // CIENCIAS FÍSICO MATEMÁTICAS Y CIENCIAS DE LA TIERRA
                     ],
                 },
             ],
@@ -135,12 +133,12 @@ export class OpenaireMapper implements ProviderDCMapper {
         };
 
         // TODO: Check this
-        const format: XmlObject = { format: 'CSV' };
+        const formats: XmlObject = { formats: [{ format: 'CSV' }] };
 
         // TODO: Check this
-        const size: XmlObject = { size: '2 MB' };
+        const size: XmlObject = { sizes: [{ size: '2 MB' }] };
 
-        const version: XmlObject = { version: 1 };
+        const version: XmlObject = { version: 1.0 };
 
         const rightsList: XmlObject = {
             rightsList: [
@@ -152,8 +150,15 @@ export class OpenaireMapper implements ProviderDCMapper {
                                     'http://creativecommons.org/licenses/by-nc/4.0/',
                             },
                         },
-                        record.rights,
+                        'Attribution-NonCommercial',
                     ],
+                },
+                {
+                    rights: {
+                        _attr: {
+                            rightsURI: 'info:eu-repo/semantics/openAccess',
+                        },
+                    },
                 },
             ],
         };
@@ -186,7 +191,9 @@ export class OpenaireMapper implements ProviderDCMapper {
                                 {
                                     _attr: {
                                         xmlns:
-                                            'http://www.openarchives.org/OAI/2.0/oai_dc/',
+                                            'http://schema.datacite.org/oai/oai-1.1/',
+                                        'xmlns:xsi':
+                                            'http://www.w3.org/2001/XMLSchema-instance',
                                         'xsi:schemaLocation':
                                             'http://schema.datacite.org/oai/oai-1.1 ' +
                                             '\nhttp://schema.datacite.org/oai/oai-1.1/oai.xsd',
@@ -227,7 +234,7 @@ export class OpenaireMapper implements ProviderDCMapper {
                                                 dates,
                                                 resourceType,
                                                 descriptions,
-                                                format,
+                                                formats,
                                                 size,
                                                 version,
                                                 rightsList,
