@@ -21,8 +21,8 @@ export class OpenaireMapper implements ProviderDCMapper {
     private static contributor_template(
         type: string,
         name: string,
-        id_scheme: string,
-        URI: string,
+        nameIdScheme: string,
+        schemeURI: string,
         id: string,
     ) {
         return {
@@ -33,7 +33,12 @@ export class OpenaireMapper implements ProviderDCMapper {
                 { contributorName: name },
                 {
                     nameIdentifier: [
-                        { _attr: { nameIdentifierScheme: id_scheme, schemeURI: URI  } },
+                        {
+                            _attr: {
+                                nameIdentifierScheme: nameIdScheme,
+                                schemeURI: schemeURI,
+                            },
+                        },
                         id,
                     ],
                 },
@@ -95,6 +100,26 @@ export class OpenaireMapper implements ProviderDCMapper {
                         1, // CIENCIAS FÍSICO MATEMÁTICAS Y CIENCIAS DE LA TIERRA
                     ],
                 },
+                {
+                    subject: [
+                        {
+                            _attr: {
+                                subjectScheme: 'CTI',
+                            },
+                        },
+                        2, // BIOLOGÍA Y QUÍMICA
+                    ],
+                },
+                {
+                    subject: [
+                        {
+                            _attr: {
+                                subjectScheme: 'CTI',
+                            },
+                        },
+                        5, // CIENCIAS SOCIALES
+                    ],
+                },
             ],
         };
 
@@ -103,13 +128,13 @@ export class OpenaireMapper implements ProviderDCMapper {
                 return OpenaireMapper.contributor_template(
                     contributor.type,
                     contributor.name,
-                    contributor.id_scheme,
-                    contributor.URI,
+                    contributor.nameIdScheme,
+                    contributor.schemeURI,
                     contributor.id,
                 );
             }),
         };
-        
+
         const dates: XmlObject = {
             dates: [
                 { date: [{ _attr: { dateType: 'Created' } }, record.date] },
