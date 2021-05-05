@@ -22,6 +22,7 @@ export class OpenaireMapper implements ProviderDCMapper {
         type: string,
         name: string,
         id_scheme: string,
+        URI: string,
         id: string,
     ) {
         return {
@@ -32,7 +33,7 @@ export class OpenaireMapper implements ProviderDCMapper {
                 { contributorName: name },
                 {
                     nameIdentifier: [
-                        { _attr: { nameIdentifierScheme: id_scheme } },
+                        { _attr: { nameIdentifierScheme: id_scheme, schemeURI: URI  } },
                         id,
                     ],
                 },
@@ -103,11 +104,12 @@ export class OpenaireMapper implements ProviderDCMapper {
                     contributor.type,
                     contributor.name,
                     contributor.id_scheme,
+                    contributor.URI,
                     contributor.id,
                 );
             }),
         };
-
+        
         const dates: XmlObject = {
             dates: [
                 { date: [{ _attr: { dateType: 'Created' } }, record.date] },
