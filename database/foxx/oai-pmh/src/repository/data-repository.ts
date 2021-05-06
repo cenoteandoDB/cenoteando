@@ -101,28 +101,6 @@ function createRecord(cenote_data: CenoteData): Record {
     function get_contributors() {
         return [
             {
-                type: 'DataManager',
-                name: 'Isaac Chacon Gomez',
-                nameIdScheme: 'RNCTIMX',
-                schemeURI: 'http://repositorionacionalcti.mx/',
-                id: 'info:eu-repo/dai/mx/curp/CAGI831107HDFHMS04',
-            },
-            {
-                // FIXME: Error in type
-                type: 'DataCurator',
-                name: 'Ricardo Merlos Riestra',
-                nameIdScheme: 'RNCTIMX',
-                schemeURI: 'http://repositorionacionalcti.mx/',
-                id: 'info:eu-repo/dai/mx/curp/MERR880417HDFRSC06',
-            },
-            {
-                type: 'DataCollector',
-                name: 'Nori Velázquez Juárez',
-                nameIdScheme: 'RNCTIMX',
-                schemeURI: 'http://repositorionacionalcti.mx/',
-                id: 'info:eu-repo/dai/mx/curp/VEJN950421MDFLRR05',
-            },
-            {
                 type: 'DataCollector',
                 name: 'LUIS ARTURO LIÉVANO BELTRÁN',
                 nameIdScheme: 'RNCTIMX',
@@ -131,45 +109,67 @@ function createRecord(cenote_data: CenoteData): Record {
             },
             {
                 type: 'DataCollector',
-                name: 'Efrain Chavez Solis',
+                name: 'EFRAIN MIGUEL CHAVEZ SOLIS',
                 nameIdScheme: 'RNCTIMX',
                 schemeURI: 'http://repositorionacionalcti.mx/',
                 id: 'info:eu-repo/dai/mx/orcid/0000-0001-9423-9335',
             },
             {
                 type: 'DataCollector',
-                name: 'Dorottya Flora Angyal',
+                name: 'DOROTTYA FLORA ANGYAL',
                 nameIdScheme: 'RNCTIMX',
                 schemeURI: 'http://repositorionacionalcti.mx/',
                 id: 'info:eu-repo/dai/mx/orcid/0000-0002-2380-2482',
             },
             {
-                type: 'Researcher',
-                name: 'Maite Mascaro Miquelajauregui',
+                type: 'DataCollector',
+                name: 'NORI VELÁZQUEZ JUÁREZ',
                 nameIdScheme: 'RNCTIMX',
                 schemeURI: 'http://repositorionacionalcti.mx/',
-                id: 'info:eu-repo/dai/mx/orcid/0000-0003-3614-4383',
+                id: 'info:eu-repo/dai/mx/curp/VEJN950421MDFLRR05',
+            },
+            {
+                // FIXME: Error in type
+                type: 'DataCurator',
+                name: 'RICARDO MERLOS RIESTRA',
+                nameIdScheme: 'RNCTIMX',
+                schemeURI: 'http://repositorionacionalcti.mx/',
+                id: 'info:eu-repo/dai/mx/curp/MERR880417HDFRSC06',
+            },
+            {
+                type: 'DataManager',
+                name: 'ISAAC CHACON GOMEZ',
+                nameIdScheme: 'RNCTIMX',
+                schemeURI: 'http://repositorionacionalcti.mx/',
+                id: 'info:eu-repo/dai/mx/curp/CAGI831107HDFHMS04',
             },
             {
                 type: 'ProjectMember',
-                name: 'Diogo Seca Repas Gonçalves',
+                name: 'DIOGO SECA REPAS GONÇALVES',
                 nameIdScheme: 'RNCTIMX',
                 schemeURI: 'http://repositorionacionalcti.mx/',
                 id: 'info:eu-repo/dai/mx/dni/15996476',
             },
             {
                 type: 'ProjectMember',
-                name: 'Luis Angel Yerbes Rodriguez',
+                name: 'LUIS ANGEL YERBES RODRIGUEZ',
                 nameIdScheme: 'RNCTIMX',
                 schemeURI: 'http://repositorionacionalcti.mx/',
                 id: 'info:eu-repo/dai/mx/curp/YERL961125HYNRDS09',
             },
             {
                 type: 'ProjectMember',
-                name: 'Charly Joan Llanes Euan',
+                name: 'CHARLY JOAN LLANES EUAN',
                 nameIdScheme: 'RNCTIMX',
                 schemeURI: 'http://repositorionacionalcti.mx/',
                 id: 'info:eu-repo/dai/mx/curp/LAEC930819HYNLNH07',
+            },
+            {
+                type: 'Researcher',
+                name: 'MAITE MASCARÓ MIQUELAJAUREGUI',
+                nameIdScheme: 'RNCTIMX',
+                schemeURI: 'http://repositorionacionalcti.mx/',
+                id: 'info:eu-repo/dai/mx/orcid/0000-0003-3614-4383',
             },
         ];
     }
