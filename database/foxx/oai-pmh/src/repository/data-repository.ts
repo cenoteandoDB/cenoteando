@@ -123,7 +123,7 @@ function createRecord(cenote_data: CenoteData): Record {
             },
             {
                 type: 'DataCollector',
-                name: 'Nori Velázquez Juárez',
+                name: 'Nori Velazquez Juarez',
                 nameIdScheme: 'RNCTIMX',
                 schemeURI: 'http://repositorionacionalcti.mx/',
                 id: 'info:eu-repo/dai/mx/curp/VEJN950421MDFLRR05',
@@ -148,7 +148,7 @@ function createRecord(cenote_data: CenoteData): Record {
                 name: 'Diogo Seca Repas Gonçalves',
                 nameIdScheme: 'RNCTIMX',
                 schemeURI: 'http://repositorionacionalcti.mx/',
-                id: 'info:eu-repo/dai/mx/dni/15996476',
+                id: 'info:eu-repo/dai/mx/orcid/0000-0003-4983-0032',
             },
             {
                 type: 'ProjectMember',
