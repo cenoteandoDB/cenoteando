@@ -9,7 +9,7 @@
     "prebuild": "npm run cleanbuild && npm run cp",
     "build": "tsc -b",
     "predev": "tsc -b && npm run cp && npm run upgrade -- --dev",
-    "dev": "(tsc -b --watch &) && (chokidar dist/src -c 'npm run upgrade -- --dev' &)",
+    "dev": "(trap 'kill 0' INT; tsc -b --watch & chokidar dist/src -c 'npm run upgrade -- --dev') && wait",
     "mount": "foxx install /api dist --database cenoteando",
     "unmount": "foxx uninstall /api dist --database cenoteando",
     "replace": "foxx replace /api dist --database cenoteando",

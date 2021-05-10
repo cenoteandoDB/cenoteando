@@ -24,8 +24,8 @@
  */
 
 import {
-  DELETED_RECORDS_SUPPORT,
-  HARVESTING_GRANULARITY,
+    DELETED_RECORDS_SUPPORT,
+    HARVESTING_GRANULARITY,
 } from '../core/core-oai-provider';
 import { ProviderConfiguration } from '../core/oai-service';
 
@@ -38,13 +38,13 @@ import { ProviderConfiguration } from '../core/oai-service';
  * module configuration.
  */
 export class Configuration implements ProviderConfiguration {
-  public repositoryName = 'Cenoteando';
-  public baseURL = 'https://cenoteando.org/oai/request';
-  public protocolVersion = '2.0';
-  public adminEmail = 'cenoteando@gmail.com';
-  public port = 0;
-  public description = 'Cenote information repository';
-  public deletedRecord: string = DELETED_RECORDS_SUPPORT.NO;
-  public granularity: string = HARVESTING_GRANULARITY.DATETIME;
-  public earliestDatestamp = '2021-01-01T00:00:00Z';
+    public repositoryName = 'Cenoteando';
+    public baseURL = 'https://cenoteando.org/oai/request';
+    public protocolVersion = '2.0';
+    public adminEmail = 'cenoteando@gmail.com';
+    public port = 0;
+    public description = 'Cenote information repository';
+    public deletedRecord: string = DELETED_RECORDS_SUPPORT.NO;
+    public granularity: string = HARVESTING_GRANULARITY.DATETIME;
+    public earliestDatestamp = '2021-01-01T00:00:00Z';
 }

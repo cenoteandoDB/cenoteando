@@ -133,9 +133,15 @@ test:
 
 lint:
 	# only build the container. Note, docker does this also if you apply other targets.
-	COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose build lint
+	npm run lint --prefix database/foxx/backend
+	npm run lint --prefix database/foxx/oai-pmh
+	npm run prettier --prefix database/foxx/backend
+	npm run prettier --prefix database/foxx/oai-pmh
 
-dev: install dev_backend dev_oai-pmh
+dev: install
+	npm run predev --prefix database/foxx/backend
+	npm run predev --prefix database/foxx/oai-pmh
+	(trap 'kill 0' INT; npm run dev --prefix database/foxx/backend & npm run dev --prefix database/foxx/oai-pmh) && wait
 	@echo ''
 	@echo ''
 	@echo 'Development environment ready! Happy coding!'

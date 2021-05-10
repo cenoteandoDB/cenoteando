@@ -1,4 +1,4 @@
-ARG NODE_VERSION=lts-alpine
+ARG NODE_VERSION=15-alpine3.10
 ARG ARANGODB_VERSION=3.7.10
 FROM node:${NODE_VERSION} AS build-stage
 # Install dependencies and shared libs

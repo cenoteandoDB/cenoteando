@@ -5,20 +5,20 @@ import { Feature, Geometry } from 'geojson';
 // TODO: Implement getters, setters and helpers?
 
 export type CenoteProperties = {
-  // TODO: discriminate each property
+    // TODO: discriminate each property
 };
 
 @Document()
 export class Cenote extends Entity implements Feature {
-  @Index({
-    type: 'geo',
-  })
-  @Attribute()
-  geometry!: Geometry;
+    @Index({
+        type: 'geo',
+    })
+    @Attribute()
+    geometry!: Geometry;
 
-  @Attribute()
-  properties!: CenoteProperties;
+    @Attribute()
+    properties!: CenoteProperties;
 
-  @Attribute()
-  type!: 'Feature';
+    @Attribute()
+    type!: 'Feature';
 }
