@@ -68,17 +68,17 @@ help:
 	@echo 'Usage: make [TARGET] [EXTRA_ARGUMENTS]'
 	@echo 'Targets:'
 	@echo '  dev   		setup service development environment'
-	@echo '  build    	build docker --image-- for current user: $(HOST_USER)(uid=$(HOST_UID))'
-	@echo '  rebuild  	rebuild docker --image-- for current user: $(HOST_USER)(uid=$(HOST_UID))'
+	@echo '  build    	build docker --image--'
+	@echo '  rebuild  	rebuild docker --image--'
 	@echo '  install     	Install all npm dependencies locally'
 	@echo '  lint     	Run linter on codebase'
-	@echo '  test     	test docker --container-- for current user: $(HOST_USER)(uid=$(HOST_UID))'
-	@echo '  start   	run as service --container-- for current user: $(HOST_USER)(uid=$(HOST_UID))'
-	@echo '  stop   	stop service --container-- for current user: $(HOST_USER)(uid=$(HOST_UID))'
-	@echo '  attach   	run as service and login --container-- for current user: $(HOST_USER)(uid=$(HOST_UID))'
-	@echo '  clean    	remove docker --image-- for current user: $(HOST_USER)(uid=$(HOST_UID))'
+	@echo '  test     	test docker --container--'
+	@echo '  start   	run as service --container--'
+	@echo '  stop   	stop service --container--'
+	@echo '  attach   	run as service and login --container--'
+	@echo '  clean    	remove docker --image--'
 	@echo '  prune    	shortcut for docker system prune -af. Cleanup inactive containers and cache.'
-	@echo '  shell      run docker --container-- for current user: $(HOST_USER)(uid=$(HOST_UID))'
+	@echo '  shell      run docker --container--'
 	@echo ''
 	@echo 'Extra arguments:'
 	@echo 'cmd=:	make cmd="whoami"'
@@ -88,18 +88,18 @@ help:
 
 rebuild:
 	# force a rebuild by passing --no-cache
-	COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose build --no-cache $(SERVICE_TARGET)
+	COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose build --no-cache
 
 start:
 	# run as a (background) service
-	COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose -p $(PROJECT_NAME)_$(HOST_UID) up -d
+	COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose -p $(PROJECT_NAME) up -d
 
 stop:
-	docker-compose -p $(PROJECT_NAME)_$(HOST_UID) down
+	docker-compose -p $(PROJECT_NAME) down
 
-attach: service
+attach: start
 	# run as a service and attach to it
-	DOCKER_BUILDKIT=1 docker exec -it $(PROJECT_NAME)_$(HOST_UID) sh
+	DOCKER_BUILDKIT=1 docker exec -it $(PROJECT_NAME) sh
 
 build:
 	# only build the container. Note, docker does this also if you apply other targets.
@@ -116,9 +116,9 @@ clean:
 	rm -rf database/foxx/oai-pmh/dist/ database/foxx/oai-pmh/node_modules/
 
 	# remove created images
-	COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose -p $(PROJECT_NAME)_$(HOST_UID) down --remove-orphans --rmi all 2>/dev/null \
-	&& echo 'Image(s) for "$(PROJECT_NAME):$(HOST_USER)" removed.' \
-	|| echo 'Image(s) for "$(PROJECT_NAME):$(HOST_USER)" already removed.'
+	COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose -p $(PROJECT_NAME) down --remove-orphans --rmi all 2>/dev/null \
+	&& echo 'Image(s) for "$(PROJECT_NAME)" removed.' \
+	|| echo 'Image(s) for "$(PROJECT_NAME)" already removed.'
 
 prune:
 	# clean all that is not actively used
@@ -127,18 +127,22 @@ prune:
 test:
 	# TODO: Add our tests here
 	# here it is useful to add your own customised tests
-	COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose -p $(PROJECT_NAME)_$(HOST_UID) run --rm $(SERVICE_TARGET) sh -c '\
+	COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose -p $(PROJECT_NAME) run --rm $(SERVICE_TARGET) sh -c '\
 		echo "I am `whoami`. My uid is `id -u`." && echo "Docker runs!"' \
 	&& echo success
 
 lint:
-	# only build the container. Note, docker does this also if you apply other targets.
+	npm run lint --prefix frontend
+	npm run prettier --prefix frontend
+
 	npm run lint --prefix database/foxx/backend
-	npm run lint --prefix database/foxx/oai-pmh
 	npm run prettier --prefix database/foxx/backend
+
+	npm run lint --prefix database/foxx/oai-pmh
 	npm run prettier --prefix database/foxx/oai-pmh
 
 dev: install
+	# TODO: Remove run predev?
 	npm run predev --prefix database/foxx/backend
 	npm run predev --prefix database/foxx/oai-pmh
 	(trap 'kill 0' INT; npm run dev --prefix database/foxx/backend & npm run dev --prefix database/foxx/oai-pmh) && wait
@@ -149,6 +153,7 @@ dev: install
 	@echo ''
 
 install:
+	npm install --prefix frontend
 	npm install --prefix database/foxx/shared
 	npm install --prefix database/foxx/backend
 	npm install --prefix database/foxx/oai-pmh

@@ -1,10 +1,8 @@
 version: '3.9'
 services:
   database:
-    # Makefile fills PROJECT_NAME to current directory name.
-    container_name: ${PROJECT_NAME}
-    hostname: ${PROJECT_NAME}
-    image: ${PROJECT_NAME}:${HOST_USER:-nodummy}
+    container_name: database
+    image: cenoteando-database
     build:
       context: ./database
       target: database
@@ -17,3 +15,24 @@ services:
     volumes:
       - /var/lib/arangodb3
       - /var/lib/arangodb3-apps
+
+  frontend:
+    container_name: frontend
+    image: cenoteando-frontend
+    build:
+      context: ./frontend/
+      target: production-stage
+      dockerfile: Dockerfile
+      args:
+        NODE_ENV: development
+    depends_on:
+      - database
+    links:
+      - database
+    ports:
+      - 80:80
+    restart: unless-stopped
+    volumes:
+      - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./config/nginx/error.log:/var/log/nginx/error.log
+      - ./config/nginx/access.log:/var/log/nginx/access.log
