@@ -1,33 +1,60 @@
 <template>
-  <v-app-bar app color="primary" dark>
-    <div class="d-flex align-center">
-      <v-img
-        alt="Cenoteando Logo"
-        class="shrink mr-2"
-        contain
-        :src="require('@/assets/logo.png')"
-        transition="scale-transition"
-        width="40"
-      />
-    </div>
-    <v-app-bar-title href="#" class="mr-2">Cenoteando</v-app-bar-title>
+  <v-app-bar app color="primary" dark clipped-left>
+    <v-app-bar-nav-icon
+      @click.stop="drawer = !drawer"
+      class="hidden-md-and-up"
+      aria-label="Menu"
+    />
+    <v-app-bar-title class="mr-2">
+      <v-btn plain block elevation="0" to="/">
+        <v-img
+          alt="Cenoteando Logo"
+          class="shrink mr-2"
+          contain
+          :src="require('@/assets/logo.png')"
+          transition="scale-transition"
+          width="40"
+        />
+        Cenoteando
+      </v-btn>
+    </v-app-bar-title>
 
     <v-spacer></v-spacer>
 
-    <v-btn to="/repo" text>
-      <span class="mr-2">Repository</span>
-    </v-btn>
+    <span v-if="isOaiPmh"></span>
 
-    <v-btn to="/oai-pmh" text>
-      <span class="mr-2">OAI-PMH</span>
-    </v-btn>
+    <span v-else>
+      <v-btn to="/repo" text>
+        <span class="mr-2">Repository</span>
+      </v-btn>
+
+      <v-btn to="/oai-pmh" text>
+        <span class="mr-2">OAI-PMH</span>
+      </v-btn>
+    </span>
   </v-app-bar>
 </template>
 
-<script>
-export default {
-  name: "NavBar",
-};
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+
+@Component
+export default class NavBar extends Vue {
+  name = "NavBar";
+  drawer = false;
+
+  get isOaiPmh(): boolean {
+    // TODO: return this.$router.???
+    return false;
+  }
+}
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.no-active::before {
+  opacity: 0 !important;
+}
+nav {
+  z-index: 300;
+}
+</style>
