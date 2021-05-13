@@ -5,7 +5,7 @@
       class="hidden-md-and-up"
       aria-label="Menu"
     />
-    <v-app-bar-title class="mr-2">
+    <v-app-bar-title>
       <v-btn plain block elevation="0" to="/">
         <v-img
           alt="Cenoteando Logo"
@@ -15,20 +15,36 @@
           transition="scale-transition"
           width="40"
         />
-        Cenoteando
+        <span>Cenoteando</span>
       </v-btn>
     </v-app-bar-title>
 
     <v-spacer></v-spacer>
 
-    <span v-if="isOaiPmh"></span>
+    <span v-if="isOai">
+      <v-btn to="/oai-pmh/identify" text class="mr-2">
+        <span class="mr-2">Identify</span>
+      </v-btn>
+
+      <v-btn to="/oai-pmh/list-identifiers" text class="mr-2">
+        <span class="mr-2">List Identifiers</span>
+      </v-btn>
+
+      <v-btn to="/oai-pmh/list-records" text class="mr-2">
+        <span class="mr-2">List Records</span>
+      </v-btn>
+
+      <v-btn to="/oai-pmh/get-record" text class="mr-2">
+        <span class="mr-2">Get Record</span>
+      </v-btn>
+    </span>
 
     <span v-else>
-      <v-btn to="/repo" text>
+      <v-btn to="/repo" text class="mr-2">
         <span class="mr-2">Repository</span>
       </v-btn>
 
-      <v-btn to="/oai-pmh" text>
+      <v-btn to="/oai-pmh" text class="mr-2">
         <span class="mr-2">OAI-PMH</span>
       </v-btn>
     </span>
@@ -43,9 +59,8 @@ export default class NavBar extends Vue {
   name = "NavBar";
   drawer = false;
 
-  get isOaiPmh(): boolean {
-    // TODO: return this.$router.???
-    return false;
+  get isOai(): boolean {
+    return this.$route.path.startsWith("/oai-pmh");
   }
 }
 </script>

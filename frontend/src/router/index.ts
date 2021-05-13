@@ -1,7 +1,11 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import Home from "../views/Home.vue";
-import OaiIdentify from "../views/OaiIdentify.vue";
+import OaiPmh from "../views/oai/OaiPmh.vue";
+import OaiIdentify from "../views/oai/OaiIdentify.vue";
+import OaiGetRecord from "../views/oai/OaiGetRecord.vue";
+import OaiListIdentifiers from "../views/oai/OaiListIdentifiers.vue";
+import OaiListRecords from "../views/oai/OaiListRecords.vue";
 
 Vue.use(VueRouter);
 
@@ -13,9 +17,37 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: "/oai-pmh",
-    name: "OAI-PMH Identify",
-    component: OaiIdentify,
+    name: "OAI-PMH",
+    component: OaiPmh,
+    children: [
+      {
+        path: "",
+        name: "OAI-PMH Identify",
+        component: OaiIdentify,
+      },
+      {
+        path: "identify",
+        name: "OAI-PMH Identify",
+        component: OaiIdentify,
+      },
+      {
+        path: "get-record",
+        name: "OAI-PMH Get Record",
+        component: OaiGetRecord,
+      },
+      {
+        path: "list-identifiers",
+        name: "OAI-PMH List Identifiers",
+        component: OaiListIdentifiers,
+      },
+      {
+        path: "list-records",
+        name: "OAI-PMH List Records",
+        component: OaiListRecords,
+      },
+    ],
   },
+
   {
     path: "/about",
     name: "About",
