@@ -40,9 +40,7 @@ export class CenoteProperties {
 
 @Document()
 export class Cenote extends Entity implements Feature {
-    @Index({
-        type: 'geo',
-    })
+    @Index({ type: 'geo' })
     @Attribute()
     geometry!: Geometry;
 

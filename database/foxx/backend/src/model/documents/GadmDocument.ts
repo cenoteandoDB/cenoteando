@@ -20,7 +20,7 @@ export class GadmProperties {
     @Attribute()
     NL_NAME_1: string;
 
-    @Index((type) => 'hash')
+    @Index({ type: 'hash' })
     @Attribute()
     GID_2: string;
 
@@ -48,9 +48,7 @@ export class GadmProperties {
 
 @Document()
 export class GadmDocument extends Entity implements Feature {
-    @Index({
-        type: 'geo',
-    })
+    @Index({ type: 'geo' })
     @Attribute()
     geometry!: Geometry;
 
