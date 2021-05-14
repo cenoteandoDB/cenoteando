@@ -1,2 +1,2 @@
 export * from './Cenote';
-export * from './GADM';
+export * from './GadmDocument';

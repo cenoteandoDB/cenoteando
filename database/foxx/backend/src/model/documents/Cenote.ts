@@ -2,7 +2,7 @@ import { Attribute, Document, Entity, Index, Nested, Type } from 'type-arango';
 import { Feature, Geometry } from 'geojson';
 
 // TODO: Set role permissions (schema, readers, writers)
-// TODO: Implement getters, setters and helpers?
+// TODO: Implement getters, setters and helpers
 
 export enum Issue {
     GEOTAG_NOT_VERIFIED,
@@ -11,31 +11,31 @@ export enum Issue {
 @Nested()
 export class CenoteProperties {
     @Attribute()
-    type!: string;
+    type: string;
 
     @Attribute()
-    code!: string;
+    code: string;
 
     @Attribute()
-    contact!: string;
+    contact: string;
 
     @Attribute()
-    alternative_names!: Array<string>;
+    alternative_names: Array<string>;
 
     @Attribute()
-    createdAt!: Type.DateInsert;
+    createdAt: Type.DateInsert;
 
     @Attribute()
-    updatedAt!: Type.DateUpdate;
+    updatedAt: Type.DateUpdate;
 
     @Attribute()
-    issues!: Array<Issue>;
+    issues: Array<Issue>;
 
     @Attribute()
-    name!: string;
+    name: string;
 
     @Attribute()
-    touristic!: boolean;
+    touristic: boolean;
 }
 
 @Document()

@@ -10,14 +10,7 @@ export default class Cenotes extends Entities {
         ['guest'],
         'Returns the coordinates of all touristic cenotes',
     )
-    static GET_COORDINATES(): Array<{
-        name: string;
-        type: string;
-        coordinates: {
-            latitude: number;
-            longitude: number;
-        };
-    }> {
+    static GET_COORDINATES() {
         return Cenotes.find({ filter: { 'properties.touristic': true } }).map(
             (cenote) => {
                 return {
