@@ -144,10 +144,7 @@ lint:
 	npm run prettier --prefix database/foxx/oai-pmh
 
 dev: install
-	# TODO: Remove run predev?
-	npm run predev --prefix database/foxx/backend
-	npm run predev --prefix database/foxx/oai-pmh
-	(trap 'kill 0' INT; npm run dev --prefix database/foxx/backend & npm run dev --prefix database/foxx/oai-pmh) && wait
+	(trap 'kill 0' INT; npm run serve --prefix frontend & npm run dev --prefix database/foxx/backend & npm run dev --prefix database/foxx/oai-pmh) && wait
 	@echo ''
 	@echo ''
 	@echo 'Development environment ready! Happy coding!'
@@ -169,6 +166,11 @@ dev_backend:
 dev_oai-pmh:
 	# Start hot development mode (code changes reflect on save)
 	npm run dev --prefix database/foxx/oai-pmh
+
+# Setup frontend
+dev_frontend:
+	# Start hot development mode (code changes reflect on save)
+	npm run serve --prefix frontend
 
 # Upgrade Backend
 upgrade_backend:

@@ -1,12 +1,12 @@
 <template>
-  <div>HI!</div>
+    <div>HI!</div>
 </template>
 
 <script>
-import Vue from "vue";
+import Vue from 'vue';
 
 export default Vue.extend({
-  name: "OAI-PMH Identify",
+    name: 'OaiListRecords',
 });
 </script>
 

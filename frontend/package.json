@@ -10,7 +10,7 @@
     "lint": "vue-cli-service lint",
     "build:dev": "NODE_ENV=development vue-cli-service build --mode development",
     "codecov": "codecov -t $(cat ../data/tokens/.codecov_token)",
-    "prettier": "prettier --single-quote --write \"**/**/*.{ts,js,css,scss,vue}\""
+    "prettier": "prettier --config .prettierrc --write \"**/**/*.{ts,js,css,scss,vue}\""
   },
   "dependencies": {
     "core-js": "^3.6.5",
