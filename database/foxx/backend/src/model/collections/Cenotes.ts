@@ -4,7 +4,7 @@ import { Cenote } from '../documents';
 @Collection({
     of: Cenote,
 })
-export default class Cenotes extends Entities {
+export class Cenotes extends Entities {
     @Route.GET(
         'get-coordinates',
         ['guest'],

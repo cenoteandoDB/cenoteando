@@ -174,10 +174,8 @@ dev_frontend:
 
 # Upgrade Backend
 upgrade_backend:
-	# Start hot development mode (code changes reflect on save)
 	npm run build --prefix database/foxx/backend && foxx upgrade /api database/foxx/backend/dist --database cenoteando
 
 # Upgrade oai-pmh
 upgrade_oai-pmh:
-	# Start hot development mode (code changes reflect on save)
-	npm run dev --prefix database/foxx/oai-pmh
+	npm run build --prefix database/foxx/oai-pmh && foxx upgrade /oai database/foxx/oai-pmh/dist --database cenoteando

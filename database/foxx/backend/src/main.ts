@@ -13,10 +13,11 @@ context.use(
     }),
 );
 // Import the entities before creating the routes
-import * as _Collections from './model';
-_Collections.complete();
+import * as Model from './model';
+Model.complete();
 
 // Derive the routes from your entities after they have been decorated and export the router to Foxx
 context.use(createRoutes(createRouter()));
 
-module.exports.service = require('./services/CenoteandoBackendService');
+module.exports._Documents = Model._Documents;
+module.exports._Collections = Model._Collections;

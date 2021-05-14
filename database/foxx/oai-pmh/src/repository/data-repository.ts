@@ -50,8 +50,6 @@ import {
     ListParameters,
 } from '../core/core-oai-provider';
 
-import { query } from '@arangodb';
-
 export enum METADATA_FORMAT_OAI_DATACITE {
     prefix = 'oai_datacite',
     schema = 'http://schema.datacite.org/meta/kernel-3/metadata.xsd',
@@ -195,7 +193,11 @@ function createRecord(cenote_data: CenoteData): Record {
 // @ts-ignore We are not using these options at the moment
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function factory(options = {}): DataRepository {
-    const backend = new module.context.dependencies.backend.service();
+    const documents = module.context.dependencies.backend._Documents;
+    const collections = module.context.dependencies.backend._Collections;
+
+    const Cenote = documents.Cenote;
+    const Cenotes = collections.Cenotes;
 
     return Object.freeze({
         /**
@@ -219,15 +221,15 @@ export function factory(options = {}): DataRepository {
             if (identifier_parts.length != 3) return undefined;
             const cenote_id = identifier_parts[2];
 
-            const cenote_data = query`
-                LET cenote = DOCUMENT(${cenote_id})
-                RETURN {
-                  _id: CONCAT('oai:cenoteando.org:', cenote._id),
-                  title: cenote.properties.name,
-                  geoLocationPoint: cenote.geometry.coordinates
-                }`.next();
-
-            return createRecord(cenote_data);
+            const cenote = Cenotes.findOne({
+                filter: { _id: cenote_id, 'properties.touristic': true },
+            });
+            return createRecord({
+                _id: 'oai:cenoteando.org:' + cenote._id,
+                updatedAt: cenote.properties.date,
+                title: cenote.properties.name,
+                geoLocationPoint: cenote.geometry.coordinates,
+            });
         },
 
         /**
@@ -262,15 +264,15 @@ export function factory(options = {}): DataRepository {
          */
         // @ts-ignore TODO: Implement parameters
         getIdentifiers: (parameters: ListParameters): Array<Identifier> => {
-            // TODO: Remove limit of 100 results
-            return query`
-                FOR cenote IN ${backend.collection('cenotes')}
-                    FILTER cenote.properties.touristic == true
-                    RETURN { 
-                        _id: CONCAT('oai:cenoteando.org:', cenote._id),
-                        updatedAt: cenote.properties.date
-                    }
-              `.toArray();
+            const cenotes = Cenotes.find({
+                filter: { 'properties.touristic': true },
+            });
+            return cenotes.map((cenote: typeof Cenote) => {
+                return {
+                    _id: 'oai:cenoteando.org:' + cenote._id,
+                    updatedAt: cenote.properties.date,
+                };
+            });
         },
 
         /**
@@ -281,18 +283,18 @@ export function factory(options = {}): DataRepository {
          */
         // @ts-ignore TODO: Implement this (including each parameter)
         getRecords: (parameters: ListParameters): Record[] => {
-            // TODO: Remove limit of 100 results
-            const cenotes_data: Array<CenoteData> = query`
-            FOR cenote IN ${backend.collection('cenotes')}
-                FILTER cenote.properties.touristic == true
-                RETURN { 
-                    _id: CONCAT('oai:cenoteando.org:', cenote._id),
-                    title: cenote.properties.name,
-                    geoLocationPoint: cenote.geometry.coordinates
-                }
-            `.toArray();
+            const cenotes = Cenotes.find({
+                filter: { 'properties.touristic': true },
+            });
 
-            return cenotes_data.map(createRecord);
+            return cenotes.map((cenote: typeof Cenote) => {
+                return createRecord({
+                    _id: 'oai:cenoteando.org:' + cenote._id,
+                    updatedAt: cenote.properties.date,
+                    title: cenote.properties.name,
+                    geoLocationPoint: cenote.geometry.coordinates,
+                });
+            });
         },
     });
 }

@@ -64,11 +64,5 @@
     },
     "include": ["./src/**/*.ts"],
     "exclude": ["node_modules", "dist"],
-    "references": [
-        {
-            "path": "../shared",
-            // add 'prepend' if you want to include the referenced project in your output file
-            "prepend": false,
-        }
-    ]
+    "references": []
 }

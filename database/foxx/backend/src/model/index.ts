@@ -31,5 +31,5 @@ export const complete = typeArango({
     },
 });
 
-export * from './documents';
-export * from './collections';
+export * as _Documents from './documents';
+export * as _Collections from './collections';

@@ -1,11 +1,6 @@
 ARG NODE_VERSION=15-alpine3.10
 ARG ARANGODB_VERSION=3.7.10
 FROM node:${NODE_VERSION} AS build-stage
-# Install dependencies and shared libs
-WORKDIR /opt/shared
-COPY ./foxx/shared/package*.json ./
-RUN npm install
-COPY ./foxx/shared /opt/shared
 
 
 # Lint & build backend

@@ -5,7 +5,7 @@ import { GadmDocument } from '../documents';
     of: GadmDocument,
 })
 @Route.LIST(['guest'])
-export default class Gadm extends Entities {
+export class Gadm extends Entities {
     @Route.GET(
         (path) => ':id',
         (roles) => ['guest'],
