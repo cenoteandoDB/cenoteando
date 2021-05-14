@@ -106,6 +106,8 @@ build:
 	COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose build
 
 clean:
+	# cleanup frontend libs
+	rm -rf frontend/node_modules/
 	# cleanup shared libs
 	rm -rf database/foxx/shared/dist/ database/foxx/shared/node_modules/
 
@@ -165,5 +167,15 @@ dev_backend:
 
 # Setup oai-pmh
 dev_oai-pmh:
+	# Start hot development mode (code changes reflect on save)
+	npm run dev --prefix database/foxx/oai-pmh
+
+# Upgrade Backend
+upgrade_backend:
+	# Start hot development mode (code changes reflect on save)
+	npm run build --prefix database/foxx/backend && foxx upgrade /api database/foxx/backend/dist --database cenoteando
+
+# Upgrade oai-pmh
+upgrade_oai-pmh:
 	# Start hot development mode (code changes reflect on save)
 	npm run dev --prefix database/foxx/oai-pmh

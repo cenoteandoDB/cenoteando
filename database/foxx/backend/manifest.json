@@ -12,9 +12,6 @@
   "author": "Cenoteando <cenoteando@gmail.com>",
   "description": "RESTful API for cenoteando.org backend",
   "license": "MIT",
-  "scripts": {
-    "setup": "scripts/setup.js",
-    "teardown": "scripts/teardown.js"
-  },
+  "scripts": {},
   "tests": "tests/**/*.js"
 }

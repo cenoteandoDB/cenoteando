@@ -1,6 +1,6 @@
-import typeArango, { LogLevel, config } from 'type-arango';
+import typeArango, { config, LogLevel } from 'type-arango';
 
-const complete = typeArango({
+export const complete = typeArango({
     // verbose
     logLevel: LogLevel.Debug,
 
@@ -23,14 +23,13 @@ const complete = typeArango({
     },
 
     // returns the user access roles that can be applied to the current route (this is the default config value)
-    getAuthorizedRoles(userRoles: string[], accessRoles: string[]): string[] {
+    getAuthorizedRoles(
+        userRoles: Array<string>,
+        accessRoles: Array<string>,
+    ): string[] {
         return userRoles.filter((role: string) => accessRoles.includes(role));
     },
 });
 
-export * from './documents/Cenote';
-export * from './documents/GADM';
-
-export * from './collections/Cenotes';
-
-complete();
+export * from './documents';
+export * from './collections';

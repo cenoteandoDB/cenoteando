@@ -4,7 +4,7 @@
   "description": "RESTful API for cenoteando.org backend",
   "scripts": {
     "clean": "rm -rf node_modules package-lock.json dist tsconfig.buildinfo",
-    "cp": "mkdir -p dist && cp -r scripts/ dist/scripts/  && cp -r node_modules/ dist/node_modules/ && cp package.json dist/ && cp manifest.json dist/",
+    "cp": "mkdir -p dist  && cp -r node_modules/ dist/node_modules/ && cp package.json dist/ && cp manifest.json dist/",
     "cleanbuild": "rm -rf dist",
     "prebuild": "npm run cleanbuild && npm run cp",
     "build": "tsc -b",

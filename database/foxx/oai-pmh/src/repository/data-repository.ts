@@ -265,7 +265,7 @@ export function factory(options = {}): DataRepository {
             // TODO: Remove limit of 100 results
             return query`
                 FOR cenote IN ${backend.collection('cenotes')}
-                    LIMIT 100
+                    FILTER cenote.properties.touristic == true
                     RETURN { 
                         _id: CONCAT('oai:cenoteando.org:', cenote._id),
                         updatedAt: cenote.properties.date
@@ -284,7 +284,7 @@ export function factory(options = {}): DataRepository {
             // TODO: Remove limit of 100 results
             const cenotes_data: Array<CenoteData> = query`
             FOR cenote IN ${backend.collection('cenotes')}
-                LIMIT 100
+                FILTER cenote.properties.touristic == true
                 RETURN { 
                     _id: CONCAT('oai:cenoteando.org:', cenote._id),
                     title: cenote.properties.name,
