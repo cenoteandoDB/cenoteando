@@ -1,7 +1,8 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import Store from '@/store';
 import router from '@/router';
-import ListIdentifiersDTO from '@/models/ListIdentifiersDTO';
+import ListIdentifiersDTO from '@/models/oai/ListIdentifiersDTO';
+import IdentifyDTO from '@/models/oai/IdentifyDTO';
 
 const httpClient = axios.create();
 httpClient.defaults.timeout = 100000;
@@ -23,11 +24,11 @@ httpClient.interceptors.response.use(
     (error) => Promise.reject(error),
 );
 
-class RemoteServices {
+export default class RemoteServices {
     // Error
 
     // FIXME: any -> error type definition
-    static async errorMessage(error: any): Promise<string> {
+    static async errorMessage(error: AxiosError): Promise<string> {
         if (error.message === 'Network Error') {
             return 'Unable to connect to server';
         } else if (error.message === 'Request failed with status code 403') {
@@ -45,6 +46,17 @@ class RemoteServices {
 
     // OAI-PMH
 
+    static async identify(): Promise<IdentifyDTO> {
+        return httpClient
+            .get('/oai/request?verb=Identify')
+            .then((response) => {
+                return new IdentifyDTO(response.data);
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
     static async listIdentifiers(): Promise<ListIdentifiersDTO> {
         return httpClient
             .get(
@@ -58,5 +70,3 @@ class RemoteServices {
             });
     }
 }
-
-export default RemoteServices;

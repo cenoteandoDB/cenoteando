@@ -37,21 +37,19 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import RemoteServices from '@/services/RemoteServices';
-import { Identifier } from '@/models/ListIdentifiersDTO';
+import ListIdentifiersDTO from '@/models/oai/ListIdentifiersDTO';
 
 @Component
 export default class OaiListIdentifiers extends Vue {
     // TODO: Change this
-    response_date = '2021-05-14 03:58:32';
     index = 0;
     offset = 100;
-    identifiers: Array<Identifier> = [];
+    listIdentifiersDTO: ListIdentifiersDTO | null = null;
 
     async created(): Promise<void> {
         await this.$store.dispatch('loading');
         try {
-            const listIdentifiersDTO = await RemoteServices.listIdentifiers();
-            this.identifiers = listIdentifiersDTO.identifiers;
+            this.listIdentifiersDTO = await RemoteServices.listIdentifiers();
         } catch (error) {
             await this.$store.dispatch('error', error);
         }

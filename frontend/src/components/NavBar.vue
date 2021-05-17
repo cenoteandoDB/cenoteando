@@ -1,5 +1,6 @@
 <template>
     <v-app-bar app color="primary" dark clipped-left>
+        <!-- TODO: Fix menu for mobile -->
         <v-app-bar-nav-icon
             @click.stop="drawer = !drawer"
             class="hidden-md-and-up"
