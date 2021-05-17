@@ -217,7 +217,7 @@ export function factory(options = {}): DataRepository {
         /**
          * Get individual record.
          * @param parameters (identifier, metadataPrefix)
-         * @returns {any} Resolves with a {@link record}
+         * @returns {any} Resolves with a {@link Record}
          */
         getRecord: (parameters: RecordParameters): Record | undefined => {
             function getIdFromIdentifier(identifier: string): string {
@@ -272,7 +272,7 @@ export function factory(options = {}): DataRepository {
          * Gets list of identifiers.
          * @param parameters (metadataPrefix, from (optional), until (optional), set (not supported),
          *        resumptionToken (not supported))
-         * @returns {any} an array of {@link record}
+         * @returns {any} an array of {@link Record}
          */
         // @ts-ignore TODO: Implement parameters
         getIdentifiers: (parameters: ListParameters): Array<Identifier> => {
@@ -297,7 +297,7 @@ export function factory(options = {}): DataRepository {
          * Gets list of records
          * @param parameters (metadataPrefix, from (optional), until (optional), set (not supported),
          *        resumptionToken (not supported))
-         * @returns {any} an array of {@link record}
+         * @returns {any} an array of {@link Record}
          */
         // @ts-ignore TODO: Implement this (including each parameter)
         getRecords: (parameters: ListParameters): Record[] => {
