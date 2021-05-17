@@ -83,19 +83,18 @@ export interface Record extends Identifier {
     contributors: Array<Contributor>;
     date: string;
     description: string;
-    geoLocationPoint: Array<number>;
+    geoLocationPoint: string; // "lat lon"
 }
 
 type CenoteData = {
     _id: string;
     updatedAt: string;
-    title: string;
-    geoLocationPoint: [number, number]; // [long, lat]
+    name: string;
+    geoLocationPoint: [number, number]; // [lon, lat]
 };
 
 function createRecord(cenote_data: CenoteData): Record {
     // TODO: Ideally store this in the database and retrieve here
-    // FIXME: Error in name field of all contributors
     function get_contributors() {
         return [
             {
@@ -172,16 +171,21 @@ function createRecord(cenote_data: CenoteData): Record {
         ];
     }
 
-    return Object.assign(cenote_data, {
+    return {
         publisher: 'Cenoteando, Facultad de Ciencias, UNAM (cenoteando.mx)',
         publicationYear: '2021',
-        date: '2021-03-01',
+        date: new Date().toString(),
         description:
             'Registro de informacion general multidisciplinaria de cenotes de la peninsula de yucatan, proveniente de la base de datos de cenoteando.mx',
         creatorName: 'Fernando Nuno Dias Marques Simoes',
         creatorIdentifier: 'info:eu-repo/dai/mx/cvu/208814',
         contributors: get_contributors(),
-    });
+        _id: cenote_data._id,
+        // We use reverse because GeoJSON stores [lon, lat] and we need "lat lon"
+        geoLocationPoint: cenote_data.geoLocationPoint.reverse().join(' '),
+        title: cenote_data.name,
+        updatedAt: cenote_data.updatedAt,
+    };
 }
 
 /**
@@ -216,18 +220,26 @@ export function factory(options = {}): DataRepository {
          * @returns {any} Resolves with a {@link record}
          */
         getRecord: (parameters: RecordParameters): Record | undefined => {
-            // TODO: Throw error if parameters are invalid (check if corresponding entity exists in database)
-            const identifier_parts = parameters.identifier.split(':');
-            if (identifier_parts.length != 3) return undefined;
-            const cenote_id = identifier_parts[2];
+            function getIdFromIdentifier(identifier: string): string {
+                const [, , id] = identifier.split(':');
+                return id;
+            }
 
-            const cenote = Cenotes.findOne({
-                filter: { _id: cenote_id, 'properties.touristic': true },
+            let cenote = Cenotes.findOne({
+                filter: {
+                    _id: getIdFromIdentifier(parameters.identifier),
+                    'properties.touristic': true,
+                },
             });
+            console.debug('Got:', JSON.stringify(cenote));
             return createRecord({
-                _id: 'oai:cenoteando.org:' + cenote._id,
-                updatedAt: cenote.properties.date,
-                title: cenote.properties.name,
+                _id:
+                    'oai:cenoteando.org:' +
+                    Cenotes._col.name +
+                    '/' +
+                    cenote._key,
+                updatedAt: cenote.properties.updatedAt,
+                name: cenote.properties.name,
                 geoLocationPoint: cenote.geometry.coordinates,
             });
         },
@@ -267,10 +279,16 @@ export function factory(options = {}): DataRepository {
             const cenotes = Cenotes.find({
                 filter: { 'properties.touristic': true },
             });
+            console.debug('Got:', JSON.stringify(cenotes));
+
             return cenotes.map((cenote: typeof Cenote) => {
                 return {
-                    _id: 'oai:cenoteando.org:' + cenote._id,
-                    updatedAt: cenote.properties.date,
+                    _id:
+                        'oai:cenoteando.org:' +
+                        Cenotes._col.name +
+                        '/' +
+                        cenote._key,
+                    updatedAt: cenote.properties.updatedAt,
                 };
             });
         },
@@ -286,12 +304,17 @@ export function factory(options = {}): DataRepository {
             const cenotes = Cenotes.find({
                 filter: { 'properties.touristic': true },
             });
+            console.debug('Got:', JSON.stringify(cenotes));
 
             return cenotes.map((cenote: typeof Cenote) => {
                 return createRecord({
-                    _id: 'oai:cenoteando.org:' + cenote._id,
-                    updatedAt: cenote.properties.date,
-                    title: cenote.properties.name,
+                    _id:
+                        'oai:cenoteando.org:' +
+                        Cenotes._col.name +
+                        '/' +
+                        cenote._key,
+                    updatedAt: cenote.properties.updatedAt,
+                    name: cenote.properties.name,
                     geoLocationPoint: cenote.geometry.coordinates,
                 });
             });

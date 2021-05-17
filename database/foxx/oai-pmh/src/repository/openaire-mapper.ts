@@ -47,13 +47,13 @@ export class OpenaireMapper implements ProviderDCMapper {
     }
 
     private static createItemRecord(record: Record): XmlObject {
-        //const updatedAt: string = this.setTimeZoneOffset(record);
+        const updatedAt: string = this.setTimeZoneOffset(record);
         const header: XmlObject = {
             header: [
                 {
                     identifier: record._id,
                 },
-                { datestamp: '2020-01-01' },
+                { datestamp: updatedAt },
                 { setSpec: 'openaire_data' },
             ],
         };
@@ -195,10 +195,7 @@ export class OpenaireMapper implements ProviderDCMapper {
                 {
                     geoLocation: [
                         {
-                            // We use reverse because GeoJSON stores [long, lat] and we need "lat long"
-                            geoLocationPoint: record.geoLocationPoint
-                                .reverse()
-                                .join(' '),
+                            geoLocationPoint: record.geoLocationPoint,
                         },
                         {
                             geoLocationPlace: 'Peninsula de Yucatán, Mexico',
@@ -217,8 +214,7 @@ export class OpenaireMapper implements ProviderDCMapper {
                             oai_datacite: [
                                 {
                                     _attr: {
-                                        xmlns:
-                                            'http://schema.datacite.org/oai/oai-1.1/',
+                                        xmlns: 'http://schema.datacite.org/oai/oai-1.1/',
                                         'xmlns:xsi':
                                             'http://www.w3.org/2001/XMLSchema-instance',
                                         'xsi:schemaLocation':
@@ -234,8 +230,7 @@ export class OpenaireMapper implements ProviderDCMapper {
                                             resource: [
                                                 {
                                                     _attr: {
-                                                        xmlns:
-                                                            'http://namespace.openaire.eu/schema/oaire/',
+                                                        xmlns: 'http://namespace.openaire.eu/schema/oaire/',
                                                         'xsi:schemaLocation':
                                                             'http://www.openarchives.org/OAI/2.0/oai_dc/ ' +
                                                             '\nhttps://www.openaire.eu/schema/repo-lit/4.0/openaire.xsd',
