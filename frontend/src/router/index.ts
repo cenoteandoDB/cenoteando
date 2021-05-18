@@ -4,7 +4,6 @@ import Home from '../views/Home.vue';
 import OaiPmh from '../views/oai/OaiPmh.vue';
 import OaiIdentify from '../views/oai/OaiIdentify.vue';
 import OaiGetRecord from '../views/oai/OaiGetRecord.vue';
-import OaiListIdentifiers from '../views/oai/OaiListIdentifiers.vue';
 import OaiListRecords from '../views/oai/OaiListRecords.vue';
 
 Vue.use(VueRouter);
@@ -33,11 +32,6 @@ const routes: Array<RouteConfig> = [
                 path: 'get-record',
                 name: 'OaiGetRecord',
                 component: OaiGetRecord,
-            },
-            {
-                path: 'list-identifiers',
-                name: 'OaiListIdentifiers',
-                component: OaiListIdentifiers,
             },
             {
                 path: 'list-records',

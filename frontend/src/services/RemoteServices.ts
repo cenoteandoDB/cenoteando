@@ -1,13 +1,12 @@
 import axios, { AxiosError } from 'axios';
 import Store from '@/store';
 import router from '@/router';
-import ListIdentifiersDTO from '@/models/oai/ListIdentifiersDTO';
 import IdentifyDTO from '@/models/oai/IdentifyDTO';
+import { ElementCompact, xml2js } from 'xml-js';
 
 const httpClient = axios.create();
 httpClient.defaults.timeout = 100000;
-httpClient.defaults.baseURL =
-    process.env.VUE_APP_ROOT_API || 'http://localhost';
+httpClient.defaults.baseURL = 'http://localhost';
 httpClient.defaults.headers.post['Content-Type'] = 'application/json';
 httpClient.interceptors.response.use(
     (response) => {
@@ -27,7 +26,6 @@ httpClient.interceptors.response.use(
 export default class RemoteServices {
     // Error
 
-    // FIXME: any -> error type definition
     static async errorMessage(error: AxiosError): Promise<string> {
         if (error.message === 'Network Error') {
             return 'Unable to connect to server';
@@ -57,13 +55,25 @@ export default class RemoteServices {
             });
     }
 
-    static async listIdentifiers(): Promise<ListIdentifiersDTO> {
+    static async getRecordXml(identifier: string): Promise<string> {
         return httpClient
             .get(
-                '/oai/request?verb=ListIdentifiers&metadataPrefix=oai_datacite',
+                '/oai/request?verb=GetRecord&metadataPrefix=oai_datacite&identifier=' +
+                    identifier,
             )
             .then((response) => {
-                return new ListIdentifiersDTO(response.data);
+                return response.data;
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
+    static async listRecords(): Promise<ElementCompact> {
+        return httpClient
+            .get('/oai/request?verb=ListRecords&metadataPrefix=oai_datacite')
+            .then((response) => {
+                return xml2js(response.data, { compact: true });
             })
             .catch(async (error) => {
                 throw Error(await this.errorMessage(error));

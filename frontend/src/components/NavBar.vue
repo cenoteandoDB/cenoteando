@@ -27,10 +27,6 @@
                 <span class="mr-2">Identify</span>
             </v-btn>
 
-            <v-btn to="/oai-pmh/list-identifiers" text class="mr-2">
-                <span class="mr-2">List Identifiers</span>
-            </v-btn>
-
             <v-btn to="/oai-pmh/list-records" text class="mr-2">
                 <span class="mr-2">List Records</span>
             </v-btn>

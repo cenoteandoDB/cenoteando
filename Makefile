@@ -172,10 +172,10 @@ dev_frontend:
 	# Start hot development mode (code changes reflect on save)
 	npm run serve --prefix frontend
 
-# Upgrade Backend
+# Upgrade Backend docker code with local
 upgrade_backend:
 	npm run build --prefix database/foxx/backend && foxx upgrade /api database/foxx/backend/dist --database cenoteando
 
-# Upgrade oai-pmh
+# Upgrade oai-pmh docker code with local
 upgrade_oai-pmh:
 	npm run build --prefix database/foxx/oai-pmh && foxx upgrade /oai database/foxx/oai-pmh/dist --database cenoteando

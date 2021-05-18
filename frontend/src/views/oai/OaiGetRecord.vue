@@ -1,13 +1,39 @@
 <template>
-    <div>HI!</div>
+    <v-container class="mt-10">
+        <v-row class="mb-10 mx-1">
+            <h2>Get Record</h2>
+        </v-row>
+        <!-- TODO: Create and link backend endpoints for downloading JSON and CSV -->
+        <!-- TODO: Layout -->
+        <span>Identifier:</span>
+        <v-text-field v-model="identifier"></v-text-field>
+        <v-btn v-on:click="getRecordXml">Get Record</v-btn>
+        <xml-viewer :xml="xml" />
+    </v-container>
 </template>
 
-<script>
-import Vue from 'vue';
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import RemoteServices from '@/services/RemoteServices';
+import XmlViewer from 'vue-xml-viewer';
 
-export default Vue.extend({
-    name: 'OaiGetRecord',
-});
+@Component({ components: { XmlViewer } })
+export default class OaiListRecords extends Vue {
+    xml = '';
+    identifier = 'oai:cenoteando.org:Cenotes/1';
+
+    async created(): Promise<void> {
+        await this.getRecordXml();
+    }
+
+    async getRecordXml(): Promise<void> {
+        await this.$store.dispatch('loading');
+        try {
+            this.xml = await RemoteServices.getRecordXml(this.identifier);
+        } catch (error) {
+            await this.$store.dispatch('error', error);
+        }
+        await this.$store.dispatch('clearLoading');
+    }
+}
 </script>
-
-<style scoped></style>
