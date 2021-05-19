@@ -58,6 +58,17 @@ export class OpenaireMapper implements ProviderDCMapper {
             ],
         };
 
+        const identifier: XmlObject = {
+            identifier: [
+                {
+                    _attr: {
+                        identifierType: 'URN',
+                    },
+                },
+                record._id,
+            ],
+        };
+
         const creators: XmlObject = {
             creators: [
                 {
@@ -236,17 +247,7 @@ export class OpenaireMapper implements ProviderDCMapper {
                                                             '\nhttps://www.openaire.eu/schema/repo-lit/4.0/openaire.xsd',
                                                     },
                                                 },
-                                                {
-                                                    identifier: [
-                                                        {
-                                                            _attr: {
-                                                                identifierType:
-                                                                    'URN',
-                                                            },
-                                                        },
-                                                        record._id,
-                                                    ],
-                                                },
+                                                identifier,
                                                 creators,
                                                 titles,
                                                 publisher,
@@ -255,11 +256,11 @@ export class OpenaireMapper implements ProviderDCMapper {
                                                 contributors,
                                                 dates,
                                                 resourceType,
-                                                descriptions,
-                                                formats,
                                                 size,
+                                                formats,
                                                 version,
                                                 rightsList,
+                                                descriptions,
                                                 geoLocations,
                                             ],
                                         },
