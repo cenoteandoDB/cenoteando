@@ -1,9 +1,16 @@
 <template>
-    <v-container>
-        <v-simple-table
-            v-if="identifyDTO"
-            class="elevation-1 align-center ma-16"
-        >
+    <v-container class="mt-10">
+        <v-row class="mb-10">
+            <h2>Identify</h2>
+            <v-spacer></v-spacer>
+            <span v-if="identifyDTO">
+                Response date:
+                <small>
+                    {{ identifyDTO.response_date.toLocaleString() }}
+                </small>
+            </span>
+        </v-row>
+        <v-simple-table v-if="identifyDTO" class="elevation-1 align-center">
             <tbody>
                 <tr
                     v-for="[key, value] of Object.entries(identifyDTO)"
