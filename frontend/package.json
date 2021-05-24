@@ -22,6 +22,7 @@
     "vue-router": "^3.2.0",
     "vue-xml-viewer": "^0.1.4",
     "vue2-leaflet": "^2.7.0",
+    "vue2-leaflet-markercluster": "^3.1.0",
     "vuetify": "^2.4.0",
     "vuex": "^3.4.0",
     "xml-js": "^1.6.11"
