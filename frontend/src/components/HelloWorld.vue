@@ -12,7 +12,7 @@
 
             <v-col class="mb-4">
                 <h1 class="display-2 font-weight-bold mb-3">
-                    Welcome to Cenoteando
+                    Repositotio intitucional de cenotes de la facultad de ciencas de la UNAM
                 </h1>
             </v-col>
         </v-row>
