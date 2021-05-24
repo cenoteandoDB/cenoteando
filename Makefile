@@ -14,7 +14,6 @@
 # should not to be changed if you follow GitOps operating procedures.
 PROJECT_NAME = cenoteando
 
-# TODO: Setup multiple sevices (database + frontend)
 # NOTE: If you change this, you also need to update docker-compose.yml.
 # only useful in a setting with multiple services/ makefiles.
 SERVICE_TARGET := database
@@ -56,10 +55,10 @@ export HOST_UID
 shell:
 ifeq ($(CMD_ARGUMENTS),)
 	# no command is given, default to shell
-	docker-compose -p $(PROJECT_NAME)_$(HOST_UID) run --rm $(SERVICE_TARGET) sh
+	docker-compose -p $(PROJECT_NAME) exec $(SERVICE_TARGET) sh
 else
 	# run the command
-	docker-compose -p $(PROJECT_NAME)_$(HOST_UID) run --rm $(SERVICE_TARGET) sh -c "$(CMD_ARGUMENTS)"
+	docker-compose -p $(PROJECT_NAME) exec $(SERVICE_TARGET) sh -c "$(CMD_ARGUMENTS)"
 endif
 
 # Regular Makefile part for buildpypi itself
@@ -172,10 +171,14 @@ dev_frontend:
 	# Start hot development mode (code changes reflect on save)
 	npm run serve --prefix frontend
 
-# Upgrade Backend docker code with local
+# Upgrade Backend code with local
 upgrade_backend:
-	npm run build --prefix database/foxx/backend && foxx upgrade /api database/foxx/backend/dist --database cenoteando
+	npm run build --prefix database/foxx/backend && npm run upgrade --prefix database/foxx/backend
 
-# Upgrade oai-pmh docker code with local
+# Upgrade oai-pmh code with local
 upgrade_oai-pmh:
-	npm run build --prefix database/foxx/oai-pmh && foxx upgrade /oai database/foxx/oai-pmh/dist --database cenoteando
+	npm run build --prefix database/foxx/oai-pmh && npm run upgrade --prefix database/foxx/oai-pmh
+
+# Upgrade frontend docker code with local
+upgrade_frontend:
+	npm run build:dev --prefix frontend && docker cp frontend/dist frontend:/app

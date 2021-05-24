@@ -3,6 +3,8 @@ import Store from '@/store';
 import router from '@/router';
 import IdentifyDTO from '@/models/oai/IdentifyDTO';
 import { ElementCompact, xml2js } from 'xml-js';
+import CenoteDTO from '@/models/CenoteDTO';
+import L from 'leaflet';
 
 const httpClient = axios.create();
 httpClient.defaults.timeout = 100000;
@@ -74,6 +76,30 @@ export default class RemoteServices {
             .get('/oai/request?verb=ListRecords&metadataPrefix=oai_datacite')
             .then((response) => {
                 return xml2js(response.data, { compact: true });
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
+    // Cenotes
+
+    static async getAllCenotes(): Promise<Array<CenoteDTO>> {
+        return httpClient
+            .get('/api/cenotes')
+            .then((response) => {
+                return response.data;
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
+    static async getCenotesBounds(): Promise<L.LatLngBounds> {
+        return httpClient
+            .get('/api/cenotes/bounds')
+            .then((response) => {
+                return new L.LatLngBounds(response.data.result);
             })
             .catch(async (error) => {
                 throw Error(await this.errorMessage(error));

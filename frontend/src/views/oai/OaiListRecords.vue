@@ -1,6 +1,6 @@
 <template>
     <v-container class="mt-10">
-        <v-row class="mb-10 mx-1">
+        <v-row class="mb-10">
             <h2>List of Records</h2>
             <v-spacer></v-spacer>
             <span v-if="oai">
@@ -29,18 +29,7 @@
                     </span>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
-                    <v-row>
-                        <v-col>
-                            <xml-viewer :xml="record.xml" />
-                        </v-col>
-                        <v-col>
-                            <v-card-actions class="mx-5">
-                                <!-- TODO: Create and link backend endpoints for downloading JSON and CSV -->
-                                <v-btn>JSON</v-btn>
-                                <v-btn>CSV</v-btn>
-                            </v-card-actions>
-                        </v-col>
-                    </v-row>
+                    <record v-bind:xml="record.xml"></record>
                 </v-expansion-panel-content>
             </v-expansion-panel>
         </v-expansion-panels>
@@ -50,11 +39,11 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import RemoteServices from '@/services/RemoteServices';
-import XmlViewer from 'vue-xml-viewer';
 import { ElementCompact, js2xml } from 'xml-js';
 import { parseISOString } from '@/services/ConvertDateService';
+import Record from '@/components/oai/Record.vue';
 
-@Component({ components: { XmlViewer } })
+@Component({ components: { Record } })
 export default class OaiListRecords extends Vue {
     oai: ElementCompact | null = null;
     responseDate: Date | null = null;

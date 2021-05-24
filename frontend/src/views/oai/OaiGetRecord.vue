@@ -1,27 +1,34 @@
 <template>
     <v-container class="mt-10">
-        <v-row class="mb-10 mx-1">
+        <v-row class="mb-10">
             <h2>Get Record</h2>
         </v-row>
-        <!-- TODO: Create and link backend endpoints for downloading JSON and CSV -->
-        <!-- TODO: Layout -->
-        <span>Identifier:</span>
-        <v-text-field v-model="identifier"></v-text-field>
-        <v-btn v-on:click="getRecordXml">Get Record</v-btn>
-        <xml-viewer :xml="xml" />
+        <v-row>
+            <v-text-field
+                v-model="identifier"
+                label="Identifier"
+                dense
+                filled
+                rounded
+            ></v-text-field>
+            <v-btn v-on:click="getRecordXml" class="ml-5 mt-1"
+                >Get Record</v-btn
+            >
+        </v-row>
+        <v-divider class="my-10"></v-divider>
+        <record v-bind:xml="xml"></record>
     </v-container>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import RemoteServices from '@/services/RemoteServices';
-import XmlViewer from 'vue-xml-viewer';
+import Record from '@/components/oai/Record.vue';
 
-@Component({ components: { XmlViewer } })
+@Component({ components: { Record } })
 export default class OaiListRecords extends Vue {
     xml = '';
     identifier = 'oai:cenoteando.org:Cenotes/1';
-
     async created(): Promise<void> {
         await this.getRecordXml();
     }

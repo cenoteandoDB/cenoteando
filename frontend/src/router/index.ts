@@ -5,6 +5,7 @@ import OaiPmh from '../views/oai/OaiPmh.vue';
 import OaiIdentify from '../views/oai/OaiIdentify.vue';
 import OaiGetRecord from '../views/oai/OaiGetRecord.vue';
 import OaiListRecords from '../views/oai/OaiListRecords.vue';
+import Repository from '../views/Repository.vue';
 
 Vue.use(VueRouter);
 
@@ -39,6 +40,11 @@ const routes: Array<RouteConfig> = [
                 component: OaiListRecords,
             },
         ],
+    },
+    {
+        path: '/repo',
+        name: 'Repository',
+        component: Repository,
     },
 
     {
