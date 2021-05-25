@@ -19,22 +19,6 @@
                 <span>Cenoteando</span>
             </v-btn>
 	   </v-app-bar-title>
-		<v-img
-		    alt="logo unam"
-		    class="shrink mr-2"
-		    contain
-		    :src="require('@/assets/unam.png')"
-		    transition="scale-transition"
-		    width="70" 
-		/>
-		<v-img 
-		    alt="logo ciencias"
-		    class="shrink mr-2"
-		    contain
-		    :src="require('@/assets/ciencias.png')"
-		    transition="scale-transition"
-		    width="60"
-		/>
         <v-spacer></v-spacer>
 
         <span v-if="isOai">
@@ -51,6 +35,9 @@
         </span>
 
         <span v-else>
+	    <v-btn text class="mr-2" href="https://www.cenoteando.mx">
+		<span class="mr-2">About</span> 
+	    </v-btn>
             <v-btn to="/repo" text class="mr-2">
                 <span class="mr-2">Repository</span>
             </v-btn>
