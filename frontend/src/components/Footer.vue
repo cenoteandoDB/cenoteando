@@ -1,6 +1,5 @@
 <template>
-	<div class="row">
-	<v-footer app dark padless>
+	<v-footer dark padless style="width= 100%;">
 	<v-card class="flex blue darken-3 imagen-center" flat tile>
 	<v-layout justify-center aling-center>
 	<v-card-text class="text-center">
@@ -37,23 +36,9 @@
 	</v-layout>
 	</v-card>
 	</v-footer>
-	</div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-
-@Component
-export default class Footer extends Vue {
-	name = 'Footer';
- 
-	data: () => ({
-		icons:[
-			'mdi-facebook',
-			'mdi-youtube',
-]
-});
-}
 </script>
 
 
