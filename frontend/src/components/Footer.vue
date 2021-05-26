@@ -33,6 +33,38 @@
 		transition="scale-transition"
 		width="80"
 	/>
+	<v-img
+		alt="logo ciencias"
+		class="shrink mr-2"
+		contain
+		:src="require('@/assets/logo_centro_geo.png')"
+		transition="scale-transition"
+		width="80"
+	/>
+	<v-img
+		alt="logo ciencias"
+		class="shrink mr-2"
+		contain
+		:src="require('@/assets/sds_logo.png')"
+		transition="scale-transition"
+		width="80"
+	/>
+	<v-img
+		alt="logo ciencias"
+		class="shrink mr-2"
+		contain
+		:src="require('@/assets/logo_uady.png')"
+		transition="scale-transition"
+		width="80"
+	/>
+	<v-img
+		alt="logo ciencias"
+		class="shrink mr-2"
+		contain
+		:src="require('@/assets/cenoteando_logo.png')"
+		transition="scale-transition"
+		width="80"
+	/>
 	</v-layout>
 	</v-card>
 	</v-footer>
