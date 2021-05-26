@@ -1,18 +1,18 @@
 <template>
 	<v-parallax 
-		height="1000"
+		height="500"
 		width="1000"
 		:src="require('@/assets/cenote.jpeg')"
-		style="background-size:cover; background-color:rgba(0,0,0,6);"	
+		style=""	
 >
 	<v-container style="border-style:solid; left: 350px; width: 50%; background:rgba(255,255,255, 0.4); position: absolute;top: 20px;">
         <v-row class="text-center">
             <v-col cols="12">
                 <v-img
-                    :src="require('../assets/logo.png')"
+                    :src="require('../assets/cenoteando_logo.png')"
                     class="my-3"
                     contain
-                    height="150"
+                    height="200"
                 />
             </v-col>
 
