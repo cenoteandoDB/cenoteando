@@ -1,6 +1,6 @@
 <template>
 	<v-footer dark padless style="width= 100%;">
-	<v-card class="flex blue darken-3 imagen-center" flat tile>
+	<v-card class="flex blue darken-1 imagen-center" flat tile>
 	<v-layout justify-center aling-center>
 	<v-card-text class="text-center">
 	<v-btn class="mx-4 white--text text-center" icon href="https://www.facebook.com/cenoteando.unam/">
@@ -42,22 +42,25 @@
 		width="80"
 	/>
 	<v-img
+		style="filter: brightness(0) invert(1);"
 		alt="logo ciencias"
 		class="shrink mr-2"
 		contain
 		:src="require('@/assets/sds_logo.png')"
 		transition="scale-transition"
-		width="80"
+		width="190"
 	/>
 	<v-img
+		style="filter: brightness(0) invert(1)"
 		alt="logo ciencias"
 		class="shrink mr-2"
 		contain
 		:src="require('@/assets/logo_uady.png')"
 		transition="scale-transition"
-		width="80"
+		width="130"
 	/>
 	<v-img
+		style="filter: brightness(0) invert(1)"
 		alt="logo ciencias"
 		class="shrink mr-2"
 		contain
