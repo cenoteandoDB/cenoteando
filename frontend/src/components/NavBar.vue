@@ -36,7 +36,7 @@
 
         <span v-else>
 	    <v-btn text class="mr-2" href="https://www.cenoteando.mx">
-		<span class="mr-2">About</span> 
+		<span class="mr-2">Cenoteando/Portal web</span> 
 	    </v-btn>
             <v-btn to="/repo" text class="mr-2">
                 <span class="mr-2">Repository</span>

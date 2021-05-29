@@ -23,7 +23,7 @@
 		contain
 		:src="require('@/assets/unam_logo.png')"
 		transition="scale-transition"
-		width="125"
+		width="128"
 	/>
 	<v-img
 		alt="logo ciencias"
