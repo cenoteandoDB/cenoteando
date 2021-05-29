@@ -1,8 +1,9 @@
 <template>
+<div>
 	<v-parallax 
-		height="500"
-		width="1000"
-		:src="require('@/assets/cenote.jpeg')"
+		height="800"
+		width="200"
+		:src="require('@/assets/cenote5.jpeg')"
 		style=""	
 >
 	<v-container style="border-style:solid; left: 350px; width: 50%; background:rgba(255,255,255, 0.4); position: absolute;top: 20px;">
@@ -24,6 +25,22 @@
         </v-row>
 	</v-container>
 	</v-parallax>
+<div>
+	<v-parallax 
+		height="800"
+		width="10"
+		:src="require('@/assets/cenote1.jpeg')"
+		style=""
+	>
+	</v-parallax>
+</div>
+<v-parallax
+	height="800"
+	width="1000"
+	:src="require('@/assets/cenote2.jpeg')"
+>
+</v-parallax>
+</div>
 </template>
 
 <script lang="ts">
@@ -33,3 +50,11 @@ export default Vue.extend({
     name: 'HelloWorld',
 });
 </script>
+
+<style lang="scss" scoped>
+.v-parallax__src{
+	width: 1000px;
+	height: auto;
+}
+
+</style>

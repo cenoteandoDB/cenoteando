@@ -23,7 +23,7 @@
 		contain
 		:src="require('@/assets/unam_logo.png')"
 		transition="scale-transition"
-		width="100"
+		width="125"
 	/>
 	<v-img
 		alt="logo ciencias"
@@ -31,7 +31,7 @@
 		contain
 		:src="require('@/assets/ciencias_logo.png')"
 		transition="scale-transition"
-		width="80"
+		width="94"
 	/>
 	<v-img
 		alt="logo ciencias"
@@ -39,7 +39,7 @@
 		contain
 		:src="require('@/assets/logo_centro_geo.png')"
 		transition="scale-transition"
-		width="80"
+		width="100"
 	/>
 	<v-img
 		style="filter: brightness(0) invert(1);"
@@ -48,7 +48,7 @@
 		contain
 		:src="require('@/assets/sds_logo.png')"
 		transition="scale-transition"
-		width="190"
+		width="210"
 	/>
 	<v-img
 		style="filter: brightness(0) invert(1)"
@@ -57,7 +57,7 @@
 		contain
 		:src="require('@/assets/logo_uady.png')"
 		transition="scale-transition"
-		width="130"
+		width="150"
 	/>
 	<v-img
 		style="filter: brightness(0) invert(1)"
@@ -66,7 +66,7 @@
 		contain
 		:src="require('@/assets/cenoteando_logo.png')"
 		transition="scale-transition"
-		width="80"
+		width="90"
 	/>
 	</v-layout>
 	</v-card>
