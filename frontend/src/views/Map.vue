@@ -1,13 +1,13 @@
 <template>
-    <Map />
+    <leaflet-map />
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import Map from '@/components/map/Map.vue';
+import LeafletMap from '@/components/map/LeafletMap.vue';
 
 @Component({
-    components: { Map },
+    components: { LeafletMap },
 })
-export default class Repository extends Vue {}
+export default class Map extends Vue {}
 </script>

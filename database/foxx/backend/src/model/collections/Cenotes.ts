@@ -1,4 +1,4 @@
-import { Collection, Entities, Route } from 'type-arango';
+import { Collection, Entities, Route, RouteArg } from 'type-arango';
 import { Cenote } from '../documents';
 import { query } from '@arangodb';
 
@@ -7,8 +7,15 @@ import { query } from '@arangodb';
 })
 export class Cenotes extends Entities {
     @Route.GET('', ['guest'], 'Returns all touristic cenotes')
-    static GET_PUBLIC(): Cenote[] {
+    static LIST(): Cenote[] {
         return Cenotes.find({ filter: { 'properties.touristic': true } });
+    }
+
+    @Route.GET(':_key', ['guest'], 'Returns a touristic cenote by key')
+    static GET({ param }: RouteArg): Cenote {
+        return Cenotes.findOne(param._key, {
+            filter: { 'properties.touristic': true },
+        });
     }
 
     @Route.GET(

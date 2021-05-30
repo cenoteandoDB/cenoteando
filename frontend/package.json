@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "json2csv": "^5.0.6",
     "leaflet": "^1.7.1",
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",
@@ -29,6 +30,7 @@
   },
   "devDependencies": {
     "@types/chai": "^4.2.11",
+    "@types/json2csv": "^5.0.2",
     "@types/mocha": "^5.2.4",
     "@typescript-eslint/eslint-plugin": "^4.18.0",
     "@typescript-eslint/parser": "^4.18.0",

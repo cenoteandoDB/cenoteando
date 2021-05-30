@@ -5,7 +5,7 @@ import OaiPmh from '../views/oai/OaiPmh.vue';
 import OaiIdentify from '../views/oai/OaiIdentify.vue';
 import OaiGetRecord from '../views/oai/OaiGetRecord.vue';
 import OaiListRecords from '../views/oai/OaiListRecords.vue';
-import Repository from '../views/Map.vue';
+import Map from '../views/Map.vue';
 
 Vue.use(VueRouter);
 
@@ -43,8 +43,8 @@ const routes: Array<RouteConfig> = [
     },
     {
         path: '/map',
-        name: 'Repository',
-        component: Repository,
+        name: 'Map',
+        component: Map,
     },
 
     {

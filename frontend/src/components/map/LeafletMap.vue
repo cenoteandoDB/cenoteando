@@ -40,7 +40,7 @@ import CenoteDTO from '@/models/CenoteDTO';
         'l-marker-cluster': Vue2LeafletMarkerCluster,
     },
 })
-export default class Map extends Vue {
+export default class LeafletMap extends Vue {
     zoom = 9;
     url = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     attribution =

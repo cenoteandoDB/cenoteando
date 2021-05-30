@@ -105,4 +105,15 @@ export default class RemoteServices {
                 throw Error(await this.errorMessage(error));
             });
     }
+
+    static async getCenote(key: string): Promise<CenoteDTO> {
+        return httpClient
+            .get('/api/cenotes/' + key)
+            .then((response) => {
+                return new CenoteDTO(response.data);
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
 }

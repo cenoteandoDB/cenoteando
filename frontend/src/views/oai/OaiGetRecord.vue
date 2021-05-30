@@ -16,7 +16,7 @@
             >
         </v-row>
         <v-divider class="my-10"></v-divider>
-        <record v-bind:xml="xml"></record>
+        <record :xml="xml" :id="identifier"></record>
     </v-container>
 </template>
 
@@ -29,6 +29,7 @@ import Record from '@/components/oai/Record.vue';
 export default class OaiListRecords extends Vue {
     xml = '';
     identifier = 'oai:cenoteando.org:Cenotes/1';
+
     async created(): Promise<void> {
         await this.getRecordXml();
     }

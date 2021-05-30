@@ -29,7 +29,7 @@
                     </span>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
-                    <record v-bind:xml="record.xml"></record>
+                    <record :xml="record.xml" :id="record.identifier"></record>
                 </v-expansion-panel-content>
             </v-expansion-panel>
         </v-expansion-panels>
