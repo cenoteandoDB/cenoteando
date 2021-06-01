@@ -6,20 +6,23 @@
             @click.stop="drawer = !drawer"
             class="hidden-md-and-up"
             aria-label="Menu"
-        />
-	<v-navigation-drawer app class="primary hidden-md-and-up">
+       ></v-app-bar-nav-icon>
+	<div>
+	<v-navigation-drawer app v-model="drawer" class="primary hidden-md-and-up">
 	<v-list>
-	<v-list-tile v-for="link in links" :key="link.text">
-		<v-list-tile-action>
-			<v-icon class="white--text">{{ link.icon}}</v-icon>
-		</v-list-tile-action>
-		<v-list-tile-content>
-			<v-list-tile-title class="white--text">{{ link.text }}<v-list-tile-title>
-		</v-list-tile-content>
-	<v-list-tile>
+	<v-list-item v-for="link in links" :key="link.text" link :to="link.path">
+		<v-list-item-action>
+			<v-icon>{{ link.icon }}</v-icon>
+		</v-list-item-action>
+		<v-list-item-content>
+			<v-list-tile-title class="white--text">{{ link.text }}</v-list-tile-title>
+		</v-list-item-content>
+		<br />	
+	</v-list-item>
 	</v-list>		
 	</v-navigation-drawer>
-        <v-app-bar-title>
+        </div>
+	<v-app-bar-title>
             <v-btn plain block elevation="0" to="/">
                 <v-img
                     alt="Cenoteando Logo"
@@ -67,17 +70,18 @@ import { Component, Vue } from 'vue-property-decorator';
 @Component
 export default class NavBar extends Vue {
     name = 'NavBar';
-    drawer = false;
+	drawe = false;	
 
     get isOai(): boolean {
         return this.$route.path.startsWith('/oai-pmh');
     }
-    data() {
+    data () {
 	return {
 		links:[
-			{ icon: 'folder', text:'identifyyy'}
-]
-}
+			{ icon: 'mdi-image', text:'MAPA', path: '/map'},
+			{ icon: 'mdi-image', text: 'OAI-PMH', path: '/oai-pmh'}
+],
+};
 }
 }
 </script>
