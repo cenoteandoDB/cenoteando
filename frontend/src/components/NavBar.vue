@@ -7,6 +7,18 @@
             class="hidden-md-and-up"
             aria-label="Menu"
         />
+	<v-navigation-drawer app class="primary hidden-md-and-up">
+	<v-list>
+	<v-list-tile v-for="link in links" :key="link.text">
+		<v-list-tile-action>
+			<v-icon class="white--text">{{ link.icon}}</v-icon>
+		</v-list-tile-action>
+		<v-list-tile-content>
+			<v-list-tile-title class="white--text">{{ link.text }}<v-list-tile-title>
+		</v-list-tile-content>
+	<v-list-tile>
+	</v-list>		
+	</v-navigation-drawer>
         <v-app-bar-title>
             <v-btn plain block elevation="0" to="/">
                 <v-img
@@ -60,6 +72,13 @@ export default class NavBar extends Vue {
     get isOai(): boolean {
         return this.$route.path.startsWith('/oai-pmh');
     }
+    data() {
+	return {
+		links:[
+			{ icon: 'folder', text:'identifyyy'}
+]
+}
+}
 }
 </script>
 
