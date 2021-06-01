@@ -1,14 +1,5 @@
 <template>
-    <!-- TODO: Fix for mobile (v-navigation-drawer)-->
-    <!-- TODO: Improvements are needed (use v-list and v-menu?) -->
-    <v-app-bar app color="primary" dark clipped-left elevate-on-scroll>
-        <v-app-bar-nav-icon
-            @click.stop="drawer = !drawer"
-            class="hidden-md-and-up"
-            aria-label="Menu"
-       ></v-app-bar-nav-icon>
-	<div>
-	<v-navigation-drawer app v-model="drawer" class="primary hidden-md-and-up">
+    <v-navigation-drawer app v-model="drawer" class="primary hidden-md-and-up">
 	<v-list>
 	<v-list-item v-for="link in links" :key="link.text" link :to="link.path">
 		<v-list-item-action>
@@ -21,7 +12,14 @@
 	</v-list-item>
 	</v-list>		
 	</v-navigation-drawer>
-        </div>
+    <!-- TODO: Fix for mobile (v-navigation-drawer)-->
+    <!-- TODO: Improvements are needed (use v-list and v-menu?) -->
+    <v-app-bar app color="primary" dark clipped-left elevate-on-scroll>
+        <v-app-bar-nav-icon
+            @click.stop="drawer = !drawer"
+            class="hidden-md-and-up"
+            aria-label="Menu"
+       ></v-app-bar-nav-icon>
 	<v-app-bar-title>
             <v-btn plain block elevation="0" to="/">
                 <v-img
