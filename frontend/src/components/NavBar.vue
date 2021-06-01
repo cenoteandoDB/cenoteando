@@ -1,4 +1,5 @@
 <template>
+<div>
     <v-navigation-drawer app v-model="drawer" class="primary hidden-md-and-up">
 	<v-list>
 	<v-list-item v-for="link in links" :key="link.text" link :to="link.path">
@@ -60,6 +61,7 @@
             </v-btn>
         </span>
     </v-app-bar>
+</div>
 </template>
 
 <script lang="ts">
@@ -68,7 +70,7 @@ import { Component, Vue } from 'vue-property-decorator';
 @Component
 export default class NavBar extends Vue {
     name = 'NavBar';
-	drawe = false;	
+	drawer = false;	
 
     get isOai(): boolean {
         return this.$route.path.startsWith('/oai-pmh');
