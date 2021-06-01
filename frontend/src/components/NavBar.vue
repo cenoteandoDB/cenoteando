@@ -1,6 +1,14 @@
 <template>
 <div>
     <v-navigation-drawer app v-model="drawer" class="primary hidden-md-and-up">
+        <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title class="text-h6">
+            CENOTEANDO
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-divider></v-divider>
 	<v-list>
 	<v-list-item v-for="link in links" :key="link.text" link :to="link.path">
 		<v-list-item-action>
@@ -78,8 +86,10 @@ export default class NavBar extends Vue {
     data () {
 	return {
 		links:[
-			{ icon: 'mdi-image', text:'MAPA', path: '/map'},
-			{ icon: 'mdi-image', text: 'OAI-PMH', path: '/oai-pmh'}
+            { icon: 'home', text: 'HOME', path: '/'},
+            { icon: 'event', text: 'CENOTEANDO.MX', path: 'https://www.cenoteando.mx/'},
+			{ icon: 'event', text:'MAPA', path: '/map'},
+			{ icon: 'event', text: 'OAI-PMH', path: '/oai-pmh'}
 ],
 };
 }
