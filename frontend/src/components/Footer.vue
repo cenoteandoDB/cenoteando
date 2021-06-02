@@ -45,8 +45,8 @@
             </v-col>
         </v-row>
     </v-footer>
-    <div class="d-flex p-2 col-example hidden-md-and-up">I'm a flexbox container!</div>
-    <div>
+    <div class="primary d-flex p-2 col-example hidden-md-and-up">I'm a flexbox container!</div>
+    </div>
 </template>
 
 <script lang="ts">
