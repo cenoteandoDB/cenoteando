@@ -14,6 +14,18 @@
                     de la facultad de ciencias de la UNAM
                 </h2>
             </v-sheet>
+            <v-sheet class="highlight hidden-md-and-up">
+                <v-img
+                    style="filter: brightness(0) invert(1)"
+                    :src="require('@/assets/logos/cenoteando_logo.png')"
+                    contain
+                    height="50"
+                />
+                <h6 class="pa-10 text-center">
+                    Repositorio institucional de cenotes <br />
+                    de la facultad de ciencias de la UNAM
+                </h6>
+            </v-sheet>
         </v-row>
     </v-container>
 </template>
