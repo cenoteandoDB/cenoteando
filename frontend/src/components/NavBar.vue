@@ -2,8 +2,11 @@
 <div>
     <v-navigation-drawer app v-model="drawer" class="primary hidden-md-and-up">
         <v-list-item>
+	<v-list-item-avatar>
+		<img :src="require('@/assets/logos/logo.png')">
+	</v-list-item-avatar>	
         <v-list-item-content>
-          <v-list-item-title class="text-h6">
+          <v-list-item-title class="text-h6 white--text">
             CENOTEANDO
           </v-list-item-title>
         </v-list-item-content>
@@ -12,7 +15,7 @@
 	<v-list>
 	<v-list-item v-for="link in links" :key="link.text" link :to="link.path">
 		<v-list-item-action>
-			<v-icon>{{ link.icon }}</v-icon>
+			<v-icon class="white--text">{{ link.icon }}</v-icon>
 		</v-list-item-action>
 		<v-list-item-content>
 			<v-list-tile-title class="white--text">{{ link.text }}</v-list-tile-title>
@@ -86,10 +89,10 @@ export default class NavBar extends Vue {
     data () {
 	return {
 		links:[
-            { icon: 'home', text: 'HOME', path: '/'},
-            { icon: 'event', text: 'CENOTEANDO.MX', path: 'https://www.cenoteando.mx/'},
-			{ icon: 'event', text:'MAPA', path: '/map'},
-			{ icon: 'event', text: 'OAI-PMH', path: '/oai-pmh'}
+            { icon: 'mdi-home', text: 'HOME', path: '/'},
+            { icon: 'mdi-add', text: 'CENOTEANDO.MX', path: 'https://www.cenoteando.mx/'},
+			{ icon: 'mdi-add', text:'MAPA', path: '/map'},
+			{ icon: 'mdi-add', text: 'OAI-PMH', path: '/oai-pmh'}
 ],
 };
 }
