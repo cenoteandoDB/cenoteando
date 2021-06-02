@@ -45,7 +45,23 @@
             </v-col>
         </v-row>
     </v-footer>
-    <div class="primary d-flex p-2 col-example hidden-md-and-up">I'm a flexbox container!</div>
+    <div class="primary d-flex p-2 col-example hidden-md-and-up">
+         <v-col>
+                <v-row justify="center" align="center" no-gutters>
+                    <v-col v-for="(logo, i) in logos" v-bind:key="i" cols="1">
+                        <v-img
+                            :src="logo.src"
+                            :alt="logo.alt"
+                            :class="{ 'white-only': logo.white_only }"
+                            transition="scale-transition"
+                            class="shrink"
+                            height="10"
+                            contain
+                        />
+                    </v-col>
+                </v-row>
+            </v-col>
+    </div>
     </div>
 </template>
 
