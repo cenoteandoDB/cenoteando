@@ -4,6 +4,7 @@
         - Place all icons centered vertically (in a flexbox?) (mobile)
         - Place institutional icons centered horizontally (in a flexbox?) and fix social icons to the right (desktop)
     -->
+    <div>
     <v-footer
         v-if="!footer_blacklist.includes($route.name)"
         class="hidden-sm-and-down"
@@ -44,6 +45,8 @@
             </v-col>
         </v-row>
     </v-footer>
+    <div class="d-flex p-2 col-example hidden-md-and-up">I'm a flexbox container!</div>
+    <div>
 </template>
 
 <script lang="ts">
