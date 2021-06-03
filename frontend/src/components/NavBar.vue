@@ -38,7 +38,7 @@
       </v-list-item>
       <v-divider></v-divider>
 	<v-list>
-	<v-list-item v-for="link in links" :key="link.text" link :to="link.path">
+	<v-list-item v-for="link in oai" :key="oai.text" link :to="oai.path">
 		<v-list-item-action>
 			<v-icon class="white--text">{{ link.icon }}</v-icon>
 		</v-list-item-action>
@@ -116,7 +116,7 @@ export default class NavBar extends Vue {
 		links:[
             { icon: 'mdi-home', text: 'HOME', path: '/'},
             { icon: 'mdi-dialpad', text: 'CENOTEANDO.MX', path: 'https://www.cenoteando.mx/'},
-			{ icon: 'mdi-dialpad', text:'MAPA', path: '/map'}
+			{ icon: 'mdi-dialpad', text:'MAPA', path: '/map'},
             { icon: 'mdi-dialpad', text:'OAI-PMH', path: '/oai-pmh'}
 ],
 oai:[
