@@ -22,6 +22,15 @@
 		</v-list-item-content>
 		<br />	
 	</v-list-item>
+    <v-list-item :key='OAI-PMH' link :to="/oai-pmh">
+		<v-list-item-action>
+			<v-icon class="white--text">mdi-dialpad</v-icon>
+		</v-list-item-action>
+		<v-list-item-content>
+			<v-list-tile-title class="white--text">OAI-PMH</v-list-tile-title>
+		</v-list-item-content>
+		<br />	
+	</v-list-item>
 	</v-list>		
 	</v-navigation-drawer>
     <!-- TODO: Fix for mobile (v-navigation-drawer)-->
@@ -91,8 +100,7 @@ export default class NavBar extends Vue {
 		links:[
             { icon: 'mdi-home', text: 'HOME', path: '/'},
             { icon: 'mdi-dialpad', text: 'CENOTEANDO.MX', path: 'https://www.cenoteando.mx/'},
-			{ icon: 'mdi-dialpad', text:'MAPA', path: '/map'},
-			{ icon: 'mdi-dialpad', text: 'OAI-PMH', path: '/oai-pmh'}
+			{ icon: 'mdi-dialpad', text:'MAPA', path: '/map'}
 ],
 };
 }
