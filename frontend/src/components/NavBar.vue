@@ -23,12 +23,23 @@
 		<br />	
 	</v-list-item>
     <v-list-item :key='OAI-PMH' link :to="'/oai-pmh'">
-		<v-list-item-action>
-			<v-icon class="white--text">mdi-dialpad</v-icon>
-		</v-list-item-action>
 		<v-list-item-content>
 			<v-list-tile-title class="white--text">OAI-PMH</v-list-tile-title>
 		</v-list-item-content>
+        <v-menu
+      top
+      :offset-x="offset"
+    >
+      <template v-slot:activator="{ on, attrs }">
+      <v-list>
+        <v-list-item
+          v-for="(item, index) in items"
+          :key="index"
+        >
+          <v-list-item-title>{{ item.title }}</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
 		<br />	
 	</v-list-item>
 	</v-list>		
@@ -102,6 +113,13 @@ export default class NavBar extends Vue {
             { icon: 'mdi-dialpad', text: 'CENOTEANDO.MX', path: 'https://www.cenoteando.mx/'},
 			{ icon: 'mdi-dialpad', text:'MAPA', path: '/map'}
 ],
+items: [
+        { title: 'Click Me' },
+        { title: 'Click Me' },
+        { title: 'Click Me' },
+        { title: 'Click Me 2' },
+      ],
+      offset: true,
 };
 }
 }
