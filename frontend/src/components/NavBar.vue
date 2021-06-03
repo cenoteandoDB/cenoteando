@@ -46,7 +46,7 @@
 			<v-list-tile-title class="white--text">{{ link.text }}</v-list-tile-title>
 		</v-list-item-content>
     </v-list-item>
-    <v-list-item link :src="'https://www.cenoteando.mx/'">
+    <v-list-item link :href="'https://www.cenoteando.mx/'">
 		<v-list-item-action>
 			<v-icon class="white--text">mdi-monitor-dashboard</v-icon>
 		</v-list-item-action>
