@@ -42,7 +42,8 @@
                 </v-list>
             </v-list-item>
         </v-menu>
-		<br />	
+		<br />
+    </v-list-item>	
 	</v-list>		
 	</v-navigation-drawer>
     <!-- TODO: Fix for mobile (v-navigation-drawer)-->
