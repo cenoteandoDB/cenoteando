@@ -22,7 +22,7 @@
 		</v-list-item-content>
 		<br />	
 	</v-list-item>
-    <v-list-item :key='OAI-PMH' link :to="/oai-pmh">
+    <v-list-item :key='OAI-PMH' link :to="'/oai-pmh'">
 		<v-list-item-action>
 			<v-icon class="white--text">mdi-dialpad</v-icon>
 		</v-list-item-action>
