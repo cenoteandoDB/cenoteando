@@ -120,7 +120,8 @@ export default class NavBar extends Vue {
             { icon: 'mdi-dialpad', text:'OAI-PMH', path: '/oai-pmh'}
 ],
 oai:[
-            { icon: 'mdi-home', text: 'IDENTIFY', path: '/oai-pmh'},
+            { icon: 'mdi-home', text: 'HOME', path: '/'},
+            { icon: 'mdi-dialpad', text: 'IDENTIFY', path: '/oai-pmh'},
             { icon: 'mdi-dialpad', text: 'GET RECORD.MX', path: 'oai-pmh/get-record'},
 			{ icon: 'mdi-dialpad', text:'LIST RECORD', path: '/oai-pmh/list-records'}
 ],
