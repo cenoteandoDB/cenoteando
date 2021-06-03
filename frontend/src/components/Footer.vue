@@ -57,7 +57,7 @@
                             :class="{ 'white-only': logo.white_only }"
                             transition="scale-transition"
                             class="shrink"
-                            height="25"
+                            :height= "logo.height"
                             contain
                         />
                     </v-col>
@@ -97,31 +97,37 @@ export default class Footer extends Vue {
             src: require('@/assets/logos/unam_logo.png'),
             alt: 'logo unam',
             white_only: false,
+            height: "30",
         },
         {
             src: require('@/assets/logos/ciencias_logo.png'),
             alt: 'logo ciencias',
             white_only: false,
+            height: "25",
         },
         {
             src: require('@/assets/logos/logo_centro_geo.png'),
             alt: 'logo centro geo',
             white_only: false,
+            height: "25",
         },
         {
             src: require('@/assets/logos/sds_logo.png'),
             alt: 'logo sds',
             white_only: true,
+            height: "28",
         },
         {
             src: require('@/assets/logos/logo_uady.png'),
             alt: 'logo uady',
             white_only: true,
+            height: "25",
         },
         {
             src: require('@/assets/logos/cenoteando_logo.png'),
             alt: 'logo cenoteando',
             white_only: true,
+            height: "25",
         },
     ];
 }
