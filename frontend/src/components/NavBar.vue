@@ -20,6 +20,7 @@
 		<v-list-item-content>
 			<v-list-tile-title class="white--text">{{ link.text }}</v-list-tile-title>
 		</v-list-item-content>
+    </v-list-item>
 		<br />	
         <v-list-item :key="OAI-PMH" link>
             <v-list-item-action>
@@ -43,8 +44,7 @@
         </v-list-item-content>
 
         </v-list-item >
-		<br />
-    </v-list-item>	
+		<br />	
 	</v-list>		
 	</v-navigation-drawer>
     <!-- TODO: Fix for mobile (v-navigation-drawer)-->
