@@ -90,9 +90,9 @@ export default class NavBar extends Vue {
 	return {
 		links:[
             { icon: 'mdi-home', text: 'HOME', path: '/'},
-            { icon: 'mdi-add', text: 'CENOTEANDO.MX', path: 'https://www.cenoteando.mx/'},
-			{ icon: 'mdi-add', text:'MAPA', path: '/map'},
-			{ icon: 'mdi-add', text: 'OAI-PMH', path: '/oai-pmh'}
+            { icon: 'mdi-dialpad', text: 'CENOTEANDO.MX', path: 'https://www.cenoteando.mx/'},
+			{ icon: 'mdi-dialpad', text:'MAPA', path: '/map'},
+			{ icon: 'mdi-dialpad', text: 'OAI-PMH', path: '/oai-pmh'}
 ],
 };
 }
