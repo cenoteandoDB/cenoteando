@@ -115,15 +115,15 @@ export default class NavBar extends Vue {
 	return {
 		links:[
             { icon: 'mdi-home', text: 'HOME', path: '/'},
-            { icon: 'mdi-dialpad', text: 'CENOTEANDO.MX', path: 'https://www.cenoteando.mx/'},
-			{ icon: 'mdi-dialpad', text:'MAPA', path: '/map'},
-            { icon: 'mdi-dialpad', text:'OAI-PMH', path: '/oai-pmh'}
+            { icon: 'mdi-monitor-dashboard', text: 'CENOTEANDO.MX', path: 'https://www.cenoteando.mx/'},
+			{ icon: 'mdi-earth', text:'MAPA', path: '/map'},
+            { icon: 'mdi-source-branch', text:'OAI-PMH', path: '/oai-pmh'}
 ],
 oai:[
             { icon: 'mdi-home', text: 'HOME', path: '/'},
-            { icon: 'mdi-dialpad', text: 'IDENTIFY', path: '/oai-pmh'},
-            { icon: 'mdi-dialpad', text: 'GET RECORD.MX', path: 'oai-pmh/get-record'},
-			{ icon: 'mdi-dialpad', text:'LIST RECORD', path: '/oai-pmh/list-records'}
+            { icon: 'mdi-source-repository', text: 'IDENTIFY', path: '/oai-pmh'},
+            { icon: 'mdi-view-list', text: 'GET RECORD', path: 'oai-pmh/get-record'},
+			{ icon: 'mdi-view-list', text:'LIST RECORD', path: '/oai-pmh/list-records'}
 ],
 };
 }
