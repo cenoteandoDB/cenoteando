@@ -22,14 +22,17 @@
 		</v-list-item-content>
 		<br />	
 	</v-list-item>
-    <v-list-item :key='OAI-PMH' link :to="'/oai-pmh'">
-		<v-list-item-content>
-			<v-list-tile-title class="white--text">OAI-PMH</v-list-tile-title>
-		</v-list-item-content>
         <v-menu
       top
       :offset-x="offset"
     >
+    <v-list-item>
+		<v-list-item-content>
+			<v-list-tile-title class="white--text" dark
+                icon
+                v-bind="attrs"
+                v-on="on">OAI-PMH</v-list-tile-title>
+		</v-list-item-content>
       <template v-slot:activator="{ on, attrs }">
       <v-list>
         <v-list-item
@@ -39,6 +42,7 @@
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
       </v-list>
+      </v-list-item>
     </v-menu>
 		<br />	
 	</v-list-item>
