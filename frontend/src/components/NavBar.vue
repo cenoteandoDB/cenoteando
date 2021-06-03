@@ -21,30 +21,28 @@
 			<v-list-tile-title class="white--text">{{ link.text }}</v-list-tile-title>
 		</v-list-item-content>
 		<br />	
-	</v-list-item>
         <v-menu
       top
       :offset-x="offset"
-    >
-    <v-list-item v-slot:activator="{ on, attrs }">
-		<v-list-item-content>
-			<v-list-tile-title class="white--text" dark
-                icon
-                v-bind="attrs"
-                v-on="on">OAI-PMH</v-list-tile-title>
-		</v-list-item-content>
-      <v-list>
-        <v-list-item
-          v-for="(item, index) in items"
-          :key="index"
         >
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item>
-      </v-list>
-      </v-list-item>
-    </v-menu>
+            <v-list-item v-slot:activator="{ on, attrs }">
+		        <v-list-item-content>
+			        <v-list-tile-title class="white--text" dark
+                        icon
+                        v-bind="attrs"
+                    v-on="on">OAI-PMH</v-list-tile-title>
+		        </v-list-item-content>
+                <v-list>
+                    <v-list-item
+                    v-for="(item, index) in items"
+                    :key="index"
+                    >
+                    <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item>
+                </v-list>
+            </v-list-item>
+        </v-menu>
 		<br />	
-	</v-list-item>
 	</v-list>		
 	</v-navigation-drawer>
     <!-- TODO: Fix for mobile (v-navigation-drawer)-->
