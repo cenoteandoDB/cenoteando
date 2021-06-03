@@ -115,7 +115,7 @@ export default class Footer extends Vue {
             src: require('@/assets/logos/sds_logo.png'),
             alt: 'logo sds',
             white_only: true,
-            height: "28",
+            height: "30",
         },
         {
             src: require('@/assets/logos/logo_uady.png'),
