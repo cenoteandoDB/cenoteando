@@ -48,7 +48,7 @@
         </v-row>
     </v-footer>
     <div class="primary d-flex p-2 col-example hidden-md-and-up">
-         <v-col>
+         <v-col aling="center">
                 <v-row justify="center" align="center" no-gutters>
                     <v-col v-for="(logo, i) in logos" v-bind:key="i" cols="1">
                         <v-img
@@ -64,10 +64,10 @@
                 </v-row>
             </v-col>
     </div>
-    <div class="primary d-flex p-2 col-example hidden-md-and-up">
-         <v-col cols="1">
+	 <div class="primary d-flex p-2 col-example hidden-md-and-up" aling="center" justify="center">
+	<v-row align="center" justify="center" no-gutters> 
                 <v-btn icon href="https://www.facebook.com/cenoteando.unam/">
-                    <v-icon size="24px">
+                    <v-icon class="white--text" size="19px">
                         {{ 'mdi-facebook' }}
                     </v-icon>
                 </v-btn>
@@ -75,12 +75,12 @@
                 <br class="hidden-sm-and-down" />
                 -->
                 <v-btn icon href="https://tinyurl.com/yc6ar7zt">
-                    <v-icon size="24px">
+                    <v-icon class="white--text" size="19px">
                         {{ 'mdi-youtube' }}
                     </v-icon>
                 </v-btn>
-            </v-col>
-    </div>
+	</v-row>
+	</div>
     </div>
 </template>
 
