@@ -36,7 +36,9 @@
                         {{ 'mdi-facebook' }}
                     </v-icon>
                 </v-btn>
+                <!--
                 <br class="hidden-sm-and-down" />
+                -->
                 <v-btn icon href="https://tinyurl.com/yc6ar7zt">
                     <v-icon size="24px">
                         {{ 'mdi-youtube' }}
@@ -60,6 +62,23 @@
                         />
                     </v-col>
                 </v-row>
+            </v-col>
+    </div>
+    <div class="primary d-flex p-2 col-example hidden-md-and-up">
+         <v-col cols="1">
+                <v-btn icon href="https://www.facebook.com/cenoteando.unam/">
+                    <v-icon size="24px">
+                        {{ 'mdi-facebook' }}
+                    </v-icon>
+                </v-btn>
+                <!--
+                <br class="hidden-sm-and-down" />
+                -->
+                <v-btn icon href="https://tinyurl.com/yc6ar7zt">
+                    <v-icon size="24px">
+                        {{ 'mdi-youtube' }}
+                    </v-icon>
+                </v-btn>
             </v-col>
     </div>
     </div>
