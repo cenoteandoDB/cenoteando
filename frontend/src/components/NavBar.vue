@@ -47,6 +47,8 @@
 		</v-list-item-content>
     </v-list-item>
     <br />
+    </v-list>
+    <v-list>
     <v-list-item :key="CENOTEANDO.MX" link :src="'https://www.cenoteando.mx/'">
 		<v-list-item-action>
 			<v-icon class="white--text">mdi-monitor-dashboard</v-icon>
