@@ -1,6 +1,31 @@
 <template>
 <div>
-    <v-navigation-drawer app v-model="drawer" class="primary hidden-md-and-up">
+    <v-navigation-drawer v-if="isOai" app v-model="drawer" class="primary hidden-md-and-up">
+        <v-list-item>
+	<v-list-item-avatar>
+		<img :src="require('@/assets/logos/logo.png')">
+	</v-list-item-avatar>	
+        <v-list-item-content>
+          <v-list-item-title class="text-h6 white--text">
+            CENOTEANDO
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-divider></v-divider>
+	<v-list>
+	<v-list-item v-for="link in links" :key="link.text" link :to="link.path">
+		<v-list-item-action>
+			<v-icon class="white--text">{{ link.icon }}</v-icon>
+		</v-list-item-action>
+		<v-list-item-content>
+			<v-list-tile-title class="white--text">{{ link.text }}</v-list-tile-title>
+		</v-list-item-content>
+    </v-list-item>
+		<br />	
+	</v-list>		
+	</v-navigation-drawer>
+    <!-- mksmxmsk-->
+    <v-navigation-drawer v-else app v-model="drawer" class="primary hidden-md-and-up">
         <v-list-item>
 	<v-list-item-avatar>
 		<img :src="require('@/assets/logos/logo.png')">
@@ -93,6 +118,11 @@ export default class NavBar extends Vue {
             { icon: 'mdi-dialpad', text: 'CENOTEANDO.MX', path: 'https://www.cenoteando.mx/'},
 			{ icon: 'mdi-dialpad', text:'MAPA', path: '/map'}
             { icon: 'mdi-dialpad', text:'OAI-PMH', path: '/oai-pmh'}
+],
+oai:[
+            { icon: 'mdi-home', text: 'IDENTIFY', path: '/oai-pmh'},
+            { icon: 'mdi-dialpad', text: 'GET RECORD.MX', path: 'oai-pmh/get-record'},
+			{ icon: 'mdi-dialpad', text:'LIST RECORD', path: '/oai-pmh/list-records'}
 ],
 };
 }
