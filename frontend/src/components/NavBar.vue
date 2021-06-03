@@ -13,7 +13,7 @@
       </v-list-item>
       <v-divider></v-divider>
 	<v-list>
-	<v-list-item v-for="link in links" :key="link.text" link :to="link.path">
+	<v-list-item v-for="link in oai" :key="link.text" link :to="link.path">
 		<v-list-item-action>
 			<v-icon class="white--text">{{ link.icon }}</v-icon>
 		</v-list-item-action>
@@ -38,7 +38,7 @@
       </v-list-item>
       <v-divider></v-divider>
 	<v-list>
-	<v-list-item v-for="link in oai" :key="oai.text" link :to="oai.path">
+	<v-list-item v-for="link in links" :key="link.text" link :to="link.path">
 		<v-list-item-action>
 			<v-icon class="white--text">{{ link.icon }}</v-icon>
 		</v-list-item-action>
