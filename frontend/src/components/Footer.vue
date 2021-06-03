@@ -55,7 +55,7 @@
                             :class="{ 'white-only': logo.white_only }"
                             transition="scale-transition"
                             class="shrink"
-                            height="10"
+                            height="25"
                             contain
                         />
                     </v-col>
