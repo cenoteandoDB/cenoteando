@@ -26,15 +26,13 @@
       top
       :offset-x="offset"
     >
-    <template v-slot:activator="{ on, attrs }">
-    <v-list-item>
+    <v-list-item v-slot:activator="{ on, attrs }">
 		<v-list-item-content>
 			<v-list-tile-title class="white--text" dark
                 icon
                 v-bind="attrs"
                 v-on="on">OAI-PMH</v-list-tile-title>
 		</v-list-item-content>
-    </template>
       <v-list>
         <v-list-item
           v-for="(item, index) in items"
