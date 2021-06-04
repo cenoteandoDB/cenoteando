@@ -1,18 +1,11 @@
-import { Collection, Entities, Route, RouteArg } from 'type-arango';
+import { Collection, Entities } from 'type-arango';
 import { GadmDocument } from '../documents';
 
 @Collection({
     of: GadmDocument,
+    routes: [
+        { method: 'GET', roles: ['guest'] },
+        { method: 'LIST', roles: ['guest'] },
+    ],
 })
-@Route.LIST(['guest'])
-export class Gadm extends Entities {
-    @Route.GET(
-        (path) => ':id',
-        (roles) => ['guest'],
-        ($) => ({ id: $(String) }),
-        'Returns a Gadm Document by GID level 2',
-    )
-    static GET({ param }: RouteArg) {
-        return Gadm.findOne({ filter: { 'properties.GID_2': param.id } });
-    }
-}
+export class Gadm extends Entities {}

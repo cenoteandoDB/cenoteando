@@ -14,7 +14,7 @@
                 :key="cenote.properties.code"
                 :lat-lng="cenote.geometry.coordinates.slice().reverse()"
             >
-                <!-- :icon="marker_icon" -->
+                <!-- TODO: :icon="marker_icon" -->
                 <l-popup :content="cenote.properties.name"></l-popup>
             </l-circle-marker>
         </l-marker-cluster>

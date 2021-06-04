@@ -8,7 +8,8 @@ import L from 'leaflet';
 
 const httpClient = axios.create();
 httpClient.defaults.timeout = 100000;
-httpClient.defaults.baseURL = 'http://localhost';
+httpClient.defaults.baseURL =
+    process.env.VUE_APP_ROOT_API || 'http://localhost';
 httpClient.defaults.headers.post['Content-Type'] = 'application/json';
 httpClient.interceptors.response.use(
     (response) => {

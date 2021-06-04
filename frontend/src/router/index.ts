@@ -1,11 +1,7 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
-import Home from '../views/Home.vue';
-import OaiPmh from '../views/oai/OaiPmh.vue';
-import OaiIdentify from '../views/oai/OaiIdentify.vue';
-import OaiGetRecord from '../views/oai/OaiGetRecord.vue';
-import OaiListRecords from '../views/oai/OaiListRecords.vue';
-import Map from '../views/Map.vue';
+import Home from '@/views/Home.vue';
+import Map from '@/views/Map.vue';
 
 Vue.use(VueRouter);
 
@@ -17,27 +13,27 @@ const routes: Array<RouteConfig> = [
     },
     {
         path: '/oai-pmh',
-        component: OaiPmh,
+        component: () => import('@/views/oai/OaiPmh.vue'),
         children: [
             {
                 path: '',
                 name: 'OaiPmh',
-                component: OaiIdentify,
+                component: () => import('@/views/oai/OaiIdentify.vue'),
             },
             {
                 path: 'identify',
                 name: 'OaiIdentify',
-                component: OaiIdentify,
+                component: () => import('@/views/oai/OaiIdentify.vue'),
             },
             {
                 path: 'get-record',
                 name: 'OaiGetRecord',
-                component: OaiGetRecord,
+                component: () => import('@/views/oai/OaiGetRecord.vue'),
             },
             {
                 path: 'list-records',
                 name: 'OaiListRecords',
-                component: OaiListRecords,
+                component: () => import('@/views/oai/OaiListRecords.vue'),
             },
         ],
     },
@@ -45,16 +41,6 @@ const routes: Array<RouteConfig> = [
         path: '/map',
         name: 'Map',
         component: Map,
-    },
-
-    {
-        path: '/about',
-        name: 'About',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () =>
-            import(/* webpackChunkName: "about" */ '../views/About.vue'),
     },
 ];
 
