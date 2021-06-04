@@ -10,6 +10,7 @@
         dark
         flat
         app
+        class="hidden-sm-and-down"
     >
         <v-row no-gutters>
             <v-col cols="0" sm="3"></v-col>
