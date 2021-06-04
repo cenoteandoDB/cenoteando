@@ -7,9 +7,11 @@
             <v-text-field
                 v-model="identifier"
                 label="Identifier"
+                single-line
                 dense
                 filled
                 rounded
+                v-on:keyup.enter="getRecordXml"
             ></v-text-field>
             <v-btn v-on:click="getRecordXml" class="ml-5 mt-1"
                 >Get Record</v-btn

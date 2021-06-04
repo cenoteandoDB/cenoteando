@@ -66,24 +66,27 @@ help:
 	@echo ''
 	@echo 'Usage: make [TARGET] [EXTRA_ARGUMENTS]'
 	@echo 'Targets:'
-	@echo '  dev   		setup service development environment'
-	@echo '  build    	build docker --image--'
-	@echo '  rebuild  	rebuild docker --image--'
-	@echo '  install     	Install all npm dependencies locally'
-	@echo '  lint     	Run linter on codebase'
-	@echo '  test     	test docker --container--'
-	@echo '  start   	run as service --container--'
-	@echo '  stop   	stop service --container--'
-	@echo '  attach   	run as service and login --container--'
-	@echo '  clean    	remove docker --image--'
-	@echo '  prune    	shortcut for docker system prune -af. Cleanup inactive containers and cache.'
-	@echo '  shell      run docker --container--'
+	@echo '  start   		Run as service container'
+	@echo '  stop   		Stop service container'
+	@echo '  install		Install all npm dependencies locally'
+	@echo '  build    		Build docker image'
+	@echo '  rebuild  		Rebuild docker image with --no-cache'
+	@echo '  clean    		Remove docker image and dev dependencies'
+	@echo '  dev			Setup service development environment'
+	@echo '  dev_<proj>		Setup project specific development environment'
+	@echo '			<proj> can be one of `frontend`, `backend`, `oai-pmh`.'
+	@echo '			Example: `make dev_frontend` starts the frontend in development mode (on localhost:8080)'
+	@echo '  upgrade_<proj>	Upgrade project specific code on running docker service with local'
+	@echo '			<proj> can be one of `frontend`, `backend`, `oai-pmh`.'
+	@echo '			Example: `make upgrade_backend` updates the backend code on the local ArangoDB instance'
+	@echo '  lint     		Run linter on codebase'
+	@echo '  test     		Test docker container'
+	@echo '  shell			Open terminal in $(SERVICE_TARGET)'
+	@echo '  prune    		Shortcut for docker system prune -af. Cleanup inactive containers and cache.'
 	@echo ''
 	@echo 'Extra arguments:'
-	@echo 'cmd=:	make cmd="whoami"'
-	@echo '# user= and uid= allows to override current user. Might require additional privileges.'
-	@echo 'user=:	make shell user=root (no need to set uid=0)'
-	@echo 'uid=:	make shell user=dummy uid=4000 (defaults to 0 if user= set)'
+	@echo 'cmd=:			Run command in container.'
+	@echo '			Example: `make cmd="whoami"` is the same as `make shell cmd="whoami"`'
 
 rebuild:
 	# force a rebuild by passing --no-cache
@@ -95,10 +98,6 @@ start:
 
 stop:
 	docker-compose -p $(PROJECT_NAME) down
-
-attach: start
-	# run as a service and attach to it
-	DOCKER_BUILDKIT=1 docker exec -it $(PROJECT_NAME) sh
 
 build:
 	# only build the container. Note, docker does this also if you apply other targets.
@@ -142,32 +141,32 @@ lint:
 	npm run lint --prefix database/foxx/oai-pmh
 	npm run prettier --prefix database/foxx/oai-pmh
 
-dev: install
-	(trap 'kill 0' INT; npm run serve --prefix frontend & npm run dev --prefix database/foxx/backend & npm run dev --prefix database/foxx/oai-pmh) && wait
-	@echo ''
-	@echo ''
-	@echo 'Development environment ready! Happy coding!'
-	@echo ''
-	@echo ''
-
 install:
 	npm install --prefix frontend
 	npm install --prefix database/foxx/shared
 	npm install --prefix database/foxx/backend
 	npm install --prefix database/foxx/oai-pmh
 
+dev: install
+	(trap 'kill 0' INT; make dev_frontend & make dev_backend & make dev_oai-pmh) && wait
+	@echo ''
+	@echo ''
+	@echo 'Development environment ready! Happy coding!'
+	@echo ''
+	@echo ''
+
 # Setup Backend
-dev_backend:
+dev_backend: install
 	# Start hot development mode (code changes reflect on save)
 	npm run dev --prefix database/foxx/backend
 
 # Setup oai-pmh
-dev_oai-pmh:
+dev_oai-pmh: install
 	# Start hot development mode (code changes reflect on save)
 	npm run dev --prefix database/foxx/oai-pmh
 
 # Setup frontend
-dev_frontend:
+dev_frontend: install
 	# Start hot development mode (code changes reflect on save)
 	npm run serve --prefix frontend
 
@@ -181,4 +180,5 @@ upgrade_oai-pmh:
 
 # Upgrade frontend docker code with local
 upgrade_frontend:
+	# FIXME
 	npm run build:dev --prefix frontend && docker cp frontend/dist frontend:/app

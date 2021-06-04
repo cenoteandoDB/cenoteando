@@ -10,7 +10,6 @@
         <v-col cols="auto">
             <h3>Download Metadata:</h3>
             <v-btn class="ma-3" @click.prevent="downloadXML()">XML</v-btn>
-            <!-- TODO: Create and link backend endpoints for downloading data (JSON or CSV) -->
 
             <v-divider class="my-5"></v-divider>
 
@@ -24,7 +23,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import XmlViewer from 'vue-xml-viewer';
-import { parseAsync } from 'json2csv';
+import { parseAsync, transforms } from 'json2csv';
 
 import RemoteServices from '@/services/RemoteServices';
 import CenoteDTO from '@/models/CenoteDTO';
@@ -87,19 +86,24 @@ export default class Record extends Vue {
         try {
             if (!this.cenote)
                 this.cenote = await RemoteServices.getCenote(this.key());
-            parseAsync(this.cenote, {
-                // TODO: transforms: [flatten, unwind],
-            })
-                .then((csv) =>
-                    this.download(
-                        csv,
-                        'cenote_' + this.key() + '.csv',
-                        'text/csv',
-                    ),
-                )
-                .catch((err) => {
-                    throw err;
-                });
+
+            const fields = Object.keys(transforms.flatten()(this.cenote));
+            const csv = await parseAsync(this.cenote, {
+                fields,
+                transforms: [
+                    transforms.flatten(),
+                    transforms.unwind({
+                        paths: [
+                            'properties.alternative_names',
+                            'properties.issues',
+                            'properties.contacts',
+                        ],
+                        blankOut: true,
+                    }),
+                    transforms.flatten(),
+                ],
+            });
+            this.download(csv, 'cenote_' + this.key() + '.csv', 'text/csv');
         } catch (error) {
             await this.$store.dispatch('error', error);
         }

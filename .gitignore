@@ -1,12 +1,12 @@
 # Avoid sharing sensitive data
 database/dumps/*
-# TODO: Add config files here (may contain tokens)
+env/.env
 
 # Avoid sharing development artifacts
 dist/
 node_modules/
-config/nginx/access.log
-config/nginx/error.log
+frontend/nginx/*
+!frontend/nginx/nginx.conf
 tsconfig.tsbuildinfo
 
 # Editor directories and files
