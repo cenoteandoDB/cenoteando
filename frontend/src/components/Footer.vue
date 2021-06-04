@@ -57,7 +57,7 @@
                             :class="{ 'white-only': logo.white_only }"
                             transition="scale-transition"
                             class="shrink"
-                            height= logo.height
+                            :height= logo.height
                             contain
                         />
                     </v-col>
