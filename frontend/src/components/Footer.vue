@@ -4,7 +4,7 @@
         - Place all icons centered vertically (in a flexbox?) (mobile)
         - Place institutional icons centered horizontally (in a flexbox?) and fix social icons to the right (desktop)
     -->
-    <div>
+    <div no-gutters>
     <v-footer
         v-if="!footer_blacklist.includes($route.name)"
         class="hidden-sm-and-down"
@@ -16,7 +16,7 @@
         <v-row justify="center" align="center" no-gutters>
             <v-col cols="1"></v-col>
             <v-col>
-                <v-row justify="center" align="center" no-gutters>
+                <v-row justify="center"  align="center" no-gutters>
                     <v-col v-for="(logo, i) in logos" v-bind:key="i" cols="1">
                         <v-img
                             :src="logo.src"
@@ -24,7 +24,7 @@
                             :class="{ 'white-only': logo.white_only }"
                             transition="scale-transition"
                             class="shrink"
-                            height="64"
+                            height="56"
                             contain
                         />
                     </v-col>
@@ -47,18 +47,18 @@
             </v-col>
         </v-row>
     </v-footer>
-    <div class="primary d-flex p-2 col-example hidden-md-and-up">
-         <v-col aling="center">
-                <v-row justify="center" align="center" no-gutters>
-                    <v-col v-for="(logo, i) in logos" v-bind:key="i" cols="1">
+    <div class="primary d-flex p-3 col-example hidden-md-and-up" :height="300">
+         <v-col justify="center">
+                <v-row justify="center" no-gutters>
+                    <v-col :width="300" v-for="(logo, i) in logos" v-bind:key="i" cols="1">
                         <v-img
                             :src="logo.src"
                             :alt="logo.alt"
                             :class="{ 'white-only': logo.white_only }"
                             transition="scale-transition"
                             class="shrink"
-                            :height= logo.height
-                            contain
+                            height="30"
+			    contain
                         />
                     </v-col>
                 </v-row>

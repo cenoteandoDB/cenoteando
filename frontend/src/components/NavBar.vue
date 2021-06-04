@@ -1,6 +1,6 @@
 <template>
 <div>
-    <v-navigation-drawer v-if="isOai" app v-model="drawer" class="primary hidden-md-and-up">
+    <v-navigation-drawer v-if="isOai" :width="200" app v-model="drawer" class="primary hidden-md-and-up">
         <v-list-item>
 	<v-list-item-avatar>
 		<img :src="require('@/assets/logos/logo.png')">
@@ -25,7 +25,7 @@
 	</v-list>		
 	</v-navigation-drawer>
     <!-- mksmxmsk-->
-    <v-navigation-drawer v-else app v-model="drawer" class="primary hidden-md-and-up">
+    <v-navigation-drawer v-else app :width="220" v-model="drawer" class="primary hidden-md-and-up">
         <v-list-item>
 	<v-list-item-avatar>
 		<img :src="require('@/assets/logos/logo.png')">
@@ -64,9 +64,10 @@
             @click.stop="drawer = !drawer"
             class="hidden-md-and-up"
             aria-label="Menu"
+	    :width="18"
        ></v-app-bar-nav-icon>
 	<v-app-bar-title>
-            <v-btn plain block elevation="0" to="/">
+            <v-btn style="left:0px" plain block elevation="0" to="/">
                 <v-img
                     alt="Cenoteando Logo"
                     class="shrink mr-2"
