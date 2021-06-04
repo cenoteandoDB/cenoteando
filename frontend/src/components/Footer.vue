@@ -4,6 +4,7 @@
         - Place all icons centered vertically (in a flexbox?) (mobile)
         - Place institutional icons centered horizontally (in a flexbox?) and fix social icons to the right (desktop)
     -->
+    <div>
     <v-footer
         v-if="!footer_blacklist.includes($route.name)"
         color="primary"
@@ -41,6 +42,41 @@
             <v-col cols="5" sm="0"></v-col>
         </v-row>
     </v-footer>
+     <div class="primary d-flex p-2 col-example hidden-md-and-up">
+         <v-col aling="center">
+                <v-row justify="center" align="center" no-gutters>
+                    <v-col v-for="(logo, i) in logos" v-bind:key="i" cols="1">
+                        <v-img
+                            :src="logo.src"
+                            :alt="logo.alt"
+                            :class="{ 'white-only': logo.white_only }"
+                            transition="scale-transition"
+                            class="shrink"
+                            height= ""
+                            contain
+                        />
+                    </v-col>
+                </v-row>
+            </v-col>
+    </div>
+	 <div class="primary d-flex p-2 col-example hidden-md-and-up" aling="center" justify="center">
+	<v-row align="center" justify="center" no-gutters> 
+                <v-btn icon href="https://www.facebook.com/cenoteando.unam/">
+                    <v-icon class="white--text" size="19px">
+                        {{ 'mdi-facebook' }}
+                    </v-icon>
+                </v-btn>
+                <!--
+                <br class="hidden-sm-and-down" />
+                -->
+                <v-btn icon href="https://tinyurl.com/yc6ar7zt">
+                    <v-icon class="white--text" size="19px">
+                        {{ 'mdi-youtube' }}
+                    </v-icon>
+                </v-btn>
+	</v-row>
+	</div>
+</div>
 </template>
 
 <script lang="ts">
