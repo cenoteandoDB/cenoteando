@@ -42,7 +42,7 @@
             <v-col cols="5" sm="0"></v-col>
         </v-row>
     </v-footer>
-    <!-- <div class="primary d-flex p-2 col-example hidden-md-and-up">
+    <div class="primary d-flex p-2 col-example hidden-md-and-up">
          <v-col aling="center">
                 <v-row justify="center" align="center" no-gutters>
                     <v-col v-for="(logo, i) in logos" v-bind:key="i" cols="1">
@@ -76,44 +76,7 @@
                 </v-btn>
 	</v-row>
 	</div>
-    -->
-    <v-footer
-        v-if="!footer_blacklist.includes($route.name)"
-        color="primary"
-        dark
-        flat
-        app
-        class="hidden-md-and-up"
-    >
-        <v-row no-gutters>
-            <v-col cols="0" sm="3"></v-col>
-            <v-col cols="4" sm="1" v-for="(logo, i) in logos" v-bind:key="i">
-                <v-img
-                    :src="logo.src"
-                    :alt="logo.alt"
-                    :class="{ 'white-only': logo.white_only }"
-                    transition="scale-transition"
-                    class="shrink"
-                    :height="20"
-                    contain
-                />
-            </v-col>
-            <v-col cols="5" sm="2"></v-col>
-            <v-col cols="2" sm="1">
-                <v-btn icon href="https://www.facebook.com/cenoteando.unam/">
-                    <v-icon size="24px">
-                        {{ 'mdi-facebook' }}
-                    </v-icon>
-                </v-btn>
-                <v-btn icon href="https://tinyurl.com/yc6ar7zt">
-                    <v-icon size="24px">
-                        {{ 'mdi-youtube' }}
-                    </v-icon>
-                </v-btn>
-            </v-col>
-            <v-col cols="5" sm="0"></v-col>
-        </v-row>
-    </v-footer>
+   
 </div>
 </template>
 
