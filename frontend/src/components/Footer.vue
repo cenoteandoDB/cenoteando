@@ -52,7 +52,7 @@
                             :class="{ 'white-only': logo.white_only }"
                             transition="scale-transition"
                             class="shrink"
-                            height= ""
+                            :height= "logo.height"
                             contain
                         />
                     </v-col>
@@ -66,9 +66,9 @@
                         {{ 'mdi-facebook' }}
                     </v-icon>
                 </v-btn>
-            
+                <!--
                 <br class="hidden-sm-and-down" />
-                
+                -->
                 <v-btn icon href="https://tinyurl.com/yc6ar7zt">
                     <v-icon class="white--text" size="19px">
                         {{ 'mdi-youtube' }}
