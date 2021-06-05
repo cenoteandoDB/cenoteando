@@ -17,6 +17,7 @@
                 v-else
                 class="highlight"
                 :width="$vuetify.breakpoint.width"
+		:height="280"
             >
                 <v-img
                     style="filter: brightness(0) invert(1)"
