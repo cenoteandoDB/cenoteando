@@ -93,7 +93,7 @@ export default class Footer extends Vue {
             src: require('@/assets/logos/ciencias_logo.png'),
             alt: 'logo ciencias',
             white_only: false,
-            height: '25',
+            height: '30',
         },
         {
             src: require('@/assets/logos/logo_centro_geo.png'),
