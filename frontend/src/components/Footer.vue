@@ -49,7 +49,7 @@
                             :class="{ 'white-only': logo.white_only }"
                             transition="scale-transition"
                             class="shrink"
-                            :height= "logo.height"
+                            :height= "30"
                             contain
             />
         </div>
