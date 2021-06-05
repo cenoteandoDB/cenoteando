@@ -43,7 +43,6 @@
         </v-row>
     </v-footer>
         <div v-for="(logo, i) in logos" v-bind:key="i" class="primary d-flex p-2 col-example hidden-md-and-up">
-           <v-row cols="4" sm="1" align="center" justify="center" no-gutters> 
             <v-img
                             :src="logo.src"
                             :alt="logo.alt"
@@ -52,8 +51,9 @@
                             class="shrink"
                             :height= "logo.height"
                             contain
+                            justify="center"
+                            align="center"
             />
-            </v-row>
         </div>
 	 <div class="primary d-flex p-2 col-example hidden-md-and-up" aling="center" justify="center">
 	<v-row align="center" justify="center" no-gutters> 
