@@ -42,7 +42,8 @@
             <v-col cols="5" sm="0"></v-col>
         </v-row>
     </v-footer>
-        <div v-for="(logo, i) in logos" v-bind:key="i" class="justify-content-center primary d-flex hidden-md-and-up" no-gutters>
+    <div class="hidden-md-and-up">
+    <div v-for="(logo, i) in logos" v-bind:key="i" class="justify-content-center primary d-flex hidden-md-and-up" no-gutters>
             <v-img
                             :src="logo.src"
                             :alt="logo.alt"
@@ -71,7 +72,7 @@
                 </v-btn>
 	</v-row>
 	</div>
-   
+   </div>
 </div>
 </template>
 
