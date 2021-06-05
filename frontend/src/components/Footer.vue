@@ -42,7 +42,7 @@
             <v-col cols="5" sm="0"></v-col>
         </v-row>
     </v-footer>
-        <div v-for="(logo, i) in logos" v-bind:key="i" class="justify-content-center primary d-flex hidden-md-and-up">
+        <div v-for="(logo, i) in logos" v-bind:key="i" class="justify-content-center primary d-flex hidden-md-and-up" no-gutters>
             <v-img
                             :src="logo.src"
                             :alt="logo.alt"
@@ -50,6 +50,7 @@
                             transition="scale-transition"
                             class="shrink"
                             :height= "30"
+                            justify="center"
                             contain
             />
         </div>
