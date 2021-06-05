@@ -42,11 +42,7 @@
             <v-col cols="5" sm="0"></v-col>
         </v-row>
     </v-footer>
-    <div>
-         <v-col aling="center">
-                <v-row justify="center" align="center" no-gutters>
-                    <v-col v-for="(logo, i) in logos" v-bind:key="i" cols="1">
-                         <div class="primary d-flex p-2 col-example hidden-md-and-up">
+                         <div v-for="(logo, i) in logos" v-bind:key="i" class="primary d-flex p-2 col-example hidden-md-and-up">
                         <v-img
                             :src="logo.src"
                             :alt="logo.alt"
@@ -57,11 +53,6 @@
                             contain
                         />
                         </div>
-                    </v-col>
-                </v-row>
-            </v-col>
-    </div>
-    </div>
 	 <div class="primary d-flex p-2 col-example hidden-md-and-up" aling="center" justify="center">
 	<v-row align="center" justify="center" no-gutters> 
                 <v-btn icon href="https://www.facebook.com/cenoteando.unam/">
