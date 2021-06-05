@@ -42,8 +42,9 @@
             <v-col cols="5" sm="0"></v-col>
         </v-row>
     </v-footer>
-                         <div v-for="(logo, i) in logos" v-bind:key="i" class="primary d-flex p-2 col-example hidden-md-and-up" aling="center" justify="center">
-                        <v-img
+        <div v-for="(logo, i) in logos" v-bind:key="i" class="primary d-flex p-2 col-example hidden-md-and-up" aling="center" justify="center">
+           <v-row align="center" justify="center" no-gutters> 
+            <v-img
                             :src="logo.src"
                             :alt="logo.alt"
                             :class="{ 'white-only': logo.white_only }"
@@ -51,8 +52,9 @@
                             class="shrink"
                             :height= "logo.height"
                             contain
-                        />
-                        </div>
+            />
+            </v-row>
+        </div>
 	 <div class="primary d-flex p-2 col-example hidden-md-and-up" aling="center" justify="center">
 	<v-row align="center" justify="center" no-gutters> 
                 <v-btn icon href="https://www.facebook.com/cenoteando.unam/">
