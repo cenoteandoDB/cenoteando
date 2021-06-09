@@ -225,7 +225,8 @@ export class OpenaireMapper implements ProviderDCMapper {
                             oai_datacite: [
                                 {
                                     _attr: {
-                                        xmlns: 'http://schema.datacite.org/oai/oai-1.1/',
+                                        xmlns:
+                                            'http://schema.datacite.org/oai/oai-1.1/',
                                         'xmlns:xsi':
                                             'http://www.w3.org/2001/XMLSchema-instance',
                                         'xsi:schemaLocation':
@@ -241,7 +242,8 @@ export class OpenaireMapper implements ProviderDCMapper {
                                             resource: [
                                                 {
                                                     _attr: {
-                                                        xmlns: 'http://namespace.openaire.eu/schema/oaire/',
+                                                        xmlns:
+                                                            'http://namespace.openaire.eu/schema/oaire/',
                                                         'xsi:schemaLocation':
                                                             'http://www.openarchives.org/OAI/2.0/oai_dc/ ' +
                                                             '\nhttps://www.openaire.eu/schema/repo-lit/4.0/openaire.xsd',

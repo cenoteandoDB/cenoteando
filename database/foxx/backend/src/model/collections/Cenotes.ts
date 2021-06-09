@@ -50,7 +50,7 @@ export class Cenotes extends Entities {
         const { offset, limit, sort, order, ...filter } = req.queryParams;
         filter['properties.touristic'] = true;
 
-        let q: QueryOpt = {
+        const q: QueryOpt = {
             filter,
             sort: sort ? [sort + ' ' + (order || 'ASC')] : undefined,
             limit: offset ? [offset, limit] : limit,

@@ -1,10 +1,9 @@
 <template>
     <v-container class="mt-5">
-        <v-row class="mb-10">
+        <v-row class="mb-10" align="center" justify="space-between">
             <v-col cols="auto">
                 <h2>Identify</h2>
             </v-col>
-            <v-spacer></v-spacer>
             <v-col cols="auto" v-if="identifyDTO">
                 Response date:
                 <small>

@@ -1,14 +1,38 @@
 <template>
     <v-container fluid>
-        <v-row align="start" justify="space-around">
+        <v-row align="center" justify="space-around">
             <v-col cols="auto">
-                <h3>Download Data:</h3>
-                <v-btn class="ma-3" @click.prevent="downloadJSON()">JSON</v-btn>
-                <v-btn class="ma-3" @click.prevent="downloadCSV()">CSV</v-btn>
+                <v-row align="center" justify="center">
+                    <v-col cols="auto">
+                        <h3>Download Data</h3>
+                    </v-col>
+                </v-row>
+                <v-row align="center" justify="space-around">
+                    <v-col cols="auto">
+                        <v-btn class="ma-3" @click.prevent="downloadJSON()"
+                            >JSON</v-btn
+                        >
+                    </v-col>
+                    <v-col cols="auto">
+                        <v-btn class="ma-3" @click.prevent="downloadCSV()"
+                            >CSV</v-btn
+                        >
+                    </v-col>
+                </v-row>
             </v-col>
             <v-col cols="auto">
-                <h3>Download Metadata:</h3>
-                <v-btn class="ma-3" @click.prevent="downloadXML()">XML</v-btn>
+                <v-row>
+                    <v-col cols="auto">
+                        <h3>Download Metadata</h3>
+                    </v-col>
+                </v-row>
+                <v-row align="center" justify="space-around">
+                    <v-col cols="auto">
+                        <v-btn class="ma-3" @click.prevent="downloadXML()"
+                            >XML</v-btn
+                        >
+                    </v-col>
+                </v-row>
             </v-col>
         </v-row>
         <v-divider class="my-3"></v-divider>

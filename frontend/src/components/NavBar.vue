@@ -1,64 +1,26 @@
 <template>
     <div>
         <v-navigation-drawer
-            v-if="isOai"
-            v-model="drawer"
-            app
-            class="primary hidden-md-and-up"
-            :width="200"
-        >
-            <!-- TODO: Make image and title links to homepage -->
-            <v-list-item>
-                <v-list-item-avatar>
-                    <img :src="require('@/assets/logos/logo.png')" />
-                </v-list-item-avatar>
-                <v-list-item-content>
-                    <v-list-item-title class="text-h8 white--text">
-                        CENOTEANDO
-                    </v-list-item-title>
-                </v-list-item-content>
-            </v-list-item>
-            <v-divider></v-divider>
-            <v-list>
-                <v-list-item
-                    v-for="link in oai"
-                    :key="link.text"
-                    link
-                    :to="link.path"
-                >
-                    <v-list-item-action>
-                        <v-icon class="white--text">{{ link.icon }}</v-icon>
-                    </v-list-item-action>
-                    <v-list-item-content>
-                        <v-list-item-title class="white--text">{{
-                            link.text
-                        }}</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
-            </v-list>
-        </v-navigation-drawer>
-        <v-navigation-drawer
-            v-else
             v-model="drawer"
             app
             class="primary hidden-md-and-up"
             :width="240"
         >
-            <v-list-item>
-                <v-list-item-avatar>
-                    <img
-                        :src="require('@/assets/logos/logo.png')"
-                        alt="cenoteando logo"
-                    />
-                </v-list-item-avatar>
-                <v-list-item-content>
-                    <v-list-item-title class="text-h6 white--text">
-                        CENOTEANDO
-                    </v-list-item-title>
-                </v-list-item-content>
-            </v-list-item>
-            <v-divider></v-divider>
             <v-list>
+                <v-list-item to="/" @click="drawer = false">
+                    <v-list-item-avatar>
+                        <img
+                            :src="require('@/assets/logos/logo.png')"
+                            alt="cenoteando logo"
+                        />
+                    </v-list-item-avatar>
+                    <v-list-item-content>
+                        <v-list-item-title class="text-h6 white--text">
+                            CENOTEANDO
+                        </v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+                <v-divider></v-divider>
                 <v-list-item
                     v-for="link in links"
                     :key="link.text"
@@ -76,51 +38,51 @@
                     </v-list-item-content>
                 </v-list-item>
 
-    <v-list-group
-          :value="false"
-        >
-      <template v-slot:activator>
-      <v-list>
-      <v-list-item>
-        <v-list-item-action>
-            <v-icon class="white--text">mdi-source-branch</v-icon>
-        </v-list-item-action>
-        <v-list-item-title class="white--text"> OAI-PMH</v-list-item-title>
-      </v-list-item>
-      </v-list>
-      </template>
-      
-
-      <v-card class="primary"> 
-        <v-list>
+                <v-list-group :value="false">
+                    <template v-slot:activator>
+                        <v-list-item>
+                            <v-list-item-action>
+                                <v-icon class="white--text">
+                                    mdi-source-branch
+                                </v-icon>
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title class="white--text">
+                                    OAI-PMH
+                                </v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </template>
+                    <v-list-item-group>
+                        <v-list-item
+                            v-for="link in oai_menu"
+                            :key="link.text"
+                            link
+                            :to="link.path"
+                            class="primary ml-3"
+                            style="left: 18px"
+                        >
+                            <v-list-item-action>
+                                <v-icon class="white--text">{{
+                                    link.icon
+                                }}</v-icon>
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title class="white--text">{{
+                                    link.text
+                                }}</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-list-item-group>
+                </v-list-group>
+                <v-divider vertical></v-divider>
                 <v-list-item
-                    v-for="link in oai_menu"
-                    :key="link.text"
                     link
-                    :to="link.path"
-                    class="primary"
+                    :href="'https://www.cenoteando.mx/'"
                     style="left: 18px"
                 >
                     <v-list-item-action>
-                        <v-icon class="white--text">{{ link.icon }}</v-icon>
-                    </v-list-item-action>
-                    <v-list-item-content>
-                        <v-list-item-title class="white--text">{{
-                            link.text
-                        }}</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
-            </v-list>
-
-       
-      </v-card>
-    </v-list-group>
-                <v-divider></v-divider>
-                <v-list-item link :href="'https://www.cenoteando.mx/'" style="left: 18px">
-                    <v-list-item-action>
-                        <v-icon class="white--text">
-                            mdi-monitor-dashboard
-                        </v-icon>
+                        <v-icon class="white--text"> mdi-exit-to-app </v-icon>
                     </v-list-item-action>
                     <v-list-item-content>
                         <v-list-item-title class="white--text">
@@ -129,14 +91,7 @@
                     </v-list-item-content>
                 </v-list-item>
             </v-list>
-
-
-
-    
- 
-
         </v-navigation-drawer>
-        <!-- TODO: Fix for mobile (v-navigation-drawer)-->
         <!-- TODO: Improvements are needed (use v-list and v-menu?) -->
         <v-app-bar app color="primary" dark clipped-left elevate-on-scroll>
             <v-app-bar-nav-icon
@@ -194,29 +149,8 @@ import { Component, Vue } from 'vue-property-decorator';
 export default class NavBar extends Vue {
     name = 'NavBar';
     drawer = false;
-     
-    links = [
-        { icon: 'mdi-home', text: 'HOME', path: '/' },
-        { icon: 'mdi-map', text: 'MAP', path: '/map' },
-    ];
-    oai = [
-        { icon: 'mdi-home', text: 'HOME', path: '/' },
-        {
-            icon: 'mdi-account-box-outline',
-            text: 'IDENTIFY',
-            path: '/oai-pmh',
-        },
-        {
-            icon: 'mdi-magnify',
-            text: 'GET RECORD',
-            path: 'oai-pmh/get-record',
-        },
-        {
-            icon: 'mdi-view-list',
-            text: 'LIST RECORDS',
-            path: '/oai-pmh/list-records',
-        },
-    ];
+
+    links = [{ icon: 'mdi-map', text: 'MAP', path: '/map' }];
     oai_menu = [
         {
             icon: 'mdi-account-box-outline',

@@ -225,7 +225,7 @@ export function factory(options = {}): DataRepository {
                 return id;
             }
 
-            let cenote = Cenotes.findOne({
+            const cenote = Cenotes.findOne({
                 filter: {
                     _id: getIdFromIdentifier(parameters.identifier),
                     'properties.touristic': true,
