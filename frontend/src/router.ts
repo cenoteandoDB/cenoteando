@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import Home from '@/views/Home.vue';
 import Map from '@/views/Map.vue';
+import Cenote from '@/views/Cenote.vue';
 
 Vue.use(VueRouter);
 
@@ -41,6 +42,11 @@ const routes: Array<RouteConfig> = [
         path: '/map',
         name: 'Map',
         component: Map,
+    },
+    {
+        path: '/cenote/:key',
+        name: 'Cenote',
+        component: Cenote,
     },
 ];
 

@@ -1,5 +1,19 @@
 import { Feature, Geometry } from 'geojson';
 
+interface CenoteSocialProperties {
+    rating: number;
+    comments: Array<CenoteComment>;
+}
+
+// TODO: Create CommentDTO and get from backend
+interface CenoteComment {
+    rating: number;
+    source: string;
+    text: string;
+    timestamp: string;
+    url: string;
+}
+
 export default class CenoteDTO implements Feature {
     geometry!: Geometry;
     properties!: {
@@ -12,6 +26,7 @@ export default class CenoteDTO implements Feature {
         issues: Array<string>;
         name: string;
         touristic: boolean;
+        social?: CenoteSocialProperties;
     };
     type!: 'Feature';
 
