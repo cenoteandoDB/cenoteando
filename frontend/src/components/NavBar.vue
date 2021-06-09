@@ -10,7 +10,10 @@
             <!-- TODO: Make image and title links to homepage -->
             <v-list-item>
                 <v-list-item-avatar>
-                    <img :src="require('@/assets/logos/logo.png')" />
+                    <img
+                        alt="cenoteando logo"
+                        :src="require('@/assets/logos/cenoteando_logo.png')"
+                    />
                 </v-list-item-avatar>
                 <v-list-item-content>
                     <v-list-item-title class="text-h8 white--text">
@@ -47,7 +50,7 @@
             <v-list-item>
                 <v-list-item-avatar>
                     <img
-                        :src="require('@/assets/logos/logo.png')"
+                        :src="require('@/assets/logos/cenoteando_logo.png')"
                         alt="cenoteando logo"
                     />
                 </v-list-item-avatar>
@@ -104,7 +107,7 @@
                         alt="Cenoteando Logo"
                         class="shrink mr-2"
                         contain
-                        :src="require('@/assets/logos/logo.png')"
+                        :src="require('@/assets/logos/cenoteando_logo.png')"
                         transition="scale-transition"
                         width="40"
                     />
@@ -166,7 +169,7 @@ export default class NavBar extends Vue {
         {
             icon: 'mdi-magnify',
             text: 'GET RECORD',
-            path: 'oai-pmh/get-record',
+            path: '/oai-pmh/get-record',
         },
         {
             icon: 'mdi-view-list',

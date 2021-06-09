@@ -68,6 +68,7 @@ help:
 	@echo 'Targets:'
 	@echo '  start   		Run as service container'
 	@echo '  stop   		Stop service container'
+	@echo '  reload   		Build and restart service container'
 	@echo '  install		Install all npm dependencies locally'
 	@echo '  build    		Build docker image'
 	@echo '  rebuild  		Rebuild docker image with --no-cache'
@@ -88,6 +89,8 @@ help:
 	@echo 'cmd=:			Run command in container.'
 	@echo '			Example: `make cmd="whoami"` is the same as `make shell cmd="whoami"`'
 
+reload: stop build start
+
 rebuild:
 	# force a rebuild by passing --no-cache
 	COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose build --no-cache
@@ -97,6 +100,7 @@ start:
 	COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose -p $(PROJECT_NAME) up -d
 
 stop:
+	# Stop service
 	docker-compose -p $(PROJECT_NAME) down
 
 build:

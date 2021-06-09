@@ -1,28 +1,37 @@
 <template>
-    <v-container class="mt-10">
+    <v-container class="mt-5">
         <v-row class="mb-10">
-            <h2>Identify</h2>
+            <v-col cols="auto">
+                <h2>Identify</h2>
+            </v-col>
             <v-spacer></v-spacer>
-            <span v-if="identifyDTO">
+            <v-col cols="auto" v-if="identifyDTO">
                 Response date:
                 <small>
                     {{ identifyDTO.response_date.toLocaleString() }}
                 </small>
-            </span>
+            </v-col>
         </v-row>
-        <v-simple-table v-if="identifyDTO" class="elevation-1 align-center">
-            <tbody>
-                <tr
-                    v-for="[key, value] of Object.entries(identifyDTO)"
-                    :key="key"
+        <v-row>
+            <v-col>
+                <v-simple-table
+                    v-if="identifyDTO"
+                    class="elevation-1 align-center"
                 >
-                    <td class="font-weight-bold pl-5">
-                        {{ camelCaseToTitleCase(key) }}
-                    </td>
-                    <td>{{ value }}</td>
-                </tr>
-            </tbody>
-        </v-simple-table>
+                    <tbody>
+                        <tr
+                            v-for="[key, value] of Object.entries(identifyDTO)"
+                            :key="key"
+                        >
+                            <td class="font-weight-bold pl-5">
+                                {{ camelCaseToTitleCase(key) }}
+                            </td>
+                            <td>{{ value }}</td>
+                        </tr>
+                    </tbody>
+                </v-simple-table>
+            </v-col>
+        </v-row>
     </v-container>
 </template>
 

@@ -51,7 +51,7 @@ export default class LeafletMap extends Vue {
     bounds: L.LatLngBounds | null = null;
     cenotes: Array<CenoteDTO> | null = null;
     marker_icon = L.icon({
-        iconUrl: 'logo.png',
+        iconUrl: '@/assets/logos/cenoteando_logo.png',
         iconSize: [32, 32],
         iconAnchor: [16, 32],
     });

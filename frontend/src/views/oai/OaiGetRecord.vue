@@ -1,23 +1,26 @@
 <template>
-    <v-container class="mt-10">
-        <v-row class="mb-10">
-            <h2>Get Record</h2>
-        </v-row>
+    <v-container class="mt-5">
         <v-row>
-            <v-text-field
-                v-model="identifier"
-                label="Identifier"
-                single-line
-                dense
-                filled
-                rounded
-                v-on:keyup.enter="getRecordXml"
-            ></v-text-field>
-            <v-btn v-on:click="getRecordXml" class="ml-5 mt-1"
-                >Get Record</v-btn
-            >
+            <v-col>
+                <h2>Get Record</h2>
+            </v-col>
         </v-row>
-        <v-divider class="my-10"></v-divider>
+        <v-row align="center" justify="center">
+            <v-col cols="12">
+                <v-text-field
+                    v-model="identifier"
+                    label="Identifier"
+                    single-line
+                    dense
+                    filled
+                    rounded
+                    v-on:keyup.enter="getRecordXml"
+                    append-outer-icon="mdi-magnify"
+                    @click:append-outer="getRecordXml"
+                ></v-text-field>
+            </v-col>
+        </v-row>
+        <v-divider></v-divider>
         <record :xml="xml" :id="identifier"></record>
     </v-container>
 </template>

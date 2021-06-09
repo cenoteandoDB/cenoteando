@@ -1,23 +1,26 @@
 <template>
-    <v-row>
-        <v-col>
-            <v-sheet elevation="2">
-                <h2 class="pa-10 pb-2">Metadata</h2>
-                <xml-viewer :xml="this.$attrs.xml" class="pa-10 pt-2" />
-            </v-sheet>
-        </v-col>
-        <v-divider class="mx-5" vertical></v-divider>
-        <v-col cols="auto">
-            <h3>Download Metadata:</h3>
-            <v-btn class="ma-3" @click.prevent="downloadXML()">XML</v-btn>
-
-            <v-divider class="my-5"></v-divider>
-
-            <h3>Download Data:</h3>
-            <v-btn class="ma-3" @click.prevent="downloadJSON()">JSON</v-btn>
-            <v-btn class="ma-3" @click.prevent="downloadCSV()">CSV</v-btn>
-        </v-col>
-    </v-row>
+    <v-container fluid>
+        <v-row align="start" justify="space-around">
+            <v-col cols="auto">
+                <h3>Download Data:</h3>
+                <v-btn class="ma-3" @click.prevent="downloadJSON()">JSON</v-btn>
+                <v-btn class="ma-3" @click.prevent="downloadCSV()">CSV</v-btn>
+            </v-col>
+            <v-col cols="auto">
+                <h3>Download Metadata:</h3>
+                <v-btn class="ma-3" @click.prevent="downloadXML()">XML</v-btn>
+            </v-col>
+        </v-row>
+        <v-divider class="my-3"></v-divider>
+        <v-row>
+            <v-col cols="12">
+                <h2 class="pb-2">Metadata</h2>
+                <v-sheet elevation="2" class="overflow-auto">
+                    <xml-viewer :xml="this.$attrs.xml" class="pa-3" />
+                </v-sheet>
+            </v-col>
+        </v-row>
+    </v-container>
 </template>
 
 <script lang="ts">
@@ -26,12 +29,9 @@ import XmlViewer from 'vue-xml-viewer';
 import { parseAsync, transforms } from 'json2csv';
 
 import RemoteServices from '@/services/RemoteServices';
-import CenoteDTO from '@/models/CenoteDTO';
 
 @Component({ components: { XmlViewer } })
 export default class Record extends Vue {
-    cenote: CenoteDTO | null = null;
-
     id(): string {
         return this.$attrs.id.split(':')[2];
     }
@@ -68,10 +68,9 @@ export default class Record extends Vue {
     async downloadJSON(): Promise<void> {
         await this.$store.dispatch('loading');
         try {
-            if (!this.cenote)
-                this.cenote = await RemoteServices.getCenote(this.key());
+            const cenote = await RemoteServices.getCenote(this.key());
             this.download(
-                JSON.stringify(this.cenote),
+                JSON.stringify(cenote),
                 'cenote_' + this.key() + '.json',
                 'application/json',
             );
@@ -84,11 +83,10 @@ export default class Record extends Vue {
     async downloadCSV(): Promise<void> {
         await this.$store.dispatch('loading');
         try {
-            if (!this.cenote)
-                this.cenote = await RemoteServices.getCenote(this.key());
+            const cenote = await RemoteServices.getCenote(this.key());
 
-            const fields = Object.keys(transforms.flatten()(this.cenote));
-            const csv = await parseAsync(this.cenote, {
+            const fields = Object.keys(transforms.flatten()(cenote));
+            const csv = await parseAsync(cenote, {
                 fields,
                 transforms: [
                     transforms.flatten(),

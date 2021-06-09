@@ -1,14 +1,16 @@
 <template>
-    <v-container class="mt-10">
+    <v-container class="mt-5">
         <v-row class="mb-10">
-            <h2>List of Records</h2>
+            <v-col cols="auto">
+                <h2>List of Records</h2>
+            </v-col>
             <v-spacer></v-spacer>
-            <span v-if="oai">
+            <v-col cols="auto" v-if="oai">
                 Response date:
                 <small>
                     {{ responseDate.toLocaleString() }}
                 </small>
-            </span>
+            </v-col>
         </v-row>
         <v-expansion-panels multiple>
             <v-expansion-panel

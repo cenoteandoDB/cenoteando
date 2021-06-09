@@ -1,79 +1,46 @@
 <template>
-    <!--
-    TODO: Fix for mobile
-        - Place all icons centered vertically (in a flexbox?) (mobile)
-        - Place institutional icons centered horizontally (in a flexbox?) and fix social icons to the right (desktop)
-    -->
-    <div>
     <v-footer
         v-if="!footer_blacklist.includes($route.name)"
         color="primary"
-        dark
-        flat
         app
-        class="hidden-sm-and-down"
+        absolute
+        flat
+        dark
     >
-        <v-row no-gutters>
-            <v-col cols="0" sm="3"></v-col>
-            <v-col cols="4" sm="1" v-for="(logo, i) in logos" v-bind:key="i">
-                <v-img
-                    :src="logo.src"
-                    :alt="logo.alt"
-                    :class="{ 'white-only': logo.white_only }"
-                    transition="scale-transition"
-                    class="shrink"
-                    :height="50"
-                    contain
-                />
-            </v-col>
-            <v-col cols="5" sm="2"></v-col>
-            <v-col cols="2" sm="1">
-                <v-btn icon href="https://www.facebook.com/cenoteando.unam/">
-                    <v-icon size="24px">
-                        {{ 'mdi-facebook' }}
-                    </v-icon>
-                </v-btn>
-                <v-btn icon href="https://tinyurl.com/yc6ar7zt">
-                    <v-icon size="24px">
-                        {{ 'mdi-youtube' }}
-                    </v-icon>
-                </v-btn>
-            </v-col>
-            <v-col cols="5" sm="0"></v-col>
-        </v-row>
+        <v-container fluid class="pa-0">
+            <v-row no-gutters align="center" justify="space-around">
+                <v-col cols="3" class="hidden-sm-and-down"></v-col>
+                <v-col cols="1" v-for="(logo, i) in logos" v-bind:key="i">
+                    <v-img
+                        :src="logo.src"
+                        :alt="logo.alt"
+                        :class="{ 'white-only': logo.white_only }"
+                        transition="scale-transition"
+                        class="shrink"
+                        :height="50"
+                        contain
+                    />
+                </v-col>
+                <v-col cols="2" class="hidden-sm-and-down"></v-col>
+                <v-col cols="1">
+                    <v-btn
+                        icon
+                        href="https://www.facebook.com/cenoteando.unam/"
+                    >
+                        <v-icon class="shrink">
+                            {{ 'mdi-facebook' }}
+                        </v-icon>
+                    </v-btn>
+                    <v-btn icon href="https://tinyurl.com/yc6ar7zt">
+                        <v-icon class="shrink">
+                            {{ 'mdi-youtube' }}
+                        </v-icon>
+                    </v-btn>
+                </v-col>
+                <v-col cols="5" class="hidden-sm-and-down"></v-col>
+            </v-row>
+        </v-container>
     </v-footer>
-    <div class="hidden-md-and-up">
-    <div v-for="(logo, i) in logos" v-bind:key="i" class="justify-content-center primary d-flex hidden-md-and-up" no-gutters>
-            <v-img
-                            :src="logo.src"
-                            :alt="logo.alt"
-                            :class="{ 'white-only': logo.white_only }"
-                            transition="scale-transition"
-                            class="shrink"
-                            :height= "44"
-                            justify="center"
-                            contain
-            />
-        </div>
-	 <div class="primary d-flex p-2 col-example hidden-md-and-up" aling="center" justify="center">
-	<v-row align="center" justify="center" no-gutters> 
-                <v-btn icon href="https://www.facebook.com/cenoteando.unam/">
-                    <v-icon class="white--text" size="19px">
-                        {{ 'mdi-facebook' }}
-                    </v-icon>
-                </v-btn>
-                <!--
-                <br class="hidden-sm-and-down" />
-                -->
-                <v-btn icon href="https://tinyurl.com/yc6ar7zt">
-                    <v-icon class="white--text" size="19px">
-                        {{ 'mdi-youtube' }}
-                    </v-icon>
-                </v-btn>
-	</v-row>
-	</div>
-   </div>
-</div>
 </template>
 
 <script lang="ts">
