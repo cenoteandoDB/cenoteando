@@ -10,10 +10,7 @@
             <!-- TODO: Make image and title links to homepage -->
             <v-list-item>
                 <v-list-item-avatar>
-                    <img
-                        alt="cenoteando logo"
-                        :src="require('@/assets/logos/cenoteando_logo.png')"
-                    />
+                    <img :src="require('@/assets/logos/logo.png')" />
                 </v-list-item-avatar>
                 <v-list-item-content>
                     <v-list-item-title class="text-h8 white--text">
@@ -45,12 +42,12 @@
             v-model="drawer"
             app
             class="primary hidden-md-and-up"
-            :width="220"
+            :width="240"
         >
             <v-list-item>
                 <v-list-item-avatar>
                     <img
-                        :src="require('@/assets/logos/cenoteando_logo.png')"
+                        :src="require('@/assets/logos/logo.png')"
                         alt="cenoteando logo"
                     />
                 </v-list-item-avatar>
@@ -67,6 +64,7 @@
                     :key="link.text"
                     link
                     :to="link.path"
+                    style="left: 18px"
                 >
                     <v-list-item-action>
                         <v-icon class="white--text">{{ link.icon }}</v-icon>
@@ -77,8 +75,48 @@
                         }}</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
+
+    <v-list-group
+          :value="false"
+        >
+      <template v-slot:activator>
+      <v-list>
+      <v-list-item>
+        <v-list-item-action>
+            <v-icon class="white--text">mdi-source-branch</v-icon>
+        </v-list-item-action>
+        <v-list-item-title class="white--text"> OAI-PMH</v-list-item-title>
+      </v-list-item>
+      </v-list>
+      </template>
+      
+
+      <v-card class="primary"> 
+        <v-list>
+                <v-list-item
+                    v-for="link in oai_menu"
+                    :key="link.text"
+                    link
+                    :to="link.path"
+                    class="primary"
+                    style="left: 18px"
+                >
+                    <v-list-item-action>
+                        <v-icon class="white--text">{{ link.icon }}</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-content>
+                        <v-list-item-title class="white--text">{{
+                            link.text
+                        }}</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+            </v-list>
+
+       
+      </v-card>
+    </v-list-group>
                 <v-divider></v-divider>
-                <v-list-item link :href="'https://www.cenoteando.mx/'">
+                <v-list-item link :href="'https://www.cenoteando.mx/'" style="left: 18px">
                     <v-list-item-action>
                         <v-icon class="white--text">
                             mdi-monitor-dashboard
@@ -91,6 +129,12 @@
                     </v-list-item-content>
                 </v-list-item>
             </v-list>
+
+
+
+    
+ 
+
         </v-navigation-drawer>
         <!-- TODO: Fix for mobile (v-navigation-drawer)-->
         <!-- TODO: Improvements are needed (use v-list and v-menu?) -->
@@ -107,7 +151,7 @@
                         alt="Cenoteando Logo"
                         class="shrink mr-2"
                         contain
-                        :src="require('@/assets/logos/cenoteando_logo.png')"
+                        :src="require('@/assets/logos/logo.png')"
                         transition="scale-transition"
                         width="40"
                     />
@@ -150,14 +194,10 @@ import { Component, Vue } from 'vue-property-decorator';
 export default class NavBar extends Vue {
     name = 'NavBar';
     drawer = false;
+     
     links = [
         { icon: 'mdi-home', text: 'HOME', path: '/' },
         { icon: 'mdi-map', text: 'MAP', path: '/map' },
-        {
-            icon: 'mdi-source-branch',
-            text: 'OAI-PMH',
-            path: '/oai-pmh',
-        },
     ];
     oai = [
         { icon: 'mdi-home', text: 'HOME', path: '/' },
@@ -169,7 +209,24 @@ export default class NavBar extends Vue {
         {
             icon: 'mdi-magnify',
             text: 'GET RECORD',
-            path: '/oai-pmh/get-record',
+            path: 'oai-pmh/get-record',
+        },
+        {
+            icon: 'mdi-view-list',
+            text: 'LIST RECORDS',
+            path: '/oai-pmh/list-records',
+        },
+    ];
+    oai_menu = [
+        {
+            icon: 'mdi-account-box-outline',
+            text: 'IDENTIFY',
+            path: '/oai-pmh',
+        },
+        {
+            icon: 'mdi-magnify',
+            text: 'GET RECORD',
+            path: 'oai-pmh/get-record',
         },
         {
             icon: 'mdi-view-list',
