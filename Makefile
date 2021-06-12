@@ -110,8 +110,6 @@ build:
 clean:
 	# cleanup frontend libs
 	rm -rf frontend/node_modules/
-	# cleanup shared libs
-	rm -rf database/foxx/shared/dist/ database/foxx/shared/node_modules/
 
 	# cleanup backend
 	rm -rf database/foxx/backend/dist/ database/foxx/backend/node_modules/
@@ -147,7 +145,6 @@ lint:
 
 install:
 	npm install --prefix frontend
-	npm install --prefix database/foxx/shared
 	npm install --prefix database/foxx/backend
 	npm install --prefix database/foxx/oai-pmh
 
@@ -176,13 +173,16 @@ dev_frontend: install
 
 # Upgrade Backend code with local
 upgrade_backend:
-	npm run build --prefix database/foxx/backend && npm run upgrade --prefix database/foxx/backend
+	npm run build --prefix database/foxx/backend
+	npm run upgrade --prefix database/foxx/backend
 
 # Upgrade oai-pmh code with local
 upgrade_oai-pmh:
-	npm run build --prefix database/foxx/oai-pmh && npm run upgrade --prefix database/foxx/oai-pmh
+	npm run build --prefix database/foxx/oai-pmh
+	npm run upgrade --prefix database/foxx/oai-pmh
 
 # Upgrade frontend docker code with local
 upgrade_frontend:
 	# FIXME
-	npm run build:dev --prefix frontend && docker cp frontend/dist frontend:/app
+	npm run build:dev --prefix frontend
+	docker cp frontend/dist frontend:/var/www/dist

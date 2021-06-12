@@ -1,4 +1,4 @@
-ARG NODE_VERSION=15-alpine3.10
+ARG NODE_VERSION=16-alpine
 
 ## Build stage
 FROM node:${NODE_VERSION} as build-stage
@@ -12,5 +12,6 @@ RUN if [ "$NODE_ENV" = "development" ] ; then npm run build:dev ; else npm run b
 
 ## Production stage
 FROM nginx:stable-alpine as production-stage
-RUN mkdir /app
-COPY --from=build-stage /app/dist /app
+RUN mkdir -p /var/www/dist
+COPY /nginx/nginx.conf /etc/nginx/nginx.conf
+COPY --from=build-stage /app/dist /var/www/dist

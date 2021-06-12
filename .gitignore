@@ -5,8 +5,8 @@ env/.env
 # Avoid sharing development artifacts
 dist/
 node_modules/
-frontend/nginx/*
-!frontend/nginx/nginx.conf
+/frontend/nginx/*.log*
+!/frontend/nginx/nginx.conf
 tsconfig.tsbuildinfo
 
 # Editor directories and files

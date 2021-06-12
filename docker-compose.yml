@@ -35,6 +35,5 @@ services:
     env_file:
       - frontend/env/.env
     volumes:
-      - ./frontend/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./frontend/nginx/error.log:/var/log/nginx/error.log
       - ./frontend/nginx/access.log:/var/log/nginx/access.log
