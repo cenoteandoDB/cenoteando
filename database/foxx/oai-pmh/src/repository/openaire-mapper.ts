@@ -170,10 +170,9 @@ export class OpenaireMapper implements ProviderDCMapper {
             ],
         };
 
-        // TODO: Check this
-        const formats: XmlObject = { formats: [{ format: 'CSV' }] };
+        const formats: XmlObject = { formats: [{ format: 'JSON' }] };
 
-        // TODO: Check this
+        // TODO: Get size from database
         const size: XmlObject = { sizes: [{ size: '2 MB' }] };
 
         const version: XmlObject = { version: 1.0 };
@@ -332,7 +331,7 @@ export class OpenaireMapper implements ProviderDCMapper {
         return response;
     }
 
-    // TODO: Implement this ?
+    // TODO: Implement sets ?
     // @ts-ignore because it is not fully implemented (records are not used)
     public mapOaiDcListSets(records: Record[]): any {
         const response = {

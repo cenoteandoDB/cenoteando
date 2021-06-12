@@ -15,6 +15,7 @@
                 :lat-lng="cenote.geometry.coordinates.slice().reverse()"
             >
                 <!-- TODO: :icon="marker_icon" -->
+                <!-- TODO: Add content + "more info." link to popup -->
                 <l-popup :content="cenote.properties.name"></l-popup>
             </l-circle-marker>
         </l-marker-cluster>

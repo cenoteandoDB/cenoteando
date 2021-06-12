@@ -126,7 +126,6 @@ function createRecord(cenote_data: CenoteData): Record {
                 id: 'info:eu-repo/dai/mx/curp/VEJN950421MDFLRR05',
             },
             {
-                // FIXME: Error in type
                 type: 'DataCurator',
                 name: 'Ricardo Merlos Riestra',
                 nameIdScheme: 'RNCTIMX',

@@ -22,7 +22,7 @@ export default new Vuex.Store({
         /*
         initializeStore(state) {
           // TODO: Implement this using localStorage
-          // TODO: Token (check RemoteServices.ts for usage?)
+          // TODO: Token (check RemoteServices.ts in Quizzes Tutor for example usage?)
           // TODO: User
           // TODO: Other saved states?
         },
