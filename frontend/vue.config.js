@@ -6,5 +6,8 @@ module.exports = {
         iconPaths: {
             msTileImage: 'img/icons/mstile-150x150.png',
         },
+        workboxOptions: {
+            skipWaiting: true,
+        },
     },
 };
