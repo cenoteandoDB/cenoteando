@@ -89,7 +89,7 @@ export default class RemoteServices {
         return httpClient
             .get('/api/cenotes')
             .then((response) => {
-                return response.data;
+                return response.data.map((c) => new CenoteDTO(c));
             })
             .catch(async (error) => {
                 throw Error(await this.errorMessage(error));

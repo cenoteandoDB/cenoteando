@@ -143,9 +143,15 @@ lint:
 	npm run lint --prefix database/foxx/oai-pmh
 	npm run prettier --prefix database/foxx/oai-pmh
 
-install:
+install: install_frontend install_backend install_oai-pmh
+
+install_frontend:
 	npm install --prefix frontend
+
+install_backend:
 	npm install --prefix database/foxx/backend
+
+install_oai-pmh:
 	npm install --prefix database/foxx/oai-pmh
 
 dev: install
@@ -157,17 +163,17 @@ dev: install
 	@echo ''
 
 # Setup Backend
-dev_backend: install
+dev_backend: install_backend
 	# Start hot development mode (code changes reflect on save)
 	npm run dev --prefix database/foxx/backend
 
 # Setup oai-pmh
-dev_oai-pmh: install
+dev_oai-pmh: install_oai-pmh
 	# Start hot development mode (code changes reflect on save)
 	npm run dev --prefix database/foxx/oai-pmh
 
 # Setup frontend
-dev_frontend: install
+dev_frontend: install_frontend
 	# Start hot development mode (code changes reflect on save)
 	npm run serve --prefix frontend
 
