@@ -93,52 +93,97 @@
             </v-list>
         </v-navigation-drawer>
         <!-- TODO: Improvements are needed (use v-list and v-menu?) -->
-        <v-app-bar app color="primary" dark clipped-left elevate-on-scroll>
-            <v-app-bar-nav-icon
-                @click.stop="drawer = !drawer"
-                class="hidden-md-and-up"
-                aria-label="Menu"
-                :width="18"
-            ></v-app-bar-nav-icon>
-            <v-app-bar-title>
-                <v-btn style="left: 0px" plain block elevation="0" to="/">
-                    <v-img
-                        alt="Cenoteando Logo"
-                        class="shrink mr-2"
-                        contain
-                        :src="require('@/assets/logos/logo.png')"
-                        transition="scale-transition"
-                        width="40"
-                    />
-                    <span>Cenoteando</span>
-                </v-btn>
-            </v-app-bar-title>
-            <v-spacer></v-spacer>
+        <v-toolbar
+            style="display: flex, justify-content: space-between"
+            app
+            color="primary"
+            dark
+            clipped-left
+            elevate-on-scroll
+        >
+            <div style="flex: 1 1 auto">
+                <v-app-bar-nav-icon
+                    @click.stop="drawer = !drawer"
+                    class="hidden-md-and-up"
+                    aria-label="Menu"
+                    :width="18"
+                ></v-app-bar-nav-icon>
+                <v-app-bar-title>
+                    <v-btn
+                        class="hidden-sm-and-down"
+                        style="left: 0px"
+                        plain
+                        block
+                        elevation="0"
+                        to="/"
+                    >
+                        <v-img
+                            alt="Cenoteando Logo"
+                            class="shrink mr-2"
+                            contain
+                            :src="require('@/assets/logos/logo.png')"
+                            transition="scale-transition"
+                            width="40"
+                        />
+                        <span>Cenoteando</span>
+                    </v-btn>
+                </v-app-bar-title>
+            </div>
 
-            <span v-if="isOai" class="hidden-sm-and-down">
-                <v-btn to="/oai-pmh/identify" text class="mr-2">
-                    <span class="mr-2">Identify</span>
+            <v-list-item to="/" @click="drawer = false"> </v-list-item>
+            <v-toolbar-items
+                v-for="link in links"
+                :key="link.text"
+                link
+                :to="link.path"
+                style="left: 18px"
+                class="hidden-sm-and-down"
+            >
+                <v-btn
+                    flat
+                    v-for="link in links"
+                    :key="link.title"
+                    :to="link.path"
+                >
+                    <v-toolbar-title class="white--text">{{
+                        link.text
+                    }}</v-toolbar-title>
                 </v-btn>
-                <v-btn to="/oai-pmh/list-records" text class="mr-2">
-                    <span class="mr-2">List Records</span>
+                <v-btn flat link :href="'https://www.cenoteando.mx/'">
+                    <v-toolbar-title class="white--text">
+                        CENOTEANDO.MX
+                    </v-toolbar-title>
                 </v-btn>
-                <v-btn to="/oai-pmh/get-record" text class="mr-2">
-                    <span class="mr-2">Get Record</span>
-                </v-btn>
-            </span>
-
-            <span v-else class="hidden-sm-and-down">
-                <v-btn text class="mr-2" href="https://www.cenoteando.mx">
-                    <span class="mr-2">Cenoteando.mx</span>
-                </v-btn>
-                <v-btn to="/map" text class="mr-2">
-                    <span class="mr-2">Map</span>
-                </v-btn>
-                <v-btn to="/oai-pmh" text class="mr-2">
-                    <span class="mr-2">OAI-PMH</span>
-                </v-btn>
-            </span>
-        </v-app-bar>
+                <v-list-group :value="false">
+                    <template v-slot:activator>
+                        <v-toolbar-items>
+                            <v-btn>
+                                <v-list-item-title class="white--text">
+                                    OAI-PMH
+                                </v-list-item-title>
+                            </v-btn>
+                        </v-toolbar-items>
+                    </template>
+                    <v-list-item-group>
+                        <v-list-item
+                            v-for="link in oai_menu"
+                            :key="link.text"
+                            link
+                            :to="link.path"
+                            class="primary ml-3"
+                            style="left: 18px"
+                        >
+                            <v-list-item-content>
+                                <v-list-item-title class="white--text">{{
+                                    link.text
+                                }}</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-list-item-group>
+                </v-list-group>
+                <v-divider vertical></v-divider>
+            </v-toolbar-items>
+        </v-toolbar>
     </div>
 </template>
 
