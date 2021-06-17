@@ -1,5 +1,56 @@
 <template>
-    <div>
+    <nav>
+        <v-app-bar color="primary" clipped-left dark>
+            <v-app-bar-nav-icon
+                @click.stop="drawer = !drawer"
+                class="hidden-md-and-up"
+                aria-label="Menu"
+            />
+
+            <v-btn
+                dark
+                active-class="no-active"
+                class="hidden-sm-and-down"
+                text
+                tile
+                to="/"
+            >
+                <v-list-item-avatar>
+                    <img
+                        :src="require('@/assets/logos/logo.png')"
+                        alt="cenoteando logo"
+                    />
+                </v-list-item-avatar>
+
+                CENOTEANDO
+            </v-btn>
+            <v-spacer></v-spacer>
+
+            <v-btn
+                v-on="on"
+                text
+                dark
+                v-for="link in links"
+                :key="link.text"
+                link
+                :to="link.path"
+            >
+                {{ link.text }}
+                <v-icon>fas fa-file-alt</v-icon>
+            </v-btn>
+
+            <v-btn
+                v-on="on"
+                text
+                dark
+                link
+                :href="'https://www.cenoteando.mx/'"
+            >
+                CENOTEANDO.MX
+                <v-icon class="white--text"> mdi-exit-to-app </v-icon>
+            </v-btn>
+        </v-app-bar>
+
         <v-navigation-drawer
             v-model="drawer"
             app
@@ -92,99 +143,7 @@
                 </v-list-item>
             </v-list>
         </v-navigation-drawer>
-        <!-- TODO: Improvements are needed (use v-list and v-menu?) -->
-        <v-toolbar
-            style="display: flex, justify-content: space-between"
-            app
-            color="primary"
-            dark
-            clipped-left
-            elevate-on-scroll
-        >
-            <div style="flex: 1 1 auto">
-                <v-app-bar-nav-icon
-                    @click.stop="drawer = !drawer"
-                    class="hidden-md-and-up"
-                    aria-label="Menu"
-                    :width="18"
-                ></v-app-bar-nav-icon>
-                <v-app-bar-title>
-                    <v-btn
-                        class="hidden-sm-and-down"
-                        style="left: 0px"
-                        plain
-                        block
-                        elevation="0"
-                        to="/"
-                    >
-                        <v-img
-                            alt="Cenoteando Logo"
-                            class="shrink mr-2"
-                            contain
-                            :src="require('@/assets/logos/logo.png')"
-                            transition="scale-transition"
-                            width="40"
-                        />
-                        <span>Cenoteando</span>
-                    </v-btn>
-                </v-app-bar-title>
-            </div>
-
-            <v-list-item to="/" @click="drawer = false"> </v-list-item>
-            <v-toolbar-items
-                v-for="link in links"
-                :key="link.text"
-                link
-                :to="link.path"
-                style="left: 18px"
-                class="hidden-sm-and-down"
-            >
-                <v-btn
-                    flat
-                    v-for="link in links"
-                    :key="link.title"
-                    :to="link.path"
-                >
-                    <v-toolbar-title class="white--text">{{
-                        link.text
-                    }}</v-toolbar-title>
-                </v-btn>
-                <v-btn flat link :href="'https://www.cenoteando.mx/'">
-                    <v-toolbar-title class="white--text">
-                        CENOTEANDO.MX
-                    </v-toolbar-title>
-                </v-btn>
-                <v-list-group :value="false">
-                    <template v-slot:activator>
-                        <v-toolbar-items>
-                            <v-btn>
-                                <v-list-item-title class="white--text">
-                                    OAI-PMH
-                                </v-list-item-title>
-                            </v-btn>
-                        </v-toolbar-items>
-                    </template>
-                    <v-list-item-group>
-                        <v-list-item
-                            v-for="link in oai_menu"
-                            :key="link.text"
-                            link
-                            :to="link.path"
-                            class="primary ml-3"
-                            style="left: 18px"
-                        >
-                            <v-list-item-content>
-                                <v-list-item-title class="white--text">{{
-                                    link.text
-                                }}</v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-list-item-group>
-                </v-list-group>
-                <v-divider vertical></v-divider>
-            </v-toolbar-items>
-        </v-toolbar>
-    </div>
+    </nav>
 </template>
 
 <script lang="ts">
