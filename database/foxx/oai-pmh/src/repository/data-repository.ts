@@ -64,6 +64,7 @@ export enum SETS {
 export interface Identifier {
     _id: string;
     updatedAt: string;
+    createdAt: string;
 }
 
 export interface Contributor {
@@ -89,12 +90,13 @@ export interface Record extends Identifier {
 type CenoteData = {
     _id: string;
     updatedAt: string;
+    createdAt: string;
     name: string;
     geoLocationPoint: [number, number]; // [lon, lat]
 };
 
 function createRecord(cenote_data: CenoteData): Record {
-    // TODO: Ideally store this in the database and retrieve here
+    // TODO: Store this in the database and retrieve here
     function get_contributors() {
         return [
             {
@@ -173,7 +175,7 @@ function createRecord(cenote_data: CenoteData): Record {
     return {
         publisher: 'Cenoteando, Facultad de Ciencias, UNAM (cenoteando.mx)',
         publicationYear: '2021',
-        date: new Date().toString(),
+        date: new Date().toISOString(),
         description:
             'Registro de informacion general multidisciplinaria de cenotes de la peninsula de yucatan, proveniente de la base de datos de cenoteando.mx',
         creatorName: 'Fernando Nuno Dias Marques Simoes',
@@ -184,6 +186,7 @@ function createRecord(cenote_data: CenoteData): Record {
         geoLocationPoint: cenote_data.geoLocationPoint.reverse().join(' '),
         title: cenote_data.name,
         updatedAt: cenote_data.updatedAt,
+        createdAt: cenote_data.updatedAt,
     };
 }
 
@@ -238,6 +241,7 @@ export function factory(options = {}): DataRepository {
                     '/' +
                     cenote._key,
                 updatedAt: cenote.properties.updatedAt,
+                createdAt: cenote.properties.createdAt,
                 name: cenote.properties.name,
                 geoLocationPoint: cenote.geometry.coordinates,
             });
@@ -298,7 +302,7 @@ export function factory(options = {}): DataRepository {
          *        resumptionToken (not supported))
          * @returns {any} an array of {@link Record}
          */
-        // @ts-ignore TODO: Implement this (including each parameter)
+        // @ts-ignore TODO: Implement parameters
         getRecords: (parameters: ListParameters): Record[] => {
             const cenotes = Cenotes.find({
                 filter: { 'properties.touristic': true },
@@ -312,6 +316,7 @@ export function factory(options = {}): DataRepository {
                         Cenotes._col.name +
                         '/' +
                         cenote._key,
+                    createdAt: cenote.properties.createdAt,
                     updatedAt: cenote.properties.updatedAt,
                     name: cenote.properties.name,
                     geoLocationPoint: cenote.geometry.coordinates,

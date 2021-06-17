@@ -29,20 +29,20 @@ import {
 } from '../core/core-oai-provider';
 import { ProviderConfiguration } from '../core/oai-service';
 
-// TODO: Get config from process.env.* (or dynamically where possible)
-// Motivation: Apps sometimes store config as constants in the code. This is a violation of twelve-factor, which
-// requires strict separation of config from code. Config varies substantially across deploys, code does not. (...)
-// In a twelve-factor app, env vars are granular controls, each fully orthogonal to other env vars.
+// TODO: Get config from process.env.* (or dynamically for earliestDatestamp and/or baseURL and port)
+//  Motivation: Apps sometimes store config as constants in the code. This is a violation of twelve-factor, which
+//  requires strict separation of config from code. Config varies substantially across deploys, code does not. (...)
+//  In a twelve-factor app, env vars are granular controls, each fully orthogonal to other env vars.
 
 /**
  * module configuration.
  */
 export class Configuration implements ProviderConfiguration {
+    public protocolVersion = '2.0';
     public repositoryName = 'Cenoteando';
     public baseURL = 'https://cenoteando.org/oai/request';
-    public protocolVersion = '2.0';
     public adminEmail = 'cenoteando@gmail.com';
-    public port = 0;
+    public port = 80;
     public description = 'Cenote information repository';
     public deletedRecord: string = DELETED_RECORDS_SUPPORT.NO;
     public granularity: string = HARVESTING_GRANULARITY.DATETIME;

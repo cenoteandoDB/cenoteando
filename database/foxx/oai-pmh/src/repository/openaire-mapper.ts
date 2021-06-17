@@ -7,11 +7,11 @@ export class OpenaireMapper implements ProviderDCMapper {
     /**
      * The Universal Coordinated Time (UTC) date needs to be modified
      * to match the local timezone.
-     * @param record the raw data returned by the mongo dao query
+     * @param date_str the string representation of a date to convert
      * @returns {string}
      */
-    private static setTimeZoneOffset(record: any): string {
-        const date = new Date(record.updatedAt);
+    private static setTimeZoneOffset(date_str: string): string {
+        const date = new Date(date_str);
         const timeZoneCorrection = new Date(
             date.getTime() + date.getTimezoneOffset() * -60000,
         );
@@ -47,13 +47,13 @@ export class OpenaireMapper implements ProviderDCMapper {
     }
 
     private static createItemRecord(record: Record): XmlObject {
-        const updatedAt: string = this.setTimeZoneOffset(record);
+        const date: string = this.setTimeZoneOffset(record.date);
         const header: XmlObject = {
             header: [
                 {
                     identifier: record._id,
                 },
-                { datestamp: updatedAt },
+                { datestamp: date },
                 { setSpec: 'openaire_data' },
             ],
         };
@@ -148,7 +148,18 @@ export class OpenaireMapper implements ProviderDCMapper {
 
         const dates: XmlObject = {
             dates: [
-                { date: [{ _attr: { dateType: 'Created' } }, record.date] },
+                {
+                    date: [
+                        { _attr: { dateType: 'Created' } },
+                        this.setTimeZoneOffset(record.createdAt),
+                    ],
+                },
+                {
+                    date: [
+                        { _attr: { dateType: 'Updated' } },
+                        this.setTimeZoneOffset(record.updatedAt),
+                    ],
+                },
             ],
         };
 
@@ -224,8 +235,7 @@ export class OpenaireMapper implements ProviderDCMapper {
                             oai_datacite: [
                                 {
                                     _attr: {
-                                        xmlns:
-                                            'http://schema.datacite.org/oai/oai-1.1/',
+                                        xmlns: 'http://schema.datacite.org/oai/oai-1.1/',
                                         'xmlns:xsi':
                                             'http://www.w3.org/2001/XMLSchema-instance',
                                         'xsi:schemaLocation':
@@ -241,8 +251,7 @@ export class OpenaireMapper implements ProviderDCMapper {
                                             resource: [
                                                 {
                                                     _attr: {
-                                                        xmlns:
-                                                            'http://namespace.openaire.eu/schema/oaire/',
+                                                        xmlns: 'http://namespace.openaire.eu/schema/oaire/',
                                                         'xsi:schemaLocation':
                                                             'http://www.openarchives.org/OAI/2.0/oai_dc/ ' +
                                                             '\nhttps://www.openaire.eu/schema/repo-lit/4.0/openaire.xsd',
@@ -318,9 +327,9 @@ export class OpenaireMapper implements ProviderDCMapper {
         };
 
         for (const record of records) {
-            const updatedAt: string = OpenaireMapper.setTimeZoneOffset(record);
+            const date: string = OpenaireMapper.setTimeZoneOffset(record.date);
             const item = {
-                header: [{ identifier: record._id }, { datestamp: updatedAt }],
+                header: [{ identifier: record._id }, { datestamp: date }],
             };
 
             list.push(item);
