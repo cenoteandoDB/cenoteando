@@ -7,6 +7,7 @@
                 aria-label="Menu"
             />
 
+            <!-- Start desktop section -->
             <v-btn
                 dark
                 active-class="no-active"
@@ -27,7 +28,6 @@
             <v-spacer></v-spacer>
 
             <v-btn
-                v-on="on"
                 text
                 dark
                 v-for="link in links"
@@ -40,10 +40,10 @@
                 <v-icon>fas fa-file-alt</v-icon>
             </v-btn>
 
-            <v-menu offset-y open-on-hover>
+            <v-menu offset-y open-on-hover dark>
                 <template v-slot:activator="{ on }">
-                    <v-btn v-on="on" text dark class="hidden-sm-and-down">
-                        <v-icon class="white--text hidden-sm-and-down">
+                    <v-btn v-on="on" text class="hidden-sm-and-down">
+                        <v-icon class="hidden-sm-and-down">
                             mdi-source-branch
                         </v-icon>
 
@@ -59,10 +59,10 @@
                         class="primary"
                     >
                         <v-list-item-action>
-                            <v-icon class="white--text">{{ link.icon }}</v-icon>
+                            <v-icon>{{ link.icon }}</v-icon>
                         </v-list-item-action>
                         <v-list-item-content>
-                            <v-list-item-title class="white--text">{{
+                            <v-list-item-title>{{
                                 link.text
                             }}</v-list-item-title>
                         </v-list-item-content>
@@ -71,7 +71,6 @@
             </v-menu>
 
             <v-btn
-                v-on="on"
                 text
                 dark
                 link
@@ -80,13 +79,16 @@
                 class="hidden-sm-and-down"
             >
                 CENOTEANDO.MX
-                <v-icon class="white--text pl-3"> mdi-exit-to-app </v-icon>
+                <v-icon class="pl-3"> mdi-exit-to-app </v-icon>
             </v-btn>
+            <!-- End desktop section -->
         </v-app-bar>
 
+        <!-- Start mobile section -->
         <v-navigation-drawer
             v-model="drawer"
             app
+            dark
             class="primary hidden-md-and-up"
             :width="240"
         >
@@ -99,7 +101,7 @@
                         />
                     </v-list-item-avatar>
                     <v-list-item-content>
-                        <v-list-item-title class="text-h6 white--text">
+                        <v-list-item-title class="text-h6">
                             CENOTEANDO
                         </v-list-item-title>
                     </v-list-item-content>
@@ -113,12 +115,10 @@
                     style="left: 18px"
                 >
                     <v-list-item-action>
-                        <v-icon class="white--text">{{ link.icon }}</v-icon>
+                        <v-icon>{{ link.icon }}</v-icon>
                     </v-list-item-action>
                     <v-list-item-content>
-                        <v-list-item-title class="white--text">{{
-                            link.text
-                        }}</v-list-item-title>
+                        <v-list-item-title>{{ link.text }}</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
 
@@ -126,14 +126,10 @@
                     <template v-slot:activator>
                         <v-list-item>
                             <v-list-item-action>
-                                <v-icon class="white--text">
-                                    mdi-source-branch
-                                </v-icon>
+                                <v-icon> mdi-source-branch </v-icon>
                             </v-list-item-action>
                             <v-list-item-content>
-                                <v-list-item-title class="white--text">
-                                    OAI-PMH
-                                </v-list-item-title>
+                                <v-list-item-title> OAI-PMH </v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
                     </template>
@@ -147,12 +143,10 @@
                             style="left: 18px"
                         >
                             <v-list-item-action>
-                                <v-icon class="white--text">{{
-                                    link.icon
-                                }}</v-icon>
+                                <v-icon>{{ link.icon }}</v-icon>
                             </v-list-item-action>
                             <v-list-item-content>
-                                <v-list-item-title class="white--text">{{
+                                <v-list-item-title>{{
                                     link.text
                                 }}</v-list-item-title>
                             </v-list-item-content>
@@ -167,16 +161,15 @@
                     style="left: 18px"
                 >
                     <v-list-item-action>
-                        <v-icon class="white--text"> mdi-exit-to-app </v-icon>
+                        <v-icon> mdi-exit-to-app </v-icon>
                     </v-list-item-action>
                     <v-list-item-content>
-                        <v-list-item-title class="white--text">
-                            CENOTEANDO.MX
-                        </v-list-item-title>
+                        <v-list-item-title> CENOTEANDO.MX </v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
             </v-list>
         </v-navigation-drawer>
+        <!-- End mobile section -->
     </nav>
 </template>
 
@@ -186,7 +179,13 @@ import { Component, Vue } from 'vue-property-decorator';
 @Component
 export default class NavBar extends Vue {
     name = 'NavBar';
-    drawer = false;
+    private drawer_ = false;
+    get drawer(): boolean {
+        return this.drawer_ && this.$vuetify.breakpoint.smAndDown;
+    }
+    set drawer(val: boolean) {
+        this.drawer_ = val && this.$vuetify.breakpoint.smAndDown;
+    }
 
     links = [{ icon: 'mdi-map', text: 'MAP', path: '/map' }];
     oai_menu = [
@@ -206,10 +205,6 @@ export default class NavBar extends Vue {
             path: '/oai-pmh/list-records',
         },
     ];
-
-    get isOai(): boolean {
-        return this.$route.path.startsWith('/oai-pmh');
-    }
 }
 </script>
 
