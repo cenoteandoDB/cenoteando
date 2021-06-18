@@ -42,7 +42,7 @@
 
             <v-menu offset-y open-on-hover>
                 <template v-slot:activator="{ on }">
-                    <v-btn v-on="on" text dark>
+                    <v-btn v-on="on" text dark class="hidden-sm-and-down">
                         <v-icon class="white--text hidden-sm-and-down">
                             mdi-source-branch
                         </v-icon>
