@@ -15,6 +15,7 @@ interface CenoteComment {
 }
 
 export default class CenoteDTO implements Feature {
+    _key!: string;
     geometry!: Geometry;
     properties!: {
         type: string;
@@ -32,6 +33,7 @@ export default class CenoteDTO implements Feature {
 
     constructor(jsonObj?: CenoteDTO) {
         if (jsonObj) {
+            this._key = jsonObj._key;
             this.geometry = jsonObj.geometry;
             this.properties = jsonObj.properties;
             this.type = jsonObj.type;

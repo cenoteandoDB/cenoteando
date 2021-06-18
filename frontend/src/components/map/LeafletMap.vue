@@ -32,11 +32,16 @@
                     <label>State:{{ cenote.properties.state }} </label>
                     <v-divider dark></v-divider>
 
-                    <router-link to="/cenote/" tag="v-btn">
-                        <v-btn x-small class="ma-1" color="primary" plain>
-                            More Info...
-                        </v-btn>
-                    </router-link>
+                    <v-btn
+                        :to="'/cenote/' + cenote._key"
+                        x-small
+                        class="ma-1"
+                        color="primary"
+                        plain
+                    >
+                        More Info...
+                    </v-btn>
+
                     <v-divider dark></v-divider>
                 </l-popup>
             </l-circle-marker>
