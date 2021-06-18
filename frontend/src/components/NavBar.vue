@@ -48,7 +48,7 @@
                         OAI-PMH
                     </v-btn>
                 </template>
-                <v-list>
+                <v-list dense>
                     <v-list-item
                         v-for="link in oai_menu"
                         :key="link.text"
@@ -194,7 +194,7 @@ export default class NavBar extends Vue {
         {
             icon: 'mdi-magnify',
             text: 'GET RECORD',
-            path: 'oai-pmh/get-record',
+            path: '/oai-pmh/get-record',
         },
         {
             icon: 'mdi-view-list',
