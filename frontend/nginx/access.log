@@ -193,3 +193,8 @@
 172.19.0.1 - - [18/Jun/2021:12:05:01 +0000] "GET /api/cenotes HTTP/1.1" 200 4746 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36"
 =======
 >>>>>>> bb4d648cf17ef894fa5ba2c7062e4e903a7a6d37
+172.18.0.1 - - [18/Jun/2021:13:55:48 +0000] "GET /oai/request?verb=Identify HTTP/1.1" 200 414 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36"
+172.18.0.1 - - [18/Jun/2021:13:55:50 +0000] "GET /oai/request?verb=GetRecord&metadataPrefix=oai_datacite&identifier=oai:cenoteando.org:Cenotes/1 HTTP/1.1" 200 1588 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36"
+172.18.0.1 - - [18/Jun/2021:13:55:51 +0000] "GET /oai/request?verb=ListRecords&metadataPrefix=oai_datacite HTTP/1.1" 200 9895 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36"
+172.18.0.1 - - [18/Jun/2021:13:55:53 +0000] "GET /api/cenotes/bounds HTTP/1.1" 200 84 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36"
+172.18.0.1 - - [18/Jun/2021:13:55:53 +0000] "GET /api/cenotes HTTP/1.1" 200 4746 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36"
