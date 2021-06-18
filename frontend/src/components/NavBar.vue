@@ -43,12 +43,14 @@
             <v-menu offset-y open-on-hover>
                 <template v-slot:activator="{ on }">
                     <v-btn v-on="on" text dark>
-                        <v-icon class="white--text"> mdi-source-branch </v-icon>
+                        <v-icon class="white--text hidden-sm-and-down">
+                            mdi-source-branch
+                        </v-icon>
 
                         OAI-PMH
                     </v-btn>
                 </template>
-                <v-list dense>
+                <v-list dense class="pa-0">
                     <v-list-item
                         v-for="link in oai_menu"
                         :key="link.text"
