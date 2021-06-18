@@ -17,17 +17,20 @@
                 <!-- TODO: :icon="marker_icon" -->
                 <!-- TODO: Add content + "more info." link to popup -->
                 <l-popup>
-                    <label>Name:</label>
-                    <h4>{{ cenote.properties.name }}</h4>
+                    <label>Name: {{ cenote.properties.name }}</label>
 
-                    <label>Type:</label>
-                    <h4>{{ cenote.properties.type }}</h4>
+                    <v-divider dark></v-divider>
 
-                    <label>Touristic:</label>
-                    <h4>{{ cenote.properties.touristic }}</h4>
+                    <label>Type: {{ cenote.properties.type }}</label>
 
-                    <label>State:</label>
-                    <h4>{{ cenote.properties.state }}</h4>
+                    <v-divider dark></v-divider>
+
+                    <label>Touristic: {{ cenote.properties.touristic }}</label>
+
+                    <v-divider dark></v-divider>
+
+                    <label>State:{{ cenote.properties.state }} </label>
+                    <v-divider dark></v-divider>
                 </l-popup>
             </l-circle-marker>
         </l-marker-cluster>
