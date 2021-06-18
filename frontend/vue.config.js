@@ -1,6 +1,7 @@
 module.exports = {
     transpileDependencies: ['vuetify'],
     pwa: {
+        name: 'Cenoteando',
         themeColor: '#1976D2',
         msTileColor: '#000000',
         iconPaths: {
