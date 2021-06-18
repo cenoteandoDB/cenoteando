@@ -48,13 +48,33 @@
                                         .reverse()
                                 "
                             >
-                                <l-popup
-                                    :content="cenote.properties.name"
-                                    :options="{
-                                        keepInView: true,
-                                        closeButton: false,
-                                    }"
-                                ></l-popup>
+                                <l-popup>
+                                    <label
+                                        >Name:
+                                        {{ cenote.properties.name }}</label
+                                    >
+
+                                    <v-divider dark></v-divider>
+
+                                    <label
+                                        >Type:
+                                        {{ cenote.properties.type }}</label
+                                    >
+
+                                    <v-divider dark></v-divider>
+
+                                    <label
+                                        >Touristic:
+                                        {{ cenote.properties.touristic }}</label
+                                    >
+
+                                    <v-divider dark></v-divider>
+
+                                    <label
+                                        >State:{{ cenote.properties.state }}
+                                    </label>
+                                    <v-divider dark></v-divider>
+                                </l-popup>
                             </l-circle-marker>
                         </l-map>
                     </v-col>
