@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 172.19.0.1 - - [16/Jun/2021:14:52:09 +0000] "GET / HTTP/1.1" 200 816 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.106 Safari/537.36"
 172.19.0.1 - - [16/Jun/2021:14:52:09 +0000] "GET /js/app.js HTTP/1.1" 200 302433 "http://localhost/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.106 Safari/537.36"
 172.19.0.1 - - [16/Jun/2021:14:52:09 +0000] "GET /js/chunk-vendors.js HTTP/1.1" 200 3618034 "http://localhost/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.106 Safari/537.36"
@@ -190,3 +191,5 @@
 172.19.0.1 - - [18/Jun/2021:12:04:48 +0000] "GET /api/cenotes HTTP/1.1" 200 4746 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36"
 172.19.0.1 - - [18/Jun/2021:12:05:01 +0000] "GET /api/cenotes/bounds HTTP/1.1" 200 84 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36"
 172.19.0.1 - - [18/Jun/2021:12:05:01 +0000] "GET /api/cenotes HTTP/1.1" 200 4746 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36"
+=======
+>>>>>>> bb4d648cf17ef894fa5ba2c7062e4e903a7a6d37
