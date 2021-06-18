@@ -76,6 +76,7 @@
                 dark
                 link
                 :href="'https://www.cenoteando.mx/'"
+                target="_blank"
                 class="hidden-sm-and-down"
             >
                 CENOTEANDO.MX
@@ -162,6 +163,7 @@
                 <v-list-item
                     link
                     :href="'https://www.cenoteando.mx/'"
+                    target="_blank"
                     style="left: 18px"
                 >
                     <v-list-item-action>
