@@ -39,39 +39,34 @@
                 {{ link.text }}
                 <v-icon>fas fa-file-alt</v-icon>
             </v-btn>
-            <v-toolbar-items class="hidden-sm-and-down" hide-details>
-                <v-menu offset-y open-on-hover>
-                    <template v-slot:activator="{ on }">
-                        <v-btn v-on="on" text dark>
-                            <v-icon class="white--text">
-                                mdi-source-branch
-                            </v-icon>
 
-                            OAI-PMH
-                        </v-btn>
-                    </template>
-                    <v-list dense>
-                        <v-list-item
-                            v-for="link in oai_menu"
-                            :key="link.text"
-                            link
-                            :to="link.path"
-                            class="primary"
-                        >
-                            <v-list-item-action>
-                                <v-icon class="white--text">{{
-                                    link.icon
-                                }}</v-icon>
-                            </v-list-item-action>
-                            <v-list-item-content>
-                                <v-list-item-title class="white--text">{{
-                                    link.text
-                                }}</v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-list>
-                </v-menu>
-            </v-toolbar-items>
+            <v-menu offset-y open-on-hover>
+                <template v-slot:activator="{ on }">
+                    <v-btn v-on="on" text dark>
+                        <v-icon class="white--text"> mdi-source-branch </v-icon>
+
+                        OAI-PMH
+                    </v-btn>
+                </template>
+                <v-list>
+                    <v-list-item
+                        v-for="link in oai_menu"
+                        :key="link.text"
+                        link
+                        :to="link.path"
+                        class="primary"
+                    >
+                        <v-list-item-action>
+                            <v-icon class="white--text">{{ link.icon }}</v-icon>
+                        </v-list-item-action>
+                        <v-list-item-content>
+                            <v-list-item-title class="white--text">{{
+                                link.text
+                            }}</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
 
             <v-btn
                 v-on="on"
@@ -82,7 +77,7 @@
                 class="hidden-sm-and-down"
             >
                 CENOTEANDO.MX
-                <v-icon class="white--text"> mdi-exit-to-app </v-icon>
+                <v-icon class="white--text pl-3"> mdi-exit-to-app </v-icon>
             </v-btn>
         </v-app-bar>
 
