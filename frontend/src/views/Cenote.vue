@@ -1,28 +1,28 @@
 <template>
     <v-container v-if="cenote">
         <v-row>
+            <v-col>
+                <h3>
+                    {{ cenote.properties.name }}
+                    <small>({{ cenote.properties.type }})</small>
+                </h3>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col>
+                <v-rating
+                    :value="
+                        cenote.properties.social
+                            ? cenote.properties.social.rating
+                            : null
+                    "
+                    readonly
+                >
+                </v-rating>
+            </v-col>
+        </v-row>
+        <v-row>
             <v-col cols="12" md="6">
-                <v-row>
-                    <v-col>
-                        <h3>
-                            {{ cenote.properties.name }}
-                            <small>({{ cenote.properties.type }})</small>
-                        </h3>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col>
-                        <v-rating
-                            :value="
-                                cenote.properties.social
-                                    ? cenote.properties.social.rating
-                                    : null
-                            "
-                            readonly
-                        >
-                        </v-rating>
-                    </v-col>
-                </v-row>
                 <v-row>
                     <v-col>
                         <l-map
@@ -64,18 +64,13 @@
                 </v-row>
             </v-col>
             <v-col cols="12" md="6">
-                <v-sheet elevation="2">
+                <v-sheet elevation="2" style="min-height: 500px">
                     <v-tabs>
                         <v-tab>General</v-tab>
                         <v-tab>Calculated Variables</v-tab>
-                        <v-tab>Comments</v-tab>
-                        <v-tab
-                            v-for="i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]"
-                            :key="i"
-                        >
-                            Theme {{ i }}
-                        </v-tab>
-                        <v-tab>Bibliography</v-tab>
+                        <v-tab>Social</v-tab>
+                        <v-tab>Thematic Data</v-tab>
+                        <v-tab>Sources</v-tab>
                     </v-tabs>
                 </v-sheet>
             </v-col>

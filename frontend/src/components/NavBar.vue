@@ -29,17 +29,14 @@
                 :to="link.path"
                 class="hidden-sm-and-down"
             >
+                <v-icon>{{ link.icon }}</v-icon>
                 {{ link.text }}
-                <v-icon>fas fa-file-alt</v-icon>
             </v-btn>
 
             <v-menu offset-y open-on-hover dark>
                 <template v-slot:activator="{ on }">
                     <v-btn v-on="on" text class="hidden-sm-and-down">
-                        <v-icon class="hidden-sm-and-down">
-                            mdi-source-branch
-                        </v-icon>
-
+                        <v-icon> mdi-source-branch </v-icon>
                         OAI-PMH
                     </v-btn>
                 </template>

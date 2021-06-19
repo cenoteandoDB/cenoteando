@@ -8,10 +8,15 @@
             <br />
             <label>
                 Touristic:
-                <v-icon v-if="cenote.properties.touristic" dark color="green">
+                <v-icon
+                    v-if="cenote.properties.touristic"
+                    dark
+                    x-small
+                    color="green"
+                >
                     mdi-checkbox-marked
                 </v-icon>
-                <v-icon v-else dark x-small color="green">mdi-close-box</v-icon>
+                <v-icon v-else dark x-small color="red">mdi-close-box</v-icon>
             </label>
             <br v-if="more" />
             <v-btn
