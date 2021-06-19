@@ -39,43 +39,11 @@
                                 :url="url"
                                 :attribution="attribution"
                             ></l-tile-layer>
-                            <l-circle-marker
+                            <map-marker
                                 ref="marker"
-                                :key="cenote.properties.code"
-                                :lat-lng="
-                                    cenote.geometry.coordinates
-                                        .slice()
-                                        .reverse()
-                                "
-                            >
-                                <l-popup>
-                                    <label
-                                        >Name:
-                                        {{ cenote.properties.name }}</label
-                                    >
-
-                                    <v-divider dark></v-divider>
-
-                                    <label
-                                        >Type:
-                                        {{ cenote.properties.type }}</label
-                                    >
-
-                                    <v-divider dark></v-divider>
-
-                                    <label
-                                        >Touristic:
-                                        {{ cenote.properties.touristic }}</label
-                                    >
-
-                                    <v-divider dark></v-divider>
-
-                                    <label
-                                        >State:{{ cenote.properties.state }}
-                                    </label>
-                                    <v-divider dark></v-divider>
-                                </l-popup>
-                            </l-circle-marker>
+                                :cenote="cenote"
+                                :more="false"
+                            ></map-marker>
                         </l-map>
                     </v-col>
                 </v-row>
@@ -117,17 +85,18 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { LMap, LTileLayer, LCircleMarker, LPopup } from 'vue2-leaflet';
+import { LMap, LTileLayer, LCircleMarker } from 'vue2-leaflet';
 
 import RemoteServices from '@/services/RemoteServices';
 import CenoteDTO from '@/models/CenoteDTO';
+import MapMarker from '@/components/map/MapMarker.vue';
 
 @Component({
     components: {
         LMap,
         LTileLayer,
         LCircleMarker,
-        LPopup,
+        MapMarker,
     },
 })
 export default class Cenote extends Vue {
