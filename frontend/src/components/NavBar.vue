@@ -21,22 +21,29 @@
             <v-spacer></v-spacer>
 
             <v-btn
-                text
-                dark
                 v-for="link in links"
                 :key="link.text"
-                link
                 :to="link.path"
+                text
+                link
+                dark
                 class="hidden-sm-and-down"
             >
                 <v-icon>{{ link.icon }}</v-icon>
                 {{ link.text }}
             </v-btn>
 
-            <v-menu offset-y open-on-hover dark>
+            <v-menu offset-y open-on-hover>
                 <template v-slot:activator="{ on }">
-                    <v-btn v-on="on" text class="hidden-sm-and-down">
-                        <v-icon> mdi-source-branch </v-icon>
+                    <v-btn
+                        v-on="on"
+                        to="/oai-pmh"
+                        text
+                        link
+                        dark
+                        class="hidden-sm-and-down"
+                    >
+                        <v-icon>mdi-source-branch</v-icon>
                         OAI-PMH
                     </v-btn>
                 </template>
@@ -44,9 +51,9 @@
                     <v-list-item
                         v-for="link in oai_menu"
                         :key="link.text"
-                        link
                         :to="link.path"
-                        class="primary"
+                        link
+                        color="primary"
                     >
                         <v-list-item-action>
                             <v-icon>{{ link.icon }}</v-icon>
@@ -83,7 +90,7 @@
             class="primary hidden-md-and-up"
             :width="240"
         >
-            <v-list>
+            <v-list nav>
                 <v-list-item to="/" @click="drawer = false">
                     <v-list-item-avatar>
                         <img
@@ -101,11 +108,10 @@
                 <v-list-item
                     v-for="link in links"
                     :key="link.text"
-                    link
                     :to="link.path"
-                    style="left: 18px"
+                    dark
                 >
-                    <v-list-item-action>
+                    <v-list-item-action class="pl-2">
                         <v-icon>{{ link.icon }}</v-icon>
                     </v-list-item-action>
                     <v-list-item-content>
@@ -113,7 +119,7 @@
                     </v-list-item-content>
                 </v-list-item>
 
-                <v-list-group :value="false">
+                <v-list-group>
                     <template v-slot:activator>
                         <v-list-item>
                             <v-list-item-action>
@@ -128,10 +134,9 @@
                         <v-list-item
                             v-for="link in oai_menu"
                             :key="link.text"
-                            link
                             :to="link.path"
-                            class="primary ml-3"
-                            style="left: 18px"
+                            class="pl-6"
+                            color="white"
                         >
                             <v-list-item-action>
                                 <v-icon>{{ link.icon }}</v-icon>
@@ -149,9 +154,8 @@
                     link
                     :href="'https://www.cenoteando.mx/'"
                     target="_blank"
-                    style="left: 18px"
                 >
-                    <v-list-item-action>
+                    <v-list-item-action class="pl-2">
                         <v-icon> mdi-exit-to-app </v-icon>
                     </v-list-item-action>
                     <v-list-item-content>

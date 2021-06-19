@@ -13,7 +13,7 @@
                 v-for="cenote in cenotes"
                 :key="cenote.properties.code"
                 :cenote="cenote"
-                :more="true"
+                :single="false"
             >
             </map-marker>
         </l-marker-cluster>

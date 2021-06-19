@@ -33,16 +33,14 @@
                                 cenote.geometry.coordinates.slice().reverse()
                             "
                             style="height: 400px"
-                            @ready="$refs.marker.mapObject.openPopup()"
                         >
                             <l-tile-layer
                                 :url="url"
                                 :attribution="attribution"
                             ></l-tile-layer>
                             <map-marker
-                                ref="marker"
                                 :cenote="cenote"
-                                :more="false"
+                                :single="true"
                             ></map-marker>
                         </l-map>
                     </v-col>
@@ -80,6 +78,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import L from 'leaflet';
 import { LMap, LTileLayer, LCircleMarker } from 'vue2-leaflet';
 
 import RemoteServices from '@/services/RemoteServices';
@@ -95,6 +94,7 @@ import MapMarker from '@/components/map/MapMarker.vue';
     },
 })
 export default class Cenote extends Vue {
+    marker: L.CircleMarker | null = null;
     cenote: CenoteDTO | null = null;
     zoom = 12;
     url = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';

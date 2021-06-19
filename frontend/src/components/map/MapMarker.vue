@@ -1,6 +1,9 @@
 <template>
     <!-- TODO: :icon="marker_icon[cenote.properties.type]" -->
-    <l-circle-marker :lat-lng="cenote.geometry.coordinates.slice().reverse()">
+    <l-circle-marker
+        ref="marker"
+        :lat-lng="cenote.geometry.coordinates.slice().reverse()"
+    >
         <l-popup>
             <label>Name: {{ cenote.properties.name }}</label>
             <br />
@@ -18,10 +21,10 @@
                 </v-icon>
                 <v-icon v-else dark x-small color="red">mdi-close-box</v-icon>
             </label>
-            <br v-if="more" />
+            <br v-if="!single" />
             <v-btn
                 :to="'/cenote/' + cenote._key"
-                v-if="more"
+                v-if="!single"
                 x-small
                 class="ma-1"
                 color="primary"
@@ -45,10 +48,17 @@ import CenoteDTO from '@/models/CenoteDTO';
     },
     props: {
         cenote: CenoteDTO,
-        more: Boolean,
+        single: Boolean,
     },
 })
-export default class MapMarker extends Vue {}
+export default class MapMarker extends Vue {
+    mounted(): void {
+        this.$nextTick(() => {
+            if (this.$props.single)
+                (this.$refs.marker as LCircleMarker).mapObject.openPopup();
+        });
+    }
+}
 </script>
 
 <style>
