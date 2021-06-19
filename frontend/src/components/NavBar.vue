@@ -8,14 +8,7 @@
             />
 
             <!-- Start desktop section -->
-            <v-btn
-                dark
-                active-class="no-active"
-                class="hidden-sm-and-down"
-                text
-                tile
-                to="/"
-            >
+            <v-btn dark active-class="no-active" text tile to="/">
                 <v-list-item-avatar>
                     <img
                         :src="require('@/assets/logos/logo.png')"
@@ -86,6 +79,7 @@
 
         <!-- Start mobile section -->
         <v-navigation-drawer
+            v-if="drawer && this.$vuetify.breakpoint.smAndDown"
             v-model="drawer"
             app
             dark
@@ -179,20 +173,14 @@ import { Component, Vue } from 'vue-property-decorator';
 @Component
 export default class NavBar extends Vue {
     name = 'NavBar';
-    private drawer_ = false;
-    get drawer(): boolean {
-        return this.drawer_ && this.$vuetify.breakpoint.smAndDown;
-    }
-    set drawer(val: boolean) {
-        this.drawer_ = val && this.$vuetify.breakpoint.smAndDown;
-    }
+    drawer = false;
 
     links = [{ icon: 'mdi-map', text: 'MAP', path: '/map' }];
     oai_menu = [
         {
             icon: 'mdi-account-box-outline',
             text: 'IDENTIFY',
-            path: '/oai-pmh',
+            path: '/oai-pmh/identify',
         },
         {
             icon: 'mdi-magnify',
@@ -213,6 +201,6 @@ export default class NavBar extends Vue {
     opacity: 0 !important;
 }
 nav {
-    z-index: 500;
+    z-index: 10000;
 }
 </style>

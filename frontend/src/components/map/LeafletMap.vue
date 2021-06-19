@@ -9,42 +9,13 @@
     >
         <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
         <l-marker-cluster>
-            <l-circle-marker
+            <map-marker
                 v-for="cenote in cenotes"
                 :key="cenote.properties.code"
-                :lat-lng="cenote.geometry.coordinates.slice().reverse()"
+                :cenote="cenote"
+                :more="true"
             >
-                <!-- TODO: :icon="marker_icon" -->
-                <!-- TODO: Add content + "more info." link to popup -->
-                <l-popup>
-                    <label>Name: {{ cenote.properties.name }}</label>
-
-                    <v-divider dark></v-divider>
-
-                    <label>Type: {{ cenote.properties.type }}</label>
-
-                    <v-divider dark></v-divider>
-
-                    <label>Touristic: {{ cenote.properties.touristic }}</label>
-
-                    <v-divider dark></v-divider>
-
-                    <label>State:{{ cenote.properties.state }} </label>
-                    <v-divider dark></v-divider>
-
-                    <v-btn
-                        :to="'/cenote/' + cenote._key"
-                        x-small
-                        class="ma-1"
-                        color="primary"
-                        plain
-                    >
-                        More Info...
-                    </v-btn>
-
-                    <v-divider dark></v-divider>
-                </l-popup>
-            </l-circle-marker>
+            </map-marker>
         </l-marker-cluster>
     </l-map>
 </template>
@@ -52,20 +23,21 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import L from 'leaflet';
-import { LCircleMarker, LPopup, LMap, LTileLayer, LIcon } from 'vue2-leaflet';
+import { LCircleMarker, LMap, LTileLayer, LIcon } from 'vue2-leaflet';
 import Vue2LeafletMarkerCluster from 'vue2-leaflet-markercluster';
 
 import RemoteServices from '@/services/RemoteServices';
 import CenoteDTO from '@/models/CenoteDTO';
+import MapMarker from '@/components/map/MapMarker.vue';
 
 @Component({
     components: {
         LMap,
         LTileLayer,
         LCircleMarker,
-        LPopup,
         LIcon,
         'l-marker-cluster': Vue2LeafletMarkerCluster,
+        MapMarker,
     },
 })
 export default class LeafletMap extends Vue {
@@ -78,11 +50,6 @@ export default class LeafletMap extends Vue {
     };
     bounds: L.LatLngBounds | null = null;
     cenotes: Array<CenoteDTO> | null = null;
-    marker_icon = L.icon({
-        iconUrl: '@/assets/logos/cenoteando_logo.png',
-        iconSize: [32, 32],
-        iconAnchor: [16, 32],
-    });
 
     async created(): Promise<void> {
         await this.$store.dispatch('loading');
