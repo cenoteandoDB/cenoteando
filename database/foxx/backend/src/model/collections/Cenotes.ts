@@ -1,10 +1,12 @@
 import { Collection, Entities, Joi, Route, RouteArg } from 'type-arango';
-import { Cenote } from '../documents';
+import { Cenote, MeasurementOrFact } from '../documents';
 import { query } from '@arangodb';
 import { QueryOpt } from 'type-arango/dist/types';
+import { MeasurementsOrFacts } from './MeasurementsOrFacts';
 
 @Collection({
     of: Cenote,
+    relations: ['gadm'],
 })
 export class Cenotes extends Entities {
     @Route.GET(
@@ -64,6 +66,21 @@ export class Cenotes extends Entities {
         return Cenotes.findOne(param._key, {
             filter: { 'properties.touristic': true },
         });
+    }
+
+    // TODO: Implement this
+    @Route.GET(
+        ':_key/data/:theme',
+        ['guest'],
+        'Returns detailed cenote data by key and theme',
+    )
+    static GET_DATA({ param }: RouteArg): MeasurementOrFact[] {
+        const q: QueryOpt = {
+            filter: { _from: param._key },
+            sort: ['timestamp DESC'],
+        };
+
+        return MeasurementsOrFacts.find(q);
     }
 
     @Route.GET(
