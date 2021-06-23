@@ -5,8 +5,10 @@
         :lat-lng="cenote.geojson.geometry.coordinates.slice().reverse()"
     >
         <l-popup>
-            <label>Name: {{ cenote.name }}</label>
-            <br />
+            <label class="font-weight-bold text-center">
+                <h2 class="mb-1">{{ cenote.name }}</h2></label
+            >
+
             <label>Type: {{ cenote.type }}</label>
             <br />
             <label>

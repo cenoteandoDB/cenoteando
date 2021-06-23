@@ -1,0 +1,1 @@
+2021/06/22 16:47:11 [error] 33#33: *1 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: localhost, request: "GET /api/cenotes/32 HTTP/1.1", upstream: "http://172.18.0.2:8529/_db/cenoteando/api/cenotes/32", host: "localhost", referrer: "http://localhost:8080/"

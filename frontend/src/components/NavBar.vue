@@ -43,7 +43,7 @@
                         dark
                         class="hidden-sm-and-down"
                     >
-                        <v-icon>mdi-source-branch</v-icon>
+                        <v-icon>mdi-source-branch </v-icon>
                         OAI-PMH
                     </v-btn>
                 </template>
@@ -123,7 +123,7 @@
                     <template v-slot:activator>
                         <v-list-item>
                             <v-list-item-action>
-                                <v-icon> mdi-source-branch </v-icon>
+                                <v-icon> mdi-source-branch</v-icon>
                             </v-list-item-action>
                             <v-list-item-content>
                                 <v-list-item-title> OAI-PMH </v-list-item-title>
