@@ -63,19 +63,35 @@
             </v-col>
             <v-col cols="12" md="6">
                 <v-sheet elevation="2" style="min-height: 500px">
-                    <v-tabs v-model="tab" align-with-title>
-                        <v-tabs-slider color="yellow"></v-tabs-slider>
-
-                        <v-tab v-for="item in items" :key="item">
+                    <v-tabs fixed-tabs v-model="tab">
+                        <v-tabs-slider color="amber darken-3"></v-tabs-slider>
+                        <v-tab
+                            v-for="(item, index) in items"
+                            :class="{ active: currentTab === index }"
+                            @click="currentTab = index"
+                            :key="item"
+                        >
                             {{ item }}
                         </v-tab>
                     </v-tabs>
                     <v-tabs-items v-model="tab">
-                        <v-tab-item v-for="item in items" :key="item">
-                            <v-card flat>
-                                <v-card-text v-text="text"></v-card-text>
-                            </v-card>
-                        </v-tab-item>
+                        <v-card flat>
+                            <div v-show="currentTab === 0">
+                                <v-card-text>Tab0 content</v-card-text>
+                            </div>
+                            <div v-show="currentTab === 1">
+                                <v-card-text>Tab1 content</v-card-text>
+                            </div>
+                            <div v-show="currentTab === 2">
+                                <v-card-text>Tab2 content</v-card-text>
+                            </div>
+                            <div v-show="currentTab === 3">
+                                <v-card-text>Tab3 content</v-card-text>
+                            </div>
+                            <div v-show="currentTab === 4">
+                                <v-card-text>Tab4 content</v-card-text>
+                            </div>
+                        </v-card>
                     </v-tabs-items>
                 </v-sheet>
             </v-col>
@@ -105,6 +121,7 @@ export default class Cenote extends Vue {
     cenote: CenoteDTO | null = null;
     data() {
         return {
+            currentTab: 0,
             tab: null,
             items: [
                 'General',
