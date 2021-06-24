@@ -4,7 +4,8 @@ import router from '@/router';
 import IdentifyDTO from '@/models/oai/IdentifyDTO';
 import { ElementCompact, xml2js } from 'xml-js';
 import CenoteDTO from '@/models/CenoteDTO';
-import L, { GeoJSON } from 'leaflet';
+import L from 'leaflet';
+import { FeatureCollection } from 'geojson';
 
 const httpClient = axios.create();
 httpClient.defaults.timeout = 100000;
@@ -119,13 +120,13 @@ export default class RemoteServices {
     }
 
     // TODO: Get this from database
-    static async getProtectedNaturalAreas(): Promise<GeoJSON> {
+    static async getProtectedNaturalAreas(): Promise<FeatureCollection> {
         return httpClient
             .get(
                 'https://raw.githubusercontent.com/luisyerbes20/yerbaa/main/areas_naturales.json',
             )
             .then((response) => {
-                return new GeoJSON(response.data);
+                return response.data;
             })
             .catch(async (error) => {
                 throw Error(await this.errorMessage(error));

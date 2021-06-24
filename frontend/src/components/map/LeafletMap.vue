@@ -38,7 +38,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import L, { GeoJSON } from 'leaflet';
+import L from 'leaflet';
 import {
     LCircleMarker,
     LMap,
@@ -53,6 +53,7 @@ import Vue2LeafletMarkerCluster from 'vue2-leaflet-markercluster';
 import RemoteServices from '@/services/RemoteServices';
 import CenoteDTO from '@/models/CenoteDTO';
 import MapMarker from '@/components/map/MapMarker.vue';
+import { FeatureCollection } from 'geojson';
 
 @Component({
     components: {
@@ -92,7 +93,7 @@ export default class LeafletMap extends Vue {
                 maxZoom: 20,
                 attribution:
                     '<a href="https://github.com/cyclosm/cyclosm-cartocss-style/releases" title="CyclOSM - Open Bicycle render">CyclOSM</a> | Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        },
+            },
         },
         {
             name: 'Sattelite',
@@ -101,7 +102,7 @@ export default class LeafletMap extends Vue {
             options: {
                 attribution:
                     'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-        },
+            },
         },
         {
             name: 'Topologic',
@@ -111,7 +112,7 @@ export default class LeafletMap extends Vue {
                 maxZoom: 17,
                 attribution:
                     'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)',
-        },
+            },
         },
         /* TODO: Needs api key
         {
@@ -134,7 +135,7 @@ export default class LeafletMap extends Vue {
                 maxZoom: 19,
                 attribution:
                     '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        },
+            },
         },
         {
             name: 'Nat Geo',
@@ -144,7 +145,7 @@ export default class LeafletMap extends Vue {
                 maxZoom: 16,
                 attribution:
                     'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
-        },
+            },
         },
         {
             name: 'Dark',
@@ -155,13 +156,13 @@ export default class LeafletMap extends Vue {
                 maxZoom: 19,
                 attribution:
                     '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-        },
+            },
         },
     ];
 
     bounds: L.LatLngBounds | null = null;
     cenotes: Array<CenoteDTO> | null = null;
-    protectedNaturalAreas: GeoJSON | null = null;
+    protectedNaturalAreas: FeatureCollection | null = null;
 
     async created(): Promise<void> {
         await this.$store.dispatch('loading');
