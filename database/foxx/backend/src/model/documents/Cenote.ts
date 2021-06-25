@@ -9,7 +9,7 @@ import {
     Type,
 } from 'type-arango';
 import { Feature, Geometry } from 'geojson';
-import { GadmDocument, GadmProperties } from './GadmDocument';
+import { GadmDocument } from './GadmDocument';
 
 // TODO: Set role permissions (schema, readers, writers)
 // TODO: Implement getters, setters and helpers
@@ -26,7 +26,7 @@ export class CenoteGeoJSON implements Feature {
     geometry: Geometry;
 
     @Attribute()
-    properties: GadmProperties;
+    properties: {};
 }
 
 export enum Issue {
