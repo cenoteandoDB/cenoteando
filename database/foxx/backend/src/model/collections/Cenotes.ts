@@ -3,6 +3,7 @@ import { Cenote, MeasurementOrFact } from '../documents';
 import { query } from '@arangodb';
 import { QueryOpt } from 'type-arango/dist/types';
 import { MeasurementsOrFacts } from './MeasurementsOrFacts';
+import { Variables } from './Variables';
 
 @Collection({
     of: Cenote,
@@ -68,19 +69,21 @@ export class Cenotes extends Entities {
         });
     }
 
-    // TODO: Implement this
     @Route.GET(
         ':_key/data/:theme',
         ['guest'],
         'Returns detailed cenote data by key and theme',
     )
-    static GET_DATA({ param }: RouteArg): MeasurementOrFact[] {
-        const q: QueryOpt = {
-            filter: { _from: param._key },
-            sort: ['timestamp DESC'],
-        };
-
-        return MeasurementsOrFacts.find(q);
+    static GET_DATA({ param }: RouteArg): MeasurementOrFact<any>[] {
+        // TODO: Test this
+        return query`
+            FOR var IN ${Variables._db}
+                FILTER var.theme == ${param.theme}
+                FOR mof IN ${MeasurementsOrFacts._db}
+                    FILTER mof._from == ${Cenotes.name + '/' + param._key}
+                    FILTER mof._to == var._id
+                    RETURN MERGE(var, { values:  }
+        `.next();
     }
 
     @Route.GET(

@@ -23,23 +23,24 @@ export class Variable extends Entity {
     @Attribute()
     name: string;
 
+    // TODO: Restrict to valid javascript keys
+    // TODO: force unique in theme?
     @Attribute()
-    label: string;
+    field: string;
 
     @Attribute()
     description: string;
 
+    // TODO: Create enum with types: boolean, string, enum, number, number with units (see npm package "safe-units")
     @Attribute()
-    units?: string;
+    type: string;
 
     @Attribute()
-    constant: boolean;
+    timeseries: boolean;
 
+    // TODO: Create enum with public, non_sensitive and sensitive
     @Attribute()
-    sensitive: boolean;
-
-    @Attribute()
-    public: boolean;
+    access_level: boolean;
 
     @Attribute()
     theme: Theme;

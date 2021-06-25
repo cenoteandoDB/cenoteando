@@ -2,18 +2,32 @@ import {
     Attribute,
     Document,
     Entity,
+    Index,
     Nested,
-    OneToMany,
     OneToOne,
     Related,
     Type,
 } from 'type-arango';
-import { GeoJSON } from 'geojson';
+import { Feature, Geometry } from 'geojson';
 import { GadmDocument } from './GadmDocument';
-import { Event } from './Event';
 
 // TODO: Set role permissions (schema, readers, writers)
 // TODO: Implement getters, setters and helpers
+
+@Nested()
+export class CenoteGeoJSON implements Feature {
+    @Attribute()
+    type: 'Feature';
+
+    // TODO: Fix geo index (use geojson mode).
+    //  See https://teambrookvale.com.au/articles/modifying-npm-packages-the-right-way for fixing 'type-arango'
+    @Index({ type: 'geo' })
+    @Attribute()
+    geometry: Geometry;
+
+    @Attribute()
+    properties: {};
+}
 
 export enum Issue {
     GEOTAG_NOT_VERIFIED,
@@ -25,9 +39,9 @@ export class Social {
     total_comments: number;
 
     @Attribute()
-    rating: number;
+    rating?: number;
 
-    @Attribute()
+    // TODO: OneToMany
     comments: Related<Comment>;
 }
 
@@ -52,7 +66,7 @@ export class Cenote extends Entity {
     alternative_names: Array<string>;
 
     @Attribute()
-    geojson: GeoJSON;
+    geojson: CenoteGeoJSON;
 
     @Attribute()
     @OneToOne((type) => GadmDocument)
@@ -60,10 +74,6 @@ export class Cenote extends Entity {
 
     @Attribute()
     social: Social;
-
-    @Attribute()
-    @OneToMany((type) => Event, (Event) => Event.cenote)
-    events: Related<Event>;
 
     @Attribute()
     createdAt: Type.DateInsert;
