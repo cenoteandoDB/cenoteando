@@ -47,6 +47,7 @@
     "eslint-plugin-prettier": "^3.3.1",
     "foxx-cli": "^2.0.0",
     "joi": "^14.3.1",
+    "json2csv": "^5.0.6",
     "prettier": "^2.2.1",
     "type-arango": "^1.3.2",
     "typescript": "^4.2.3"

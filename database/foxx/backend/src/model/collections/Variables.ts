@@ -1,5 +1,7 @@
-import { Collection, Entities } from 'type-arango';
+import { Collection, Entities, Route, RouteArg } from 'type-arango';
 import { Variable } from '../documents';
+import { parse } from 'json2csv';
+import { string } from 'joi';
 
 @Collection({
     of: Variable,
@@ -8,4 +10,21 @@ import { Variable } from '../documents';
         { method: 'LIST', roles: ['guest'] },
     ],
 })
-export class Variables extends Entities {}
+export class Variables extends Entities {
+    @Route.GET(
+        '/variables.csv',
+        ['guest'],
+        'Returns all variables in csv format',
+        {
+            response: {
+                mime: ['text/csv'],
+                schema: string(),
+                status: 'ok',
+            },
+        },
+    )
+    static CSV({ param }: RouteArg): string {
+        let vars = Variables.find();
+        return parse(vars, { eol: '\n' });
+    }
+}
