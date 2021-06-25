@@ -51,7 +51,7 @@ export class Cenotes extends Entities {
     )
     static LIST({ req }: RouteArg): Cenote[] {
         const { offset, limit, sort, order, ...filter } = req.queryParams;
-        filter['properties.touristic'] = true;
+        filter['touristic'] = true;
 
         const q: QueryOpt = {
             filter,
@@ -65,7 +65,7 @@ export class Cenotes extends Entities {
     @Route.GET(':_key', ['guest'], 'Returns a touristic cenote by key')
     static GET({ param }: RouteArg): Cenote {
         return Cenotes.findOne(param._key, {
-            filter: { 'properties.touristic': true },
+            filter: { touristic: true },
         });
     }
 
@@ -75,14 +75,17 @@ export class Cenotes extends Entities {
         'Returns detailed cenote data by key and theme',
     )
     static GET_DATA({ param }: RouteArg): MeasurementOrFact<any>[] {
-        // TODO: Test this
+        // TODO: Improve this
         return query`
             FOR var IN ${Variables._db}
                 FILTER var.theme == ${param.theme}
-                FOR mof IN ${MeasurementsOrFacts._db}
-                    FILTER mof._from == ${Cenotes.name + '/' + param._key}
-                    FILTER mof._to == var._id
-                    RETURN MERGE(var, { values:  }
+                LET mofs = (
+                    FOR mof IN ${MeasurementsOrFacts._db}
+                        FILTER mof._from == ${Cenotes.name + '/' + param._key}
+                            AND mof._to == var._id
+                        RETURN mof
+                )
+                RETURN MERGE(var, { values: mofs })
         `.next();
     }
 
@@ -94,12 +97,12 @@ export class Cenotes extends Entities {
     static GET_BOUNDS(): [[number, number], [number, number]] {
         return query`
             FOR c IN ${Cenotes._db}
-                FILTER c.properties.touristic == true
+                FILTER c.touristic == true
                 COLLECT AGGREGATE 
-                    minLat = MIN(c.geometry.coordinates[1]),
-                    minLon = MIN(c.geometry.coordinates[0]),
-                    maxLat = MAX(c.geometry.coordinates[1]),
-                    maxLon = MAX(c.geometry.coordinates[0])
+                    minLat = MIN(c.geojson.geometry.coordinates[1]),
+                    minLon = MIN(c.geojson.geometry.coordinates[0]),
+                    maxLat = MAX(c.geojson.geometry.coordinates[1]),
+                    maxLon = MAX(c.geojson.geometry.coordinates[0])
                 RETURN { result: [[minLat, minLon], [maxLat, maxLon]] }
         `.next();
     }
