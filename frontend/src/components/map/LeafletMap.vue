@@ -19,9 +19,11 @@
         />
 
         <l-geo-json
-            :geojson="protectedNaturalAreas"
+            v-for= "over in overlays"
+            :geojson="over.gjson"
+            :key="over.name"
+            :name="over.name"
             layer-type="overlay"
-            name="Protected Natural Areas"
         />
 
         <l-marker-cluster>
@@ -38,7 +40,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import L from 'leaflet';
+import L, { GeoJSON } from 'leaflet';
 import {
     LCircleMarker,
     LMap,
@@ -53,7 +55,6 @@ import Vue2LeafletMarkerCluster from 'vue2-leaflet-markercluster';
 import RemoteServices from '@/services/RemoteServices';
 import CenoteDTO from '@/models/CenoteDTO';
 import MapMarker from '@/components/map/MapMarker.vue';
-import { FeatureCollection } from 'geojson';
 
 @Component({
     components: {
@@ -93,7 +94,7 @@ export default class LeafletMap extends Vue {
                 maxZoom: 20,
                 attribution:
                     '<a href="https://github.com/cyclosm/cyclosm-cartocss-style/releases" title="CyclOSM - Open Bicycle render">CyclOSM</a> | Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-            },
+        },
         },
         {
             name: 'Sattelite',
@@ -102,7 +103,7 @@ export default class LeafletMap extends Vue {
             options: {
                 attribution:
                     'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-            },
+        },
         },
         {
             name: 'Topologic',
@@ -112,7 +113,7 @@ export default class LeafletMap extends Vue {
                 maxZoom: 17,
                 attribution:
                     'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)',
-            },
+        },
         },
         /* TODO: Needs api key
         {
@@ -135,7 +136,7 @@ export default class LeafletMap extends Vue {
                 maxZoom: 19,
                 attribution:
                     '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-            },
+        },
         },
         {
             name: 'Nat Geo',
@@ -145,7 +146,7 @@ export default class LeafletMap extends Vue {
                 maxZoom: 16,
                 attribution:
                     'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
-            },
+        },
         },
         {
             name: 'Dark',
@@ -156,26 +157,50 @@ export default class LeafletMap extends Vue {
                 maxZoom: 19,
                 attribution:
                     '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-            },
+        },
         },
     ];
 
     bounds: L.LatLngBounds | null = null;
     cenotes: Array<CenoteDTO> | null = null;
-    protectedNaturalAreas: FeatureCollection | null = null;
+    protectedNaturalAreas: GeoJSON | null = null;
+    states: GeoJSON | null = null;
+    municipalities: GeoJSON | null = null;
+    minTemperature: GeoJSON | null = null;
+    maxTemperature: GeoJSON | null = null;
+    roads: GeoJSON | null = null;
+    soilType: GeoJSON | null = null;
+    vegetation: GeoJSON | null = null;
+    termRegime: GeoJSON | null = null;
 
     async created(): Promise<void> {
         await this.$store.dispatch('loading');
         try {
             this.bounds = await RemoteServices.getCenotesBounds();
             this.cenotes = await RemoteServices.getAllCenotes();
-            this.protectedNaturalAreas =
-                await RemoteServices.getProtectedNaturalAreas();
+            this.protectedNaturalAreas = await RemoteServices.getProtectedNaturalAreas();
+            this.states = await RemoteServices.getStates();
+            this.municipalities = await RemoteServices.getMunicipalities();
+            this.minTemperature = await RemoteServices.getMinTemperature();
+            this.maxTemperature = await RemoteServices.getMaxTemperature();
+            this.roads = await RemoteServices.getRoads();
+            this.soilType = await RemoteServices.getSoilType();
+            this.vegetation = await RemoteServices.getVegetation();
+            this.termRegime = await RemoteServices.getTermRegime();
         } catch (error) {
             await this.$store.dispatch('error', error);
         }
         await this.$store.dispatch('clearLoading');
     }
+    overlays=[{name: 'Protected Natural Areas', gjson: this.protectedNaturalAreas},
+    {name: 'States', gjson: this.states},
+    {name: 'Municipalities', gjson: this.municipalities},
+    {name: 'Term Regime', gjson: this.termRegime},
+    {name: 'Min Temperature', gjson: this.minTemperature},
+    {name: 'Max Temperature', gjson: this.maxTemperature},
+    {name: 'Roads', gjson: this.roads},
+    {name: 'Soil Type', gjson: this.soilType},
+    {name: 'Vegetation Type', gjson: this.vegetation},]
 }
 </script>
 <style>

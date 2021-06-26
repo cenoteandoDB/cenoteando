@@ -132,4 +132,100 @@ export default class RemoteServices {
                 throw Error(await this.errorMessage(error));
             });
     }
+    static async getStates(): Promise<FeatureCollection> {
+        return httpClient
+            .get(
+                'https://github.com/luisyerbes20/yerbaa/blob/main/Estados.json',
+            )
+            .then((response) => {
+                return response.data;
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+    static async getMunicipalities(): Promise<FeatureCollection> {
+        return httpClient
+            .get(
+                '',
+            )
+            .then((response) => {
+                return response.data;
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+    static async getMinTemperature(): Promise<FeatureCollection> {
+        return httpClient
+            .get(
+                'https://raw.githubusercontent.com/luisyerbes20/yerbaa/main/temperatura_min.json',
+            )
+            .then((response) => {
+                return response.data;
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+    static async getMaxTemperature(): Promise<FeatureCollection> {
+        return httpClient
+            .get(
+                'https://raw.githubusercontent.com/luisyerbes20/yerbaa/main/temperatura_max.json',
+            )
+            .then((response) => {
+                return response.data;
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+    static async getRoads(): Promise<FeatureCollection> {
+        return httpClient
+            .get(
+                'https://github.com/luisyerbes20/yerbaa/blob/main/roads.json',
+            )
+            .then((response) => {
+                return response.data;
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+    static async getSoilType(): Promise<FeatureCollection> {
+        return httpClient
+            .get(
+                'https://github.com/luisyerbes20/yerbaa/blob/main/soil_type.json',
+            )
+            .then((response) => {
+                return response.data;
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+    static async getVegetation(): Promise<FeatureCollection> {
+        return httpClient
+            .get(
+                '',
+            )
+            .then((response) => {
+                return response.data;
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+    static async getTermRegime(): Promise<FeatureCollection> {
+        return httpClient
+            .get(
+                'https://github.com/luisyerbes20/yerbaa/blob/main/term_regime.json',
+            )
+            .then((response) => {
+                return response.data;
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
 }
