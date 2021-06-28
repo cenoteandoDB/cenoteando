@@ -97,22 +97,22 @@ export default class RemoteServices {
             });
     }
 
-    static async getCenotesBounds(): Promise<L.LatLngBounds> {
+    static async getCenote(key: string): Promise<CenoteDTO> {
         return httpClient
-            .get('/api/cenotes/bounds')
+            .get('/api/cenotes/' + key)
             .then((response) => {
-                return new L.LatLngBounds(response.data.result);
+                return new CenoteDTO(response.data);
             })
             .catch(async (error) => {
                 throw Error(await this.errorMessage(error));
             });
     }
 
-    static async getCenote(key: string): Promise<CenoteDTO> {
+    static async getCenotesBounds(): Promise<L.LatLngBounds> {
         return httpClient
-            .get('/api/cenotes/' + key)
+            .get('/api/cenotes/bounds')
             .then((response) => {
-                return new CenoteDTO(response.data);
+                return new L.LatLngBounds(response.data.result);
             })
             .catch(async (error) => {
                 throw Error(await this.errorMessage(error));
@@ -132,10 +132,12 @@ export default class RemoteServices {
                 throw Error(await this.errorMessage(error));
             });
     }
+
+    // TODO: Get this from database
     static async getStates(): Promise<FeatureCollection> {
         return httpClient
             .get(
-                'https://github.com/luisyerbes20/yerbaa/blob/main/Estados.json',
+                'https://raw.githubusercontent.com/luisyerbes20/yerbaa/main/Estados.json',
             )
             .then((response) => {
                 return response.data;
@@ -144,18 +146,23 @@ export default class RemoteServices {
                 throw Error(await this.errorMessage(error));
             });
     }
+
+    // TODO: Get this from database
     static async getMunicipalities(): Promise<FeatureCollection> {
+        throw Error('Not Implemented');
+        /* TODO: get municipalities FeatureCollection
         return httpClient
-            .get(
-                '',
-            )
+            .get('')
             .then((response) => {
                 return response.data;
             })
             .catch(async (error) => {
                 throw Error(await this.errorMessage(error));
             });
+         */
     }
+
+    // TODO: Get this from database
     static async getMinTemperature(): Promise<FeatureCollection> {
         return httpClient
             .get(
@@ -168,6 +175,8 @@ export default class RemoteServices {
                 throw Error(await this.errorMessage(error));
             });
     }
+
+    // TODO: Get this from database
     static async getMaxTemperature(): Promise<FeatureCollection> {
         return httpClient
             .get(
@@ -180,10 +189,12 @@ export default class RemoteServices {
                 throw Error(await this.errorMessage(error));
             });
     }
+
+    // TODO: Get this from database
     static async getRoads(): Promise<FeatureCollection> {
         return httpClient
             .get(
-                'https://github.com/luisyerbes20/yerbaa/blob/main/roads.json',
+                'https://raw.githubusercontent.com/luisyerbes20/yerbaa/main/roads.json',
             )
             .then((response) => {
                 return response.data;
@@ -192,10 +203,12 @@ export default class RemoteServices {
                 throw Error(await this.errorMessage(error));
             });
     }
+
+    // TODO: Get this from database
     static async getSoilType(): Promise<FeatureCollection> {
         return httpClient
             .get(
-                'https://github.com/luisyerbes20/yerbaa/blob/main/soil_type.json',
+                'https://raw.githubusercontent.com/luisyerbes20/yerbaa/main/soil_type.json',
             )
             .then((response) => {
                 return response.data;
@@ -204,22 +217,27 @@ export default class RemoteServices {
                 throw Error(await this.errorMessage(error));
             });
     }
+
+    // TODO: Get this from database
     static async getVegetation(): Promise<FeatureCollection> {
+        throw Error('Not Implemented');
+        /* TODO: get vegetation FeatureCollection
         return httpClient
-            .get(
-                '',
-            )
+            .get('')
             .then((response) => {
                 return response.data;
             })
             .catch(async (error) => {
                 throw Error(await this.errorMessage(error));
             });
+        */
     }
+
+    // TODO: Get this from database
     static async getTermRegime(): Promise<FeatureCollection> {
         return httpClient
             .get(
-                'https://github.com/luisyerbes20/yerbaa/blob/main/term_regime.json',
+                'https://raw.githubusercontent.com/luisyerbes20/yerbaa/main/term_regime.json',
             )
             .then((response) => {
                 return response.data;

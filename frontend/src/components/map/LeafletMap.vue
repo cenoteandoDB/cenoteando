@@ -19,10 +19,11 @@
         />
 
         <l-geo-json
-            v-for= "over in overlays"
-            :geojson="over.gjson"
-            :key="over.name"
-            :name="over.name"
+            v-for="(overlay, name) in overlays"
+            :key="name"
+            :name="name"
+            :visible="overlay.visible || false"
+            :geojson="overlay.geojson"
             layer-type="overlay"
         />
 
@@ -40,7 +41,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import L, { GeoJSON } from 'leaflet';
+import L from 'leaflet';
 import {
     LCircleMarker,
     LMap,
@@ -51,10 +52,18 @@ import {
     LLayerGroup,
 } from 'vue2-leaflet';
 import Vue2LeafletMarkerCluster from 'vue2-leaflet-markercluster';
+import { GeoJSON } from 'geojson';
 
 import RemoteServices from '@/services/RemoteServices';
 import CenoteDTO from '@/models/CenoteDTO';
 import MapMarker from '@/components/map/MapMarker.vue';
+
+interface Overlays {
+    [key: string]: {
+        geojson: GeoJSON;
+        visible?: boolean;
+    };
+}
 
 @Component({
     components: {
@@ -74,7 +83,6 @@ export default class LeafletMap extends Vue {
     mapOptions = {
         zoomSnap: 0.5,
     };
-    // TODO: Add options and remove attribution for each provider as defined in https://leaflet-extras.github.io/leaflet-providers/preview/index.html
     tileProviders = [
         {
             name: 'OpenStreetMap',
@@ -94,7 +102,7 @@ export default class LeafletMap extends Vue {
                 maxZoom: 20,
                 attribution:
                     '<a href="https://github.com/cyclosm/cyclosm-cartocss-style/releases" title="CyclOSM - Open Bicycle render">CyclOSM</a> | Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        },
+            },
         },
         {
             name: 'Sattelite',
@@ -103,7 +111,7 @@ export default class LeafletMap extends Vue {
             options: {
                 attribution:
                     'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-        },
+            },
         },
         {
             name: 'Topologic',
@@ -113,7 +121,7 @@ export default class LeafletMap extends Vue {
                 maxZoom: 17,
                 attribution:
                     'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)',
-        },
+            },
         },
         /* TODO: Needs api key
         {
@@ -136,7 +144,7 @@ export default class LeafletMap extends Vue {
                 maxZoom: 19,
                 attribution:
                     '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        },
+            },
         },
         {
             name: 'Nat Geo',
@@ -146,7 +154,7 @@ export default class LeafletMap extends Vue {
                 maxZoom: 16,
                 attribution:
                     'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
-        },
+            },
         },
         {
             name: 'Dark',
@@ -157,53 +165,61 @@ export default class LeafletMap extends Vue {
                 maxZoom: 19,
                 attribution:
                     '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-        },
+            },
         },
     ];
 
     bounds: L.LatLngBounds | null = null;
     cenotes: Array<CenoteDTO> | null = null;
-    protectedNaturalAreas: GeoJSON | null = null;
-    states: GeoJSON | null = null;
-    municipalities: GeoJSON | null = null;
-    minTemperature: GeoJSON | null = null;
-    maxTemperature: GeoJSON | null = null;
-    roads: GeoJSON | null = null;
-    soilType: GeoJSON | null = null;
-    vegetation: GeoJSON | null = null;
-    termRegime: GeoJSON | null = null;
+    overlays: Overlays = {};
 
     async created(): Promise<void> {
         await this.$store.dispatch('loading');
         try {
             this.bounds = await RemoteServices.getCenotesBounds();
             this.cenotes = await RemoteServices.getAllCenotes();
-            this.protectedNaturalAreas = await RemoteServices.getProtectedNaturalAreas();
-            this.states = await RemoteServices.getStates();
-            this.municipalities = await RemoteServices.getMunicipalities();
-            this.minTemperature = await RemoteServices.getMinTemperature();
-            this.maxTemperature = await RemoteServices.getMaxTemperature();
-            this.roads = await RemoteServices.getRoads();
-            this.soilType = await RemoteServices.getSoilType();
-            this.vegetation = await RemoteServices.getVegetation();
-            this.termRegime = await RemoteServices.getTermRegime();
+            RemoteServices.getProtectedNaturalAreas().then((geojson) => {
+                this.$set(this.overlays, 'Protected Natural Areas', {
+                    geojson,
+                });
+            });
+            RemoteServices.getStates().then((geojson) => {
+                this.$set(this.overlays, 'States', { geojson });
+            });
+            /* TODO: Implement this
+            RemoteServices.getMunicipalities().then((geojson) => {
+                this.$set(this.overlays, 'Municipalities', { geojson });
+            });
+            */
+            RemoteServices.getMinTemperature().then((geojson) => {
+                this.$set(this.overlays, 'Min Temperature', { geojson });
+            });
+            RemoteServices.getMaxTemperature().then((geojson) => {
+                this.$set(this.overlays, 'Max Temperature', { geojson });
+            });
+            RemoteServices.getRoads().then((geojson) => {
+                this.$set(this.overlays, 'Roads', { geojson });
+            });
+            RemoteServices.getSoilType().then((geojson) => {
+                this.$set(this.overlays, 'Soil Type', { geojson });
+            });
+            RemoteServices.getTermRegime().then((geojson) => {
+                this.$set(this.overlays, 'Term Regime', { geojson });
+            });
+            /* TODO: Implement this
+            RemoteServices.getVegetation().then((geojson) => {
+                this.$set(this.overlays, 'Vegetation Type', { geojson });
+            });
+            */
         } catch (error) {
             await this.$store.dispatch('error', error);
         }
         await this.$store.dispatch('clearLoading');
     }
-    overlays=[{name: 'Protected Natural Areas', gjson: this.protectedNaturalAreas},
-    {name: 'States', gjson: this.states},
-    {name: 'Municipalities', gjson: this.municipalities},
-    {name: 'Term Regime', gjson: this.termRegime},
-    {name: 'Min Temperature', gjson: this.minTemperature},
-    {name: 'Max Temperature', gjson: this.maxTemperature},
-    {name: 'Roads', gjson: this.roads},
-    {name: 'Soil Type', gjson: this.soilType},
-    {name: 'Vegetation Type', gjson: this.vegetation},]
 }
 </script>
-<style>
+
+<style scoped>
 @import '~leaflet/dist/leaflet.css';
 @import '~leaflet.markercluster/dist/MarkerCluster.css';
 @import '~leaflet.markercluster/dist/MarkerCluster.Default.css';

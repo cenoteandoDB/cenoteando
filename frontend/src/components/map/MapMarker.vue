@@ -61,7 +61,7 @@ export default class MapMarker extends Vue {
 }
 </script>
 
-<style>
+<style scoped>
 @import '~leaflet/dist/leaflet.css';
 @import '~leaflet.markercluster/dist/MarkerCluster.css';
 @import '~leaflet.markercluster/dist/MarkerCluster.Default.css';
