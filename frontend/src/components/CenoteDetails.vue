@@ -14,15 +14,50 @@
         <v-tabs-items v-model="tab">
             <v-card flat>
                 <div v-show="currentTab === 0">
-                    <v-container class="d-flex justify-center mb-6">
-                        <v-icon x-large color="green" class="ma-5"
-                            >mdi-swim</v-icon
-                        >
+                    <v-row class="pt-10">
+                        <v-col class="d-flex justify-center">
+                            <v-spacer></v-spacer>
 
-                        <v-icon x-large color="red" class="mr-15"
-                            >mdi-swim</v-icon
-                        >
-                    </v-container>
+                            <v-icon x-large color="green" dense
+                                >mdi-swim</v-icon
+                            >
+                            <v-spacer></v-spacer>
+                            <v-icon x-large color="red" dense>mdi-swim</v-icon>
+                            <v-spacer></v-spacer>
+
+                            <v-icon x-large color="green" dense
+                                >mdi-swim</v-icon
+                            >
+                            <v-spacer></v-spacer>
+
+                            <v-icon x-large color="green" dense
+                                >mdi-swim</v-icon
+                            >
+                            <v-spacer></v-spacer>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col class="d-flex justify-center mx-auto">
+                            <v-spacer></v-spacer>
+
+                            <v-icon x-large color="green" dense
+                                >mdi-swim</v-icon
+                            >
+                            <v-spacer></v-spacer>
+                            <v-icon x-large color="red" dense>mdi-swim</v-icon>
+                            <v-spacer></v-spacer>
+
+                            <v-icon x-large color="green" dense
+                                >mdi-swim</v-icon
+                            >
+                            <v-spacer></v-spacer>
+
+                            <v-icon x-large color="green" dense
+                                >mdi-swim</v-icon
+                            >
+                            <v-spacer></v-spacer>
+                        </v-col>
+                    </v-row>
                 </div>
                 <div v-show="currentTab === 1">
                     <v-card-text>Content</v-card-text>
@@ -43,6 +78,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+
 @Component
 export default class CenoteDetails extends Vue {
     currentTab = 0;
