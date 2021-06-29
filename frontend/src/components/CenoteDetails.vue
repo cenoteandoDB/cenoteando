@@ -22,17 +22,17 @@
                                 >mdi-swim</v-icon
                             >
                             <v-spacer></v-spacer>
-                            <v-icon x-large color="red" dense>mdi-swim</v-icon>
+                            <v-icon x-large color="red" dense>mdi-tent</v-icon>
                             <v-spacer></v-spacer>
 
                             <v-icon x-large color="green" dense
-                                >mdi-swim</v-icon
-                            >
+                                >mdi-silverware-fork-knife
+                            </v-icon>
                             <v-spacer></v-spacer>
 
                             <v-icon x-large color="green" dense
-                                >mdi-swim</v-icon
-                            >
+                                >mdi-shower-head
+                            </v-icon>
                             <v-spacer></v-spacer>
                         </v-col>
                     </v-row>
@@ -41,20 +41,22 @@
                             <v-spacer></v-spacer>
 
                             <v-icon x-large color="green" dense
-                                >mdi-swim</v-icon
-                            >
+                                >mdi-food
+                            </v-icon>
                             <v-spacer></v-spacer>
-                            <v-icon x-large color="red" dense>mdi-swim</v-icon>
-                            <v-spacer></v-spacer>
-
-                            <v-icon x-large color="green" dense
-                                >mdi-swim</v-icon
-                            >
+                            <v-icon x-large color="red" dense
+                                >mdi-hanger
+                            </v-icon>
                             <v-spacer></v-spacer>
 
                             <v-icon x-large color="green" dense
-                                >mdi-swim</v-icon
-                            >
+                                >mdi-paper-roll-outline
+                            </v-icon>
+                            <v-spacer></v-spacer>
+
+                            <v-icon x-large color="green" dense
+                                >mdi-horse-human
+                            </v-icon>
                             <v-spacer></v-spacer>
                         </v-col>
                     </v-row>
