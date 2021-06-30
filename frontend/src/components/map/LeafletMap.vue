@@ -133,7 +133,7 @@ export default class LeafletMap extends Vue {
 	            maxZoom: 22,
                 attribution:
                     '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        },
+            },
         },
         */
         {
@@ -183,19 +183,18 @@ export default class LeafletMap extends Vue {
                     geojson,
                 });
             });
-            RemoteServices.getStates().then((geojson) => {
-                this.$set(this.overlays, 'States', { geojson });
-            });
-            /* TODO: Implement this
-            RemoteServices.getMunicipalities().then((geojson) => {
-                this.$set(this.overlays, 'Municipalities', { geojson });
-            });
-            */
             RemoteServices.getMinTemperature().then((geojson) => {
                 this.$set(this.overlays, 'Min Temperature', { geojson });
             });
             RemoteServices.getMaxTemperature().then((geojson) => {
                 this.$set(this.overlays, 'Max Temperature', { geojson });
+            });
+            /* TODO: Implement this in RemoteServices.ts
+            RemoteServices.getStates().then((geojson) => {
+                this.$set(this.overlays, 'States', { geojson });
+            });
+            RemoteServices.getMunicipalities().then((geojson) => {
+                this.$set(this.overlays, 'Municipalities', { geojson });
             });
             RemoteServices.getRoads().then((geojson) => {
                 this.$set(this.overlays, 'Roads', { geojson });
@@ -206,7 +205,6 @@ export default class LeafletMap extends Vue {
             RemoteServices.getTermRegime().then((geojson) => {
                 this.$set(this.overlays, 'Term Regime', { geojson });
             });
-            /* TODO: Implement this
             RemoteServices.getVegetation().then((geojson) => {
                 this.$set(this.overlays, 'Vegetation Type', { geojson });
             });

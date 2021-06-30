@@ -134,35 +134,6 @@ export default class RemoteServices {
     }
 
     // TODO: Get this from database
-    static async getStates(): Promise<FeatureCollection> {
-        return httpClient
-            .get(
-                'https://raw.githubusercontent.com/luisyerbes20/yerbaa/main/Estados.json',
-            )
-            .then((response) => {
-                return response.data;
-            })
-            .catch(async (error) => {
-                throw Error(await this.errorMessage(error));
-            });
-    }
-
-    // TODO: Get this from database
-    static async getMunicipalities(): Promise<FeatureCollection> {
-        throw Error('Not Implemented');
-        /* TODO: get municipalities FeatureCollection
-        return httpClient
-            .get('')
-            .then((response) => {
-                return response.data;
-            })
-            .catch(async (error) => {
-                throw Error(await this.errorMessage(error));
-            });
-         */
-    }
-
-    // TODO: Get this from database
     static async getMinTemperature(): Promise<FeatureCollection> {
         return httpClient
             .get(
@@ -190,11 +161,36 @@ export default class RemoteServices {
             });
     }
 
+    /* TODO: Create endpoints in backend
+    static getStates(): Promise<FeatureCollection> {
+        return httpClient
+            .get('/api/gadm/states')
+            .then((response) => {
+                return response.data;
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
+    static getMunicipalities(): Promise<FeatureCollection> {
+        return httpClient
+            .get('/api/gadm/municipalities')
+            .then((response) => {
+                return response.data;
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+    */
+
     // TODO: Get this from database
+    /* TODO: Not working due to CORS policy
     static async getRoads(): Promise<FeatureCollection> {
         return httpClient
             .get(
-                'https://raw.githubusercontent.com/luisyerbes20/yerbaa/main/roads.json',
+                'https://github.com/luisyerbes20/yerbaa/blob/main/roads.json?raw=true',
             )
             .then((response) => {
                 return response.data;
@@ -203,12 +199,14 @@ export default class RemoteServices {
                 throw Error(await this.errorMessage(error));
             });
     }
+    */
 
     // TODO: Get this from database
+    /* TODO: Not working due to CORS policy
     static async getSoilType(): Promise<FeatureCollection> {
         return httpClient
             .get(
-                'https://raw.githubusercontent.com/luisyerbes20/yerbaa/main/soil_type.json',
+                'https://github.com/luisyerbes20/yerbaa/blob/main/soil_type.json?raw=true',
             )
             .then((response) => {
                 return response.data;
@@ -217,11 +215,11 @@ export default class RemoteServices {
                 throw Error(await this.errorMessage(error));
             });
     }
+    */
 
     // TODO: Get this from database
+    /* TODO: get vegetation FeatureCollection
     static async getVegetation(): Promise<FeatureCollection> {
-        throw Error('Not Implemented');
-        /* TODO: get vegetation FeatureCollection
         return httpClient
             .get('')
             .then((response) => {
@@ -230,14 +228,15 @@ export default class RemoteServices {
             .catch(async (error) => {
                 throw Error(await this.errorMessage(error));
             });
-        */
     }
+    */
 
     // TODO: Get this from database
+    /* TODO: Not working due to CORS policy
     static async getTermRegime(): Promise<FeatureCollection> {
         return httpClient
             .get(
-                'https://raw.githubusercontent.com/luisyerbes20/yerbaa/main/term_regime.json',
+                'https://github.com/luisyerbes20/yerbaa/blob/main/term_regime.json?raw=true',
             )
             .then((response) => {
                 return response.data;
@@ -246,4 +245,5 @@ export default class RemoteServices {
                 throw Error(await this.errorMessage(error));
             });
     }
+    */
 }
