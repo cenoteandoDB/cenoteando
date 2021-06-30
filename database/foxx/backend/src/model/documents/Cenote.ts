@@ -28,7 +28,7 @@ export class CenoteGeoJSON implements Feature {
     geometry: Geometry;
 
     @Attribute()
-    properties: {};
+    properties: Record<string, never>;
 }
 
 export enum Issue {

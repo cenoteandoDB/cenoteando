@@ -1,6 +1,6 @@
 import { Collection, Entities, Route } from 'type-arango';
 import { GadmDocument } from '../documents';
-import { FeatureCollection } from 'geojson';
+import { Feature, FeatureCollection } from 'geojson';
 
 @Collection({
     of: GadmDocument,
@@ -10,16 +10,11 @@ import { FeatureCollection } from 'geojson';
     ],
 })
 export class Gadm extends Entities {
-    // TODO: Import GADM level 0 (_key = 'MEX')
     @Route.GET('coastline', ['guest'], 'Returns all states')
-    static GET_COASTLINE(): FeatureCollection {
-        return {
-            type: 'FeatureCollection',
-            features: Gadm.findOne('MEX'),
-        };
+    static GET_COASTLINE(): Feature {
+        return Gadm.findOne('MEX');
     }
 
-    // TODO: Import GADM level 1 (_key = 'MEX.*')
     @Route.GET('states', ['guest'], 'Returns all states')
     static GET_STATES(): FeatureCollection {
         const q = {

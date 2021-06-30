@@ -1,4 +1,4 @@
-import { Collection, Entities, Route, RouteArg } from 'type-arango';
+import { Collection, Entities, Route } from 'type-arango';
 import { Variable } from '../documents';
 import { parse } from 'json2csv';
 import { string } from 'joi';
@@ -23,7 +23,7 @@ export class Variables extends Entities {
             },
         },
     )
-    static CSV({ param }: RouteArg): string {
+    static CSV(): string {
         let vars = Variables.find();
         return parse(vars, { eol: '\n' });
     }
