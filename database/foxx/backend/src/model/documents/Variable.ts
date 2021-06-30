@@ -4,29 +4,30 @@ import { Attribute, Document, Entity } from 'type-arango';
 // TODO: Implement getters, setters and helpers
 
 enum Theme {
-    LOCATION,
-    GEOREFERENCE,
-    CULTURAL,
-    GEOMORPHOLOGY,
-    BIODIVERSITY,
-    DISTURBANCE,
-    TOURISM,
-    DIVING,
-    ORGANIZATION,
-    REGULATION,
-    WATER,
-    EVENT,
+    LOCATION = 'LOCATION',
+    GEOREFERENCE = 'GEOREFERENCE',
+    CULTURAL = 'CULTURAL',
+    GEOMORPHOLOGY = 'GEOMORPHOLOGY',
+    BIODIVERSITY = 'BIODIVERSITY',
+    DISTURBANCE = 'DISTURBANCE',
+    TOURISM = 'TOURISM',
+    DIVING = 'DIVING',
+    ORGANIZATION = 'ORGANIZATION',
+    REGULATION = 'REGULATION',
+    WATER = 'WATER',
+    EVENT = 'EVENT',
+}
+
+enum AccessLevel {
+    PUBLIC = 'PUBLIC',
+    PRIVATE = 'PRIVATE',
+    SENSITIVE = 'SENSITIVE',
 }
 
 @Document()
 export class Variable extends Entity {
     @Attribute()
     name: string;
-
-    // TODO: Restrict to valid javascript keys
-    // TODO: force unique in theme?
-    @Attribute()
-    field: string;
 
     @Attribute()
     description: string;
@@ -38,9 +39,8 @@ export class Variable extends Entity {
     @Attribute()
     timeseries: boolean;
 
-    // TODO: Create enum with public, non_sensitive and sensitive
     @Attribute()
-    access_level: boolean;
+    access_level: AccessLevel;
 
     @Attribute()
     theme: Theme;

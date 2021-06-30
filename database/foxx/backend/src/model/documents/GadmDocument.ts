@@ -7,44 +7,58 @@ import { Feature, Geometry } from 'geojson';
 @Nested()
 export class GadmProperties {
     @Attribute()
-    GID_0: string;
+    GID_0!: string;
 
     @Attribute()
-    NAME_0: string;
+    NAME_0!: string;
 
     @Attribute()
-    GID_1: string;
+    GID_1?: string;
 
     @Attribute()
-    NAME_1: string;
+    NAME_1?: string;
 
     @Attribute()
-    NL_NAME_1: string;
-
-    @Index({ type: 'hash' })
-    @Attribute()
-    GID_2: string;
+    VARNAME_1?: string;
 
     @Attribute()
-    NAME_2: string;
+    NL_NAME_1?: string;
 
     @Attribute()
-    VARNAME_2: string;
+    TYPE_1?: string;
 
     @Attribute()
-    NL_NAME_2: string;
+    ENGTYPE_1?: string;
 
     @Attribute()
-    TYPE_2: string;
+    CC_1?: string;
 
     @Attribute()
-    ENGTYPE_2: string;
+    HASC_1?: string;
 
     @Attribute()
-    CC_2: string;
+    GID_2?: string;
 
     @Attribute()
-    HASC_2: string;
+    NAME_2?: string;
+
+    @Attribute()
+    VARNAME_2?: string;
+
+    @Attribute()
+    NL_NAME_2?: string;
+
+    @Attribute()
+    TYPE_2?: string;
+
+    @Attribute()
+    ENGTYPE_2?: string;
+
+    @Attribute()
+    CC_2?: string;
+
+    @Attribute()
+    HASC_2?: string;
 }
 
 @Document()

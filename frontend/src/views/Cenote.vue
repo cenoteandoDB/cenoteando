@@ -3,8 +3,8 @@
         <v-row>
             <v-col>
                 <h3>
-                    {{ cenote.properties.name }}
-                    <small>({{ cenote.properties.type }})</small>
+                    {{ cenote.name }}
+                    <small>({{ cenote.type }})</small>
                 </h3>
             </v-col>
         </v-row>
@@ -12,8 +12,8 @@
             <v-col>
                 <v-rating
                     :value="
-                        cenote.properties.social
-                            ? cenote.properties.social.rating
+                        cenote.social
+                            ? cenote.social.rating
                             : null
                     "
                     readonly
@@ -30,7 +30,7 @@
                             :zoom="zoom"
                             :options="mapOptions"
                             :center="
-                                cenote.geometry.coordinates.slice().reverse()
+                                cenote.geojson.geometry.coordinates.slice().reverse()
                             "
                             style="height: 400px"
                         >

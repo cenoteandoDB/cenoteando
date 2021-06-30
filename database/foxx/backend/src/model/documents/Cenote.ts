@@ -4,12 +4,14 @@ import {
     Entity,
     Index,
     Nested,
+    OneToMany,
     OneToOne,
     Related,
     Type,
 } from 'type-arango';
 import { Feature, Geometry } from 'geojson';
 import { GadmDocument } from './GadmDocument';
+import { Comment } from './Comment';
 
 // TODO: Set role permissions (schema, readers, writers)
 // TODO: Implement getters, setters and helpers
@@ -41,7 +43,7 @@ export class Social {
     @Attribute()
     rating?: number;
 
-    // TODO: OneToMany
+    @OneToMany((type) => Comment, (Comment) => Comment.cenote_id)
     comments: Related<Comment>;
 }
 

@@ -2,17 +2,17 @@
     <!-- TODO: :icon="marker_icon[cenote.properties.type]" -->
     <l-circle-marker
         ref="marker"
-        :lat-lng="cenote.geometry.coordinates.slice().reverse()"
+        :lat-lng="cenote.geojson.geometry.coordinates.slice().reverse()"
     >
         <l-popup>
-            <label>Name: {{ cenote.properties.name }}</label>
+            <label>Name: {{ cenote.name }}</label>
             <br />
-            <label>Type: {{ cenote.properties.type }}</label>
+            <label>Type: {{ cenote.type }}</label>
             <br />
             <label>
                 Touristic:
                 <v-icon
-                    v-if="cenote.properties.touristic"
+                    v-if="cenote.touristic"
                     dark
                     x-small
                     color="green"

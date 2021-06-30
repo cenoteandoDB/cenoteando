@@ -3,7 +3,6 @@ import { Cenote, MeasurementOrFact } from '../documents';
 import { query } from '@arangodb';
 import { QueryOpt } from 'type-arango/dist/types';
 import { MeasurementsOrFacts } from './MeasurementsOrFacts';
-import { Variables } from './Variables';
 
 @Collection({
     of: Cenote,
@@ -62,11 +61,15 @@ export class Cenotes extends Entities {
         return Cenotes.find(q);
     }
 
-    @Route.GET(':_key', ['guest'], 'Returns a touristic cenote by key')
-    static GET({ param }: RouteArg): Cenote {
-        return Cenotes.findOne(param._key, {
-            filter: { touristic: true },
-        });
+    @Route.GET(':_key', ['guest'], 'Returns a touristic cenote by key', {
+        relations: true,
+    })
+    static GET({ param, relations }: RouteArg): Cenote {
+        return relations(
+            Cenotes.findOne(param._key, {
+                filter: { touristic: true },
+            }),
+        ) as Cenote;
     }
 
     @Route.GET(
@@ -77,21 +80,25 @@ export class Cenotes extends Entities {
     static GET_DATA({ param }: RouteArg): MeasurementOrFact<any>[] {
         // TODO: Test this
         return query`
-            FOR var IN ${Variables._db}
-                FILTER var.theme == ${param.theme}
-                FOR mof IN ${MeasurementsOrFacts._db}
-                    FILTER mof._from == ${Cenotes.name + '/' + param._key}
-                    FILTER mof._to == var._id
-                    RETURN MERGE(var, { values:  }
+        FOR mof IN ${MeasurementsOrFacts._db}
+            FILTER mof._to == ${Cenotes.name + '/' + param._key}
+            COLLECT var = mof._from INTO mofs
+            LET values = (
+                FOR mof IN mofs
+                    SORT mof.timestamp DESC
+                    RETURN  KEEP(mof.mof, "timestamp", "value")
+            )
+            RETURN MERGE(DOCUMENT(var), { values: values })
         `.next();
     }
 
     @Route.GET(
         'bounds',
         ['guest'],
-        'Returns the boundaries for all touristic cenotes in format [[lat, lon], [lat, lon]]',
+        'Returns the boundaries for all cenotes user has access to in format [[lat, lon], [lat, lon]]',
     )
     static GET_BOUNDS(): [[number, number], [number, number]] {
+        // TODO: Return boundaries of cenotes user has access to
         return query`
             FOR c IN ${Cenotes._db}
                 FILTER c.touristic == true

@@ -29,8 +29,8 @@
 
         <l-marker-cluster>
             <map-marker
-                v-for="cenote in cenotes"
-                :key="cenote.properties.code"
+                v-for="(cenote, i) in cenotes"
+                :key="i"
                 :cenote="cenote"
                 :single="false"
             >
@@ -58,11 +58,13 @@ import RemoteServices from '@/services/RemoteServices';
 import CenoteDTO from '@/models/CenoteDTO';
 import MapMarker from '@/components/map/MapMarker.vue';
 
+type Overlay = {
+    geojson: GeoJSON;
+    visible?: boolean;
+}
+
 interface Overlays {
-    [key: string]: {
-        geojson: GeoJSON;
-        visible?: boolean;
-    };
+    [key: string]: Overlay;
 }
 
 @Component({
@@ -105,7 +107,7 @@ export default class LeafletMap extends Vue {
             },
         },
         {
-            name: 'Sattelite',
+            name: 'Satellite',
             visible: false,
             url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
             options: {
@@ -114,7 +116,7 @@ export default class LeafletMap extends Vue {
             },
         },
         {
-            name: 'Topologic',
+            name: 'Topographic',
             visible: false,
             url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
             options: {
@@ -133,7 +135,7 @@ export default class LeafletMap extends Vue {
 	            maxZoom: 22,
                 attribution:
                     '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        },
+            },
         },
         */
         {
@@ -178,25 +180,27 @@ export default class LeafletMap extends Vue {
         try {
             this.bounds = await RemoteServices.getCenotesBounds();
             this.cenotes = await RemoteServices.getAllCenotes();
+            RemoteServices.getCoastline().then((geojson) => {
+                this.$set(this.overlays, 'Coastline', { geojson });
+            });
+            RemoteServices.getStates().then((geojson) => {
+                this.$set(this.overlays, 'States', { geojson });
+            });
+            RemoteServices.getMunicipalities().then((geojson) => {
+                this.$set(this.overlays, 'Municipalities', { geojson });
+            });
             RemoteServices.getProtectedNaturalAreas().then((geojson) => {
                 this.$set(this.overlays, 'Protected Natural Areas', {
                     geojson,
                 });
             });
-            RemoteServices.getStates().then((geojson) => {
-                this.$set(this.overlays, 'States', { geojson });
-            });
-            /* TODO: Implement this
-            RemoteServices.getMunicipalities().then((geojson) => {
-                this.$set(this.overlays, 'Municipalities', { geojson });
-            });
-            */
             RemoteServices.getMinTemperature().then((geojson) => {
                 this.$set(this.overlays, 'Min Temperature', { geojson });
             });
             RemoteServices.getMaxTemperature().then((geojson) => {
                 this.$set(this.overlays, 'Max Temperature', { geojson });
             });
+            /* TODO: Implement this in RemoteServices.ts
             RemoteServices.getRoads().then((geojson) => {
                 this.$set(this.overlays, 'Roads', { geojson });
             });
@@ -206,7 +210,6 @@ export default class LeafletMap extends Vue {
             RemoteServices.getTermRegime().then((geojson) => {
                 this.$set(this.overlays, 'Term Regime', { geojson });
             });
-            /* TODO: Implement this
             RemoteServices.getVegetation().then((geojson) => {
                 this.$set(this.overlays, 'Vegetation Type', { geojson });
             });

@@ -70,8 +70,6 @@ export interface Identifier {
 export interface Contributor {
     type: string;
     name: string;
-    nameIdScheme: string;
-    schemeURI: string;
     id: string;
 }
 
@@ -102,71 +100,51 @@ function createRecord(cenote_data: CenoteData): Record {
             {
                 type: 'DataCollector',
                 name: 'Luis Arturo Liévano-Beltrán',
-                nameIdScheme: 'RNCTIMX',
-                schemeURI: 'http://repositorionacionalcti.mx/',
                 id: 'info:eu-repo/dai/mx/orcid/0000-0003-0073-9203',
             },
             {
                 type: 'DataCollector',
                 name: 'Efrain Miguel Chavez Solis',
-                nameIdScheme: 'RNCTIMX',
-                schemeURI: 'http://repositorionacionalcti.mx/',
                 id: 'info:eu-repo/dai/mx/orcid/0000-0001-9423-9335',
             },
             {
                 type: 'DataCollector',
                 name: 'Dorottya Angyal',
-                nameIdScheme: 'RNCTIMX',
-                schemeURI: 'http://repositorionacionalcti.mx/',
                 id: 'info:eu-repo/dai/mx/orcid/0000-0002-2380-2482',
             },
             {
                 type: 'DataCollector',
                 name: 'Nori Velazquez Juarez',
-                nameIdScheme: 'RNCTIMX',
-                schemeURI: 'http://repositorionacionalcti.mx/',
                 id: 'info:eu-repo/dai/mx/curp/VEJN950421MDFLRR05',
             },
             {
                 type: 'DataCurator',
                 name: 'Ricardo Merlos Riestra',
-                nameIdScheme: 'RNCTIMX',
-                schemeURI: 'http://repositorionacionalcti.mx/',
                 id: 'info:eu-repo/dai/mx/curp/MERR880417HDFRSC06',
             },
             {
                 type: 'DataManager',
                 name: 'Isaac Chacon Gomez',
-                nameIdScheme: 'RNCTIMX',
-                schemeURI: 'http://repositorionacionalcti.mx/',
                 id: 'info:eu-repo/dai/mx/curp/CAGI831107HDFHMS04',
             },
             {
                 type: 'ProjectMember',
                 name: 'Diogo Seca Repas Gonçalves',
-                nameIdScheme: 'RNCTIMX',
-                schemeURI: 'http://repositorionacionalcti.mx/',
                 id: 'info:eu-repo/dai/mx/orcid/0000-0003-4983-0032',
             },
             {
                 type: 'ProjectMember',
                 name: 'Luis Angel Yerbes Rodriguez',
-                nameIdScheme: 'RNCTIMX',
-                schemeURI: 'http://repositorionacionalcti.mx/',
                 id: 'info:eu-repo/dai/mx/curp/YERL961125HYNRDS09',
             },
             {
                 type: 'ProjectMember',
                 name: 'Charly Joan Llanes Euan',
-                nameIdScheme: 'RNCTIMX',
-                schemeURI: 'http://repositorionacionalcti.mx/',
                 id: 'info:eu-repo/dai/mx/curp/LAEC930819HYNLNH07',
             },
             {
                 type: 'Researcher',
                 name: 'Maite Mascaro',
-                nameIdScheme: 'RNCTIMX',
-                schemeURI: 'http://repositorionacionalcti.mx/',
                 id: 'info:eu-repo/dai/mx/orcid/0000-0003-3614-4383',
             },
         ];
@@ -230,7 +208,7 @@ export function factory(options = {}): DataRepository {
             const cenote = Cenotes.findOne({
                 filter: {
                     _id: getIdFromIdentifier(parameters.identifier),
-                    'properties.touristic': true,
+                    touristic: true,
                 },
             });
             console.debug('Got:', JSON.stringify(cenote));
@@ -240,10 +218,10 @@ export function factory(options = {}): DataRepository {
                     Cenotes._col.name +
                     '/' +
                     cenote._key,
-                updatedAt: cenote.properties.updatedAt,
-                createdAt: cenote.properties.createdAt,
-                name: cenote.properties.name,
-                geoLocationPoint: cenote.geometry.coordinates,
+                updatedAt: cenote.updatedAt,
+                createdAt: cenote.createdAt,
+                name: cenote.name,
+                geoLocationPoint: cenote.geojson.geometry.coordinates,
             });
         },
 
@@ -280,7 +258,7 @@ export function factory(options = {}): DataRepository {
         // @ts-ignore TODO: Implement parameters
         getIdentifiers: (parameters: ListParameters): Array<Identifier> => {
             const cenotes = Cenotes.find({
-                filter: { 'properties.touristic': true },
+                filter: { touristic: true },
             });
             console.debug('Got:', JSON.stringify(cenotes));
 
@@ -291,7 +269,7 @@ export function factory(options = {}): DataRepository {
                         Cenotes._col.name +
                         '/' +
                         cenote._key,
-                    updatedAt: cenote.properties.updatedAt,
+                    updatedAt: cenote.updatedAt,
                 };
             });
         },
@@ -305,7 +283,7 @@ export function factory(options = {}): DataRepository {
         // @ts-ignore TODO: Implement parameters
         getRecords: (parameters: ListParameters): Record[] => {
             const cenotes = Cenotes.find({
-                filter: { 'properties.touristic': true },
+                filter: { touristic: true },
             });
             console.debug('Got:', JSON.stringify(cenotes));
 
@@ -316,10 +294,10 @@ export function factory(options = {}): DataRepository {
                         Cenotes._col.name +
                         '/' +
                         cenote._key,
-                    createdAt: cenote.properties.createdAt,
-                    updatedAt: cenote.properties.updatedAt,
-                    name: cenote.properties.name,
-                    geoLocationPoint: cenote.geometry.coordinates,
+                    createdAt: cenote.createdAt,
+                    updatedAt: cenote.updatedAt,
+                    name: cenote.name,
+                    geoLocationPoint: cenote.geojson.geometry.coordinates,
                 });
             });
         },
