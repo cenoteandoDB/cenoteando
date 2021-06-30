@@ -105,7 +105,7 @@ export default class LeafletMap extends Vue {
             },
         },
         {
-            name: 'Sattelite',
+            name: 'Satellite',
             visible: false,
             url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
             options: {
@@ -114,7 +114,7 @@ export default class LeafletMap extends Vue {
             },
         },
         {
-            name: 'Topologic',
+            name: 'Topographic',
             visible: false,
             url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
             options: {
