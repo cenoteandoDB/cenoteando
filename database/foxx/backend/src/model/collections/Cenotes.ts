@@ -83,13 +83,15 @@ export class Cenotes extends Entities {
         FOR mof IN ${MeasurementsOrFacts._db}
             FILTER mof._to == ${Cenotes.name + '/' + param._key}
             COLLECT var = mof._from INTO mofs
+            LET vardoc = DOCUMENT(var)
+            FILTER vardoc.theme == ${param.theme}
             LET values = (
                 FOR mof IN mofs
                     SORT mof.timestamp DESC
-                    RETURN  KEEP(mof.mof, "timestamp", "value")
+                    RETURN KEEP(mof.mof, "timestamp", "value")
             )
-            RETURN MERGE(DOCUMENT(var), { values: values })
-        `.next();
+            RETURN MERGE(vardoc, { values: values })
+        `.toArray();
     }
 
     @Route.GET(

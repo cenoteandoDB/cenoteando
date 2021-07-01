@@ -10,16 +10,18 @@ import { Feature, FeatureCollection } from 'geojson';
     ],
 })
 export class Gadm extends Entities {
-    @Route.GET('coastline', ['guest'], 'Returns all states')
+    // TODO: Fix Timeout
+    @Route.GET('coastline', ['guest'], 'Returns the mexican coastline')
     static GET_COASTLINE(): Feature {
         return Gadm.findOne('MEX');
     }
 
+    // TODO: Fix Timeout
     @Route.GET('states', ['guest'], 'Returns all states')
     static GET_STATES(): FeatureCollection {
         const q = {
             filter: {
-                'properties.ENG_TYPE1': 'State',
+                'properties.ENGTYPE_1': 'State',
             },
         };
         return {
@@ -28,11 +30,12 @@ export class Gadm extends Entities {
         };
     }
 
+    // TODO: Fix Timeout
     @Route.GET('municipalities', ['guest'], 'Returns all municipalities')
     static GET_MUNICIPALITIES(): FeatureCollection {
         const q = {
             filter: {
-                'properties.ENG_TYPE2': 'Municipality',
+                'properties.ENGTYPE_2': 'Municipality',
             },
         };
         return {
