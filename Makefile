@@ -117,6 +117,9 @@ clean:
 	# cleanup oai-pmh
 	rm -rf database/foxx/oai-pmh/dist/ database/foxx/oai-pmh/node_modules/
 
+	# cleanup type-arango
+	rm -rf database/foxx/type-arango/dist/ database/foxx/type-arango/node_modules/
+
 	# remove created images
 	COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose -p $(PROJECT_NAME) down --remove-orphans --rmi all 2>/dev/null \
 	&& echo 'Image(s) for "$(PROJECT_NAME)" removed.' \
