@@ -21,9 +21,7 @@ export class CenoteGeoJSON implements Feature {
     @Attribute()
     type: 'Feature';
 
-    // TODO: Fix geo index (use geojson mode).
-    //  See https://teambrookvale.com.au/articles/modifying-npm-packages-the-right-way for fixing 'type-arango'
-    @Index({ type: 'geo' })
+    @Index({ type: 'geo', geojson: true })
     @Attribute()
     geometry: Geometry;
 

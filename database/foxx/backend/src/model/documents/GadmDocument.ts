@@ -63,7 +63,7 @@ export class GadmProperties {
 
 @Document()
 export class GadmDocument extends Entity implements Feature {
-    @Index({ type: 'geo' })
+    @Index({ type: 'geo', geojson: true })
     @Attribute()
     geometry!: Geometry;
 
