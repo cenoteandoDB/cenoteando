@@ -13,123 +13,9 @@
         </v-tabs>
         <v-tabs-items v-model="tab">
             <v-card flat>
-                <div v-show="currentTab === 0">
-                    <v-row class="pt-10">
-                        <v-col class="d-flex justify-center">
-                            <v-spacer></v-spacer>
-                            <v-tooltip bottom>
-                                <template v-slot:activator="{ on, attrs }">
-                                    <v-icon
-                                        x-large
-                                        color="green"
-                                        v-bind="attrs"
-                                        v-on="on"
-                                        dense
-                                        >mdi-swim</v-icon
-                                    >
-                                </template>
-                                <span>Swimming available</span>
-                            </v-tooltip>
+                <div v-show="currentTab === 0"><general-tab /></div>
 
-                            <v-spacer></v-spacer>
-                            <v-icon x-large color="red" dense>mdi-tent</v-icon>
-                            <v-spacer></v-spacer>
-
-                            <v-icon x-large color="green" dense
-                                >mdi-silverware-fork-knife
-                            </v-icon>
-                            <v-spacer></v-spacer>
-
-                            <v-icon x-large color="green" dense
-                                >mdi-shower-head
-                            </v-icon>
-                            <v-spacer></v-spacer>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col class="d-flex justify-center mx-auto">
-                            <v-spacer></v-spacer>
-
-                            <v-icon x-large color="green" dense
-                                >mdi-food
-                            </v-icon>
-                            <v-spacer></v-spacer>
-                            <v-icon x-large color="red" dense
-                                >mdi-hanger
-                            </v-icon>
-                            <v-spacer></v-spacer>
-
-                            <v-icon x-large color="green" dense
-                                >mdi-paper-roll-outline
-                            </v-icon>
-                            <v-spacer></v-spacer>
-
-                            <v-icon x-large color="green" dense
-                                >mdi-horse-human
-                            </v-icon>
-                            <v-spacer></v-spacer>
-                        </v-col>
-                    </v-row>
-                </div>
-
-                <div v-show="currentTab === 1">
-                    <v-row class="pt-10">
-                        <v-col class="d-flex justify-center">
-                            <v-spacer></v-spacer>
-                            <v-tooltip bottom>
-                                <template v-slot:activator="{ on, attrs }">
-                                    <v-icon
-                                        x-large
-                                        color="green"
-                                        v-bind="attrs"
-                                        v-on="on"
-                                        dense
-                                        >mdi-swim</v-icon
-                                    >
-                                </template>
-                                <span>Swimming available</span>
-                            </v-tooltip>
-
-                            <v-spacer></v-spacer>
-                            <v-icon x-large color="red" dense>mdi-tent</v-icon>
-                            <v-spacer></v-spacer>
-
-                            <v-icon x-large color="green" dense
-                                >mdi-silverware-fork-knife
-                            </v-icon>
-                            <v-spacer></v-spacer>
-
-                            <v-icon x-large color="green" dense
-                                >mdi-shower-head
-                            </v-icon>
-                            <v-spacer></v-spacer>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col class="d-flex justify-center mx-auto">
-                            <v-spacer></v-spacer>
-
-                            <v-icon x-large color="green" dense
-                                >mdi-food
-                            </v-icon>
-                            <v-spacer></v-spacer>
-                            <v-icon x-large color="red" dense
-                                >mdi-hanger
-                            </v-icon>
-                            <v-spacer></v-spacer>
-
-                            <v-icon x-large color="green" dense
-                                >mdi-paper-roll-outline
-                            </v-icon>
-                            <v-spacer></v-spacer>
-
-                            <v-icon x-large color="green" dense
-                                >mdi-horse-human
-                            </v-icon>
-                            <v-spacer></v-spacer>
-                        </v-col>
-                    </v-row>
-                </div>
+                <div v-show="currentTab === 1"><c-variables /></div>
                 <div v-show="currentTab === 2">
                     <v-row class="pt-10 pl-10 pr-10">
                         <v-col class="d-flex justify-center m-10">
@@ -198,8 +84,10 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import GeneralTab from '@/components/GeneralTab.vue';
+import CVariables from '@/components/CVariables.vue';
 
-@Component
+@Component({ components: { GeneralTab, CVariables } })
 export default class CenoteDetails extends Vue {
     currentTab = 0;
     tab = null;

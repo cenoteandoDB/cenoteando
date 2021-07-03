@@ -11,11 +11,7 @@
         <v-row>
             <v-col>
                 <v-rating
-                    :value="
-                        cenote.social
-                            ? cenote.social.rating
-                            : null
-                    "
+                    :value="cenote.social ? cenote.social.rating : null"
                     readonly
                 >
                 </v-rating>
@@ -30,7 +26,9 @@
                             :zoom="zoom"
                             :options="mapOptions"
                             :center="
-                                cenote.geojson.geometry.coordinates.slice().reverse()
+                                cenote.geojson.geometry.coordinates
+                                    .slice()
+                                    .reverse()
                             "
                             style="height: 400px"
                         >
@@ -77,6 +75,7 @@ import RemoteServices from '@/services/RemoteServices';
 import CenoteDTO from '@/models/CenoteDTO';
 import MapMarker from '@/components/map/MapMarker.vue';
 import CenoteDetails from '@/components/CenoteDetails.vue';
+import GeneralTab from '@/components/GeneralTab.vue';
 
 @Component({
     components: {
@@ -85,6 +84,7 @@ import CenoteDetails from '@/components/CenoteDetails.vue';
         LCircleMarker,
         MapMarker,
         CenoteDetails,
+        GeneralTab,
     },
 })
 export default class Cenote extends Vue {
