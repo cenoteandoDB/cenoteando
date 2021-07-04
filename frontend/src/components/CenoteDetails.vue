@@ -1,25 +1,31 @@
 <template>
     <v-sheet elevation="2" style="min-height: 500px">
-        <v-tabs fixed-tabs v-model="tab">
+        <v-tabs v-model="tab" fixed-tabs>
             <v-tabs-slider color="amber darken-3"></v-tabs-slider>
-            <v-tab
-                v-for="(tab, index) in tabs"
-                :class="{ active: currentTab === index }"
-                @click="currentTab = index"
-                :key="tab"
-            >
-                {{ tab }}
+
+            <v-tab v-for="tabs in tabs" :key="tabs">
+                {{ tabs }}
             </v-tab>
         </v-tabs>
-        <v-tabs-items v-model="tab">
-            <v-card flat>
-                <div v-show="currentTab === 0"><general-tab /></div>
 
-                <div v-show="currentTab === 1"><c-variables /></div>
-                <div v-show="currentTab === 2"><social-tab /></div>
-                <div v-show="currentTab === 3"><thematic-data /></div>
-                <div v-show="currentTab === 4"><sources /></div>
-            </v-card>
+        <v-tabs-items v-model="tab">
+            <v-tab-item v-for="tabs in tabs" :key="tabs">
+                <v-card v-if="tabs === 'General'" flat>
+                    <general-tab />
+                </v-card>
+                <v-card v-if="tabs === 'Calculated Variables'" flat>
+                    <c-variables />
+                </v-card>
+                <v-card v-if="tabs === 'Social'" flat>
+                    <social-tab />
+                </v-card>
+                <v-card v-if="tabs === 'Thematic Data'" flat>
+                    <thematic-data />
+                </v-card>
+                <v-card v-if="tabs === 'Sources'" flat>
+                    <sources />
+                </v-card>
+            </v-tab-item>
         </v-tabs-items>
     </v-sheet>
 </template>

@@ -108,6 +108,17 @@ export default class RemoteServices {
             });
     }
 
+    static async getCenoteComment(key: string): Promise<CenoteDTO> {
+        return httpClient
+            .get('/api/cenotes/' + key + '/comments')
+            .then((response) => {
+                return new CenoteDTO(response.data);
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
     static async getCenotesBounds(): Promise<L.LatLngBounds> {
         return httpClient
             .get('/api/cenotes/bounds')
