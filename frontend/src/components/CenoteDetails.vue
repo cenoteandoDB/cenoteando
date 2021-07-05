@@ -37,11 +37,18 @@ import CVariables from '@/components/CVariables.vue';
 import SocialTab from '@/components/SocialTab.vue';
 import ThematicData from '@/components/ThematicData.vue';
 import Sources from '@/components/Sources.vue';
+import CenoteDTO from '@/models/CenoteDTO';
+
+const CenoteProps = Vue.extend({
+    props: {
+        cenote: CenoteDTO,
+    },
+});
 
 @Component({
     components: { GeneralTab, CVariables, SocialTab, ThematicData, Sources },
 })
-export default class CenoteDetails extends Vue {
+export default class CenoteDetails extends CenoteProps {
     currentTab = 0;
     tab = null;
     tabs = [

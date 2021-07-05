@@ -75,7 +75,6 @@ import RemoteServices from '@/services/RemoteServices';
 import CenoteDTO from '@/models/CenoteDTO';
 import MapMarker from '@/components/map/MapMarker.vue';
 import CenoteDetails from '@/components/CenoteDetails.vue';
-import GeneralTab from '@/components/GeneralTab.vue';
 
 @Component({
     components: {
@@ -84,7 +83,6 @@ import GeneralTab from '@/components/GeneralTab.vue';
         LCircleMarker,
         MapMarker,
         CenoteDetails,
-        GeneralTab,
     },
 })
 export default class Cenote extends Vue {

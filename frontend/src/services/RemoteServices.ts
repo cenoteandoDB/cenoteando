@@ -63,7 +63,7 @@ export default class RemoteServices {
         return httpClient
             .get(
                 '/oai/request?verb=GetRecord&metadataPrefix=oai_datacite&identifier=' +
-                    identifier,
+                identifier,
             )
             .then((response) => {
                 return response.data;
@@ -100,17 +100,6 @@ export default class RemoteServices {
     static async getCenote(key: string): Promise<CenoteDTO> {
         return httpClient
             .get('/api/cenotes/' + key)
-            .then((response) => {
-                return new CenoteDTO(response.data);
-            })
-            .catch(async (error) => {
-                throw Error(await this.errorMessage(error));
-            });
-    }
-
-    static async getCenoteComment(key: string): Promise<CenoteDTO> {
-        return httpClient
-            .get('/api/cenotes/' + key + '/comments')
             .then((response) => {
                 return new CenoteDTO(response.data);
             })
