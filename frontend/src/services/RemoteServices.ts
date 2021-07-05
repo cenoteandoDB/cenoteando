@@ -63,7 +63,7 @@ export default class RemoteServices {
         return httpClient
             .get(
                 '/oai/request?verb=GetRecord&metadataPrefix=oai_datacite&identifier=' +
-                identifier,
+                    identifier,
             )
             .then((response) => {
                 return response.data;

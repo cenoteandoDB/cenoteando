@@ -1,8 +1,9 @@
 import { Collection, Entities, Joi, Route, RouteArg } from 'type-arango';
-import { Cenote, MeasurementOrFact } from '../documents';
-import { query } from '@arangodb';
 import { QueryOpt } from 'type-arango/dist/types';
-import { MeasurementsOrFacts } from './MeasurementsOrFacts';
+import { query } from '@arangodb';
+
+import { Cenote, MeasurementOrFact, Comment } from '../documents';
+import { MeasurementsOrFacts, Comments } from '../collections';
 
 @Collection({
     of: Cenote,
@@ -91,6 +92,16 @@ export class Cenotes extends Entities {
                     RETURN KEEP(mof.mof, "timestamp", "value")
             )
             RETURN MERGE(vardoc, { values: values })
+        `.toArray();
+    }
+
+    @Route.GET(':_key/comments', ['guest'], 'Returns cenote comments by key')
+    static GET_COMMENTS({ param }: RouteArg): Comment[] {
+        // TODO: Test this
+        return query`
+        FOR c IN ${Comments._db}
+            FILTER c.cenote_id == ${Cenotes.name + '/' + param._key}
+            RETURN c
         `.toArray();
     }
 

@@ -460,8 +460,8 @@ export class CoreOaiProvider {
                         { protocolVersion: this.parameters.protocolVersion },
                         { adminEmail: this.parameters.adminEmail },
                         {
-                            earliestDatestamp: this.parameters
-                                .earliestDatestamp,
+                            earliestDatestamp:
+                                this.parameters.earliestDatestamp,
                         },
                         { deletedRecord: this.parameters.deletedRecord },
                         { granularity: this.parameters.granularity },

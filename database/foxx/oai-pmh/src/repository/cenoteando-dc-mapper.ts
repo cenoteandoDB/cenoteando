@@ -69,9 +69,10 @@ export class CenoteandoDcMapper implements ProviderDCMapper {
                                 { 'dc:type': 'dataset' },
                                 { 'dc:publisher': record.publisher },
                                 {
-                                    'dc:rights': CenoteandoDcMapper.getRightsMessage(
-                                        false,
-                                    ),
+                                    'dc:rights':
+                                        CenoteandoDcMapper.getRightsMessage(
+                                            false,
+                                        ),
                                 },
                             ],
                         },
@@ -120,9 +121,8 @@ export class CenoteandoDcMapper implements ProviderDCMapper {
         };
 
         for (const record of records) {
-            const updatedAt: string = CenoteandoDcMapper.setTimeZoneOffset(
-                record,
-            );
+            const updatedAt: string =
+                CenoteandoDcMapper.setTimeZoneOffset(record);
             const item = {
                 record: [
                     {

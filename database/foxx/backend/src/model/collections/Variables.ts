@@ -24,7 +24,7 @@ export class Variables extends Entities {
         },
     )
     static CSV(): string {
-        let vars = Variables.find();
+        const vars = Variables.find();
         return parse(vars, { eol: '\n' });
     }
 }

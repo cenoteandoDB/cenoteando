@@ -61,7 +61,7 @@ import MapMarker from '@/components/map/MapMarker.vue';
 type Overlay = {
     geojson: GeoJSON;
     visible?: boolean;
-}
+};
 
 interface Overlays {
     [key: string]: Overlay;
