@@ -18,6 +18,7 @@
                 </v-tooltip>
 
                 <v-spacer></v-spacer>
+
                 <v-icon x-large color="red" dense>mdi-tent</v-icon>
                 <v-spacer></v-spacer>
 
@@ -53,9 +54,13 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import VariableDTO from '@/models/VariableDTO';
+import CenoteDTO from '@/models/CenoteDTO';
 
 @Component
 export default class GeneralTab extends Vue {
+    variable: VariableDTO | null = null;
+    cenote: CenoteDTO | null = null;
     currentTab = 0;
 }
 </script>

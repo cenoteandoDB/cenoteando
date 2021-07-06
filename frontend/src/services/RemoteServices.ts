@@ -6,6 +6,7 @@ import { ElementCompact, xml2js } from 'xml-js';
 import CenoteDTO from '@/models/CenoteDTO';
 import L from 'leaflet';
 import { FeatureCollection } from 'geojson';
+import VariableDTO from '@/models/VariableDTO';
 
 const httpClient = axios.create();
 httpClient.defaults.timeout = 100000;
@@ -63,7 +64,7 @@ export default class RemoteServices {
         return httpClient
             .get(
                 '/oai/request?verb=GetRecord&metadataPrefix=oai_datacite&identifier=' +
-                    identifier,
+                identifier,
             )
             .then((response) => {
                 return response.data;
@@ -102,6 +103,17 @@ export default class RemoteServices {
             .get('/api/cenotes/' + key)
             .then((response) => {
                 return new CenoteDTO(response.data);
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
+    static async getActivities(key: string): Promise<VariableDTO> {
+        return httpClient
+            .get('/api/cenotes/' + key + '/data/TOURISM/')
+            .then((response) => {
+                return new VariableDTO(response.data);
             })
             .catch(async (error) => {
                 throw Error(await this.errorMessage(error));

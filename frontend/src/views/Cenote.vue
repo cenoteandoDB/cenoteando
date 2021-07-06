@@ -75,6 +75,7 @@ import RemoteServices from '@/services/RemoteServices';
 import CenoteDTO from '@/models/CenoteDTO';
 import MapMarker from '@/components/map/MapMarker.vue';
 import CenoteDetails from '@/components/CenoteDetails.vue';
+import VariableDTO from '@/models/VariableDTO';
 
 @Component({
     components: {
@@ -88,6 +89,7 @@ import CenoteDetails from '@/components/CenoteDetails.vue';
 export default class Cenote extends Vue {
     marker: L.CircleMarker | null = null;
     cenote: CenoteDTO | null = null;
+    variable: VariableDTO | null = null;
 
     zoom = 12;
     url = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
