@@ -56,12 +56,26 @@
 import { Component, Vue } from 'vue-property-decorator';
 import VariableDTO from '@/models/VariableDTO';
 import CenoteDTO from '@/models/CenoteDTO';
+import RemoteServices from "@/services/RemoteServices";
 
 @Component
 export default class GeneralTab extends Vue {
-    variable: VariableDTO | null = null;
+    variables: VariableDTO[] = [];
     cenote: CenoteDTO | null = null;
     currentTab = 0;
+
+    async created(): Promise<void> {
+        await this.$store.dispatch('loading');
+        try {
+            this.variables = await RemoteServices.getData(
+                this.$route.params.key,
+                'TOURISM'
+            );
+        } catch (error) {
+            await this.$store.dispatch('error', error);
+        }
+        await this.$store.dispatch('clearLoading');
+    }
 }
 </script>
 

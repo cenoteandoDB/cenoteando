@@ -89,7 +89,6 @@ import VariableDTO from '@/models/VariableDTO';
 export default class Cenote extends Vue {
     marker: L.CircleMarker | null = null;
     cenote: CenoteDTO | null = null;
-    variable: VariableDTO | null = null;
 
     zoom = 12;
     url = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';

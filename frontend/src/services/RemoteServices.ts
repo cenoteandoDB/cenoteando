@@ -64,7 +64,7 @@ export default class RemoteServices {
         return httpClient
             .get(
                 '/oai/request?verb=GetRecord&metadataPrefix=oai_datacite&identifier=' +
-                identifier,
+                    identifier,
             )
             .then((response) => {
                 return response.data;
@@ -109,11 +109,11 @@ export default class RemoteServices {
             });
     }
 
-    static async getActivities(key: string): Promise<VariableDTO> {
+    static async getData(key: string, theme: string): Promise<VariableDTO[]> {
         return httpClient
-            .get('/api/cenotes/' + key + '/data/TOURISM/')
+            .get('/api/cenotes/' + key + '/data/' + theme)
             .then((response) => {
-                return new VariableDTO(response.data);
+                return response.data.map((v) => new VariableDTO(v));
             })
             .catch(async (error) => {
                 throw Error(await this.errorMessage(error));
