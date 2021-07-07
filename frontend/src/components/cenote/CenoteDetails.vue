@@ -32,10 +32,10 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import GeneralTab from '@/components/GeneralTab.vue';
-import CVariables from '@/components/CVariables.vue';
-import SocialTab from '@/components/SocialTab.vue';
-import ThematicData from '@/components/ThematicData.vue';
+import GeneralTab from '@/components/cenote/GeneralTab.vue';
+import CVariables from '@/components/cenote/CVariables.vue';
+import SocialTab from '@/components/cenote/SocialTab.vue';
+import ThematicData from '@/components/cenote/ThematicData.vue';
 import Sources from '@/components/Sources.vue';
 import CenoteDTO from '@/models/CenoteDTO';
 

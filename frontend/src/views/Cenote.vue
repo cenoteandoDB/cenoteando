@@ -74,7 +74,7 @@ import { LMap, LTileLayer, LCircleMarker } from 'vue2-leaflet';
 import RemoteServices from '@/services/RemoteServices';
 import CenoteDTO from '@/models/CenoteDTO';
 import MapMarker from '@/components/map/MapMarker.vue';
-import CenoteDetails from '@/components/CenoteDetails.vue';
+import CenoteDetails from '@/components/cenote/CenoteDetails.vue';
 import VariableDTO from '@/models/VariableDTO';
 
 @Component({
