@@ -1,56 +1,30 @@
 <template>
     <v-container>
         <v-row class="pt-10">
-            <v-col class="d-flex justify-center">
+            <v-col
+                class="d-flex justify-center"
+                v-for="variable in variables"
+                :key="variable._key"
+            >
                 <v-spacer></v-spacer>
-                <v-tooltip
-                    bottom
-                    v-for="variable in variables"
-                    :key="variable._key"
-                >
+                <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
-                        <v-icon
-                            x-large
-                            color="green"
-                            v-bind="attrs"
-                            v-on="on"
-                            v-if="variable._key"
-                            dense
-                            >{{ icons[variable._key] }}</v-icon
-                        >
+                        <!--<v-icon
+    x-large
+    color="green"
+    v-bind="attrs"
+    v-on="on"
+    v-if="variable._key"
+    dense
+>{{ icons[variable._key] }}</v-icon>
+ -->
+                        <h3 v-bind="attrs" v-on="on" v-if="variable._key">
+                            {{ variable.name }}
+                        </h3>
                     </template>
-                    <span>{{ variable.description }}</span>
+                    <span class="mx-auto">{{ variable.description }}</span>
                 </v-tooltip>
 
-                <v-spacer></v-spacer>
-
-                <v-icon x-large color="red" dense>mdi-tent</v-icon>
-                <v-spacer></v-spacer>
-
-                <v-icon x-large color="green" dense
-                    >mdi-silverware-fork-knife
-                </v-icon>
-                <v-spacer></v-spacer>
-
-                <v-icon x-large color="green" dense>mdi-shower-head </v-icon>
-                <v-spacer></v-spacer>
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col class="d-flex justify-center mx-auto">
-                <v-spacer></v-spacer>
-
-                <v-icon x-large color="green" dense>mdi-food </v-icon>
-                <v-spacer></v-spacer>
-                <v-icon x-large color="red" dense>mdi-hanger </v-icon>
-                <v-spacer></v-spacer>
-
-                <v-icon x-large color="green" dense
-                    >mdi-paper-roll-outline
-                </v-icon>
-                <v-spacer></v-spacer>
-
-                <v-icon x-large color="green" dense>mdi-horse-human </v-icon>
                 <v-spacer></v-spacer>
             </v-col>
         </v-row>
