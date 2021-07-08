@@ -18,9 +18,34 @@
     dense
 >{{ icons[variable._key] }}</v-icon>
  -->
-                        <h3 v-bind="attrs" v-on="on" v-if="variable._key">
-                            {{ variable.name }}
+                        <h3
+                            v-bind="attrs"
+                            v-on="on"
+                            v-if="variable.values[0].value === true"
+                        >
+                            green
                         </h3>
+
+                        <h3
+                            v-bind="attrs"
+                            v-on="on"
+                            v-if="variable.values[0].value === false"
+                        >
+                            red
+                        </h3>
+                        <h3
+                            v-bind="attrs"
+                            v-on="on"
+                            v-if="
+                                variable.values[0].value !== true &&
+                                variable.values[0].value !== false
+                            "
+                        >
+                            other
+                        </h3>
+
+                        <!--<h3 v-bind="attrs" v-on="on" v-if="variable._key">
+                            {{ variable.name }}</h3>-->
                     </template>
                     <span class="mx-auto">{{ variable.description }}</span>
                 </v-tooltip>
