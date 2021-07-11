@@ -7,6 +7,7 @@ import CenoteDTO from '@/models/CenoteDTO';
 import L from 'leaflet';
 import { FeatureCollection } from 'geojson';
 import VariableDTO from '@/models/VariableDTO';
+import CommentDTO from '@/models/CommentDTO';
 
 const httpClient = axios.create();
 httpClient.defaults.timeout = 100000;
@@ -64,7 +65,7 @@ export default class RemoteServices {
         return httpClient
             .get(
                 '/oai/request?verb=GetRecord&metadataPrefix=oai_datacite&identifier=' +
-                    identifier,
+                identifier,
             )
             .then((response) => {
                 return response.data;
@@ -114,6 +115,17 @@ export default class RemoteServices {
             .get('/api/cenotes/' + key + '/data/' + theme)
             .then((response) => {
                 return response.data.map((v) => new VariableDTO(v));
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
+    static async getComment(key: string): Promise<CommentDTO[]> {
+        return httpClient
+            .get('/api/cenotes/' + key + '/comments/')
+            .then((response) => {
+                return response.data.map((v) => new CommentDTO(v));
             })
             .catch(async (error) => {
                 throw Error(await this.errorMessage(error));

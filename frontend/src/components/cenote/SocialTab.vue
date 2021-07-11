@@ -95,10 +95,25 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import CommentDTO from '@/models/CommentDTO';
+import RemoteServices from '@/services/RemoteServices';
 
 @Component
 export default class SocialTab extends Vue {
+    comments: CommentDTO[] = [];
+
     currentTab = 2;
+    async created(): Promise<void> {
+        await this.$store.dispatch('loading');
+        try {
+            this.comments = await RemoteServices.getComment(
+                this.$route.params.key,
+            );
+        } catch (error) {
+            await this.$store.dispatch('error', error);
+        }
+        await this.$store.dispatch('clearLoading');
+    }
 }
 </script>
 
