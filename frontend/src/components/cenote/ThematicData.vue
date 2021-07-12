@@ -1,111 +1,72 @@
 <template>
     <v-container>
-        <v-card>
-            <v-tabs v-model="tab" fixed-tabs>
-                <v-tab v-for="tabs in tabs" :key="tabs">
-                    {{ tabs }}
-                </v-tab>
-            </v-tabs>
+        <v-tabs v-model="currentTab" fixed-tabs slider-color="amber darken-3">
+            <v-tab v-for="tab in tabs" :key="tab">
+                {{ tab }}
+            </v-tab>
 
-            <v-tabs-items v-model="tab">
-                <v-tab-item v-for="tabs in tabs" :key="tabs">
-                    <v-card v-if="tabs === 'Location'" flat>
-                        <location-tab />
-                    </v-card>
-
-                    <v-card v-if="tabs === 'Geo Reference'" flat>
-                        <georef-tab />
-                    </v-card>
-
-                    <v-card v-if="tabs === 'Cultural'" flat>
-                        <cultural-tab />
-                    </v-card>
-
-                    <v-card v-if="tabs === 'Geomorphology'" flat>
-                        <geomorphology-tab />
-                    </v-card>
-
-                    <v-card v-if="tabs === 'Biodiversity'" flat>
-                        <biodiversity-tab />
-                    </v-card>
-
-                    <v-card v-if="tabs === 'Disturbance'" flat>
-                        <disturbance-tab />
-                    </v-card>
-
-                    <v-card v-if="tabs === 'Tourism'" flat>
-                        <tourism-tab />
-                    </v-card>
-
-                    <v-card v-if="tabs === 'Diving'" flat>
-                        <diving-tab />
-                    </v-card>
-
-                    <v-card v-if="tabs === 'Organization'" flat>
-                        <organization-tab />
-                    </v-card>
-
-                    <v-card v-if="tabs === 'Regulation'" flat>
-                        <regulation-tab />
-                    </v-card>
-
-                    <v-card v-if="tabs === 'Water'" flat>
-                        <water-tab />
-                    </v-card>
+            <v-tabs-items v-model="currentTab">
+                <v-tab-item v-for="theme in tabs" :key="theme">
+                    <br />
+                    <v-row
+                        v-for="variable in variables[theme]"
+                        :key="variable._key"
+                    >
+                        <v-col cols="auto">
+                            <v-tooltip top>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <b
+                                        class="text-decoration-underline"
+                                        v-bind="attrs"
+                                        v-on="on"
+                                        >{{ variable.name }}:</b
+                                    >
+                                </template>
+                                {{ variable.description }}
+                            </v-tooltip>
+                            {{ variable.values[0].value }}
+                        </v-col>
+                        <v-spacer></v-spacer>
+                        <v-col cols="auto">
+                            <small>{{ variable.values[0].timestamp }}</small>
+                        </v-col>
+                    </v-row>
                 </v-tab-item>
             </v-tabs-items>
-        </v-card>
+        </v-tabs>
     </v-container>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import VariableDTO from '@/models/VariableDTO';
-import LocationTab from '@/components/cenote/thematicData/LocationTab.vue';
-import GeorefTab from '@/components/cenote/thematicData/GeorefTab.vue';
-import CulturalTab from '@/components/cenote/thematicData/CulturalTab.vue';
-import GeomorphologyTab from '@/components/cenote/thematicData/GeomorphologyTab.vue';
-import BiodiversityTab from '@/components/cenote/thematicData/BiodiversityTab.vue';
-import DisturbanceTab from '@/components/cenote/thematicData/DisturbanceTab.vue';
-import TourismTab from '@/components/cenote/thematicData/TourismTab.vue';
-import DivingTab from '@/components/cenote/thematicData/DivingTab.vue';
-import OrganizationTab from '@/components/cenote/thematicData/OrganizationTab.vue';
-import RegulationTab from '@/components/cenote/thematicData/RegulationTab.vue';
-import WaterTab from '@/components/cenote/thematicData/WaterTab.vue';
+import RemoteServices from '@/services/RemoteServices';
 
-@Component({
-    components: {
-        LocationTab,
-        GeorefTab,
-        CulturalTab,
-        GeomorphologyTab,
-        BiodiversityTab,
-        DisturbanceTab,
-        TourismTab,
-        DivingTab,
-        OrganizationTab,
-        RegulationTab,
-        WaterTab,
-    },
-})
+@Component({})
 export default class ThematicData extends Vue {
-    variables: VariableDTO[] = [];
-
-    currentTab = 3;
-    tab = null;
+    variables: { [theme: string]: VariableDTO[] } = {};
+    currentTab = null;
     tabs = [
-        'Location',
-        'Geo Reference',
-        'Cultural',
-        'Geomorphology',
-        'Biodiversity',
-        'Disturbance',
-        'Tourism',
-        'Diving',
-        'Organization',
-        'Regulation',
-        'Water',
+        'LOCATION',
+        'GEOREFERENCE',
+        'CULTURAL',
+        'GEOMORPHOLOGY',
+        'BIODIVERSITY',
+        'DISTURBANCE',
+        'TOURISM',
+        'DIVING',
+        'ORGANIZATION',
+        'REGULATION',
+        'WATER',
     ];
+
+    async created(): Promise<void> {
+        this.tabs.forEach((theme) => {
+            RemoteServices.getData(this.$route.params.key, theme)
+                .then((vars) => Vue.set(this.variables, theme, vars))
+                .catch((error) => this.$store.dispatch('error', error));
+        });
+    }
 }
 </script>
 

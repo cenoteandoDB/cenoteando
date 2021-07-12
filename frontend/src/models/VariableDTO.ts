@@ -1,3 +1,5 @@
+export type VariableValueType = boolean | number | string;
+
 export default class VariableDTO {
     _key!: string;
     access_level!: string;
@@ -6,7 +8,7 @@ export default class VariableDTO {
     theme!: Array<string>;
     timeseries!: boolean;
     type!: string;
-    values!: Array<{ timestamp: string; value: any }>;
+    values!: Array<{ timestamp: string; value: VariableValueType }>;
 
     constructor(jsonObj?: VariableDTO) {
         if (jsonObj) {

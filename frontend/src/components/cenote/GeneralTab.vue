@@ -6,40 +6,16 @@
                 v-for="variable in variables"
                 :key="variable._key"
             >
-                <v-spacer></v-spacer>
                 <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
-                        <!--<v-icon
-    x-large
-    color="green"
-    v-bind="attrs"
-    v-on="on"
-    v-if="variable._key"
-    dense
->{{ icons[variable._key] }}</v-icon>
- -->
                         <v-icon
                             x-large
-                            color="green"
+                            :color="variable.values[0].value ? 'green' : 'red'"
                             v-bind="attrs"
                             v-on="on"
-                            v-if="variable.values[0].value === true"
                         >
                             {{ icons[variable._key] }}
                         </v-icon>
-
-                        <v-icon
-                            x-large
-                            color="red"
-                            v-bind="attrs"
-                            v-on="on"
-                            v-if="variable.values[0].value === false"
-                        >
-                            {{ icons[variable._key] }}
-                        </v-icon>
-
-                        <!--<h3 v-bind="attrs" v-on="on" v-if="variable._key">
-                            {{ variable.name }}</h3>-->
                     </template>
                     <span class="mx-auto">{{ variable.description }}</span>
                 </v-tooltip>
@@ -66,25 +42,39 @@ export default class GeneralTab extends Vue {
         camping: 'mdi-tent',
         showers: 'mdi-shower-head',
         cycleRental: 'mdi-bike',
-        businessHoursIn: 'mdi-calendar-arrow-left', //TODO: FIND OUT IF IT WORKS
-        businessHoursOut: 'mdi-calendar-arrow-right', //TODO: FIND OUT IF IT WORKS
+        businessHoursIn: 'mdi-calendar-arrow-left', // TODO: FIND OUT IF IT WORKS
+        businessHoursOut: 'mdi-calendar-arrow-right', // TODO: FIND OUT IF IT WORKS
         horseRide: 'mdi-horse-human',
         truckRide: 'mdi-truck',
         birdWatching: 'mdi-bird',
-        socialEvents: 'mdi-account-group', //TODO: FIND A BETTER ICON POSSIBLY
+        socialEvents: 'mdi-account-group', // TODO: FIND A BETTER ICON POSSIBLY
         foodSnacks: 'mdi-food',
         restaurant: 'mdi-silverware-fork-knife',
         restrooms: 'mdi-paper-roll-outline',
         dressingRoom: 'mdi-wardrobe',
         lockers: 'mdi-locker-multiple',
         tourGuide: 'mdi-directions',
+
+        // FIXME: masksRental refers to snorkeling masks, not face masks
         masksRental: 'mdi-face-mask-outline',
 
-        //FIXME - zipline : missing,
-        //FIXME - rentalKayak : missing,
-        //FIXME - rappel : missing,
-        //FIXME -temazcal : missing,
-        //FIXME - cabinsRooms: missing,
+        // FIXME
+        zipline: 'mdi-help-circle',
+
+        // FIXME
+        lifesaverRental: 'mdi-help-circle',
+
+        // FIXME
+        kayakRental: 'mdi-help-circle',
+
+        // FIXME
+        rappel: 'mdi-help-circle',
+
+        // FIXME
+        temazcal: 'mdi-help-circle',
+
+        // FIXME
+        cabinsRooms: 'mdi-help-circle',
     };
 
     async created(): Promise<void> {
@@ -93,6 +83,10 @@ export default class GeneralTab extends Vue {
             this.variables = await RemoteServices.getData(
                 this.$route.params.key,
                 'TOURISM',
+            );
+            // TODO: Make this more robust after updating data types of each variable
+            this.variables = this.variables.filter(
+                (variable) => typeof variable.values[0].value === 'boolean',
             );
         } catch (error) {
             await this.$store.dispatch('error', error);

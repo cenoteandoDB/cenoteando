@@ -1,39 +1,23 @@
 <template>
     <v-sheet elevation="2" style="min-height: 500px">
-        <v-tabs v-model="tab" fixed-tabs>
-            <v-tabs-slider color="amber darken-3"></v-tabs-slider>
-
-            <v-tab v-for="tabs in tabs" :key="tabs">
-                {{ tabs }}
+        <v-tabs v-model="currentTab" fixed-tabs slider-color="amber darken-3">
+            <v-tab v-for="tab in tabs" :key="tab.tab">
+                {{ tab.tab }}
             </v-tab>
-        </v-tabs>
 
-        <v-tabs-items v-model="tab">
-            <v-tab-item v-for="tabs in tabs" :key="tabs">
-                <v-card v-if="tabs === 'General'" flat>
-                    <general-tab />
-                </v-card>
-                <v-card v-if="tabs === 'Calculated Variables'" flat>
-                    <c-variables />
-                </v-card>
-                <v-card v-if="tabs === 'Social'" flat>
-                    <social-tab />
-                </v-card>
-                <v-card v-if="tabs === 'Thematic Data'" flat>
-                    <thematic-data />
-                </v-card>
-                <v-card v-if="tabs === 'Sources'" flat>
-                    <sources />
-                </v-card>
-            </v-tab-item>
-        </v-tabs-items>
+            <v-tabs-items v-model="currentTab">
+                <v-tab-item v-for="tab in tabs" :key="tab.tab">
+                    <component :is="tab.component" />
+                </v-tab-item>
+            </v-tabs-items>
+        </v-tabs>
     </v-sheet>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import GeneralTab from '@/components/cenote/GeneralTab.vue';
-import CVariables from '@/components/cenote/CVariables.vue';
+import CalculatedVariables from '@/components/cenote/CalculatedVariables.vue';
 import SocialTab from '@/components/cenote/SocialTab.vue';
 import ThematicData from '@/components/cenote/ThematicData.vue';
 import Sources from '@/components/Sources.vue';
@@ -46,17 +30,22 @@ const CenoteProps = Vue.extend({
 });
 
 @Component({
-    components: { GeneralTab, CVariables, SocialTab, ThematicData, Sources },
+    components: {
+        GeneralTab,
+        CalculatedVariables,
+        SocialTab,
+        ThematicData,
+        Sources,
+    },
 })
 export default class CenoteDetails extends CenoteProps {
-    currentTab = 0;
-    tab = null;
+    currentTab = null;
     tabs = [
-        'General',
-        'Calculated Variables',
-        'Social',
-        'Thematic Data',
-        'Sources',
+        { tab: 'General', component: 'GeneralTab' },
+        { tab: 'Calculated Variables', component: 'CalculatedVariables' },
+        { tab: 'Social', component: 'SocialTab' },
+        { tab: 'Thematic Data', component: 'ThematicData' },
+        { tab: 'Sources', component: 'Sources' },
     ];
 }
 </script>

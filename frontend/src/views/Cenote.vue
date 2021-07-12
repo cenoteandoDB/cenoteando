@@ -30,7 +30,7 @@
                                     .slice()
                                     .reverse()
                             "
-                            style="height: 400px"
+                            style="height: 400px; z-index: 0"
                         >
                             <l-tile-layer
                                 :url="url"
@@ -75,7 +75,6 @@ import RemoteServices from '@/services/RemoteServices';
 import CenoteDTO from '@/models/CenoteDTO';
 import MapMarker from '@/components/map/MapMarker.vue';
 import CenoteDetails from '@/components/cenote/CenoteDetails.vue';
-import VariableDTO from '@/models/VariableDTO';
 
 @Component({
     components: {
