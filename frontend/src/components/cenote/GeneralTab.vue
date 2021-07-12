@@ -18,31 +18,25 @@
     dense
 >{{ icons[variable._key] }}</v-icon>
  -->
-                        <h3
+                        <v-icon
+                            x-large
+                            color="green"
                             v-bind="attrs"
                             v-on="on"
                             v-if="variable.values[0].value === true"
                         >
-                            green
-                        </h3>
+                            {{ icons[variable._key] }}
+                        </v-icon>
 
-                        <h3
+                        <v-icon
+                            x-large
+                            color="red"
                             v-bind="attrs"
                             v-on="on"
                             v-if="variable.values[0].value === false"
                         >
-                            red
-                        </h3>
-                        <h3
-                            v-bind="attrs"
-                            v-on="on"
-                            v-if="
-                                variable.values[0].value !== true &&
-                                variable.values[0].value !== false
-                            "
-                        >
-                            other
-                        </h3>
+                            {{ icons[variable._key] }}
+                        </v-icon>
 
                         <!--<h3 v-bind="attrs" v-on="on" v-if="variable._key">
                             {{ variable.name }}</h3>-->
@@ -69,6 +63,28 @@ export default class GeneralTab extends Vue {
     currentTab = 0;
     icons = {
         swimming: 'mdi-swim',
+        camping: 'mdi-tent',
+        showers: 'mdi-shower-head',
+        cycleRental: 'mdi-bike',
+        businessHoursIn: 'mdi-calendar-arrow-left', //TODO: FIND OUT IF IT WORKS
+        businessHoursOut: 'mdi-calendar-arrow-right', //TODO: FIND OUT IF IT WORKS
+        horseRide: 'mdi-horse-human',
+        truckRide: 'mdi-truck',
+        birdWatching: 'mdi-bird',
+        socialEvents: 'mdi-account-group', //TODO: FIND A BETTER ICON POSSIBLY
+        foodSnacks: 'mdi-food',
+        restaurant: 'mdi-silverware-fork-knife',
+        restrooms: 'mdi-paper-roll-outline',
+        dressingRoom: 'mdi-wardrobe',
+        lockers: 'mdi-locker-multiple',
+        tourGuide: 'mdi-directions',
+        masksRental: 'mdi-face-mask-outline',
+
+        //FIXME - zipline : missing,
+        //FIXME - rentalKayak : missing,
+        //FIXME - rappel : missing,
+        //FIXME -temazcal : missing,
+        //FIXME - cabinsRooms: missing,
     };
 
     async created(): Promise<void> {
