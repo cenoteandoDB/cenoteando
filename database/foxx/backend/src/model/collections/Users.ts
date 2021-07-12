@@ -2,6 +2,6 @@ import { Collection, Entities } from 'type-arango';
 import { User } from '../documents';
 
 @Collection({
-    of: MeasurementOrFact,
+    of: User,
 })
-export class MeasurementsOrFacts extends Entities {}
+export class Users extends Entities {}

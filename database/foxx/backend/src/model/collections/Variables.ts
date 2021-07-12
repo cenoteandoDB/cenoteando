@@ -1,30 +1,23 @@
-import { Collection, Entities, Route } from 'type-arango';
+import { Collection, Entities } from 'type-arango';
+
 import { Variable } from '../documents';
-import { parse } from 'json2csv';
-import { string } from 'joi';
+import { Paginator } from '../../util/Paginator';
+import { QueryOpt } from 'type-arango/dist/types';
 
 @Collection({
     of: Variable,
-    routes: [
-        { method: 'GET', roles: ['guest'] },
-        { method: 'LIST', roles: ['guest'] },
-    ],
 })
 export class Variables extends Entities {
-    @Route.GET(
-        '/variables.csv',
-        ['guest'],
-        'Returns all variables in csv format',
-        {
-            response: {
-                mime: ['text/csv'],
-                schema: string(),
-                status: 'ok',
-            },
-        },
-    )
-    static CSV(): string {
-        const vars = Variables.find();
-        return parse(vars, { eol: '\n' });
+    static paginate(
+        limit: number,
+        continuationToken?: string,
+        options?: QueryOpt,
+    ): {
+        data: Variable[];
+        hasMore: boolean;
+        continuationToken: string;
+    } {
+        const paginator = new Paginator<Variable>(Variables);
+        return paginator.paginate(limit, continuationToken, options);
     }
 }

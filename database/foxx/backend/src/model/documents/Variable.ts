@@ -1,8 +1,5 @@
 import { Attribute, Document, Entity } from 'type-arango';
 
-// TODO: Set attribute schema and role permissions (schema, readers, writers)
-// TODO: Implement getters, setters and helpers
-
 enum Theme {
     LOCATION = 'LOCATION',
     GEOREFERENCE = 'GEOREFERENCE',
@@ -18,7 +15,7 @@ enum Theme {
     EVENT = 'EVENT',
 }
 
-enum AccessLevel {
+export enum AccessLevel {
     PUBLIC = 'PUBLIC',
     PRIVATE = 'PRIVATE',
     SENSITIVE = 'SENSITIVE',
@@ -39,6 +36,7 @@ export class Variable extends Entity {
     @Attribute()
     timeseries: boolean;
 
+    // TODO: Make camelCase
     @Attribute()
     access_level: AccessLevel;
 

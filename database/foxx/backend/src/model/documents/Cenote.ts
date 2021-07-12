@@ -10,11 +10,19 @@ import {
     Type,
 } from 'type-arango';
 import { Feature, Geometry } from 'geojson';
-import { GadmDocument } from './GadmDocument';
-import { Comment } from './Comment';
+import { GadmDocument, Comment } from '.';
 
-// TODO: Set role permissions (schema, readers, writers)
-// TODO: Implement getters, setters and helpers
+export enum Issue {
+    GEOTAG_NOT_VERIFIED = 'GEOTAG_NOT_VERIFIED',
+}
+
+export enum CenoteType {
+    NO_TYPE = 'NO_TYPE',
+    CENOTE = 'CENOTE',
+    DRY_CAVE = 'DRY_CAVE',
+    WATER_WELL = 'WATER_WELL',
+    WATERY = 'WATERY',
+}
 
 @Nested()
 export class CenoteGeoJSON implements Feature {
@@ -29,12 +37,9 @@ export class CenoteGeoJSON implements Feature {
     properties: Record<string, never>;
 }
 
-export enum Issue {
-    GEOTAG_NOT_VERIFIED,
-}
-
 @Nested()
 export class Social {
+    // TODO: Make camelCase
     @Attribute()
     total_comments: number;
 
@@ -48,7 +53,7 @@ export class Social {
 @Document()
 export class Cenote extends Entity {
     @Attribute()
-    type: string;
+    type: CenoteType;
 
     @Attribute()
     name: string;
@@ -59,9 +64,11 @@ export class Cenote extends Entity {
     @Attribute()
     issues: Array<Issue>;
 
+    // TODO: Remove attribute (store as variable)
     @Attribute()
     contacts: Array<string>;
 
+    // TODO: Make camelCase
     @Attribute()
     alternative_names: Array<string>;
 
@@ -75,6 +82,7 @@ export class Cenote extends Entity {
     @Attribute()
     social: Social;
 
+    @Index('persistent')
     @Attribute()
     createdAt: Type.DateInsert;
 

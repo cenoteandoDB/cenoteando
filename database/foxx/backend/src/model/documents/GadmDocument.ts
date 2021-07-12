@@ -1,9 +1,6 @@
 import { Attribute, Document, Entity, Index, Nested } from 'type-arango';
 import { Feature, Geometry } from 'geojson';
 
-// TODO: Set attribute schema and role permissions (schema, readers, writers)
-// TODO: Implement getters, setters and helpers
-
 @Nested()
 export class GadmProperties {
     @Attribute()
