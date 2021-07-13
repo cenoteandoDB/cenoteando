@@ -8,9 +8,18 @@
                 <v-col class="d-flex justify-center m-10">
                     <v-spacer></v-spacer>
 
-                    <v-avatar class="p-10" color="primary" size="40"></v-avatar>
+                    <v-container v-if="comment.source === 'GOOGLE_PLACES'">
+                        <v-btn icon :href="comment.url" target="_blank">
+                            <v-img :src="logos[1].src" :width="30"> </v-img>
+                        </v-btn>
+                    </v-container>
 
-                    <v-card-text>User Name</v-card-text>
+                    <v-container v-if="comment.source === 'TRIPADVISOR'">
+                        <v-btn icon :href="comment.url" target="_blank">
+                            <v-img :src="logos[0].src" :width="30"> </v-img>
+                        </v-btn>
+                    </v-container>
+
                     <v-spacer></v-spacer>
                     <v-rating
                         :value="comment.rating"
@@ -46,8 +55,21 @@ import RemoteServices from '@/services/RemoteServices';
 
 @Component
 export default class SocialTab extends Vue {
-    //comments: CommentDTO[] = [];
     comments: CommentDTO[] = [];
+
+    logos = [
+        {
+            src: require('@/assets/tripadvisor.jpg'),
+            alt: 'tripadvisor logo',
+            height: '30',
+        },
+        {
+            src: require('@/assets/google.png'),
+            alt: 'google logo',
+            white_only: false,
+            height: '30',
+        },
+    ];
 
     currentTab = 2;
     async created(): Promise<void> {
