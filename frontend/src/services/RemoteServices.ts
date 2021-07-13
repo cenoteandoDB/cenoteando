@@ -65,7 +65,7 @@ export default class RemoteServices {
         return httpClient
             .get(
                 '/oai/request?verb=GetRecord&metadataPrefix=oai_datacite&identifier=' +
-                    identifier,
+                identifier,
             )
             .then((response) => {
                 return response.data;
@@ -121,7 +121,7 @@ export default class RemoteServices {
             });
     }
 
-    static async getComment(key: string): Promise<CommentDTO[]> {
+    static async getComments(key: string): Promise<CommentDTO[]> {
         return httpClient
             .get('/api/cenotes/' + key + '/comments/')
             .then((response) => {

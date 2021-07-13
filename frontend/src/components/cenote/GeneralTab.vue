@@ -54,9 +54,7 @@ export default class GeneralTab extends Vue {
         dressingRoom: 'mdi-wardrobe',
         lockers: 'mdi-locker-multiple',
         tourGuide: 'mdi-directions',
-
-        // FIXME: masksRental refers to snorkeling masks, not face masks
-        masksRental: 'mdi-face-mask-outline',
+        masksRental: 'mdi-diving-snorkel',
 
         // FIXME
         zipline: 'mdi-help-circle',
