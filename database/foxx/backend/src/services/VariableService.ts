@@ -20,7 +20,7 @@ export interface VariableValues {
 export class VariableService {
     static listVariables(
         _: AuthUser,
-        limit: number = 50,
+        limit = 50,
         continuationToken?: string,
     ): {
         data: Readonly<Variable>[];
@@ -54,17 +54,17 @@ export class VariableService {
     }
 
     static csv(_: AuthUser): string {
-        let vars = Variables.find();
+        const vars = Variables.find();
         return parse(vars, { eol: '\n' });
     }
 
     static getData(user: AuthUser, cenoteKey, theme): VariableValues {
         const mofs = MeasurementsOrFacts.find({ filter: { _to: cenoteKey } });
-        let result: VariableValues = {};
+        const result: VariableValues = {};
         mofs.forEach((mof) => {
             if (!result[mof._from]) {
                 const variable = Variables.findOne(mof._from, {
-                    filter: VariableService.createAccessFilter(user),
+                    filter: VariableService.createReadFilter(user),
                 });
                 if (variable.theme != theme) return;
                 result[mof._from] = {
@@ -80,8 +80,8 @@ export class VariableService {
         return result;
     }
 
-    private static createAccessFilter(user: AuthUser): QueryFilter {
-        let accessLevels: AccessLevel[] = [AccessLevel.PUBLIC];
+    private static createReadFilter(user: AuthUser): QueryFilter {
+        const accessLevels: AccessLevel[] = [AccessLevel.PUBLIC];
         if (user) accessLevels.push(AccessLevel.PRIVATE);
         if (user && user.isAdmin()) accessLevels.push(AccessLevel.SENSITIVE);
         return {

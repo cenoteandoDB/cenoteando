@@ -1,12 +1,25 @@
-import { createRoutes } from 'type-arango';
 import { context } from '@arangodb/locals';
-import createRouter from '@arangodb/foxx/router';
+import createGraphQLRouter from '@arangodb/foxx/graphql';
+import graphql from 'graphql-tools';
+import { schema } from './graphql/schema';
+
+// TODO: REMOVE THIS
+console.log(
+    `this is the supposed schema's constructor: ${schema.constructor.name}`,
+);
 
 // Import the entities before creating the routes
 import * as Model from './model';
+
 Model.complete();
 
-// Derive the routes from your entities after they have been decorated and export the router to Foxx
-context.use(createRoutes(createRouter()));
+// Create GraphQL Router
+context.use(
+    createGraphQLRouter({
+        schema,
+        graphiql: true,
+        graphql,
+    }),
+);
 
 export * from './services';

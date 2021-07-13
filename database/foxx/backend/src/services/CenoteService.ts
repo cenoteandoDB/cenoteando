@@ -9,7 +9,7 @@ type AuthUser = User | null;
 export class CenoteService {
     static listCenotes(
         user: AuthUser,
-        limit: number = 250,
+        limit = 250,
         continuationToken?: string,
     ): {
         data: Readonly<Cenote>[];
@@ -17,13 +17,13 @@ export class CenoteService {
         continuationToken: string;
     } {
         return Cenotes.paginate(limit, continuationToken, {
-            filter: this.createAccessFilter(user),
+            filter: this.createReadFilter(user),
         });
     }
 
     static getCenote(user: AuthUser, _key: string): Cenote {
         return Cenotes.findOne(_key, {
-            filter: this.createAccessFilter(user),
+            filter: this.createReadFilter(user),
         });
     }
 
@@ -42,8 +42,8 @@ export class CenoteService {
         throw new Error('Not Implemented');
     }
 
-    private static createAccessFilter(user: AuthUser): QueryFilter {
-        let filter = {};
+    private static createReadFilter(user: AuthUser): QueryFilter {
+        const filter = {};
         if (!user) filter['touristic'] = true;
         return filter;
     }

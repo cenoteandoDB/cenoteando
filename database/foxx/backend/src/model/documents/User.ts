@@ -7,7 +7,7 @@ import {
     OneToMany,
     Related,
 } from 'type-arango';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 import { UserGroup } from './UserGroup';
 

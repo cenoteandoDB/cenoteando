@@ -49,7 +49,7 @@ export class OpenaireMapper implements ProviderDCMapper {
         const header: XmlObject = {
             header: [
                 {
-                    identifier: record._id,
+                    identifier: record.id,
                 },
                 { datestamp: date },
                 { setSpec: 'openaire_data' },
@@ -63,7 +63,7 @@ export class OpenaireMapper implements ProviderDCMapper {
                         identifierType: 'URN',
                     },
                 },
-                record._id,
+                record.id,
             ],
         };
 
@@ -310,7 +310,7 @@ export class OpenaireMapper implements ProviderDCMapper {
         };
 
         Console.debug(
-            'Got item with id ' + record._id + ', title: ' + record.title,
+            'Got item with id ' + record.id + ', title: ' + record.title,
         );
 
         return item;
@@ -325,7 +325,7 @@ export class OpenaireMapper implements ProviderDCMapper {
         for (const record of records) {
             const date: string = OpenaireMapper.setTimeZoneOffset(record.date);
             const item = {
-                header: [{ identifier: record._id }, { datestamp: date }],
+                header: [{ identifier: record.id }, { datestamp: date }],
             };
 
             list.push(item);

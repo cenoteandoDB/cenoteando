@@ -8,14 +8,14 @@ export class SocialService {
     static listComments(
         user: AuthUser,
         cenoteKey: string,
-        limit: number = 20,
+        limit = 20,
         continuationToken?: string,
     ): {
         data: Readonly<Comment>[];
         hasMore: boolean;
         continuationToken: string;
     } {
-        let filter = {};
+        const filter = {};
         if (!user) filter['cenote_id'] = Cenotes.name + '/' + cenoteKey;
         return Comments.paginate(limit, continuationToken, {
             filter,

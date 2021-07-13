@@ -1,5 +1,5 @@
 import { Collection, Entities } from 'type-arango';
-import { User } from '../documents';
+import { MeasurementOrFact } from '../documents';
 
 @Collection({
     of: MeasurementOrFact,

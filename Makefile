@@ -146,15 +146,15 @@ lint:
 	npm run lint --prefix database/foxx/oai-pmh
 	npm run prettier --prefix database/foxx/oai-pmh
 
-install: install_frontend install_type-arango install_backend install_oai-pmh
+install: install_frontend install_backend install_oai-pmh
 
 install_frontend:
 	npm install --prefix frontend
 
-install_backend:
+install_backend: install_type-arango
 	npm install --prefix database/foxx/backend
 
-install_oai-pmh:
+install_oai-pmh: install_type-arango
 	npm install --prefix database/foxx/oai-pmh
 
 install_type-arango:

@@ -62,7 +62,7 @@ export enum SETS {
 }
 
 export interface Identifier {
-    _id: string;
+    id: string;
     updatedAt: string;
     createdAt: string;
 }
@@ -86,12 +86,16 @@ export interface Record extends Identifier {
 }
 
 type CenoteData = {
-    _id: string;
+    _key: string;
     updatedAt: string;
     createdAt: string;
     name: string;
     geoLocationPoint: [number, number]; // [lon, lat]
 };
+
+function generateOaiID(identifier: string) {
+    return 'oai:cenoteando.org:' + identifier;
+}
 
 function createRecord(cenote_data: CenoteData): Record {
     // TODO: Store this in the database and retrieve here
@@ -159,7 +163,8 @@ function createRecord(cenote_data: CenoteData): Record {
         creatorName: 'Fernando Nuno Dias Marques Simoes',
         creatorIdentifier: 'info:eu-repo/dai/mx/cvu/208814',
         contributors: get_contributors(),
-        _id: cenote_data._id,
+        // TODO: Refactor oai id's
+        id: generateOaiID('Cenotes/' + cenote_data._key),
         // We use reverse because GeoJSON stores [lon, lat] and we need "lat lon"
         geoLocationPoint: cenote_data.geoLocationPoint.reverse().join(' '),
         title: cenote_data.name,
@@ -177,11 +182,7 @@ function createRecord(cenote_data: CenoteData): Record {
 // @ts-ignore We are not using these options at the moment
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function factory(options = {}): DataRepository {
-    const documents = module.context.dependencies.backend._Documents;
-    const collections = module.context.dependencies.backend._Collections;
-
-    const Cenote = documents.Cenote;
-    const Cenotes = collections.Cenotes;
+    const { CenoteService } = module.context.dependencies.backend;
 
     return Object.freeze({
         /**
@@ -200,24 +201,17 @@ export function factory(options = {}): DataRepository {
          * @returns {any} Resolves with a {@link Record}
          */
         getRecord: (parameters: RecordParameters): Record | undefined => {
-            function getIdFromIdentifier(identifier: string): string {
-                const [, , id] = identifier.split(':');
-                return id;
+            function getKeyFromIdentifier(identifier: string): string {
+                const [, , key] = identifier.split(':');
+                return key;
             }
 
-            const cenote = Cenotes.findOne({
-                filter: {
-                    _id: getIdFromIdentifier(parameters.identifier),
-                    touristic: true,
-                },
-            });
+            const cenote = CenoteService.getCenote(
+                getKeyFromIdentifier(parameters.identifier),
+            );
             console.debug('Got:', JSON.stringify(cenote));
             return createRecord({
-                _id:
-                    'oai:cenoteando.org:' +
-                    Cenotes._col.name +
-                    '/' +
-                    cenote._key,
+                _key: cenote._key,
                 updatedAt: cenote.updatedAt,
                 createdAt: cenote.createdAt,
                 name: cenote.name,
@@ -257,21 +251,18 @@ export function factory(options = {}): DataRepository {
          */
         // @ts-ignore TODO: Implement parameters
         getIdentifiers: (parameters: ListParameters): Array<Identifier> => {
-            const cenotes = Cenotes.find({
-                filter: { touristic: true },
-            });
+            const cenotes = CenoteService.listCenotes();
             console.debug('Got:', JSON.stringify(cenotes));
 
-            return cenotes.map((cenote: typeof Cenote) => {
-                return {
-                    _id:
-                        'oai:cenoteando.org:' +
-                        Cenotes._col.name +
-                        '/' +
-                        cenote._key,
-                    updatedAt: cenote.updatedAt,
-                };
-            });
+            return cenotes.map(
+                (cenote: { _key: string; updatedAt: string }) => {
+                    return {
+                        // TODO: Refactor oai id's
+                        id: generateOaiID('Cenotes/' + cenote._key),
+                        updatedAt: cenote.updatedAt,
+                    };
+                },
+            );
         },
 
         /**
@@ -282,24 +273,26 @@ export function factory(options = {}): DataRepository {
          */
         // @ts-ignore TODO: Implement parameters
         getRecords: (parameters: ListParameters): Record[] => {
-            const cenotes = Cenotes.find({
-                filter: { touristic: true },
-            });
+            const cenotes = CenoteService.listCenotes();
             console.debug('Got:', JSON.stringify(cenotes));
 
-            return cenotes.map((cenote: typeof Cenote) => {
-                return createRecord({
-                    _id:
-                        'oai:cenoteando.org:' +
-                        Cenotes._col.name +
-                        '/' +
-                        cenote._key,
-                    createdAt: cenote.createdAt,
-                    updatedAt: cenote.updatedAt,
-                    name: cenote.name,
-                    geoLocationPoint: cenote.geojson.geometry.coordinates,
-                });
-            });
+            return cenotes.map(
+                (cenote: {
+                    _key: string;
+                    name: string;
+                    geojson: { geometry: { coordinates: [number, number] } };
+                    createdAt: string;
+                    updatedAt: string;
+                }) => {
+                    return createRecord({
+                        _key: cenote._key,
+                        createdAt: cenote.createdAt,
+                        updatedAt: cenote.updatedAt,
+                        name: cenote.name,
+                        geoLocationPoint: cenote.geojson.geometry.coordinates,
+                    });
+                },
+            );
         },
     });
 }
