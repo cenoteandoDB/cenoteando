@@ -1,15 +1,10 @@
 <template>
     <v-container>
         <v-card elevation="2" max-width="500" class="mx-auto">
-            <v-virtual-scroll
-                :bench="benched"
-                :items="comments"
-                height="400"
-                item-height="150"
-            >
+            <v-virtual-scroll :items="comments" height="400" item-height="175">
                 <template v-slot:default="{ item }">
-                    <v-row class="pt-3">
-                        <v-col class="d-flex justify-center m-10">
+                    <v-row class="mt-10">
+                        <v-col class="d-flex justify-center">
                             <v-spacer></v-spacer>
 
                             <v-container v-if="item.source === 'GOOGLE_PLACES'">
@@ -34,13 +29,17 @@
                                 half-increments
                                 readonly
                                 size="14"
-                                class="pt-3 pr-3"
+                                class="pt-5 pr-5"
                             ></v-rating>
                         </v-col>
                     </v-row>
-                    <v-card-text class="pr-10 text-justify" size="x-larger"
-                        >{{ item.text }}
-                    </v-card-text>
+                    <v-row class="pb-20">
+                        <v-col class="d-flex justify-center">
+                            <v-card-text class="text-justify" size="x-larger"
+                                >{{ item.text }}
+                            </v-card-text>
+                        </v-col>
+                    </v-row>
                 </template>
             </v-virtual-scroll>
         </v-card>
