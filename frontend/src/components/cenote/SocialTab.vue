@@ -15,7 +15,7 @@
                             </v-container>
 
                             <v-container v-if="item.source === 'TRIPADVISOR'">
-                                <v-btn icon :href="comment.url" target="_blank">
+                                <v-btn icon :href="item.url" target="_blank">
                                     <v-img :src="logos[0].src" :width="30">
                                     </v-img>
                                 </v-btn>

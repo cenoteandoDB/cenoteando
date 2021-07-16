@@ -55,12 +55,13 @@ export default class GeneralTab extends Vue {
         lockers: 'mdi-locker-multiple',
         tourGuide: 'mdi-directions',
         masksRental: 'mdi-diving-snorkel',
+        lifesaverRental: 'mdi-lifebuoy',
+        cabinsRooms: 'mdi-bed-empty',
 
         // FIXME
         zipline: 'mdi-help-circle',
 
         // FIXME
-        lifesaverRental: 'mdi-help-circle',
 
         // FIXME
         kayakRental: 'mdi-help-circle',
@@ -72,7 +73,6 @@ export default class GeneralTab extends Vue {
         temazcal: 'mdi-help-circle',
 
         // FIXME
-        cabinsRooms: 'mdi-help-circle',
     };
 
     async created(): Promise<void> {
