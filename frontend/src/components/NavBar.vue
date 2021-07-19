@@ -176,7 +176,10 @@ export default class NavBar extends Vue {
     name = 'NavBar';
     drawer = false;
 
-    links = [{ icon: 'mdi-map', text: 'MAP', path: '/map' }];
+    links = [
+        { text: 'LOGIN', path: '/login' },
+        { icon: 'mdi-map', text: 'MAP', path: '/map' },
+    ];
     oai_menu = [
         {
             icon: 'mdi-account-box-outline',

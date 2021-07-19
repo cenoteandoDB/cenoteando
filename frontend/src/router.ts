@@ -3,6 +3,7 @@ import VueRouter, { RouteConfig } from 'vue-router';
 import Home from '@/views/Home.vue';
 import Map from '@/views/Map.vue';
 import Cenote from '@/views/Cenote.vue';
+import Login from '@/components/forms/Login.vue';
 
 Vue.use(VueRouter);
 
@@ -48,6 +49,11 @@ const routes: Array<RouteConfig> = [
         name: 'Cenote',
         component: Cenote,
     },
+    {
+        path: '/login',
+        name: 'Login',
+        component: Login,
+    }
 ];
 
 const router = new VueRouter({
