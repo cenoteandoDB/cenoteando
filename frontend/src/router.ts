@@ -3,7 +3,8 @@ import VueRouter, { RouteConfig } from 'vue-router';
 import Home from '@/views/Home.vue';
 import Map from '@/views/Map.vue';
 import Cenote from '@/views/Cenote.vue';
-import Login from '@/components/forms/Login.vue';
+import Login from '@/components/auth/Login.vue';
+import SignUp from '@/components/auth/SignUp.vue';
 
 Vue.use(VueRouter);
 
@@ -53,7 +54,12 @@ const routes: Array<RouteConfig> = [
         path: '/login',
         name: 'Login',
         component: Login,
-    }
+    },
+    {
+        path: '/sign-up',
+        name: 'SignUp',
+        component: SignUp,
+    },
 ];
 
 const router = new VueRouter({

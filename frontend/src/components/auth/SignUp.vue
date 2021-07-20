@@ -2,6 +2,15 @@
     <v-container class="justify-center p-10">
         <form>
             <v-text-field
+                v-model="name"
+                :error-messages="nameErrors"
+                label="Name"
+                required
+                @input="$v.name.$touch()"
+                @blur="$v.name.$touch()"
+            ></v-text-field>
+
+            <v-text-field
                 v-model="email"
                 :error-messages="emailErrors"
                 label="E-mail"
@@ -20,8 +29,10 @@
                 @blur="$v.password.$touch()"
             ></v-text-field>
 
-            <v-btn class="mr-4" @click="submit" color="primary"> Log In </v-btn>
-            <v-btn @click="clear"> clear </v-btn>
+            <v-btn class="mr-4" @click="submit" color="primary">
+                Sign Up
+            </v-btn>
+            <v-btn color="primary" @click="clear"> clear </v-btn>
         </form>
     </v-container>
 </template>
@@ -34,18 +45,28 @@ export default {
     mixins: [validationMixin],
 
     validations: {
+        name: { required, maxLength },
         password: { required },
         email: { required, email },
         select: { required },
     },
 
     data: () => ({
+        name: '',
         email: '',
         password: '',
         select: null,
     }),
 
     computed: {
+        nameErrors() {
+            const errors = [];
+            if (!this.$v.name.$dirty) return;
+            errors;
+            !this.$v.name.required && errors.push('Name is required.');
+            return errors;
+        },
+
         emailErrors() {
             const errors = [];
             if (!this.$v.email.$dirty) return errors;
@@ -58,7 +79,7 @@ export default {
             const errors = [];
             if (!this.$v.password.$dirty) return errors;
 
-            !this.$v.password.required && errors.push('password is required.');
+            !this.$v.password.required && errors.push('Password is required.');
             return errors;
         },
     },
@@ -71,6 +92,7 @@ export default {
             this.$v.$reset();
             this.password = '';
             this.email = '';
+            this.name = '';
         },
     },
 };
