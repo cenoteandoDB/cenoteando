@@ -352,3 +352,4 @@
 172.19.0.1 - - [20/Jul/2021:16:49:10 +0000] "GET /api/gadm/municipalities HTTP/1.1" 499 0 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Safari/537.36"
 172.19.0.1 - - [20/Jul/2021:16:49:10 +0000] "GET /api/gadm/coastline HTTP/1.1" 499 0 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Safari/537.36"
 172.19.0.1 - - [20/Jul/2021:16:49:10 +0000] "GET /api/gadm/states HTTP/1.1" 499 0 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Safari/537.36"
+172.19.0.1 - - [20/Jul/2021:17:20:55 +0000] "POST /AASService/aas/timeCheck.do HTTP/1.1" 405 157 "-" "UnityPlayer/2018.4.30f1 (UnityWebRequest/1.0, libcurl/7.52.0-DEV)"

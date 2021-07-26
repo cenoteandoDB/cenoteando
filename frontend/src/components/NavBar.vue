@@ -177,7 +177,8 @@ export default class NavBar extends Vue {
     drawer = false;
 
     links = [
-        {text: 'SIGN UP', path: '/sign-up'},
+        { text: 'ADMIN', path: '/admin' },
+        { text: 'SIGN UP', path: '/sign-up' },
         { text: 'LOGIN', path: '/login' },
         { icon: 'mdi-map', text: 'MAP', path: '/map' },
     ];

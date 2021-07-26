@@ -5,6 +5,7 @@ import Map from '@/views/Map.vue';
 import Cenote from '@/views/Cenote.vue';
 import Login from '@/components/auth/Login.vue';
 import SignUp from '@/components/auth/SignUp.vue';
+import AdminPage from '@/components/admin/AdminPage.vue';
 
 Vue.use(VueRouter);
 
@@ -60,6 +61,12 @@ const routes: Array<RouteConfig> = [
         name: 'SignUp',
         component: SignUp,
     },
+    {
+        path: '/admin',
+        name: 'AdminPage',
+        component: AdminPage,
+    }
+
 ];
 
 const router = new VueRouter({
