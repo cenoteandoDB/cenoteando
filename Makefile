@@ -89,7 +89,7 @@ help:
 	@echo 'cmd=:			Run command in container.'
 	@echo '			Example: `make cmd="whoami"` is the same as `make shell cmd="whoami"`'
 
-reload: stop build start
+reload: build stop start
 
 rebuild:
 	# force a rebuild by passing --no-cache

@@ -92,7 +92,8 @@ export default class RemoteServices {
         return httpClient
             .get('/api/cenotes')
             .then((response) => {
-                return response.data.map((c) => new CenoteDTO(c));
+                console.log(response);
+                return response.data.data.map((c) => new CenoteDTO(c));
             })
             .catch(async (error) => {
                 throw Error(await this.errorMessage(error));
@@ -136,7 +137,7 @@ export default class RemoteServices {
         return httpClient
             .get('/api/cenotes/bounds')
             .then((response) => {
-                return new L.LatLngBounds(response.data.result);
+                return new L.LatLngBounds(response.data.min, response.data.max);
             })
             .catch(async (error) => {
                 throw Error(await this.errorMessage(error));
@@ -185,6 +186,7 @@ export default class RemoteServices {
             });
     }
 
+    /* TODO: Not working, too heavy
     static getCoastline(): Promise<FeatureCollection> {
         return httpClient
             .get('/api/gadm/coastline')
@@ -217,6 +219,7 @@ export default class RemoteServices {
                 throw Error(await this.errorMessage(error));
             });
     }
+    */
 
     // TODO: Get this from database
     /* TODO: Not working due to CORS policy

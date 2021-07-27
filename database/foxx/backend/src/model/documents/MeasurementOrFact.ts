@@ -9,5 +9,5 @@ export class MeasurementOrFact<T extends ValueType> extends Entity {
     timestamp: Date;
 
     @Attribute()
-    value: ValueType;
+    value: T;
 }

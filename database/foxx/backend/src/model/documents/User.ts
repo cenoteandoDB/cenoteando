@@ -1,3 +1,4 @@
+import { genRandomBytes } from '@arangodb/crypto';
 import {
     Attribute,
     Before,
@@ -11,7 +12,9 @@ import bcrypt from 'bcryptjs';
 
 import { UserGroup } from './UserGroup';
 
+// bcrypt setup
 const SALT_ROUNDS = 10;
+bcrypt.setRandomFallback(genRandomBytes);
 
 export enum UserType {
     CENOTERO,
@@ -26,6 +29,9 @@ export class User extends Entity {
     @Index('hash')
     @Attribute()
     email: string;
+
+    @Attribute()
+    name: string;
 
     @Attribute()
     @Before.insert(User.hashPassword)

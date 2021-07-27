@@ -7,6 +7,12 @@ import { Cenote, User } from '../model/documents';
 type AuthUser = User | null;
 
 export class CenoteService {
+    private static createReadFilter(user: AuthUser): QueryFilter {
+        let filter = {};
+        if (!user) filter['touristic'] = true;
+        return filter;
+    }
+
     static listCenotes(
         user: AuthUser,
         limit = 250,
@@ -42,9 +48,10 @@ export class CenoteService {
         throw new Error('Not Implemented');
     }
 
-    private static createReadFilter(user: AuthUser): QueryFilter {
-        const filter = {};
-        if (!user) filter['touristic'] = true;
-        return filter;
+    static getBounds(): {
+        min: { lat: number; lng: number };
+        max: { lat: number; lng: number };
+    } {
+        return Cenotes.getBounds();
     }
 }

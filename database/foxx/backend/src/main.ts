@@ -1,27 +1,19 @@
 import { context } from '@arangodb/locals';
-import createRouter from '@arangodb/foxx/router';
-import passport from 'passport';
-import LocalStrategy from 'passport-local';
+import sessionsMiddleware from '@arangodb/foxx/sessions';
+import jwtStorage from '@arangodb/foxx/sessions/storages/jwt';
 
 import createRESTRouter from './rest';
-import { UserService } from './services/UserService';
 
 // Configure type-arango model
 import * as Model from './model';
 Model.complete();
 
-// Configure Passport authentication as middleware
-passport.use(
-    LocalStrategy(
-        {
-            usernameField: 'email',
-        },
-        UserService.passportVerifyLocal,
-    ),
+context.use(
+    sessionsMiddleware({
+        storage: jwtStorage('SUPER SECRET!'),
+        transport: 'header',
+    }),
 );
-
-context.use(passport.initialize());
-context.use(passport.session());
 
 // Create REST Router
 context.use(createRESTRouter());

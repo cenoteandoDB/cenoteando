@@ -3,7 +3,11 @@ import createRouter from '@arangodb/foxx/router';
 export default (): Foxx.Router => {
     const router = createRouter();
 
-    // TODO: Define user routes
+    // TODO: GET coastline
+
+    // TODO: GET states
+
+    // TODO: GET municipalities
 
     return router;
 };

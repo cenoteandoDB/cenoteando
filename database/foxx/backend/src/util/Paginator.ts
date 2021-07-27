@@ -26,20 +26,26 @@ export class Paginator<T> {
 
         let filter = {};
         if (continuationToken) {
-            token = JSON.parse(atob(continuationToken));
+            token = JSON.parse(
+                Buffer.from(continuationToken, 'base64').toString(),
+            );
             filter = {
                 createdAt: ['>', token.timestamp],
                 _customFilter: aql.literal(
-                    `i.createdAt > ${token.timestamp} OR (i.createdAt == ${token.timestamp} AND i._id > ${token.id})`,
+                    `i.createdAt > ${token.timestamp} OR (i.createdAt == ${token.timestamp} AND i._key > ${token.id})`,
                 ),
             };
         }
+
+        console.log(options);
+        console.log(filter);
+        console.log({ ...options, filter });
 
         const data = this.col.find({
             ...options,
             filter,
             limit,
-            sort: ['createdAt ASC', '_id ASC'],
+            sort: ['createdAt ASC', '_key ASC'],
         });
         const last = data[data.length - 1];
 
@@ -47,17 +53,17 @@ export class Paginator<T> {
             data,
             hasMore: query`
                 FOR c IN ${this.col._db}
-                    COLLECT AGGREGATE maxCreatedAt = MAX(c.createdAt), maxId = MAX(c._id)
+                    COLLECT AGGREGATE maxCreatedAt = MAX(c.createdAt), maxKey = MAX(c._key)
                     RETURN
                         maxCreatedAt > ${last.createdAt} OR 
-                        (maxCreatedAt == ${last.createdAt} AND maxId > ${last._id})
+                        (maxCreatedAt == ${last.createdAt} AND maxKey > ${last._key})
             `.next(),
-            continuationToken: btoa(
+            continuationToken: Buffer.from(
                 JSON.stringify({
                     timestamp: last.createdAt,
-                    id: last._id,
+                    id: last._key,
                 }),
-            ),
+            ).toString('base64'),
         };
     }
 }

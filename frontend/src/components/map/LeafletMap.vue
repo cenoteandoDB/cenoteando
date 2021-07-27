@@ -180,15 +180,6 @@ export default class LeafletMap extends Vue {
         try {
             this.bounds = await RemoteServices.getCenotesBounds();
             this.cenotes = await RemoteServices.getAllCenotes();
-            RemoteServices.getCoastline().then((geojson) => {
-                this.$set(this.overlays, 'Coastline', { geojson });
-            });
-            RemoteServices.getStates().then((geojson) => {
-                this.$set(this.overlays, 'States', { geojson });
-            });
-            RemoteServices.getMunicipalities().then((geojson) => {
-                this.$set(this.overlays, 'Municipalities', { geojson });
-            });
             RemoteServices.getProtectedNaturalAreas().then((geojson) => {
                 this.$set(this.overlays, 'Protected Natural Areas', {
                     geojson,
@@ -201,6 +192,15 @@ export default class LeafletMap extends Vue {
                 this.$set(this.overlays, 'Max Temperature', { geojson });
             });
             /* TODO: Implement this in RemoteServices.ts
+            RemoteServices.getCoastline().then((geojson) => {
+                this.$set(this.overlays, 'Coastline', { geojson });
+            });
+            RemoteServices.getStates().then((geojson) => {
+                this.$set(this.overlays, 'States', { geojson });
+            });
+            RemoteServices.getMunicipalities().then((geojson) => {
+                this.$set(this.overlays, 'Municipalities', { geojson });
+            });
             RemoteServices.getRoads().then((geojson) => {
                 this.$set(this.overlays, 'Roads', { geojson });
             });

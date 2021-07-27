@@ -1,12 +1,16 @@
 import createRouter from '@arangodb/foxx/router';
-import createAuthRouter from './auth'
+import createAuthRouter from './auth';
+import createCenotesRouter from './cenotes';
+import createUsersRouter from './users';
+import createGADMRouter from './gadm';
 
-export default function (passport): Foxx.Router {
+export default function (): Foxx.Router {
     const router = createRouter();
 
-    router.use('/auth', createAuthRouter(passport));
-    // router.use('/cenotes', cenotesRouter);
-    // router.use('/users', usersRouter);
+    router.use('/auth', createAuthRouter());
+    router.use('/cenotes', createCenotesRouter());
+    router.use('/users', createUsersRouter());
+    router.use('/gadm', createGADMRouter());
 
     return router;
 }
