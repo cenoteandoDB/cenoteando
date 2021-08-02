@@ -1,7 +1,7 @@
 <template>
     <v-data-table
         :headers="headers"
-        :items="desserts"
+        :items="variables"
         :items-per-page="5"
         class="elevation-1"
     ></v-data-table>
@@ -15,7 +15,7 @@ import RemoteServices from '@/services/RemoteServices';
 export default class AdminPage extends Vue {
     headers = [
         {
-            text: 'Dessert (100g serving)',
+            text: 'Variables',
             align: 'start',
             sortable: false,
             value: 'name',
@@ -26,7 +26,7 @@ export default class AdminPage extends Vue {
         { text: 'Protein (g)', value: 'protein' },
         { text: 'Iron (%)', value: 'iron' },
     ];
-    desserts = [
+    variables = [
         {
             name: 'Frozen Yogurt',
             calories: 159,
