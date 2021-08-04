@@ -12,7 +12,7 @@ export class Paginator<T> {
     paginate(
         limit: number,
         continuationToken?: string,
-        options?: QueryOpt,
+        options: QueryOpt = {},
     ): {
         data: T[];
         hasMore: boolean;
@@ -37,13 +37,10 @@ export class Paginator<T> {
             };
         }
 
-        console.log(options);
-        console.log(filter);
-        console.log({ ...options, filter });
+        Object.assign(options.filter, filter);
 
         const data = this.col.find({
             ...options,
-            filter,
             limit,
             sort: ['createdAt ASC', '_key ASC'],
         });

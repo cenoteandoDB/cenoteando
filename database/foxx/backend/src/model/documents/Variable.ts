@@ -1,6 +1,6 @@
 import { Attribute, Document, Entity } from 'type-arango';
 
-enum Theme {
+export enum Theme {
     LOCATION = 'LOCATION',
     GEOREFERENCE = 'GEOREFERENCE',
     CULTURAL = 'CULTURAL',
