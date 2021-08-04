@@ -134,16 +134,23 @@ export default class RemoteServices {
     }
 
     // Cenotes
-
-    static async getAllCenotes(): Promise<Array<CenoteDTO>> {
-        return httpClient
-            .get('/api/cenotes')
-            .then((response) => {
-                return response.data.data.map((c) => new CenoteDTO(c));
-            })
-            .catch(async (error) => {
-                throw Error(await this.errorMessage(error));
-            });
+    static async *cenotesGenerator(
+        limit?: number,
+    ): AsyncGenerator<CenoteDTO[]> {
+        let continuationToken: string | undefined = undefined;
+        let hasMore = true;
+        try {
+            while (hasMore) {
+                const response = await httpClient.get('/api/cenotes', {
+                    params: { limit, continuationToken },
+                });
+                yield response.data.data.map((c) => new CenoteDTO(c));
+                hasMore = response.data.hasMore;
+                continuationToken = response.data.continuationToken;
+            }
+        } catch (e) {
+            throw Error(await this.errorMessage(e));
+        }
     }
 
     static async getCenote(key: string): Promise<CenoteDTO> {
@@ -161,7 +168,9 @@ export default class RemoteServices {
         return httpClient
             .get('/api/cenotes/' + key + '/data/' + theme)
             .then((response) => {
-                return response.data.map((v) => new VariableDTO(v));
+                return Object.values(response.data).map(
+                    (v) => new VariableDTO(v as VariableDTO),
+                );
             })
             .catch(async (error) => {
                 throw Error(await this.errorMessage(error));
@@ -172,7 +181,7 @@ export default class RemoteServices {
         return httpClient
             .get('/api/cenotes/' + key + '/comments/')
             .then((response) => {
-                return response.data.map((v) => new CommentDTO(v));
+                return response.data.data.map((v) => new CommentDTO(v));
             })
             .catch(async (error) => {
                 throw Error(await this.errorMessage(error));

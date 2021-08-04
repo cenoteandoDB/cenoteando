@@ -172,52 +172,76 @@ export default class LeafletMap extends Vue {
     ];
 
     bounds: L.LatLngBounds | null = null;
-    cenotes: Array<CenoteDTO> | null = null;
+    cenotes: Array<CenoteDTO> = [];
     overlays: Overlays = {};
 
     async created(): Promise<void> {
         await this.$store.dispatch('loading');
         try {
             this.bounds = await RemoteServices.getCenotesBounds();
-            this.cenotes = await RemoteServices.getAllCenotes();
-            RemoteServices.getProtectedNaturalAreas().then((geojson) => {
-                this.$set(this.overlays, 'Protected Natural Areas', {
-                    geojson,
-                });
-            });
-            RemoteServices.getMinTemperature().then((geojson) => {
-                this.$set(this.overlays, 'Min Temperature', { geojson });
-            });
-            RemoteServices.getMaxTemperature().then((geojson) => {
-                this.$set(this.overlays, 'Max Temperature', { geojson });
-            });
-            /* TODO: Implement this in RemoteServices.ts
-            RemoteServices.getCoastline().then((geojson) => {
-                this.$set(this.overlays, 'Coastline', { geojson });
-            });
-            RemoteServices.getStates().then((geojson) => {
-                this.$set(this.overlays, 'States', { geojson });
-            });
-            RemoteServices.getMunicipalities().then((geojson) => {
-                this.$set(this.overlays, 'Municipalities', { geojson });
-            });
-            RemoteServices.getRoads().then((geojson) => {
-                this.$set(this.overlays, 'Roads', { geojson });
-            });
-            RemoteServices.getSoilType().then((geojson) => {
-                this.$set(this.overlays, 'Soil Type', { geojson });
-            });
-            RemoteServices.getTermRegime().then((geojson) => {
-                this.$set(this.overlays, 'Term Regime', { geojson });
-            });
-            RemoteServices.getVegetation().then((geojson) => {
-                this.$set(this.overlays, 'Vegetation Type', { geojson });
-            });
-            */
         } catch (error) {
             await this.$store.dispatch('error', error);
         }
         await this.$store.dispatch('clearLoading');
+
+        (async () => {
+            let generator = RemoteServices.cenotesGenerator();
+            for await (let batch of generator) {
+                this.cenotes.push(...batch);
+            }
+        })().catch(async (error) => {
+            await this.$store.dispatch('error', error);
+        });
+
+        RemoteServices.getProtectedNaturalAreas()
+            .then((geojson) => {
+                this.$set(this.overlays, 'Protected Natural Areas', {
+                    geojson,
+                });
+            })
+            .catch(async (error) => {
+                await this.$store.dispatch('error', error);
+            });
+
+        RemoteServices.getMinTemperature()
+            .then((geojson) => {
+                this.$set(this.overlays, 'Min Temperature', { geojson });
+            })
+            .catch(async (error) => {
+                await this.$store.dispatch('error', error);
+            });
+
+        RemoteServices.getMaxTemperature()
+            .then((geojson) => {
+                this.$set(this.overlays, 'Max Temperature', { geojson });
+            })
+            .catch(async (error) => {
+                await this.$store.dispatch('error', error);
+            });
+
+        /* TODO: Implement this in RemoteServices.ts
+        RemoteServices.getCoastline().then((geojson) => {
+            this.$set(this.overlays, 'Coastline', { geojson });
+        });
+        RemoteServices.getStates().then((geojson) => {
+            this.$set(this.overlays, 'States', { geojson });
+        });
+        RemoteServices.getMunicipalities().then((geojson) => {
+            this.$set(this.overlays, 'Municipalities', { geojson });
+        });
+        RemoteServices.getRoads().then((geojson) => {
+            this.$set(this.overlays, 'Roads', { geojson });
+        });
+        RemoteServices.getSoilType().then((geojson) => {
+            this.$set(this.overlays, 'Soil Type', { geojson });
+        });
+        RemoteServices.getTermRegime().then((geojson) => {
+            this.$set(this.overlays, 'Term Regime', { geojson });
+        });
+        RemoteServices.getVegetation().then((geojson) => {
+            this.$set(this.overlays, 'Vegetation Type', { geojson });
+        });
+        */
     }
 }
 </script>

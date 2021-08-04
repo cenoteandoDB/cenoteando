@@ -6,9 +6,9 @@ import dd from 'dedent';
 export default (): Foxx.Router => {
     const router = createRouter();
 
+    // TODO: Test this
     router
         .post('/login', (req, res) => {
-            // TODO: Test this
             try {
                 const user = UserService.verifyUser(
                     req.body.email,
@@ -64,9 +64,9 @@ export default (): Foxx.Router => {
             'The user was not logged in due to invalid credentials. A descriptive error message is returned.',
         );
 
+    // TODO: Test this
     router
         .post('/register', (req, res) => {
-            // TODO: Test this
             if (req.session && req.session.uid) {
                 res.throw('forbidden', 'User already logged in.');
                 return;
@@ -148,6 +148,7 @@ export default (): Foxx.Router => {
         );
 
     // TODO: Documentation
+    // TODO: Test this
     router.get('/me', (req, res) => {
         let name = 'anonymous';
         if (req.session && req.session.data) name = req.session.data.name;

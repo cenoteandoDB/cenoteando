@@ -127,7 +127,7 @@ clean:
 
 prune:
 	# clean all that is not actively used
-	DOCKER_BUILDKIT=1 docker system prune -af
+	DOCKER_BUILDKIT=1 docker system prune --volumes -af
 
 test:
 	# TODO: Add our tests here

@@ -3,6 +3,7 @@ import createAuthRouter from './auth';
 import createCenotesRouter from './cenotes';
 import createUsersRouter from './users';
 import createGADMRouter from './gadm';
+import createVariablesRouter from './variables';
 
 export default function (): Foxx.Router {
     const router = createRouter();
@@ -11,7 +12,7 @@ export default function (): Foxx.Router {
     router.use('/cenotes', createCenotesRouter());
     router.use('/users', createUsersRouter());
     router.use('/gadm', createGADMRouter());
-    // TODO: Create /variables route
+    router.use('/variables', createVariablesRouter());
 
     return router;
 }

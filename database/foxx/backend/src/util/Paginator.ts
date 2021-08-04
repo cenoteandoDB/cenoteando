@@ -1,6 +1,5 @@
 import { Entities } from 'type-arango';
 import { QueryOpt } from 'type-arango/dist/types';
-import { aql, query } from '@arangodb';
 
 export class Paginator<T> {
     col: typeof Entities;
@@ -24,43 +23,46 @@ export class Paginator<T> {
             timestamp: string;
         };
 
-        let filter = {};
         if (continuationToken) {
             token = JSON.parse(
                 Buffer.from(continuationToken, 'base64').toString(),
             );
-            filter = {
-                createdAt: ['>', token.timestamp],
-                _customFilter: aql.literal(
-                    `i.createdAt > ${token.timestamp} OR (i.createdAt == ${token.timestamp} AND i._key > ${token.id})`,
-                ),
-            };
+            if (!options.filter) options['filter'] = {};
+            options['filter'][
+                '_customFilter'
+            ] = `i.createdAt > '${token.timestamp}' OR (i.createdAt == '${token.timestamp}' AND i._key > '${token.id}')`;
         }
 
-        Object.assign(options.filter, filter);
-
-        const data = this.col.find({
+        options = {
             ...options,
-            limit,
+            limit: limit + 1, // Using +1 to verify hasMore flag
             sort: ['createdAt ASC', '_key ASC'],
-        });
-        const last = data[data.length - 1];
+        };
 
-        return {
-            data,
-            hasMore: query`
-                FOR c IN ${this.col._db}
-                    COLLECT AGGREGATE maxCreatedAt = MAX(c.createdAt), maxKey = MAX(c._key)
-                    RETURN
-                        maxCreatedAt > ${last.createdAt} OR 
-                        (maxCreatedAt == ${last.createdAt} AND maxKey > ${last._key})
-            `.next(),
-            continuationToken: Buffer.from(
+        let data = this.col.find(options);
+        const hasMore = data.length > limit;
+        data = data.slice(0, limit);
+
+        if (data.length > 0) {
+            const last = data[data.length - 1];
+            continuationToken = Buffer.from(
                 JSON.stringify({
                     timestamp: last.createdAt,
                     id: last._key,
                 }),
-            ).toString('base64'),
+            ).toString('base64');
+        } else if (!continuationToken)
+            continuationToken = Buffer.from(
+                JSON.stringify({
+                    timestamp: new Date().toISOString(),
+                    id: '',
+                }),
+            ).toString('base64');
+
+        return {
+            data,
+            hasMore,
+            continuationToken,
         };
     }
 }

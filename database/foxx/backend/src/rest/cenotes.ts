@@ -1,6 +1,6 @@
 import createRouter from '@arangodb/foxx/router';
 
-import { CenoteService } from '../services';
+import { CenoteService, SocialService, VariableService } from '../services';
 import { User } from '../model/documents';
 
 export default (): Foxx.Router => {
@@ -12,7 +12,7 @@ export default (): Foxx.Router => {
         let user: User | null = null;
         let limit: number | undefined = undefined;
         let continuationToken: string | undefined = undefined;
-        if (req.session && req.session.data) user = req.session.data;
+        if (req.session && req.session.data) user = new User(req.session.data);
         if (req.queryParams.limit) limit = req.queryParams.limit;
         if (req.queryParams.continuationToken)
             continuationToken = req.queryParams.continuationToken;
@@ -23,9 +23,44 @@ export default (): Foxx.Router => {
     // TODO: Test this
     router.get(':_key', (req, res) => {
         let user: User | null = null;
-        if (req.session && req.session.data) user = req.session.data;
-        // TODO: Implement limit & continuation token as query params
+        if (req.session && req.session.data) user = new User(req.session.data);
         res.send(CenoteService.getCenote(user, req.pathParams._key));
+    });
+
+    // TODO: Documentation
+    // TODO: Test this (also make sure we only give access to correct variable/cenote pairs)
+    // TODO: Restrict by cenote key
+    router.get(':_key/data/:theme', (req, res) => {
+        let user: User | null = null;
+        if (req.session && req.session.data) user = new User(req.session.data);
+        res.send(
+            VariableService.getData(
+                user,
+                req.pathParams._key,
+                req.pathParams.theme,
+            ),
+        );
+    });
+
+    // TODO: Documentation
+    // TODO: Test this
+    // TODO: Restrict by cenote key
+    router.get(':_key/comments', (req, res) => {
+        let user: User | null = null;
+        let limit: number | undefined = undefined;
+        let continuationToken: string | undefined = undefined;
+        if (req.session && req.session.data) user = new User(req.session.data);
+        if (req.queryParams.limit) limit = req.queryParams.limit;
+        if (req.queryParams.continuationToken)
+            continuationToken = req.queryParams.continuationToken;
+        res.send(
+            SocialService.listComments(
+                user,
+                req.pathParams._key,
+                limit,
+                continuationToken,
+            ),
+        );
     });
 
     // TODO: Documentation

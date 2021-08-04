@@ -1,45 +1,56 @@
 <template>
     <v-container>
-        <v-card elevation="2" max-width="500" class="mx-auto">
+        <v-card elevation="2" class="mx-auto">
             <v-virtual-scroll :items="comments" height="400" item-height="175">
                 <template v-slot:default="{ item }">
-                    <v-row class="mt-10">
-                        <v-col class="d-flex justify-center">
-                            <v-spacer></v-spacer>
-
-                            <v-container v-if="item.source === 'GOOGLE_PLACES'">
-                                <v-btn icon :href="item.url" target="_blank">
+                    <v-container>
+                        <v-row align="center" justify="space-between">
+                            <v-col cols="auto">
+                                <v-btn
+                                    v-if="item.source === 'GOOGLE_PLACES'"
+                                    icon
+                                    :href="item.url"
+                                    target="_blank"
+                                    class="pt-5 pl-5"
+                                >
                                     <v-img :src="logos[1].src" :width="30">
                                     </v-img>
                                 </v-btn>
-                            </v-container>
-
-                            <v-container v-if="item.source === 'TRIPADVISOR'">
-                                <v-btn icon :href="item.url" target="_blank">
+                                <v-btn
+                                    v-else-if="item.source === 'TRIPADVISOR'"
+                                    icon
+                                    :href="item.url"
+                                    target="_blank"
+                                    class="pt-5 pl-5"
+                                >
                                     <v-img :src="logos[0].src" :width="30">
                                     </v-img>
                                 </v-btn>
-                            </v-container>
+                            </v-col>
 
                             <v-spacer></v-spacer>
-                            <v-rating
-                                :value="item.rating"
-                                color="amber"
-                                dense
-                                half-increments
-                                readonly
-                                size="14"
-                                class="pt-5 pr-5"
-                            ></v-rating>
-                        </v-col>
-                    </v-row>
-                    <v-row class="pb-20">
-                        <v-col class="d-flex justify-center">
-                            <v-card-text class="text-justify" size="x-larger"
-                                >{{ item.text }}
-                            </v-card-text>
-                        </v-col>
-                    </v-row>
+                            <v-col cols="auto">
+                                <v-rating
+                                    :value="item.rating"
+                                    color="amber"
+                                    dense
+                                    half-increments
+                                    readonly
+                                    size="14"
+                                    class="pt-5 pr-5"
+                                ></v-rating>
+                            </v-col>
+                        </v-row>
+                        <v-row class="mb-16">
+                            <v-col>
+                                <v-card-text
+                                    class="text-justify"
+                                    size="x-larger"
+                                    >{{ item.text }}
+                                </v-card-text>
+                            </v-col>
+                        </v-row>
+                    </v-container>
                 </template>
             </v-virtual-scroll>
         </v-card>

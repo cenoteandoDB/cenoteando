@@ -1,7 +1,7 @@
 import { QueryFilter } from 'type-arango/dist/types';
 import { parse } from 'json2csv';
 
-import { MeasurementsOrFacts, Variables } from '../model/collections';
+import { Cenotes, MeasurementsOrFacts, Variables } from '../model/collections';
 import { AccessLevel, User, ValueType, Variable } from '../model/documents';
 
 // An authenticated user
@@ -59,20 +59,24 @@ export class VariableService {
     }
 
     static getData(user: AuthUser, cenoteKey, theme): VariableValues {
-        const mofs = MeasurementsOrFacts.find({ filter: { _to: cenoteKey } });
+        const mofs = MeasurementsOrFacts.find({
+            filter: { _to: Cenotes._col.name + '/' + cenoteKey },
+        });
+
         const result: VariableValues = {};
         mofs.forEach((mof) => {
-            if (!result[mof._from]) {
-                const variable = Variables.findOne(mof._from, {
+            const [, variableKey] = mof._from.split('/');
+            if (!result[variableKey]) {
+                const variable = Variables.findOne(variableKey, {
                     filter: VariableService.createReadFilter(user),
                 });
-                if (variable.theme != theme) return;
-                result[mof._from] = {
-                    variable,
+                if (variable?.theme != theme) return;
+                result[variableKey] = {
+                    ...variable,
                     values: [],
                 };
             }
-            result[mof._from].values.push({
+            result[variableKey].values.push({
                 timestamp: mof.timestamp,
                 value: mof.value,
             });
