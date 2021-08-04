@@ -11,6 +11,7 @@ export default function (): Foxx.Router {
     router.use('/cenotes', createCenotesRouter());
     router.use('/users', createUsersRouter());
     router.use('/gadm', createGADMRouter());
+    // TODO: Create /variables route
 
     return router;
 }

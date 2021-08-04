@@ -1,4 +1,7 @@
 module.exports = {
+    devServer: {
+        proxy: 'http://localhost/',
+    },
     transpileDependencies: ['vuetify'],
     pwa: {
         name: 'Cenoteando',

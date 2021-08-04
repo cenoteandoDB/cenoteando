@@ -58,21 +58,11 @@ export default class GeneralTab extends Vue {
         lifesaverRental: 'mdi-lifebuoy',
         cabinsRooms: 'mdi-bed-empty',
 
-        // FIXME
+        // TODO: Fix these icons
         zipline: 'mdi-help-circle',
-
-        // FIXME
-
-        // FIXME
         kayakRental: 'mdi-help-circle',
-
-        // FIXME
         rappel: 'mdi-help-circle',
-
-        // FIXME
         temazcal: 'mdi-help-circle',
-
-        // FIXME
     };
 
     async created(): Promise<void> {
@@ -82,7 +72,7 @@ export default class GeneralTab extends Vue {
                 this.$route.params.key,
                 'TOURISM',
             );
-            // TODO: Make this more robust after updating data types of each variable
+            // TODO: Make this more robust after updating variable data types in DB
             this.variables = this.variables.filter(
                 (variable) => typeof variable.values[0].value === 'boolean',
             );

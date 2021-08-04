@@ -22,12 +22,10 @@ export default (): Foxx.Router => {
                 };
 
                 res.send({
-                    success: true,
-                    data: {
-                        uid: req.session.uid,
-                        name: user.name,
-                        type: user.type,
-                    },
+                    uid: req.session.uid,
+                    name: user.name,
+                    email: user.email,
+                    role: user.role,
                 });
             } catch (e) {
                 // TODO: Only catch InvalidCredentialsError
@@ -53,23 +51,16 @@ export default (): Foxx.Router => {
         .response(
             'ok',
             Joi.object({
-                success: true,
-                data: Joi.object({
-                    uid: Joi.string().required(),
-                    name: Joi.string().required(),
-                    type: Joi.string().required(),
-                }).required(),
+                uid: Joi.string().required(),
+                name: Joi.string().required(),
+                email: Joi.string().required(),
+                role: Joi.string().required(),
             }).required(),
             ['application/json'],
-            'The user was logged in successfully,',
+            'The user was logged in successfully. X-Session-Id header contains the authentication token.',
         )
-        .response(
-            'ok',
-            Joi.object({
-                success: false,
-                message: Joi.string().required(),
-            }).required(),
-            ['application/json'],
+        .error(
+            'forbidden',
             'The user was not logged in due to invalid credentials. A descriptive error message is returned.',
         );
 
@@ -140,7 +131,17 @@ export default (): Foxx.Router => {
                 If the user registers successfully, it will be automatically logged in, otherwise a descriptive error message will be returned.
             `,
         )
-        .response('no content', 'The user was registered successfully.')
+        .response(
+            'ok',
+            Joi.object({
+                uid: Joi.string().required(),
+                name: Joi.string().required(),
+                email: Joi.string().required(),
+                role: Joi.string().required(),
+            }).required(),
+            ['application/json'],
+            'The user was registered and logged in successfully. X-Session-Id header contains the authentication token.',
+        )
         .response(
             'forbidden',
             'User already logged in or the email provided is already being used. User is not registered.',

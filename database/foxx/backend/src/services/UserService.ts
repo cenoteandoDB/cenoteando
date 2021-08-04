@@ -1,5 +1,5 @@
 import { Users } from '../model/collections';
-import { User, UserType } from '../model/documents';
+import { User, UserRole } from '../model/documents';
 import { QueryFilter } from 'type-arango/dist/types';
 
 // An authenticated user
@@ -12,7 +12,7 @@ export class UserService {
         let filter = {};
         // If user is not authenticated, restrict access by filtering on an unused property
         if (!user) filter['___not_allowed___'] = true;
-        else if (user && user.type == UserType.ADMIN) filter = {};
+        else if (user && user.role == UserRole.ADMIN) filter = {};
         else filter['_key'] = user._key;
         return filter;
     }
@@ -44,7 +44,7 @@ export class UserService {
             email,
             name,
             password,
-            type: UserType.CENOTERO,
+            role: UserRole.CENOTERO,
         });
         user.insert();
         return user;

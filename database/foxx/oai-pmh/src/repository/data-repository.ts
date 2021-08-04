@@ -202,11 +202,14 @@ export function factory(options = {}): DataRepository {
          */
         getRecord: (parameters: RecordParameters): Record | undefined => {
             function getKeyFromIdentifier(identifier: string): string {
-                const [, , key] = identifier.split(':');
+                const [, , id] = identifier.split(':');
+                const [, key] = id.split('/');
                 return key;
             }
 
+            // TODO: Implement authentication for OAI-PMH
             const cenote = CenoteService.getCenote(
+                null, // No auth
                 getKeyFromIdentifier(parameters.identifier),
             );
             console.debug('Got:', JSON.stringify(cenote));

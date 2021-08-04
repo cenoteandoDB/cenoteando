@@ -16,12 +16,12 @@ import { UserGroup } from './UserGroup';
 const SALT_ROUNDS = 10;
 bcrypt.setRandomFallback(genRandomBytes);
 
-export enum UserType {
-    CENOTERO,
-    OWNER,
-    REGIONAL_MANAGER,
-    THEMATIC_MANAGER,
-    ADMIN,
+export enum UserRole {
+    CENOTERO = 'CENOTERO',
+    OWNER = 'OWNER',
+    REGIONAL_MANAGER = 'REGIONAL_MANAGER',
+    THEMATIC_MANAGER = 'THEMATIC_MANAGER',
+    ADMIN = 'ADMIN',
 }
 
 @Document()
@@ -38,7 +38,7 @@ export class User extends Entity {
     password: string;
 
     @Attribute()
-    type: UserType;
+    role: UserRole;
 
     @Attribute()
     @OneToMany((type) => UserGroup, (UserGroup) => UserGroup.users)
@@ -55,6 +55,6 @@ export class User extends Entity {
     }
 
     isAdmin(): boolean {
-        return this.type == UserType.ADMIN;
+        return this.role == UserRole.ADMIN;
     }
 }

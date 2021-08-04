@@ -20,52 +20,56 @@
             </v-btn>
             <v-spacer></v-spacer>
 
-            <v-btn
-                v-for="link in links"
-                :key="link.text"
-                :to="link.path"
-                text
-                link
-                dark
-                class="hidden-sm-and-down"
-            >
-                <v-icon>{{ link.icon }}</v-icon>
-                {{ link.text }}
-            </v-btn>
-
-            <v-menu offset-y open-on-hover>
-                <template v-slot:activator="{ on }">
-                    <v-btn
-                        v-on="on"
-                        to="/oai-pmh"
-                        text
-                        link
-                        dark
-                        class="hidden-sm-and-down"
-                    >
-                        <v-icon>mdi-source-branch </v-icon>
-                        OAI-PMH
-                    </v-btn>
-                </template>
-                <v-list dense class="pa-0">
-                    <v-list-item
-                        v-for="link in oai_menu"
-                        :key="link.text"
-                        :to="link.path"
-                        link
-                        color="primary"
-                    >
-                        <v-list-item-action>
+            <template v-for="(link, i) in activeLinks">
+                <v-btn
+                    v-if="!link.children"
+                    :key="i"
+                    :to="link.to"
+                    @click="link.action"
+                    text
+                    link
+                    dark
+                    class="hidden-sm-and-down"
+                >
+                    <v-icon>{{ link.icon }}</v-icon>
+                    {{ link.text }}
+                </v-btn>
+                <v-menu v-else :key="i" offset-y open-on-hover>
+                    <template v-slot:activator="{ on }">
+                        <v-btn
+                            v-on="on"
+                            :to="link.to"
+                            @click="link.action"
+                            text
+                            link
+                            dark
+                            class="hidden-sm-and-down"
+                        >
                             <v-icon>{{ link.icon }}</v-icon>
-                        </v-list-item-action>
-                        <v-list-item-content>
-                            <v-list-item-title>{{
-                                link.text
-                            }}</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-list>
-            </v-menu>
+                            {{ link.text }}
+                        </v-btn>
+                    </template>
+                    <v-list dense class="pa-0">
+                        <v-list-item
+                            v-for="child in link.children"
+                            :key="child.text"
+                            :to="child.to"
+                            @click="link.action"
+                            link
+                            color="primary"
+                        >
+                            <v-list-item-action>
+                                <v-icon>{{ child.icon }}</v-icon>
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title>{{
+                                    child.text
+                                }}</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
+            </template>
 
             <v-btn
                 text
@@ -105,50 +109,58 @@
                     </v-list-item-content>
                 </v-list-item>
                 <v-divider></v-divider>
-                <v-list-item
-                    v-for="link in links"
-                    :key="link.text"
-                    :to="link.path"
-                    dark
-                >
-                    <v-list-item-action class="pl-2">
-                        <v-icon>{{ link.icon }}</v-icon>
-                    </v-list-item-action>
-                    <v-list-item-content>
-                        <v-list-item-title>{{ link.text }}</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
+                <template v-for="(link, i) in activeLinks">
+                    <v-list-item
+                        v-if="!link.children"
+                        :key="i"
+                        :to="link.to"
+                        @click="link.action"
+                        dark
+                    >
+                        <v-list-item-action class="pl-2">
+                            <v-icon>{{ link.icon }}</v-icon>
+                        </v-list-item-action>
+                        <v-list-item-content>
+                            <v-list-item-title>{{
+                                link.text
+                            }}</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
 
-                <v-list-group>
-                    <template v-slot:activator>
-                        <v-list-item>
-                            <v-list-item-action>
-                                <v-icon> mdi-source-branch</v-icon>
-                            </v-list-item-action>
-                            <v-list-item-content>
-                                <v-list-item-title> OAI-PMH </v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </template>
-                    <v-list-item-group>
-                        <v-list-item
-                            v-for="link in oai_menu"
-                            :key="link.text"
-                            :to="link.path"
-                            class="pl-6"
-                            color="white"
-                        >
-                            <v-list-item-action>
-                                <v-icon>{{ link.icon }}</v-icon>
-                            </v-list-item-action>
-                            <v-list-item-content>
-                                <v-list-item-title>{{
-                                    link.text
-                                }}</v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-list-item-group>
-                </v-list-group>
+                    <v-list-group v-else :key="i">
+                        <template v-slot:activator>
+                            <v-list-item>
+                                <v-list-item-action>
+                                    <v-icon>{{ link.icon }}</v-icon>
+                                </v-list-item-action>
+                                <v-list-item-content>
+                                    <v-list-item-title>{{
+                                        link.text
+                                    }}</v-list-item-title>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </template>
+                        <v-list-item-group>
+                            <v-list-item
+                                v-for="child in link.children"
+                                :key="child.text"
+                                :to="child.to"
+                                @click="link.action"
+                                class="pl-6"
+                                color="white"
+                            >
+                                <v-list-item-action>
+                                    <v-icon>{{ child.icon }}</v-icon>
+                                </v-list-item-action>
+                                <v-list-item-content>
+                                    <v-list-item-title>{{
+                                        child.text
+                                    }}</v-list-item-title>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </v-list-item-group>
+                    </v-list-group>
+                </template>
                 <v-divider vertical></v-divider>
                 <v-list-item
                     link
@@ -170,35 +182,106 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { mapGetters } from 'vuex';
 
-@Component
+interface NavIcon {
+    icon: string;
+    text: string;
+    to?: string;
+    action?: () => void;
+    condition?: () => boolean;
+    children?: Omit<NavIcon, 'children'>[];
+}
+
+@Component({
+    computed: {
+        ...mapGetters(['isLoggedIn', 'isAdmin']),
+    },
+})
 export default class NavBar extends Vue {
     name = 'NavBar';
+    isLoggedIn!: boolean;
+    isAdmin!: boolean;
     drawer = false;
 
-    links = [
-        { text: 'ADMIN', path: '/admin' },
-        { text: 'SIGN UP', path: '/sign-up' },
-        { text: 'LOGIN', path: '/login' },
-        { icon: 'mdi-map', text: 'MAP', path: '/map' },
-    ];
-    oai_menu = [
-        {
-            icon: 'mdi-account-box-outline',
-            text: 'IDENTIFY',
-            path: '/oai-pmh/identify',
-        },
-        {
-            icon: 'mdi-magnify',
-            text: 'GET RECORD',
-            path: '/oai-pmh/get-record',
-        },
-        {
-            icon: 'mdi-view-list',
-            text: 'LIST RECORDS',
-            path: '/oai-pmh/list-records',
-        },
-    ];
+    private _links: NavIcon[] = [];
+
+    created(): void {
+        this._links = [
+            {
+                icon: 'mdi-shield-account',
+                text: 'ADMIN',
+                to: '/admin',
+                condition: () => this.isAdmin,
+            },
+            {
+                icon: 'mdi-map',
+                text: 'MAP',
+                to: '/map',
+            },
+            {
+                icon: 'mdi-source-branch',
+                text: 'OAI-PMH',
+                to: '/oai-pmh',
+                children: [
+                    {
+                        icon: 'mdi-account-box-outline',
+                        text: 'IDENTIFY',
+                        to: '/oai-pmh/identify',
+                    },
+                    {
+                        icon: 'mdi-magnify',
+                        text: 'GET RECORD',
+                        to: '/oai-pmh/get-record',
+                    },
+                    {
+                        icon: 'mdi-view-list',
+                        text: 'LIST RECORDS',
+                        to: '/oai-pmh/list-records',
+                    },
+                ],
+            },
+            {
+                icon: 'mdi-account',
+                text: 'LOGIN / SIGN UP',
+                to: '/login',
+                condition: () => !this.isLoggedIn,
+            },
+            {
+                icon: 'mdi-account-off',
+                text: 'LOGOUT',
+                action: this.logout,
+                condition: () => this.isLoggedIn,
+            },
+        ];
+    }
+
+    get activeLinks(): NavIcon[] {
+        let links = this._links.filter(
+            (link) => link.condition == undefined || link.condition(),
+        );
+        links.map((link) => {
+            if (!link.action)
+                link.action = () => {
+                    return;
+                };
+            if (link.children)
+                link.children = link.children.filter(
+                    (child) =>
+                        child.condition == undefined || child.condition(),
+                );
+            return link;
+        });
+        return links;
+    }
+
+    async logout(): Promise<void> {
+        await this.$store.dispatch('logout');
+        await this.$router.push({ name: 'Home' }).catch(() => {
+            // Ignore errors
+            return;
+        });
+    }
 }
 </script>
 

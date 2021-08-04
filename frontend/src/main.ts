@@ -11,8 +11,11 @@ Vue.config.productionTip = false;
 Vue.use(CompositionApi);
 
 new Vue({
+    vuetify,
     router,
     store,
-    vuetify,
+    beforeCreate() {
+        this.$store.commit('initializeStore');
+    },
     render: (h) => h(App),
 }).$mount('#app');

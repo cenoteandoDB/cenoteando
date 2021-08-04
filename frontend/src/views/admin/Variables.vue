@@ -12,7 +12,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import VariableDTO from '@/models/VariableDTO';
 import RemoteServices from '@/services/RemoteServices';
 @Component
-export default class AdminPage extends Vue {
+export default class Variables extends Vue {
     headers = [
         {
             text: 'Variables',

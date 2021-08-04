@@ -8,12 +8,26 @@ import L from 'leaflet';
 import { FeatureCollection } from 'geojson';
 import VariableDTO from '@/models/VariableDTO';
 import CommentDTO from '@/models/CommentDTO';
+import AuthDto from '@/models/user/AuthDto';
 
 const httpClient = axios.create();
 httpClient.defaults.timeout = 100000;
 httpClient.defaults.baseURL =
     process.env.VUE_APP_ROOT_API || 'http://localhost';
 httpClient.defaults.headers.post['Content-Type'] = 'application/json';
+httpClient.interceptors.request.use(
+    (config) => {
+        if (!config.headers['X-Session-Id']) {
+            const token = Store.getters.getToken;
+
+            if (token) {
+                config.headers['X-Session-Id'] = token;
+            }
+        }
+        return config;
+    },
+    (error) => Promise.reject(error),
+);
 httpClient.interceptors.response.use(
     (response) => {
         if (response.data.notification) {
@@ -35,17 +49,50 @@ export default class RemoteServices {
     static async errorMessage(error: AxiosError): Promise<string> {
         if (error.message === 'Network Error') {
             return 'Unable to connect to server';
+        } else if (error.message.split(' ')[0] === 'timeout') {
+            return 'Request timeout - Server took too long to respond';
+        } else if (error.response?.data.errorMessage) {
+            return error.response.data.errorMessage;
         } else if (error.message === 'Request failed with status code 403') {
             await router.push({ path: '/' });
             return 'Unauthorized access or expired token';
-        } else if (error.message.split(' ')[0] === 'timeout') {
-            return 'Request timeout - Server took too long to respond';
-        } else if (error.response) {
-            return error.response.data.message;
         } else {
             console.log(error);
             return 'Unknown Error - Contact admin';
         }
+    }
+
+    // Auth
+    static async login(email: string, password: string): Promise<AuthDto> {
+        return httpClient
+            .post('/api/auth/login', { email, password })
+            .then((response) => {
+                return new AuthDto({
+                    token: response.headers['x-session-id'],
+                    user: response.data,
+                });
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
+    static async signup(
+        name: string,
+        email: string,
+        password: string,
+    ): Promise<AuthDto> {
+        return httpClient
+            .post('/api/auth/register', { name, email, password })
+            .then((response) => {
+                return new AuthDto({
+                    token: response.headers['x-session-id'],
+                    user: response.data,
+                });
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
     }
 
     // OAI-PMH
@@ -92,7 +139,6 @@ export default class RemoteServices {
         return httpClient
             .get('/api/cenotes')
             .then((response) => {
-                console.log(response);
                 return response.data.data.map((c) => new CenoteDTO(c));
             })
             .catch(async (error) => {
