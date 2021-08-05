@@ -14,6 +14,7 @@ export default class VariableDTO {
             this.description = jsonObj.description;
             this.name = jsonObj.name;
             this.theme = jsonObj.theme;
+            this.timeseries = jsonObj.timeseries;
             this.type = jsonObj.type;
         }
     }

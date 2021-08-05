@@ -28,9 +28,16 @@ export default class Variables extends Vue {
         await this.$store.dispatch('loading');
 
         (async () => {
-            let generator = RemoteServices.variablesGenerator(500/* TODO: Change to 15 after adding createdAt & updatedAt attributes */);
+            let generator = RemoteServices.variablesGenerator(
+                500 /* TODO: Change to 15 after adding createdAt & updatedAt attributes */,
+            );
             for await (let batch of generator) {
-                if (!this.variables.length) await this.$store.dispatch('clearLoading');
+                if (!this.variables.length)
+                    await this.$store.dispatch('clearLoading');
+
+                batch.map((value) => {
+                    console.log(value);
+                });
                 this.variables.push(...batch);
             }
         })().catch(async (error) => {
