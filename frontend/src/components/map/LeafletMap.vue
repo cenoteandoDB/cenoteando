@@ -193,6 +193,7 @@ export default class LeafletMap extends Vue {
             await this.$store.dispatch('error', error);
         });
 
+        /* TODO: Implement this in RemoteServices.ts
         RemoteServices.getProtectedNaturalAreas()
             .then((geojson) => {
                 this.$set(this.overlays, 'Protected Natural Areas', {
@@ -219,7 +220,6 @@ export default class LeafletMap extends Vue {
                 await this.$store.dispatch('error', error);
             });
 
-        /* TODO: Implement this in RemoteServices.ts
         RemoteServices.getCoastline().then((geojson) => {
             this.$set(this.overlays, 'Coastline', { geojson });
         });

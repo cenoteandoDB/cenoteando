@@ -54,4 +54,17 @@ export class CenoteService {
     } {
         return Cenotes.getBounds();
     }
+
+    static keyToId(_key: string): string {
+        return Cenotes._col.name + '/' + _key;
+    }
+
+    static idToKey(_id: string): string {
+        const [, _key] = _id.split('/');
+        return _key;
+    }
+
+    static hasAccess(user: AuthUser, _key: string): boolean {
+        return !!CenoteService.getCenote(user, _key);
+    }
 }

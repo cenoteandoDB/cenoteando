@@ -4,7 +4,7 @@
             <v-col
                 class="d-flex justify-center"
                 v-for="variable in variables"
-                :key="variable._key"
+                :key="variable.variable._key"
             >
                 <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
@@ -14,10 +14,12 @@
                             v-bind="attrs"
                             v-on="on"
                         >
-                            {{ icons[variable._key] }}
+                            {{ icons[variable.variable._key] }}
                         </v-icon>
                     </template>
-                    <span class="mx-auto">{{ variable.description }}</span>
+                    <span class="mx-auto">{{
+                        variable.variable.description
+                    }}</span>
                 </v-tooltip>
 
                 <v-spacer></v-spacer>
@@ -28,13 +30,13 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import VariableDTO from '@/models/VariableDTO';
 import CenoteDTO from '@/models/CenoteDTO';
 import RemoteServices from '@/services/RemoteServices';
+import VariableWithValuesDTO from '@/models/VariableWithValuesDTO';
 
 @Component
 export default class GeneralTab extends Vue {
-    variables: VariableDTO[] = [];
+    variables: VariableWithValuesDTO[] = [];
     cenote: CenoteDTO | null = null;
     currentTab = 0;
     icons = {

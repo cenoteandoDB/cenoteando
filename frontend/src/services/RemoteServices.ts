@@ -6,9 +6,10 @@ import { ElementCompact, xml2js } from 'xml-js';
 import CenoteDTO from '@/models/CenoteDTO';
 import L from 'leaflet';
 import { FeatureCollection } from 'geojson';
-import VariableDTO from '@/models/VariableDTO';
 import CommentDTO from '@/models/CommentDTO';
 import AuthDto from '@/models/user/AuthDto';
+import VariableWithValuesDTO from '@/models/VariableWithValuesDTO';
+import VariableDTO from '@/models/VariableDTO';
 
 const httpClient = axios.create();
 httpClient.defaults.timeout = 100000;
@@ -133,6 +134,26 @@ export default class RemoteServices {
             });
     }
 
+    // Variables
+    static async *variablesGenerator(
+        limit?: number,
+    ): AsyncGenerator<VariableDTO[]> {
+        let continuationToken: string | undefined = undefined;
+        let hasMore = true;
+        try {
+            while (hasMore) {
+                const response = await httpClient.get('/api/variables', {
+                    params: { limit, continuationToken },
+                });
+                yield response.data.data.map((v) => new VariableDTO(v));
+                hasMore = response.data.hasMore;
+                continuationToken = response.data.continuationToken;
+            }
+        } catch (e) {
+            throw Error(await this.errorMessage(e));
+        }
+    }
+
     // Cenotes
     static async *cenotesGenerator(
         limit?: number,
@@ -164,12 +185,16 @@ export default class RemoteServices {
             });
     }
 
-    static async getData(key: string, theme: string): Promise<VariableDTO[]> {
+    static async getData(
+        key: string,
+        theme: string,
+    ): Promise<VariableWithValuesDTO[]> {
         return httpClient
             .get('/api/cenotes/' + key + '/data/' + theme)
             .then((response) => {
                 return Object.values(response.data).map(
-                    (v) => new VariableDTO(v as VariableDTO),
+                    (v) =>
+                        new VariableWithValuesDTO(v as VariableWithValuesDTO),
                 );
             })
             .catch(async (error) => {
@@ -198,6 +223,43 @@ export default class RemoteServices {
                 throw Error(await this.errorMessage(error));
             });
     }
+
+    /* TODO: Not working, too heavy
+    static getCoastline(): Promise<FeatureCollection> {
+        return httpClient
+            .get('/api/gadm/coastline')
+            .then((response) => {
+                return response.data;
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
+    static getStates(): Promise<FeatureCollection> {
+        return httpClient
+            .get('/api/gadm/states')
+            .then((response) => {
+                return response.data;
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
+    static getMunicipalities(): Promise<FeatureCollection> {
+        return httpClient
+            .get('/api/gadm/municipalities')
+            .then((response) => {
+                return response.data;
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+    */
+
+    /* TODO: Not working due to CORS policy
 
     // TODO: Get this from database
     static async getProtectedNaturalAreas(): Promise<FeatureCollection> {
@@ -241,43 +303,7 @@ export default class RemoteServices {
             });
     }
 
-    /* TODO: Not working, too heavy
-    static getCoastline(): Promise<FeatureCollection> {
-        return httpClient
-            .get('/api/gadm/coastline')
-            .then((response) => {
-                return response.data;
-            })
-            .catch(async (error) => {
-                throw Error(await this.errorMessage(error));
-            });
-    }
-
-    static getStates(): Promise<FeatureCollection> {
-        return httpClient
-            .get('/api/gadm/states')
-            .then((response) => {
-                return response.data;
-            })
-            .catch(async (error) => {
-                throw Error(await this.errorMessage(error));
-            });
-    }
-
-    static getMunicipalities(): Promise<FeatureCollection> {
-        return httpClient
-            .get('/api/gadm/municipalities')
-            .then((response) => {
-                return response.data;
-            })
-            .catch(async (error) => {
-                throw Error(await this.errorMessage(error));
-            });
-    }
-    */
-
     // TODO: Get this from database
-    /* TODO: Not working due to CORS policy
     static async getRoads(): Promise<FeatureCollection> {
         return httpClient
             .get(
@@ -290,10 +316,8 @@ export default class RemoteServices {
                 throw Error(await this.errorMessage(error));
             });
     }
-    */
 
     // TODO: Get this from database
-    /* TODO: Not working due to CORS policy
     static async getSoilType(): Promise<FeatureCollection> {
         return httpClient
             .get(
@@ -306,13 +330,13 @@ export default class RemoteServices {
                 throw Error(await this.errorMessage(error));
             });
     }
-    */
 
     // TODO: Get this from database
-    /* TODO: get vegetation FeatureCollection
-    static async getVegetation(): Promise<FeatureCollection> {
+    static async getTermRegime(): Promise<FeatureCollection> {
         return httpClient
-            .get('')
+            .get(
+                'https://github.com/luisyerbes20/yerbaa/blob/main/term_regime.json?raw=true',
+            )
             .then((response) => {
                 return response.data;
             })
@@ -322,13 +346,10 @@ export default class RemoteServices {
     }
     */
 
-    // TODO: Get this from database
-    /* TODO: Not working due to CORS policy
-    static async getTermRegime(): Promise<FeatureCollection> {
+    /* TODO: get vegetation FeatureCollection
+    static async getVegetation(): Promise<FeatureCollection> {
         return httpClient
-            .get(
-                'https://github.com/luisyerbes20/yerbaa/blob/main/term_regime.json?raw=true',
-            )
+            .get('')
             .then((response) => {
                 return response.data;
             })

@@ -8,6 +8,7 @@ export class Paginator<T> {
         this.col = col;
     }
 
+    // TODO: Documentation (if limit < 0, return all values)
     paginate(
         limit: number,
         continuationToken?: string,
@@ -35,13 +36,16 @@ export class Paginator<T> {
 
         options = {
             ...options,
-            limit: limit + 1, // Using +1 to verify hasMore flag
+            limit: limit >= 0 ? limit + 1 : undefined, // Using +1 to verify hasMore flag or undefined to return all values
             sort: ['createdAt ASC', '_key ASC'],
         };
 
         let data = this.col.find(options);
-        const hasMore = data.length > limit;
-        data = data.slice(0, limit);
+        let hasMore = false;
+        if (limit >= 0) {
+            hasMore = data.length > limit;
+            data = data.slice(0, limit);
+        }
 
         if (data.length > 0) {
             const last = data[data.length - 1];

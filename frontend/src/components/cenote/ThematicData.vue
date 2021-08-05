@@ -10,7 +10,7 @@
                     <br />
                     <v-row
                         v-for="variable in variables[theme]"
-                        :key="variable._key"
+                        :key="variable.variable._key"
                     >
                         <v-col cols="auto">
                             <v-tooltip top>
@@ -19,10 +19,10 @@
                                         class="text-decoration-underline"
                                         v-bind="attrs"
                                         v-on="on"
-                                        >{{ variable.name }}:</b
+                                        >{{ variable.variable.name }}:</b
                                     >
                                 </template>
-                                {{ variable.description }}
+                                {{ variable.variable.description }}
                             </v-tooltip>
                             {{ variable.values[0].value }}
                         </v-col>
@@ -39,12 +39,12 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import VariableDTO from '@/models/VariableDTO';
 import RemoteServices from '@/services/RemoteServices';
+import VariableWithValuesDTO from '@/models/VariableWithValuesDTO';
 
 @Component({})
 export default class ThematicData extends Vue {
-    variables: { [theme: string]: VariableDTO[] } = {};
+    variables: { [theme: string]: VariableWithValuesDTO[] } = {};
     currentTab = null;
     tabs = [
         'LOCATION',

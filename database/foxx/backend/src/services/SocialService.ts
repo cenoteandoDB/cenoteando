@@ -1,5 +1,6 @@
-import { Cenotes, Comments } from '../model/collections';
+import { Comments } from '../model/collections';
 import { Comment, User } from '../model/documents';
+import { CenoteService } from './CenoteService';
 
 // An authenticated user
 type AuthUser = User | null;
@@ -15,8 +16,16 @@ export class SocialService {
         hasMore: boolean;
         continuationToken: string;
     } {
-        const filter = {};
-        if (!user) filter['cenote_id'] = Cenotes.name + '/' + cenoteKey;
+        // Check access to cenote
+        if (!CenoteService.hasAccess(user, cenoteKey))
+            // TODO: Throw custom error
+            throw Error(
+                `SocialService.listComments: User does not have access to this cenote. cenote._key = ${cenoteKey}.`,
+            );
+
+        const filter = {
+            cenote_id: CenoteService.keyToId(cenoteKey),
+        };
         return Comments.paginate(limit, continuationToken, {
             filter,
         });

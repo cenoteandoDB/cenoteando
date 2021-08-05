@@ -4,7 +4,6 @@ export const complete = typeArango({
     // verbose
     logLevel: LogLevel.Debug,
 
-    // TODO: Setup roles
     // clients will always have these roles, no mather if they're authenticated (also see getUserRoles)
     providedRolesDefault: ['guest'],
 

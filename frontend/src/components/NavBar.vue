@@ -213,6 +213,18 @@ export default class NavBar extends Vue {
                 text: 'ADMIN',
                 to: '/admin',
                 condition: () => this.isAdmin,
+                children: [
+                    {
+                        icon: 'mdi-monitor-dashboard',
+                        text: 'DASHBOARD',
+                        to: '/admin',
+                    },
+                    {
+                        icon: 'mdi-monitor-edit',
+                        text: 'VARIABLES',
+                        to: '/admin/variables',
+                    },
+                ],
             },
             {
                 icon: 'mdi-map',

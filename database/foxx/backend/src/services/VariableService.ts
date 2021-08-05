@@ -1,26 +1,25 @@
 import { QueryFilter } from 'type-arango/dist/types';
 import { parse } from 'json2csv';
 
-import { Cenotes, MeasurementsOrFacts, Variables } from '../model/collections';
-import { AccessLevel, User, ValueType, Variable } from '../model/documents';
+import { Variables } from '../model/collections';
+import { AccessLevel, User, Variable } from '../model/documents';
 
 // An authenticated user
 type AuthUser = User | null;
 
-export interface VariableValues {
-    [variableKey: string]: {
-        variable: Variable;
-        values: {
-            timestamp: string;
-            value: ValueType;
-        }[];
-    };
-}
-
 export class VariableService {
+    private static createValueReadFilter(user: AuthUser): QueryFilter {
+        const accessLevels: AccessLevel[] = [AccessLevel.PUBLIC];
+        if (user) accessLevels.push(AccessLevel.PRIVATE);
+        if (user && user.isAdmin()) accessLevels.push(AccessLevel.SENSITIVE);
+        return {
+            access_level: accessLevels,
+        };
+    }
+
     static listVariables(
         _: AuthUser,
-        limit = 50,
+        limit = 250,
         continuationToken?: string,
     ): {
         data: Readonly<Variable>[];
@@ -32,6 +31,23 @@ export class VariableService {
 
     static getVariable(_: AuthUser, _key: string): Readonly<Variable> {
         return Variables.findOne(_key);
+    }
+
+    static getVariables(
+        user: AuthUser,
+        filter: QueryFilter,
+        filterValueReadAccess: boolean = false,
+    ): Readonly<Variable>[] {
+        filter = Object.assign(
+            filter,
+            filterValueReadAccess
+                ? VariableService.createValueReadFilter(user)
+                : {},
+        );
+
+        return Variables.find({
+            filter,
+        });
     }
 
     // TODO: Implement this
@@ -58,38 +74,12 @@ export class VariableService {
         return parse(vars, { eol: '\n' });
     }
 
-    static getData(user: AuthUser, cenoteKey, theme): VariableValues {
-        const mofs = MeasurementsOrFacts.find({
-            filter: { _to: Cenotes._col.name + '/' + cenoteKey },
-        });
-
-        const result: VariableValues = {};
-        mofs.forEach((mof) => {
-            const [, variableKey] = mof._from.split('/');
-            if (!result[variableKey]) {
-                const variable = Variables.findOne(variableKey, {
-                    filter: VariableService.createReadFilter(user),
-                });
-                if (variable?.theme != theme) return;
-                result[variableKey] = {
-                    ...variable,
-                    values: [],
-                };
-            }
-            result[variableKey].values.push({
-                timestamp: mof.timestamp,
-                value: mof.value,
-            });
-        });
-        return result;
+    static keyToId(_key: string): string {
+        return Variables._col.name + '/' + _key;
     }
 
-    private static createReadFilter(user: AuthUser): QueryFilter {
-        const accessLevels: AccessLevel[] = [AccessLevel.PUBLIC];
-        if (user) accessLevels.push(AccessLevel.PRIVATE);
-        if (user && user.isAdmin()) accessLevels.push(AccessLevel.SENSITIVE);
-        return {
-            access_level: ['IN', ...accessLevels],
-        };
+    static idToKey(_id: string): string {
+        const [, _key] = _id.split('/');
+        return _key;
     }
 }

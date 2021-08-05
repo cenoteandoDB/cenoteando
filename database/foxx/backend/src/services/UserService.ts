@@ -39,7 +39,12 @@ export class UserService {
     }
 
     static createUser({ email, name, password }): User {
-        // TODO: Check for already existing accounts
+        if (UserService.userExists(email))
+            // TODO: Throw custom error
+            throw Error(
+                `UserService.createUser: User with same email already exists. email = ${email}.`,
+            );
+
         const user = new User({
             email,
             name,
@@ -55,7 +60,7 @@ export class UserService {
             const user = Users.findOne({
                 filter: { email },
             });
-            return user as boolean;
+            return !!user;
         } catch (e) {
             return false;
         }

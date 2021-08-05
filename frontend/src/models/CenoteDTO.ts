@@ -1,22 +1,14 @@
 import { GeoJSON } from 'geojson';
+import CommentDTO from '@/models/CommentDTO';
 
 class CenoteSocialProperties {
     total_comments!: number;
     rating?: number;
-    comments?: Array<CenoteComment>;
+    comments?: Array<CommentDTO>;
 }
 
 export enum CenoteIssue {
     GEOTAG_NOT_VERIFIED,
-}
-
-// TODO: Create CommentDTO and get from backend
-interface CenoteComment {
-    rating: number;
-    source: string;
-    text: string;
-    timestamp: string;
-    url: string;
 }
 
 export default class CenoteDTO {

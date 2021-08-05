@@ -77,13 +77,11 @@ const routes: Array<RouteConfig> = [
     },
     {
         path: '/admin',
-        // TODO: Create Admin Dashboard parent router view
         component: () => import('@/views/admin/Dashboard.vue'),
         children: [
             {
                 path: '',
                 name: 'Dashboard',
-                // TODO: Create Statistics view
                 component: () => import('@/views/admin/Statistics.vue'),
                 meta: {
                     title: APP_NAME + ' - Dashboard',
@@ -91,7 +89,7 @@ const routes: Array<RouteConfig> = [
                 },
             },
             {
-                path: '/variables',
+                path: 'variables',
                 name: 'Variables',
                 component: () => import('@/views/admin/Variables.vue'),
                 meta: {
@@ -99,7 +97,7 @@ const routes: Array<RouteConfig> = [
                     requiredAuth: 'Admin',
                 },
             },
-            // TODO: Create remaining views (users, cenotes, MoFs, etc.)
+            // TODO: Create remaining dashboard views (users, cenotes, MoFs, etc.)
         ],
     },
     {

@@ -1,7 +1,8 @@
 import createRouter from '@arangodb/foxx/router';
 
-import { CenoteService, SocialService, VariableService } from '../services';
+import { CenoteService, SocialService } from '../services';
 import { User } from '../model/documents';
+import { MoFService } from '../services/MoFService';
 
 export default (): Foxx.Router => {
     const router = createRouter();
@@ -28,23 +29,17 @@ export default (): Foxx.Router => {
     });
 
     // TODO: Documentation
-    // TODO: Test this (also make sure we only give access to correct variable/cenote pairs)
-    // TODO: Restrict by cenote key
+    // TODO: Test this
     router.get(':_key/data/:theme', (req, res) => {
         let user: User | null = null;
         if (req.session && req.session.data) user = new User(req.session.data);
         res.send(
-            VariableService.getData(
-                user,
-                req.pathParams._key,
-                req.pathParams.theme,
-            ),
+            MoFService.getData(user, req.pathParams._key, req.pathParams.theme),
         );
     });
 
     // TODO: Documentation
     // TODO: Test this
-    // TODO: Restrict by cenote key
     router.get(':_key/comments', (req, res) => {
         let user: User | null = null;
         let limit: number | undefined = undefined;

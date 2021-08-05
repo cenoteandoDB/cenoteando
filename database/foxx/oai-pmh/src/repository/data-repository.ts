@@ -276,10 +276,11 @@ export function factory(options = {}): DataRepository {
          */
         // @ts-ignore TODO: Implement parameters
         getRecords: (parameters: ListParameters): Record[] => {
-            const cenotes = CenoteService.listCenotes();
+            // List all cenotes
+            const cenotes = CenoteService.listCenotes(-1);
             console.debug('Got:', JSON.stringify(cenotes));
 
-            return cenotes.map(
+            return cenotes.data.map(
                 (cenote: {
                     _key: string;
                     name: string;

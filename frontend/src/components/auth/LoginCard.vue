@@ -3,6 +3,8 @@
         <v-form ref="form">
             <v-text-field
                 v-model="email"
+                id="email"
+                name="email"
                 :rules="emailRules"
                 type="text"
                 label="E-mail"
@@ -11,6 +13,8 @@
 
             <v-text-field
                 v-model="password"
+                id="current-password"
+                name="current-password"
                 :rules="passwordRules"
                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                 :type="showPassword ? 'text' : 'password'"
