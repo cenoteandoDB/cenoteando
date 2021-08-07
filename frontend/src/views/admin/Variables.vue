@@ -4,7 +4,8 @@
         :items="variables"
         :items-per-page="15"
         class="elevation-1"
-    ></v-data-table>
+    >
+    </v-data-table>
 </template>
 
 <script lang="ts">
@@ -35,9 +36,6 @@ export default class Variables extends Vue {
                 if (!this.variables.length)
                     await this.$store.dispatch('clearLoading');
 
-                batch.map((value) => {
-                    console.log(value);
-                });
                 this.variables.push(...batch);
             }
         })().catch(async (error) => {
