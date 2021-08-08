@@ -1,11 +1,42 @@
 <template>
-    <v-data-table
-        :headers="headers"
-        :items="variables"
-        :items-per-page="15"
-        class="elevation-1"
-    >
-    </v-data-table>
+    <v-card class="table">
+        <v-data-table
+            :headers="headers"
+            :items="variables"
+            :items-per-page="15"
+            class="elevation-1"
+        >
+            <template v-slot:[`item.action`]="{ item }">
+                <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                        <v-icon
+                            class="mr-2 action-button"
+                            v-on="on"
+                            @click="editVariable(item)"
+                            color="green"
+                            data-cy="editVariable"
+                            >mdi-pencil</v-icon
+                        >
+                    </template>
+                    <span>Edit</span>
+                </v-tooltip>
+
+                <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                        <v-icon
+                            class="mr-2 action-button"
+                            v-on="on"
+                            @click="deleteVariable(item)"
+                            color="red"
+                            data-cy="deleteVariable"
+                            >mdi-delete-forever</v-icon
+                        >
+                    </template>
+                    <span>Delete</span>
+                </v-tooltip>
+            </template>
+        </v-data-table>
+    </v-card>
 </template>
 
 <script lang="ts">
@@ -22,6 +53,7 @@ export default class Variables extends Vue {
         { text: 'Access Level', value: 'access_level' },
         { text: 'Timeseries', value: 'timeseries' },
         { text: 'Data type', value: 'type' },
+        { text: 'Actions', value: 'action' },
     ];
     variables: VariableDTO[] = [];
 
