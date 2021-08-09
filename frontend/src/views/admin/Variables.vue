@@ -36,6 +36,13 @@
                 </v-tooltip>
             </template>
         </v-data-table>
+        <edit-variable-dialog
+            v-if="currentVariable"
+            v-model="editVariableDialog"
+            :variables="currentVariable"
+            v-on:new-variable="onCreateVariable"
+            v-on:close-dialog="onCloseDialog"
+        />
     </v-card>
 </template>
 
@@ -43,8 +50,11 @@
 import { Component, Vue } from 'vue-property-decorator';
 import VariableDTO from '@/models/VariableDTO';
 import RemoteServices from '@/services/RemoteServices';
+import EditVariableDialog from '@/components/admin/EditVariableDialog.vue';
 
-@Component
+@Component({
+    components: { 'edit-variable-dialog': EditVariableDialog },
+})
 export default class Variables extends Vue {
     headers = [
         { text: 'Name', value: 'name' },
@@ -55,6 +65,7 @@ export default class Variables extends Vue {
         { text: 'Data type', value: 'type' },
         { text: 'Actions', value: 'action' },
     ];
+    currentVariable: VariableDTO | null = null;
     variables: VariableDTO[] = [];
 
     async created(): Promise<void> {
