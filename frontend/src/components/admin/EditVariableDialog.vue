@@ -1,93 +1,70 @@
 <template>
-    <v-dialog
-        :value="dialog"
-        @input="$emit('close-dialog')"
-        @keydown.esc="$emit('close-dialog')"
-        max-width="75%"
-        max-height="80%"
-    >
+    <v-dialog v-model="dialog" persistent max-width="600px">
+        <template v-slot:activator="{ on, attrs }">
+            <v-icon
+                class="mr-2 action-button"
+                v-on="on"
+                v-bind="attrs"
+                @click="editVariable(item)"
+                color="green"
+                data-cy="editVariable"
+                >mdi-pencil</v-icon
+            >
+        </template>
+
+        <span>Edit</span>
+
         <v-card>
             <v-card-title>
-                <span class="headline"> New Variable </span>
+                <span class="text-h5">Variables</span>
             </v-card-title>
+            <v-card-text>
+                <v-container>
+                    <v-row>
+                        <v-col>
+                            <v-text-field
+                                label="Name"
+                                sm="6"
+                                md="4"
+                            ></v-text-field>
+                        </v-col>
 
-            <v-card-text class="text-left" v-if="editVariable">
-                <p><b>Variable Name:</b> {{ editVariable.name }}</p>
-                <p v-if="isCreateVariable">
-                    <b>Name:</b> {{ editVariable.name }}
-                </p>
-                <v-text-field
-                    v-if="!isCreateVariable"
-                    v-model="editVariable.name"
-                    label="Name"
-                    data-cy="VariableNameInput"
-                />
-                <v-text-field
-                    v-model="editVariable.access_level"
-                    label="Access Level"
-                    data-cy="accessLevelInput"
-                />
-                <v-text-field
-                    v-model="editVariable.description"
-                    label="Description"
-                    data-cy="DescriptionInput"
-                />
+                        <v-col cols="12">
+                            <v-text-field label="Description"></v-text-field>
+                        </v-col>
+                        <v-col cols="12">
+                            <v-text-field label="Theme"></v-text-field>
+                        </v-col>
 
-                <v-text-field
-                    v-model="editVariable.theme"
-                    label="Theme"
-                    data-cy="ThemeInput"
-                />
+                        <v-col cols="12">
+                            <v-text-field label="Access Level"></v-text-field>
+                        </v-col>
+                        <v-col cols="12">
+                            <v-text-field label="Data Type"></v-text-field>
+                        </v-col>
 
-                <v-text-field
-                    v-model="editVariable.access_level"
-                    label="Access Level"
-                    data-cy="AccessInput"
-                />
-                <v-text-field
-                    v-model="editVariable.timeseries"
-                    label="Timeseries"
-                    data-cy="TimeseriesInput"
-                />
-                <v-text-field
-                    v-model="editVariable.type"
-                    label="Data Type"
-                    data-cy="DataTypeInput"
-                />
+                        <v-col cols="12">
+                            <v-text-field label="Timeseries"></v-text-field>
+                        </v-col>
+                    </v-row>
+                </v-container>
             </v-card-text>
-
             <v-card-actions>
-                <v-spacer />
-                <v-btn
-                    color="red darken-1"
-                    @click="$emit('close-dialog')"
-                    data-cy="cancelButton"
-                    >Cancel</v-btn
-                >
-                <v-btn
-                    color="green darken-1"
-                    @click="saveVariable()"
-                    data-cy="saveButton"
-                    >Save</v-btn
-                >
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="dialog = false">
+                    Close
+                </v-btn>
+                <v-btn color="blue darken-1" text @click="dialog = false">
+                    Save
+                </v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
 </template>
-
-<script lang="ts">
-import { Component, Model, Prop, Vue } from 'vue-property-decorator';
-import RemoteServices from '@/services/RemoteServices';
-import VariableDTO from '@/models/VariableDTO';
+<script>
+import { Component, Vue } from 'vue-property-decorator';
 @Component
 export default class EditVariableDialog extends Vue {
-    @Model('dialog', Boolean) dialog!: boolean;
-    @Prop({ type: VariableDTO, required: true })
-    readonly variable!: VariableDTO;
-
-    variables: VariableDTO[] = [];
-
-    editVariable!: VariableDTO;
-    isCreateVariable = false;
+    dialog = false;
 }
 </script>
