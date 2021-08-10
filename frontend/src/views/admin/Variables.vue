@@ -7,7 +7,7 @@
             class="elevation-1"
         >
             <template v-slot:[`item.action`]="{ item }">
-                <edit-variable-dialog></edit-variable-dialog>
+                <edit-variable-dialog />
 
                 <v-tooltip bottom>
                     <template v-slot:activator="{ on }">
@@ -32,8 +32,9 @@ import { Component, Vue } from 'vue-property-decorator';
 import VariableDTO from '@/models/VariableDTO';
 import RemoteServices from '@/services/RemoteServices';
 import EditVariableDialog from '@/components/admin/EditVariableDialog.vue';
+import DeleteDialog from '@/components/admin/DeleteDialog.vue';
 
-@Component({ components: { EditVariableDialog } })
+@Component({ components: { EditVariableDialog, DeleteDialog } })
 export default class Variables extends Vue {
     headers = [
         { text: 'Name', value: 'name' },
