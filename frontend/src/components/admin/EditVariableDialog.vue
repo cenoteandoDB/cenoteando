@@ -30,21 +30,37 @@
                         </v-col>
 
                         <v-col cols="12">
-                            <v-text-field label="Description"></v-text-field>
+                            <v-textarea label="Description"></v-textarea>
                         </v-col>
                         <v-col cols="12">
-                            <v-text-field label="Theme"></v-text-field>
-                        </v-col>
-
-                        <v-col cols="12">
-                            <v-text-field label="Access Level"></v-text-field>
-                        </v-col>
-                        <v-col cols="12">
-                            <v-text-field label="Data Type"></v-text-field>
+                            <v-select
+                                :items="themes"
+                                label="Theme"
+                                dense
+                            ></v-select>
                         </v-col>
 
                         <v-col cols="12">
-                            <v-text-field label="Timeseries"></v-text-field>
+                            <v-select
+                                :items="access_level"
+                                label="Access Level"
+                                dense
+                            ></v-select>
+                        </v-col>
+                        <v-col cols="12">
+                            <v-select
+                                :items="data_types"
+                                label="Data Type"
+                                dense
+                            ></v-select>
+                        </v-col>
+
+                        <v-col cols="12">
+                            <v-checkbox
+                                v-model="selected"
+                                :label="timeseries"
+                                value="checkbox"
+                            ></v-checkbox>
                         </v-col>
                     </v-row>
                 </v-container>
@@ -63,8 +79,14 @@
 </template>
 <script>
 import { Component, Vue } from 'vue-property-decorator';
+
 @Component
 export default class EditVariableDialog extends Vue {
     dialog = false;
+    themes = ['WATER', 'GROUND', 'EXAMPLE'];
+    data_types = ['NO_TYPE'];
+    access_level = ['SENSITIVE', 'INSENSITIVE'];
+    timeseries = 'timeseries';
+    checkbox = [true, false];
 }
 </script>
