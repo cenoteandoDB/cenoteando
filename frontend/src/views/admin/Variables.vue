@@ -6,22 +6,9 @@
             :items-per-page="15"
             class="elevation-1"
         >
-            <template v-slot:[`item.action`]="{ item }">
+            <template v-slot:[`item.action`]="">
                 <edit-variable-dialog />
-
-                <v-tooltip bottom>
-                    <template v-slot:activator="{ on }">
-                        <v-icon
-                            class="mr-2 action-button"
-                            v-on="on"
-                            @click="deleteVariable(item)"
-                            color="red"
-                            data-cy="deleteVariable"
-                            >mdi-delete-forever</v-icon
-                        >
-                    </template>
-                    <span>Delete</span>
-                </v-tooltip>
+                <delete-dialog />
             </template>
         </v-data-table>
     </v-card>
@@ -34,7 +21,9 @@ import RemoteServices from '@/services/RemoteServices';
 import EditVariableDialog from '@/components/admin/EditVariableDialog.vue';
 import DeleteDialog from '@/components/admin/DeleteDialog.vue';
 
-@Component({ components: { EditVariableDialog, DeleteDialog } })
+@Component({
+    components: { EditVariableDialog, DeleteDialog },
+})
 export default class Variables extends Vue {
     headers = [
         { text: 'Name', value: 'name' },

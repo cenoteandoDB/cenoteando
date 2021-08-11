@@ -17,8 +17,8 @@
                 <span class="text-h5">Delete</span>
             </v-card-title>
             <v-card-text>
-                <v-container>
-                    <h1>Are you sure you want to delete?</h1>
+                <v-container class="pt-10 pl-10">
+                    <h2>Are you sure you want to delete?</h2>
                 </v-container>
             </v-card-text>
             <v-card-actions>
