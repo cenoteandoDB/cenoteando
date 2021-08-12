@@ -20,7 +20,7 @@ import GeneralTab from '@/components/cenote/GeneralTab.vue';
 import CalculatedVariables from '@/components/cenote/CalculatedVariables.vue';
 import SocialTab from '@/components/cenote/SocialTab.vue';
 import ThematicData from '@/components/cenote/ThematicData.vue';
-import Sources from '@/components/Sources.vue';
+import Sources from '@/components/cenote/Sources.vue';
 import CenoteDTO from '@/models/CenoteDTO';
 
 const CenoteProps = Vue.extend({

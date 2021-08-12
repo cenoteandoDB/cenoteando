@@ -154,6 +154,25 @@ export default class RemoteServices {
         }
     }
 
+    static async updateVariable(variable: VariableDTO): Promise<VariableDTO> {
+        return httpClient
+            .put('/api/variables/' + variable._key, variable)
+            .then((response) => {
+                return new VariableDTO(response.data);
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
+    static async deleteVariable(variableKey: string): Promise<void> {
+        httpClient
+            .delete('/api/variables/' + variableKey)
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
     // Cenotes
     static async *cenotesGenerator(
         limit?: number,

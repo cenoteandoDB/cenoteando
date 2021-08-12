@@ -6,9 +6,12 @@
             :items-per-page="15"
             class="elevation-1"
         >
-            <template v-slot:[`item.action`]="">
-                <edit-variable-dialog />
-                <delete-dialog />
+            <template v-slot:[`item.action`]="{ item }">
+                <edit-variable-dialog
+                    :variable="item"
+                    @onSave="updateVariable(item)"
+                />
+                <delete-dialog @onConfirm="deleteVariable(item)" />
             </template>
         </v-data-table>
     </v-card>
@@ -52,6 +55,15 @@ export default class Variables extends Vue {
         })().catch(async (error) => {
             await this.$store.dispatch('error', error);
         });
+    }
+
+    async updateVariable(variable: VariableDTO): Promise<void> {
+        await RemoteServices.updateVariable(variable);
+    }
+
+    async deleteVariable(variable: VariableDTO): Promise<void> {
+        await RemoteServices.deleteVariable(variable._key);
+        this.variables = this.variables.filter((v) => v._key != variable._key);
     }
 }
 </script>

@@ -5,7 +5,6 @@
                 class="mr-2 action-button"
                 v-bind="attrs"
                 v-on="on"
-                @click="deleteVariable(item)"
                 color="red"
                 data-cy="deleteVariable"
                 >mdi-delete-forever</v-icon
@@ -26,18 +25,23 @@
                 <v-btn color="blue darken-1" text @click="dialog = false">
                     Cancel
                 </v-btn>
-                <v-btn color="blue darken-1" text @click="dialog = false">
+                <v-btn color="blue darken-1" text @click="confirm()">
                     Confirm
                 </v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
 </template>
-<script>
+<script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
 @Component
 export default class EditVariableDialog extends Vue {
     dialog = false;
+
+    confirm(): void {
+        this.$emit('onConfirm');
+        this.dialog = false;
+    }
 }
 </script>
