@@ -42,7 +42,7 @@
                     SIGN UP
                 </v-btn>
                 <v-spacer></v-spacer>
-                <v-btn to="/login" color="secondary"> LOG IN </v-btn>
+                <v-btn to="/login" text> LOG IN </v-btn>
             </v-card-actions>
         </v-form>
     </v-card>

@@ -32,7 +32,7 @@
                     LOG IN
                 </v-btn>
                 <v-spacer></v-spacer>
-                <v-btn to="/signup" color="secondary"> REGISTER </v-btn>
+                <v-btn to="/signup" text> REGISTER </v-btn>
             </v-card-actions>
         </v-form>
     </v-card>
