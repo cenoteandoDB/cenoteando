@@ -29,10 +29,38 @@ export default (): Foxx.Router => {
 
     // TODO: Documentation
     // TODO: Test this
+    router.put(':_key', (req, res) => {
+        let user: User | null = null;
+        if (req.session && req.session.data) user = new User(req.session.data);
+        VariableService.updateVariable(
+            user,
+            req.pathParams._key,
+            JSON.parse(req.body),
+        );
+    });
+
+    // TODO: Documentation
+    // TODO: Test this
+    router.delete(':_key', (req, res) => {
+        let user: User | null = null;
+        if (req.session && req.session.data) user = new User(req.session.data);
+        VariableService.deleteVariable(user, req.pathParams._key);
+    });
+
+    // TODO: Documentation
+    // TODO: Test this
     router.get('csv', (req, res) => {
         let user: User | null = null;
         if (req.session && req.session.data) user = new User(req.session.data);
-        res.send(VariableService.csv(user));
+        res.send(VariableService.toCsv(user));
+    });
+
+    // TODO: Documentation
+    // TODO: Test this
+    router.put('csv', (req, res) => {
+        let user: User | null = null;
+        if (req.session && req.session.data) user = new User(req.session.data);
+        VariableService.fromCsv(user, req.body);
     });
 
     return router;

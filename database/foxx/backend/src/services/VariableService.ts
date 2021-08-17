@@ -51,7 +51,8 @@ export class VariableService {
     }
 
     // TODO: Implement this
-    static createVariable(user: AuthUser, data: never): Readonly<Variable> {
+    static createVariable(user: AuthUser, data: any): Readonly<Variable> {
+        // TODO: Check errors and return array with keys of variables with error and error message
         throw new Error('Not Implemented');
     }
 
@@ -59,19 +60,48 @@ export class VariableService {
     static updateVariable(
         user: AuthUser,
         _key: string,
-        data: never,
+        data: any,
     ): Readonly<Variable> {
-        throw new Error('Not Implemented');
+        if (!user?.isAdmin())
+            throw new Error(
+                `VariableService.updateVariable: User does not have update permissions. variable._key = ${_key}.`,
+            );
+
+        const variable = Variables.findOne(_key);
+        // TODO: Check same key
+        // TODO: Check valid data
+        variable.merge(data);
+        variable.save();
+        return variable;
     }
 
-    // TODO: Implement this
     static deleteVariable(user: AuthUser, _key: string): void {
-        throw new Error('Not Implemented');
+        if (!user?.isAdmin())
+            throw new Error(
+                `VariableService.deleteVariable: User does not have delete permissions. variable._key = ${_key}.`,
+            );
+
+        const variable = Variables.findOne(_key);
+        variable.remove();
     }
 
-    static csv(_: AuthUser): string {
+    static toCsv(_: AuthUser): string {
         const vars = Variables.find();
         return parse(vars, { eol: '\n' });
+    }
+
+    static fromCsv(user: AuthUser, csv: string): void {
+        if (!user?.isAdmin())
+            throw new Error(
+                `VariableService.fromCsv: User does not have upload permissions.`,
+            );
+
+        // TODO: Parse csv to json array
+        const variables = [];
+        // TODO: Try to make this operation atomic
+        variables.forEach((data) => {
+            VariableService.createVariable(user, data);
+        });
     }
 
     static keyToId(_key: string): string {
