@@ -16,16 +16,12 @@
                         class="mx-2"
                     />
                     <v-spacer />
-
-                    <v-btn @click="newVariable" data-cy="createButton"
-                        ><v-icon>mdi-plus</v-icon></v-btn
-                    >
-
-                    <v-btn @click="newVariable" data-cy="uploadButton"
+                    <AddVariableDialog />
+                    <v-btn @click="uploadButton" data-cy="uploadButton"
                         ><v-icon color="green">mdi-upload</v-icon></v-btn
                     >
 
-                    <v-btn @click="newVariable" data-cy="downloadButton"
+                    <v-btn @click="downloadButton" data-cy="downloadButton"
                         ><v-icon color="green">mdi-download</v-icon></v-btn
                     >
                 </v-card-title>
@@ -36,6 +32,7 @@
                     :variable="item"
                     @onSave="updateVariable(item)"
                 />
+
                 <delete-dialog @onConfirm="deleteVariable(item)" />
             </template>
         </v-data-table>
@@ -48,9 +45,10 @@ import VariableDTO from '@/models/VariableDTO';
 import RemoteServices from '@/services/RemoteServices';
 import EditVariableDialog from '@/components/admin/EditVariableDialog.vue';
 import DeleteDialog from '@/components/admin/DeleteDialog.vue';
+import AddVariableDialog from '@/components/admin/AddVariableDialog.vue';
 
 @Component({
-    components: { EditVariableDialog, DeleteDialog },
+    components: { EditVariableDialog, DeleteDialog, AddVariableDialog },
 })
 export default class Variables extends Vue {
     headers = [
@@ -65,6 +63,7 @@ export default class Variables extends Vue {
 
     search = '';
     variables: VariableDTO[] = [];
+    dialog = false;
 
     async created(): Promise<void> {
         await this.$store.dispatch('loading');

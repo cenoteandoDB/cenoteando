@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="dialog" persistent max-width="600px">
+    <v-dialog v-model="dialog" max-width="600px">
         <template v-slot:activator="{ on, attrs }">
             <v-icon
                 class="mr-2 action-button"
@@ -12,9 +12,7 @@
             >
         </template>
 
-        <span>Edit</span>
-
-        <v-card>
+        <v-card class="pt-5 mt-5 justify-center">
             <v-card-title>
                 <span class="text-h5">Variables</span>
             </v-card-title>
