@@ -9,7 +9,7 @@
         >
             <template v-slot:top>
                 <v-card-title>
-                    <v-autocomplete
+                    <v-text-field
                         v-model="search"
                         append-icon="mdi-magnify"
                         label="Search"
@@ -26,6 +26,30 @@
                         ><v-icon color="green">mdi-download</v-icon></v-btn
                     >
                 </v-card-title>
+
+                <v-expansion-panels>
+                    <v-expansion-panel>
+                        <v-expansion-panel-header>
+                            Filters
+                        </v-expansion-panel-header>
+
+                        <v-expansion-panel-content>
+                            <h4 class="pb-2">Theme</h4>
+                            <v-chip> ORGANIZATION </v-chip>
+                            <h4 class="pb-2 pt-2">Access Levels</h4>
+
+                            <v-chip> SENSITIVE</v-chip>
+                            <h4 class="pb-2 pt-2">Data Type</h4>
+
+                            <v-chip> NO_TYPE</v-chip>
+
+                            <v-checkbox
+                                v-model="checkbox"
+                                label="Timeseries"
+                            ></v-checkbox>
+                        </v-expansion-panel-content>
+                    </v-expansion-panel>
+                </v-expansion-panels>
             </template>
 
             <template v-slot:[`item.action`]="{ item }">
@@ -49,7 +73,11 @@ import DeleteDialog from '@/components/admin/DeleteDialog.vue';
 import AddVariableDialog from '@/components/admin/AddVariableDialog.vue';
 
 @Component({
-    components: { EditVariableDialog, DeleteDialog, AddVariableDialog },
+    components: {
+        EditVariableDialog,
+        DeleteDialog,
+        AddVariableDialog,
+    },
 })
 export default class Variables extends Vue {
     headers = [
@@ -61,17 +89,8 @@ export default class Variables extends Vue {
         { text: 'Data type', value: 'type' },
         { text: 'Actions', value: 'action' },
     ];
-
-    //just test items
-    items = [
-        'Name',
-        'Description',
-        'Theme',
-        'Access Level',
-        'Timeseries',
-        'Data type',
-        'Actions',
-    ];
+    panel = [0, 1];
+    readonly = false;
 
     search = '';
     variables: VariableDTO[] = [];
