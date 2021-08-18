@@ -9,11 +9,12 @@
         >
             <template v-slot:top>
                 <v-card-title>
-                    <v-text-field
+                    <v-autocomplete
                         v-model="search"
                         append-icon="mdi-magnify"
                         label="Search"
                         class="mx-2"
+                        :items="items"
                     />
                     <v-spacer />
                     <AddVariableDialog />
@@ -59,6 +60,17 @@ export default class Variables extends Vue {
         { text: 'Timeseries', value: 'timeseries' },
         { text: 'Data type', value: 'type' },
         { text: 'Actions', value: 'action' },
+    ];
+
+    //just test items
+    items = [
+        'Name',
+        'Description',
+        'Theme',
+        'Access Level',
+        'Timeseries',
+        'Data type',
+        'Actions',
     ];
 
     search = '';
