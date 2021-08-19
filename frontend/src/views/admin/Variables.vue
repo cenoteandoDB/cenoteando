@@ -34,14 +34,24 @@
                         </v-expansion-panel-header>
 
                         <v-expansion-panel-content>
-                            <h4 class="pb-2">Theme</h4>
-                            <v-chip> ORGANIZATION </v-chip>
-                            <h4 class="pb-2 pt-2">Access Levels</h4>
+                            <h4 class="pb-5">Theme</h4>
+                            <v-row class="pb-5 pl-2">
+                                <v-chip> ORGANIZATION </v-chip>
+                                <v-chip> Other themes </v-chip>
+                            </v-row>
 
-                            <v-chip> SENSITIVE</v-chip>
-                            <h4 class="pb-2 pt-2">Data Type</h4>
+                            <h4 class="pb-5">Access Levels</h4>
+                            <v-row class="pb-5 pl-2">
+                                <v-chip> SENSITIVE</v-chip>
+                                <v-chip> Other </v-chip>
+                            </v-row>
 
-                            <v-chip> NO_TYPE</v-chip>
+                            <h4 class="pb-5">Data Type</h4>
+                            <v-row class="pb-5 pl-2">
+                                <v-chip> NO_TYPE</v-chip>
+
+                                <v-chip> Other Types </v-chip>
+                            </v-row>
 
                             <v-checkbox
                                 v-model="checkbox"
