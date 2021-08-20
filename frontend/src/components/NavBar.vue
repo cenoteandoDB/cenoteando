@@ -224,6 +224,16 @@ export default class NavBar extends Vue {
                         text: 'VARIABLES',
                         to: '/admin/variables',
                     },
+                    {
+                        icon: 'mdi-monitor-edit',
+                        text: 'USERS',
+                        to: '/admin/users',
+                    },
+                    {
+                        icon: 'mdi-monitor-edit',
+                        text: 'CENOTES',
+                        to: '/admin/cenotes',
+                    },
                 ],
             },
             {

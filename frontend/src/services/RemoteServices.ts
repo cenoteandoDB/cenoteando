@@ -10,6 +10,7 @@ import CommentDTO from '@/models/CommentDTO';
 import AuthDto from '@/models/user/AuthDto';
 import VariableWithValuesDTO from '@/models/VariableWithValuesDTO';
 import VariableDTO from '@/models/VariableDTO';
+import UserDTO from '@/models/UserDTO';
 
 const httpClient = axios.create();
 httpClient.defaults.timeout = 100000;
@@ -154,6 +155,17 @@ export default class RemoteServices {
         }
     }
 
+    static async createVariable(variable: VariableDTO): Promise<VariableDTO> {
+        return httpClient
+            .post('/api/variables/', variable)
+            .then((response) => {
+                return new VariableDTO(response.data);
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
     static async updateVariable(variable: VariableDTO): Promise<VariableDTO> {
         return httpClient
             .put('/api/variables/' + variable._key, variable)
@@ -165,9 +177,42 @@ export default class RemoteServices {
             });
     }
 
-    static async deleteVariable(variableKey: string): Promise<void> {
-        httpClient
-            .delete('/api/variables/' + variableKey)
+    static async deleteVariable(_key: string): Promise<void> {
+        httpClient.delete('/api/variables/' + _key).catch(async (error) => {
+            throw Error(await this.errorMessage(error));
+        });
+    }
+
+    static async variablesToCsv(): Promise<string> {
+        return httpClient
+            .get('/api/variables/csv')
+            .then((response) => {
+                return response.data;
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
+    static async csvToVariables(
+        files: File[],
+        onUploadProgress: (Event) => void,
+    ): Promise<VariableDTO[]> {
+        const formData = new FormData();
+        files.forEach((file) => {
+            formData.append('file', file);
+        });
+
+        return httpClient
+            .post('/api/variables/csv', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                onUploadProgress,
+            })
+            .then((response) => {
+                return response.data.data.map((v) => new VariableDTO(v));
+            })
             .catch(async (error) => {
                 throw Error(await this.errorMessage(error));
             });
@@ -193,11 +238,74 @@ export default class RemoteServices {
         }
     }
 
+    static async createCenote(cenote: CenoteDTO): Promise<CenoteDTO> {
+        return httpClient
+            .post('/api/cenotes/', cenote)
+            .then((response) => {
+                return new CenoteDTO(response.data);
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
     static async getCenote(key: string): Promise<CenoteDTO> {
         return httpClient
             .get('/api/cenotes/' + key)
             .then((response) => {
                 return new CenoteDTO(response.data);
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
+    static async updateCenote(cenote: CenoteDTO): Promise<CenoteDTO> {
+        return httpClient
+            .put('/api/cenotes/' + cenote._key, cenote)
+            .then((response) => {
+                return new CenoteDTO(response.data);
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
+    static async deleteCenote(_key: string): Promise<void> {
+        httpClient.delete('/api/cenotes/' + _key).catch(async (error) => {
+            throw Error(await this.errorMessage(error));
+        });
+    }
+
+    static async cenotesToCsv(): Promise<string> {
+        return httpClient
+            .get('/api/cenotes/csv')
+            .then((response) => {
+                return response.data;
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
+    static async csvToCenotes(
+        files: File[],
+        onUploadProgress: (Event) => void,
+    ): Promise<CenoteDTO[]> {
+        const formData = new FormData();
+        files.forEach((file) => {
+            formData.append('file', file);
+        });
+
+        return httpClient
+            .post('/api/cenotes/csv', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                onUploadProgress,
+            })
+            .then((response) => {
+                return response.data.data.map((v) => new CenoteDTO(v));
             })
             .catch(async (error) => {
                 throw Error(await this.errorMessage(error));
@@ -237,6 +345,41 @@ export default class RemoteServices {
             .get('/api/cenotes/bounds')
             .then((response) => {
                 return new L.LatLngBounds(response.data.min, response.data.max);
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
+    // Users
+    static async *usersGenerator(limit?: number): AsyncGenerator<UserDTO[]> {
+        let continuationToken: string | undefined = undefined;
+        let hasMore = true;
+        try {
+            while (hasMore) {
+                const response = await httpClient.get('/api/users', {
+                    params: { limit, continuationToken },
+                });
+                yield response.data.data.map((v) => new UserDTO(v));
+                hasMore = response.data.hasMore;
+                continuationToken = response.data.continuationToken;
+            }
+        } catch (e) {
+            throw Error(await this.errorMessage(e));
+        }
+    }
+
+    static async deleteUser(_key: string): Promise<void> {
+        httpClient.delete('/api/users/' + _key).catch(async (error) => {
+            throw Error(await this.errorMessage(error));
+        });
+    }
+
+    static async updateUser(user: UserDTO): Promise<UserDTO> {
+        return httpClient
+            .put('/api/variables/' + user._key, user)
+            .then((response) => {
+                return new UserDTO(response.data);
             })
             .catch(async (error) => {
                 throw Error(await this.errorMessage(error));

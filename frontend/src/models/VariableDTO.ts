@@ -3,7 +3,7 @@ export default class VariableDTO {
     access_level!: string;
     description!: string;
     name!: string;
-    theme!: Array<string>;
+    theme!: string;
     timeseries!: boolean;
     type!: string;
 

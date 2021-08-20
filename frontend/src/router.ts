@@ -97,7 +97,24 @@ const routes: Array<RouteConfig> = [
                     requiredAuth: 'Admin',
                 },
             },
-            // TODO: Create remaining dashboard views (users, cenotes, MoFs, etc.)
+            {
+                path: 'users',
+                name: 'Users',
+                component: () => import('@/views/admin/Users.vue'),
+                meta: {
+                    title: APP_NAME + ' - Manage Users',
+                    requiredAuth: 'Admin',
+                },
+            },
+            {
+                path: 'cenotes',
+                name: 'Cenotes',
+                component: () => import('@/views/admin/Cenotes.vue'),
+                meta: {
+                    title: APP_NAME + ' - Manage Cenotes',
+                    requiredAuth: 'Admin',
+                },
+            },
         ],
     },
     {

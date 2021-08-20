@@ -53,6 +53,7 @@ import XmlViewer from 'vue-xml-viewer';
 import { parseAsync, transforms } from 'json2csv';
 
 import RemoteServices from '@/services/RemoteServices';
+import FileService from '@/services/FileService';
 
 @Component({ components: { XmlViewer } })
 export default class Record extends Vue {
@@ -64,21 +65,10 @@ export default class Record extends Vue {
         return this.id().split('/')[1];
     }
 
-    download(data: string, filename: string, type = 'text/plain'): void {
-        const blob = new Blob([data], {
-            type: type,
-        });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = filename;
-        link.click();
-        URL.revokeObjectURL(link.href);
-    }
-
     async downloadXML(): Promise<void> {
         await this.$store.dispatch('loading');
         try {
-            this.download(
+            FileService.download(
                 this.$attrs.xml,
                 'metadata_cenote_' + this.key() + '.xml',
                 'text/xml',
@@ -93,7 +83,7 @@ export default class Record extends Vue {
         await this.$store.dispatch('loading');
         try {
             const cenote = await RemoteServices.getCenote(this.key());
-            this.download(
+            FileService.download(
                 JSON.stringify(cenote),
                 'cenote_' + this.key() + '.json',
                 'application/json',
@@ -125,7 +115,11 @@ export default class Record extends Vue {
                     transforms.flatten(),
                 ],
             });
-            this.download(csv, 'cenote_' + this.key() + '.csv', 'text/csv');
+            FileService.download(
+                csv,
+                'cenote_' + this.key() + '.csv',
+                'text/csv',
+            );
         } catch (error) {
             await this.$store.dispatch('error', error);
         }

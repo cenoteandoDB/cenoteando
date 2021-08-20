@@ -7,13 +7,21 @@ class CenoteSocialProperties {
     comments?: Array<CommentDTO>;
 }
 
+export enum CenoteType {
+    NO_TYPE = 'NO_TYPE',
+    CENOTE = 'CENOTE',
+    DRY_CAVE = 'DRY_CAVE',
+    WATER_WELL = 'WATER_WELL',
+    WATERY = 'WATERY',
+}
+
 export enum CenoteIssue {
-    GEOTAG_NOT_VERIFIED,
+    GEOTAG_NOT_VERIFIED = 'GEOTAG_NOT_VERIFIED',
 }
 
 export default class CenoteDTO {
     _key!: string;
-    type!: string;
+    type!: CenoteType;
     name!: string;
     touristic!: boolean;
     issues!: Array<CenoteIssue>;

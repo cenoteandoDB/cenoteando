@@ -2,7 +2,7 @@
     <v-card class="table mx-16">
         <v-data-table
             :headers="headers"
-            :items="filteredVariables"
+            :items="filteredCenotes"
             :items-per-page="15"
             :search="search"
             class="elevation-1"
@@ -16,9 +16,9 @@
                         class="mx-2"
                     />
                     <v-spacer />
-                    <edit-variable-dialog
-                        :variable="newVariable"
-                        @onSave="createVariable()"
+                    <edit-cenote-dialog
+                        :cenote="newCenote"
+                        @onSave="createCenote()"
                     >
                         <template v-slot:activator="{ on, attrs }">
                             <v-btn
@@ -30,7 +30,7 @@
                                 <v-icon color="green">mdi-plus</v-icon>
                             </v-btn>
                         </template>
-                    </edit-variable-dialog>
+                    </edit-cenote-dialog>
                     <v-dialog max-width="600px">
                         <template v-slot:activator="{ on, attrs }">
                             <v-btn
@@ -45,7 +45,7 @@
                         </template>
                         <v-card class="pt-5 mt-5 justify-center">
                             <v-card-title>
-                                <span class="text-h5">Upload variables</span>
+                                <span class="text-h5">Upload cenotes</span>
                             </v-card-title>
                             <v-card-text>
                                 <v-form>
@@ -84,42 +84,30 @@
 
                         <v-expansion-panel-content>
                             <v-select
-                                v-model="filterThemes"
-                                :items="themes"
+                                v-model="filterTypes"
+                                :items="types"
                                 label="Theme"
                                 multiple
                                 chips
-                                hint="Variable theme"
+                                hint="Cenote type"
                                 persistent-hint
                             ></v-select>
-
                             <v-select
-                                v-model="filterAccessLevels"
-                                :items="accessLevels"
-                                label="Access Levels"
+                                v-model="filterTouristic"
+                                :items="touristic"
+                                label="Touristic"
                                 multiple
                                 chips
-                                hint="Variable access level"
+                                hint="Cenote touristic"
                                 persistent-hint
                             ></v-select>
-
                             <v-select
-                                v-model="filterDataTypes"
-                                :items="dataTypes"
-                                label="Data Types"
+                                v-model="filterIssues"
+                                :items="issues"
+                                label="Issues"
                                 multiple
                                 chips
-                                hint="Variable data types"
-                                persistent-hint
-                            ></v-select>
-
-                            <v-select
-                                v-model="filterTimeseries"
-                                :items="timeseries"
-                                label="Timeseries"
-                                multiple
-                                chips
-                                hint="Timeseries or constant"
+                                hint="Cenote issues"
                                 persistent-hint
                             ></v-select>
                         </v-expansion-panel-content>
@@ -128,23 +116,20 @@
             </template>
 
             <template v-slot:[`item.action`]="{ item }">
-                <edit-variable-dialog
-                    :variable="item"
-                    @onSave="updateVariable(item)"
-                >
+                <edit-cenote-dialog :cenote="item" @onSave="updateCenote(item)">
                     <template v-slot:activator="{ on, attrs }">
                         <v-icon
                             class="mr-2 action-button"
                             v-on="on"
                             v-bind="attrs"
                             color="green"
-                            data-cy="editVariable"
+                            data-cy="editCenote"
                             >mdi-pencil</v-icon
                         >
                     </template>
-                </edit-variable-dialog>
+                </edit-cenote-dialog>
 
-                <delete-dialog @onConfirm="deleteVariable(item)" />
+                <delete-dialog @onConfirm="deleteCenote(item)" />
             </template>
         </v-data-table>
     </v-card>
@@ -152,79 +137,65 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import VariableDTO from '@/models/VariableDTO';
+import CenoteDTO, { CenoteIssue, CenoteType } from '@/models/CenoteDTO';
 import RemoteServices from '@/services/RemoteServices';
-import EditVariableDialog from '@/components/admin/EditVariableDialog.vue';
+import EditCenoteDialog from '@/components/admin/EditCenoteDialog.vue';
 import DeleteDialog from '@/components/admin/DeleteDialog.vue';
 import FileService from '@/services/FileService';
 
 @Component({
     components: {
-        EditVariableDialog,
+        EditCenoteDialog,
         DeleteDialog,
     },
 })
-export default class Variables extends Vue {
+export default class Cenotes extends Vue {
     files: File[] = [];
     uploadProgress = 0;
+
+    // TODO: Choose different headers
     headers = [
         { text: 'Name', value: 'name' },
-        { text: 'Description', value: 'description' },
-        { text: 'Theme', value: 'theme' },
-        { text: 'Access Level', value: 'access_level' },
-        { text: 'Timeseries', value: 'timeseries' },
-        { text: 'Data type', value: 'type' },
+        { text: 'Alternative names', value: 'alternative_names' },
+        { text: 'Type', value: 'type' },
+        { text: 'Touristic', value: 'touristic' },
+        { text: 'Issues', value: 'issues' },
+        { text: 'Coordinates', value: 'geojson.geometry.coordinates' },
         { text: 'Actions', value: 'action' },
     ];
 
-    themes = [
-        'BIODIVERSITY',
-        'CULTURAL',
-        'DISTURBANCE',
-        'DIVING',
-        'EVENT',
-        'GEOMORPHOLOGY',
-        'GEOREFERENCE',
-        'LOCATION',
-        'ORGANIZATION',
-        'REGULATION',
-        'TOURISM',
-        'WATER',
-    ];
-    accessLevels = ['PUBLIC', 'PRIVATE', 'SENSITIVE'];
-    timeseries = [true, false];
-    dataTypes = ['NO_TYPE'];
+    types = Object.values(CenoteType);
+    touristic = [true, false];
+    issues = Object.values(CenoteIssue);
+
+    // TODO: Get List of municipalities from cenotes or RemoteServices?
+    municipalities = [];
 
     search = '';
-    newVariable = new VariableDTO();
-    filterThemes: string[] = [];
-    filterAccessLevels: string[] = [];
-    filterTimeseries: boolean[] = [];
-    filterDataTypes: string[] = [];
+    newCenote = new CenoteDTO();
+    filterTypes: string[] = [];
+    filterTouristic: boolean[] = [];
+    filterIssues: CenoteIssue[] = [];
 
-    variables: VariableDTO[] = [];
+    cenotes: CenoteDTO[] = [];
 
-    get filteredVariables(): VariableDTO[] {
-        return this.variables
+    get filteredCenotes(): CenoteDTO[] {
+        return this.cenotes
             .filter(
-                (v) =>
-                    !this.filterThemes.length ||
-                    this.filterThemes.includes(v.theme),
+                (c) =>
+                    !this.filterTypes.length ||
+                    this.filterTypes.includes(c.type),
             )
             .filter(
-                (v) =>
-                    !this.filterAccessLevels.length ||
-                    this.filterAccessLevels.includes(v.access_level),
+                (c) =>
+                    !this.filterTouristic.length ||
+                    this.filterTouristic.includes(c.touristic),
             )
             .filter(
-                (v) =>
-                    !this.filterTimeseries.length ||
-                    this.filterTimeseries.includes(v.timeseries),
-            )
-            .filter(
-                (v) =>
-                    !this.filterDataTypes.length ||
-                    this.filterDataTypes.includes(v.type),
+                (c) =>
+                    !this.filterIssues.length ||
+                    this.filterIssues.filter((f) => c.issues.includes(f))
+                        .length,
             );
     }
 
@@ -232,38 +203,38 @@ export default class Variables extends Vue {
         await this.$store.dispatch('loading');
 
         (async () => {
-            let generator = RemoteServices.variablesGenerator(
+            let generator = RemoteServices.cenotesGenerator(
                 500 /* TODO: Change to 15 after adding createdAt & updatedAt attributes */,
             );
             for await (let batch of generator) {
-                if (!this.variables.length)
+                if (!this.cenotes.length)
                     await this.$store.dispatch('clearLoading');
 
-                this.variables.push(...batch);
+                this.cenotes.push(...batch);
             }
         })().catch(async (error) => {
             await this.$store.dispatch('error', error);
         });
     }
 
-    async createVariable(): Promise<void> {
+    async createCenote(): Promise<void> {
         await this.$store.dispatch('loading');
 
         try {
-            await RemoteServices.updateVariable(this.newVariable);
+            await RemoteServices.updateCenote(this.newCenote);
         } catch (error) {
             await this.$store.dispatch('error', error);
         }
 
         await this.$store.dispatch('clearLoading');
-        this.newVariable = new VariableDTO();
+        this.newCenote = new CenoteDTO();
     }
 
-    async updateVariable(variable: VariableDTO): Promise<void> {
+    async updateCenote(cenote: CenoteDTO): Promise<void> {
         await this.$store.dispatch('loading');
 
         try {
-            await RemoteServices.updateVariable(variable);
+            await RemoteServices.updateCenote(cenote);
         } catch (error) {
             // TODO: revert to original value in case of failure
             await this.$store.dispatch('error', error);
@@ -272,17 +243,17 @@ export default class Variables extends Vue {
         await this.$store.dispatch('clearLoading');
     }
 
-    async deleteVariable(variable: VariableDTO): Promise<void> {
-        await RemoteServices.deleteVariable(variable._key);
-        this.variables = this.variables.filter((v) => v._key != variable._key);
+    async deleteCenote(cenote: CenoteDTO): Promise<void> {
+        await RemoteServices.deleteCenote(cenote._key);
+        this.cenotes = this.cenotes.filter((v) => v._key != cenote._key);
     }
 
     async download(): Promise<void> {
         await this.$store.dispatch('loading');
 
         try {
-            const csv = await RemoteServices.variablesToCsv();
-            FileService.download(csv, 'variables.csv', 'text/csv');
+            const csv = await RemoteServices.cenotesToCsv();
+            FileService.download(csv, 'cenotes.csv', 'text/csv');
         } catch (error) {
             await this.$store.dispatch('error', error);
         }
@@ -299,7 +270,7 @@ export default class Variables extends Vue {
         await this.$store.dispatch('loading');
 
         try {
-            await RemoteServices.csvToVariables(this.files, (event) => {
+            await RemoteServices.csvToCenotes(this.files, (event) => {
                 this.uploadProgress = Math.round(
                     (100 * event.loaded) / event.total,
                 );
