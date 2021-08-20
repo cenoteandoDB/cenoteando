@@ -8,12 +8,13 @@ export default (): Foxx.Router => {
 
     // TODO: Documentation
     // TODO: Test this
+    // TODO: Error handling
     router.get((req, res) => {
         let user: User | null = null;
         let limit: number | undefined = undefined;
         let continuationToken: string | undefined = undefined;
         if (req.session && req.session.data) user = new User(req.session.data);
-        if (req.queryParams.limit) limit = req.queryParams.limit;
+        if (req.queryParams.limit) limit = Number(req.queryParams.limit);
         if (req.queryParams.continuationToken)
             continuationToken = req.queryParams.continuationToken;
         res.send(VariableService.listVariables(user, limit, continuationToken));
@@ -21,6 +22,7 @@ export default (): Foxx.Router => {
 
     // TODO: Documentation
     // TODO: Test this
+    // TODO: Error handling
     router.get(':_key', (req, res) => {
         let user: User | null = null;
         if (req.session && req.session.data) user = new User(req.session.data);
@@ -29,6 +31,7 @@ export default (): Foxx.Router => {
 
     // TODO: Documentation
     // TODO: Test this
+    // TODO: Error handling
     router.put(':_key', (req, res) => {
         let user: User | null = null;
         if (req.session && req.session.data) user = new User(req.session.data);
@@ -41,6 +44,7 @@ export default (): Foxx.Router => {
 
     // TODO: Documentation
     // TODO: Test this
+    // TODO: Error handling
     router.delete(':_key', (req, res) => {
         let user: User | null = null;
         if (req.session && req.session.data) user = new User(req.session.data);
@@ -49,6 +53,7 @@ export default (): Foxx.Router => {
 
     // TODO: Documentation
     // TODO: Test this
+    // TODO: Error handling
     router.get('csv', (req, res) => {
         let user: User | null = null;
         if (req.session && req.session.data) user = new User(req.session.data);
@@ -57,6 +62,7 @@ export default (): Foxx.Router => {
 
     // TODO: Documentation
     // TODO: Test this
+    // TODO: Error handling
     router.put('csv', (req, res) => {
         let user: User | null = null;
         if (req.session && req.session.data) user = new User(req.session.data);

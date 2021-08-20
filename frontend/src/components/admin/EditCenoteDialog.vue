@@ -22,7 +22,6 @@
                         v-model="cenote.type"
                         :items="types"
                         label="Cenote Type"
-                        dense
                         :rules="[(v) => !!v || 'Cenote Type is required']"
                         required
                     ></v-select>
@@ -31,6 +30,14 @@
                         v-model="cenote.touristic"
                         label="Touristic"
                     ></v-checkbox>
+
+                    <v-select
+                        v-model="cenote.issues"
+                        :items="issues"
+                        label="Cenote Issues"
+                        multiple
+                        chips
+                    ></v-select>
                 </v-form>
             </v-card-text>
             <v-card-actions>

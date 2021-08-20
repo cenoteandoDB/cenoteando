@@ -29,7 +29,6 @@
                         v-model="variable.theme"
                         :items="themes"
                         label="Theme"
-                        dense
                         :rules="[(v) => !!v || 'Theme is required']"
                         required
                     ></v-select>
@@ -38,7 +37,6 @@
                         v-model="variable.access_level"
                         :items="accessLevels"
                         label="Access Level"
-                        dense
                         :rules="[(v) => !!v || 'Access Level is required']"
                         required
                     ></v-select>
@@ -47,7 +45,6 @@
                         v-model="variable.type"
                         :items="dataTypes"
                         label="Data Type"
-                        dense
                         :rules="[(v) => !!v || 'Data Type is required']"
                         required
                     ></v-select>

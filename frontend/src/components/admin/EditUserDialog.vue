@@ -6,56 +6,36 @@
 
         <v-card class="pt-5 mt-5 justify-center">
             <v-card-title>
-                <!-- TODO: Change title to the name of the variable with a pencil icon for editing -->
-                <span class="text-h5">Variables</span>
+                <!-- TODO: Change title to the name of the user with a pencil icon for editing -->
+                <span class="text-h5">Users</span>
             </v-card-title>
             <v-card-text>
                 <v-form v-model="valid">
                     <v-text-field
-                        v-model="variable.name"
+                        v-model="user.name"
                         label="Name"
                         :rules="[(v) => !!v || 'Name is required']"
                         required
                     ></v-text-field>
 
-                    <v-textarea
-                        v-model="variable.description"
-                        label="Description"
-                        :rules="[(v) => !!v || 'Description is required']"
+                    <v-text-field
+                        v-model="user.email"
+                        label="Email"
+                        :rules="[
+                            (v) => !!v || 'Email is required',
+                            (v) =>
+                                /.+@.+\..+/.test(v) || 'E-mail must be valid',
+                        ]"
                         required
-                    ></v-textarea>
+                    ></v-text-field>
 
                     <v-select
-                        v-model="variable.theme"
-                        :items="themes"
-                        label="Theme"
-                        dense
-                        :rules="[(v) => !!v || 'Theme is required']"
+                        v-model="user.role"
+                        :items="roles"
+                        label="Role"
+                        :rules="[(v) => !!v || 'Role is required']"
                         required
                     ></v-select>
-
-                    <v-select
-                        v-model="variable.access_level"
-                        :items="accessLevels"
-                        label="Access Level"
-                        dense
-                        :rules="[(v) => !!v || 'Access Level is required']"
-                        required
-                    ></v-select>
-
-                    <v-select
-                        v-model="variable.type"
-                        :items="dataTypes"
-                        label="Data Type"
-                        dense
-                        :rules="[(v) => !!v || 'Data Type is required']"
-                        required
-                    ></v-select>
-
-                    <v-checkbox
-                        v-model="variable.timeseries"
-                        label="Timeseries"
-                    ></v-checkbox>
                 </v-form>
             </v-card-text>
             <v-card-actions>
@@ -77,32 +57,17 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import VariableDTO from '@/models/VariableDTO';
+import UserDTO, { UserRole } from '@/models/UserDTO';
 
 @Component({
     props: {
-        variable: VariableDTO,
+        user: UserDTO,
     },
 })
-export default class EditVariableDialog extends Vue {
+export default class EditUserDialog extends Vue {
     dialog = false;
     valid = false;
-    themes = [
-        'BIODIVERSITY',
-        'CULTURAL',
-        'DISTURBANCE',
-        'DIVING',
-        'EVENT',
-        'GEOMORPHOLOGY',
-        'GEOREFERENCE',
-        'LOCATION',
-        'ORGANIZATION',
-        'REGULATION',
-        'TOURISM',
-        'WATER',
-    ];
-    dataTypes = ['NO_TYPE'];
-    accessLevels = ['PUBLIC', 'PRIVATE', 'SENSITIVE'];
+    roles = Object.values(UserRole);
 
     save(): void {
         this.$emit('onSave');

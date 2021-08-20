@@ -1,8 +1,16 @@
+export enum UserRole {
+    CENOTERO = 'CENOTERO',
+    OWNER = 'OWNER',
+    REGIONAL_MANAGER = 'REGIONAL_MANAGER',
+    THEMATIC_MANAGER = 'THEMATIC_MANAGER',
+    ADMIN = 'ADMIN',
+}
+
 export default class UserDTO {
     _key!: string;
     name!: string;
     email!: string;
-    role!: string;
+    role!: UserRole;
 
     constructor(jsonObj?: UserDTO) {
         if (jsonObj) {

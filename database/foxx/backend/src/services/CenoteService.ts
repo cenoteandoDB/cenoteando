@@ -1,4 +1,5 @@
 import { QueryFilter } from 'type-arango/dist/types';
+import { parse } from 'json2csv';
 
 import { Cenotes } from '../model/collections';
 import { Cenote, User } from '../model/documents';
@@ -39,13 +40,53 @@ export class CenoteService {
     }
 
     // TODO: Implement this
-    static updateCenote(user: AuthUser, _key: string, data: never): Cenote {
-        throw new Error('Not Implemented');
+    static updateCenote(
+        user: AuthUser,
+        _key: string,
+        data: any,
+    ): Readonly<Cenote> {
+        if (!user?.isAdmin())
+            throw new Error(
+                `CenoteService.updateCenote: User does not have update permissions. cenote._key = ${_key}.`,
+            );
+
+        const cenote = Cenotes.findOne(_key);
+        // TODO: Check same key
+        // TODO: Check valid data
+        cenote.merge(data);
+        cenote.save();
+        return cenote;
     }
 
-    // TODO: Implement this
-    static deleteCenote(user: AuthUser, _key: string): Cenote {
-        throw new Error('Not Implemented');
+    static deleteCenote(user: AuthUser, _key: string): void {
+        if (!user?.isAdmin())
+            throw new Error(
+                `CenoteService.deleteCenote: User does not have delete permissions. cenote._key = ${_key}.`,
+            );
+
+        const cenote = Cenotes.findOne(_key);
+        cenote.remove();
+    }
+
+    static toCsv(user: AuthUser): string {
+        const cenotes = Cenotes.find({
+            filter: this.createReadFilter(user),
+        });
+        return parse(cenotes, { eol: '\n' });
+    }
+
+    static fromCsv(user: AuthUser, csv: string): void {
+        if (!user?.isAdmin())
+            throw new Error(
+                `CenoteService.fromCsv: User does not have upload permissions.`,
+            );
+
+        // TODO: Parse csv to json array
+        const cenotes = [];
+        // TODO: Try to make this operation atomic
+        cenotes.forEach((data) => {
+            CenoteService.createCenote(user, data);
+        });
     }
 
     static getBounds(): {

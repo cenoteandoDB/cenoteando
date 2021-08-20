@@ -1,6 +1,8 @@
+import { QueryFilter } from 'type-arango/dist/types';
+import { parse } from 'json2csv';
+
 import { Users } from '../model/collections';
 import { User, UserRole } from '../model/documents';
-import { QueryFilter } from 'type-arango/dist/types';
 
 // An authenticated user
 type AuthUser = User | null;
@@ -30,12 +32,22 @@ export class UserService {
 
     static getUser(user: AuthUser, _key: string): User {
         const filter = UserService.createReadFilter(user);
-        return Users.findOne(_key, { filter });
+        return Users.findOne(_key, { filter, unset: ['password'] });
     }
 
-    static getUsers(user: AuthUser, _key: string): User[] {
-        const filter = UserService.createReadFilter(user);
-        return Users.find({ filter });
+    static listUsers(
+        user: AuthUser,
+        limit = 250,
+        continuationToken?: string,
+    ): {
+        data: Readonly<User>[];
+        hasMore: boolean;
+        continuationToken: string;
+    } {
+        return Users.paginate(limit, continuationToken, {
+            filter: UserService.createReadFilter(user),
+            unset: ['password'],
+        });
     }
 
     static createUser({ email, name, password }): User {
@@ -53,6 +65,47 @@ export class UserService {
         });
         user.insert();
         return user;
+    }
+
+    // TODO: Implement this
+    static updateUser(
+        authUser: AuthUser,
+        _key: string,
+        data: any,
+    ): Readonly<User> {
+        if (!authUser?.isAdmin())
+            throw new Error(
+                `UserService.updateUser: User does not have update permissions. user._key = ${_key}.`,
+            );
+
+        const user = Users.findOne(_key);
+        // TODO: Check same key
+        // TODO: Check valid data
+        user.merge(data);
+        user.save();
+        return user;
+    }
+
+    static deleteUser(authUser: AuthUser, _key: string): void {
+        if (!authUser?.isAdmin())
+            throw new Error(
+                `UserService.deleteUser: User does not have delete permissions. user._key = ${_key}.`,
+            );
+
+        const user = Users.findOne(_key);
+        user.remove();
+    }
+
+    static toCsv(authUser: AuthUser): string {
+        if (!authUser?.isAdmin())
+            throw new Error(
+                `UserService.toCsv: User does not have read permissions.`,
+            );
+        const users = Users.find({
+            filter: this.createReadFilter(authUser),
+            unset: ['password'],
+        });
+        return parse(users, { eol: '\n' });
     }
 
     static userExists(email: string): boolean {

@@ -153,14 +153,17 @@ export default class Cenotes extends Vue {
     files: File[] = [];
     uploadProgress = 0;
 
-    // TODO: Choose different headers
     headers = [
         { text: 'Name', value: 'name' },
+        // TODO: fetch gadm from database
+        { text: 'State', value: 'gadm' },
+        { text: 'Municipality', value: 'gadm' },
         { text: 'Alternative names', value: 'alternative_names' },
         { text: 'Type', value: 'type' },
         { text: 'Touristic', value: 'touristic' },
-        { text: 'Issues', value: 'issues' },
+        // TODO: Convert to degrees minutes and seconsds
         { text: 'Coordinates', value: 'geojson.geometry.coordinates' },
+        { text: 'Issues', value: 'issues' },
         { text: 'Actions', value: 'action' },
     ];
 

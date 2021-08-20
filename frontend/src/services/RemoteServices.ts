@@ -377,7 +377,7 @@ export default class RemoteServices {
 
     static async updateUser(user: UserDTO): Promise<UserDTO> {
         return httpClient
-            .put('/api/variables/' + user._key, user)
+            .put('/api/users/' + user._key, user)
             .then((response) => {
                 return new UserDTO(response.data);
             })

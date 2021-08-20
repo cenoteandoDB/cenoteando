@@ -7,6 +7,7 @@ import {
     Index,
     OneToMany,
     Related,
+    Type,
 } from 'type-arango';
 import bcrypt from 'bcryptjs';
 
@@ -33,7 +34,7 @@ export class User extends Entity {
     @Attribute()
     name: string;
 
-    @Attribute()
+    @Attribute((readers) => [])
     @Before.insert(User.hashPassword)
     password: string;
 
@@ -43,6 +44,14 @@ export class User extends Entity {
     @Attribute()
     @OneToMany((type) => UserGroup, (UserGroup) => UserGroup.users)
     groups: Related<UserGroup[]>;
+
+    // TODO: Add createdAt & updatedAt attributes
+    @Index('persistent')
+    @Attribute()
+    createdAt: Type.DateInsert;
+
+    @Attribute()
+    updatedAt: Type.DateUpdate;
 
     // TODO: Custom permissions per user
 

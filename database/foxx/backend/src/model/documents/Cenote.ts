@@ -44,7 +44,7 @@ export class Social {
     total_comments: number;
 
     @Attribute()
-    rating?: number;
+    rating: number | null;
 
     @OneToMany((type) => Comment, (Comment) => Comment.cenote_id)
     comments: Related<Comment>;
@@ -52,6 +52,7 @@ export class Social {
 
 @Document()
 export class Cenote extends Entity {
+    // TODO: Fix Cenote type case (to upper case)
     @Attribute()
     type: CenoteType;
 
