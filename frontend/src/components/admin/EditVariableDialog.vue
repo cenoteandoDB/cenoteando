@@ -7,20 +7,33 @@
         <v-card class="pt-5 mt-5 justify-center">
             <v-card-title>
                 <!-- TODO: Change title to the name of the variable with a pencil icon for editing -->
-                <span class="text-h6">{{ variable.name }}</span>
-                <v-icon class="pt-2 pl-1" @click="true" small color="green"
-                    >mdi-square-edit-outline
+                <span class="text-h6" v-if="editName === false">{{
+                    variable.name
+                }}</span>
+
+                <v-icon
+                    v-if="editName === false"
+                    class="pt-2 pl-1"
+                    @click="
+                        () => {
+                            editName = true;
+                        }
+                    "
+                    medium
+                    color="green"
+                    >mdi-pencil
                 </v-icon>
-            </v-card-title>
-            <v-card-text>
-                <v-form v-model="valid">
+                <v-form v-model="valid" v-if="editName === true">
                     <v-text-field
                         v-model="variable.name"
                         label="Name"
                         :rules="[(v) => !!v || 'Name is required']"
                         required
                     ></v-text-field>
-
+                </v-form>
+            </v-card-title>
+            <v-card-text>
+                <v-form v-model="valid">
                     <v-textarea
                         v-model="variable.description"
                         label="Description"
@@ -85,6 +98,7 @@ import VariableDTO from '@/models/VariableDTO';
     },
 })
 export default class EditVariableDialog extends Vue {
+    editName = false;
     dialog = false;
     valid = false;
 

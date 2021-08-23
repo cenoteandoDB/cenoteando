@@ -8,20 +8,31 @@
             <v-card-title>
                 <!-- TODO: Change title to the name of the cenote with a pencil icon for editing -->
 
-                <span class="text-h6">{{ cenote.name }}</span>
-                <v-icon class="pt-2 pl-1" @click="true" small color="green"
-                    >mdi-square-edit-outline
+                <span v-if="editName === false" class="text-h6">{{
+                    cenote.name
+                }}</span>
+                <v-icon
+                    v-if="editName === false"
+                    @click="
+                        () => {
+                            editName = true;
+                        }
+                    "
+                    small
+                    color="green"
+                    >mdi-pencil
                 </v-icon>
-            </v-card-title>
-            <v-card-text>
-                <v-form v-model="valid">
+                <v-form v-model="valid" v-if="editName === true">
                     <v-text-field
                         v-model="cenote.name"
                         label="Name"
                         :rules="[(v) => !!v || 'Name is required']"
                         required
                     ></v-text-field>
-
+                </v-form>
+            </v-card-title>
+            <v-card-text>
+                <v-form v-model="valid">
                     <v-select
                         v-model="cenote.type"
                         :items="types"
@@ -73,6 +84,7 @@ import CenoteDTO, { CenoteIssue, CenoteType } from '@/models/CenoteDTO';
 export default class EditCenoteDialog extends Vue {
     dialog = false;
     valid = false;
+    editName = false;
 
     types = Object.values(CenoteType);
     touristic = [true, false];
