@@ -7,7 +7,10 @@
         <v-card class="pt-5 mt-5 justify-center">
             <v-card-title>
                 <!-- TODO: Change title to the name of the variable with a pencil icon for editing -->
-                <span class="text-h5">Variables</span>
+                <span class="text-h6">{{ variable.name }}</span>
+                <v-icon class="pt-2 pl-1" @click="true" small color="green"
+                    >mdi-square-edit-outline
+                </v-icon>
             </v-card-title>
             <v-card-text>
                 <v-form v-model="valid">
@@ -84,6 +87,7 @@ import VariableDTO from '@/models/VariableDTO';
 export default class EditVariableDialog extends Vue {
     dialog = false;
     valid = false;
+
     themes = [
         'BIODIVERSITY',
         'CULTURAL',

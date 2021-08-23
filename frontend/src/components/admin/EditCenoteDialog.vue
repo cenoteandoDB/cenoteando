@@ -7,7 +7,11 @@
         <v-card class="pt-5 mt-5 justify-center">
             <v-card-title>
                 <!-- TODO: Change title to the name of the cenote with a pencil icon for editing -->
-                <span class="text-h5">Cenotes</span>
+
+                <span class="text-h6">{{ cenote.name }}</span>
+                <v-icon class="pt-2 pl-1" @click="true" small color="green"
+                    >mdi-square-edit-outline
+                </v-icon>
             </v-card-title>
             <v-card-text>
                 <v-form v-model="valid">

@@ -7,7 +7,7 @@
         <v-card class="pt-5 mt-5 justify-center">
             <v-card-title>
                 <!-- TODO: Change title to the name of the user with a pencil icon for editing -->
-                <span class="text-h5">Users</span>
+                <span class="text-h5">User</span>
             </v-card-title>
             <v-card-text>
                 <v-form v-model="valid">
