@@ -13,23 +13,36 @@
 
                 <v-icon
                     v-if="editName === false"
-                    class="pt-2 pl-1"
                     @click="
                         () => {
                             editName = true;
                         }
                     "
+                    class="pl-1 pt-2"
                     medium
                     color="green"
                     >mdi-pencil
                 </v-icon>
                 <v-form v-model="valid" v-if="editName === true">
-                    <v-text-field
-                        v-model="variable.name"
-                        label="Name"
-                        :rules="[(v) => !!v || 'Name is required']"
-                        required
-                    ></v-text-field>
+                    <v-container class="d-flex">
+                        <v-text-field
+                            v-model="variable.name"
+                            label="Name"
+                            :rules="[(v) => !!v || 'Name is required']"
+                            required
+                        ></v-text-field>
+                        <v-icon
+                            v-if="editName === true"
+                            @click="
+                                () => {
+                                    editName = false;
+                                }
+                            "
+                            small
+                            color="green"
+                            >mdi-pencil
+                        </v-icon>
+                    </v-container>
                 </v-form>
             </v-card-title>
             <v-card-text>
