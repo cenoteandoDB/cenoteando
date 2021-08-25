@@ -182,7 +182,104 @@ export default class Cenotes extends Vue {
 
     cenotes: CenoteDTO[] = [];
 
+    convertCoordinates(lon: number, lat: number): string {
+        var longitude = Math.floor(lon);
+        var minfloat_lon = (lon - longitude) * 60;
+        var m_lon = Math.floor(minfloat_lon);
+        var secfloat_lon = (minfloat_lon - m_lon) * 60;
+        var s_lon = Math.round(secfloat_lon);
+        var latitude = Math.floor(lat);
+        var minfloat_lat = (lat - latitude) * 60;
+        var m_lat = Math.floor(minfloat_lat);
+        var secfloat_lat = (minfloat_lat - m_lat) * 60;
+        var s_lat = Math.round(secfloat_lat);
+        var direction = '';
+
+        if (s_lon == 60) {
+            m_lon++;
+            s_lon = 0;
+        }
+        if (m_lon == 60) {
+            longitude++;
+            m_lon = 0;
+        }
+        if (s_lat == 60) {
+            m_lat++;
+            s_lat = 0;
+        }
+        if (m_lat == 60) {
+            latitude++;
+            m_lat = 0;
+        }
+
+        if (longitude < 0 && longitude >= -180) {
+            direction = 'W';
+        }
+        if (longitude > 0 && longitude <= 180) {
+            direction = 'E';
+        }
+        if (latitude < 0 && latitude >= -90) {
+            direction = 'S';
+        }
+        if (latitude > 0 && latitude <= 90) {
+            direction = 'N';
+        }
+
+        return (
+            '' +
+            longitude +
+            '° ' +
+            m_lon +
+            "' " +
+            s_lon +
+            "'' " +
+            +direction +
+            '' +
+            latitude +
+            '° ' +
+            m_lat +
+            "' " +
+            s_lat +
+            "'' " +
+            direction
+        );
+    }
+
     get filteredCenotes(): CenoteDTO[] {
+        // console.log(
+        //     this.cenotes.map((c) => {
+        //         return c.geojson.geometry.coordinates.map((v) => {
+        //             var d = Math.floor(v);
+        //             var minfloat = (v - d) * 60;
+        //             var m = Math.floor(minfloat);
+        //             var secfloat = (minfloat - m) * 60;
+        //             var s = Math.round(secfloat);
+        //             var direction = '';
+
+        //             // if (v < 0 && v >= -180) {
+        //             //     direction = 'W';
+        //             // } else if (v > 0 && v <= 180) {
+        //             //     direction = 'E';
+        //             // }
+
+        //             // if (v < 0 && v >= -90) {
+        //             //     direction = 'S';
+        //             // } else if (v > 0 && v <= 90) {
+        //             //     direction = 'N';
+        //             // }
+
+        //             if (s == 60) {
+        //                 m++;
+        //                 s = 0;
+        //             }
+        //             if (m == 60) {
+        //                 d++;
+        //                 m = 0;
+        //             }
+        //             return '' + d + '° ' + m + "' " + s + "'' ";
+        //         });
+        //     }),
+        // );
         return this.cenotes
             .filter(
                 (c) =>
