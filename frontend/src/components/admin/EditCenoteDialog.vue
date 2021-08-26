@@ -47,6 +47,12 @@
             </v-card-title>
             <v-card-text>
                 <v-form v-model="valid">
+                    <v-text-field
+                        v-model="cenote.alternative_names"
+                        label="Alternative Names"
+                        :rules="[(v) => !!v]"
+                    ></v-text-field>
+
                     <v-select
                         v-model="cenote.type"
                         :items="types"
@@ -59,6 +65,10 @@
                         v-model="cenote.touristic"
                         label="Touristic"
                     ></v-checkbox>
+                    <v-text-field
+                        v-model="cenote.coordinates"
+                        label="Coordinates"
+                    ></v-text-field>
 
                     <v-select
                         v-model="cenote.issues"
