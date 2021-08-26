@@ -193,7 +193,8 @@ export default class Cenotes extends Vue {
         var m_lat = Math.floor(minfloat_lat);
         var secfloat_lat = (minfloat_lat - m_lat) * 60;
         var s_lat = Math.round(secfloat_lat);
-        var direction = '';
+        var longitudeDir = '';
+        var latitudeDir = '';
 
         if (s_lon == 60) {
             m_lon++;
@@ -213,16 +214,16 @@ export default class Cenotes extends Vue {
         }
 
         if (longitude < 0 && longitude >= -180) {
-            direction = 'W';
-        }
-        if (longitude > 0 && longitude <= 180) {
-            direction = 'E';
+            longitudeDir = 'W';
+            longitude = longitude * -1;
+        } else if (longitude > 0 && longitude <= 180) {
+            longitudeDir = 'E';
         }
         if (latitude < 0 && latitude >= -90) {
-            direction = 'S';
-        }
-        if (latitude > 0 && latitude <= 90) {
-            direction = 'N';
+            latitudeDir = 'S';
+            latitude = latitude * -1;
+        } else if (latitude > 0 && latitude <= 90) {
+            latitudeDir = 'N';
         }
 
         return (
@@ -232,54 +233,20 @@ export default class Cenotes extends Vue {
             m_lon +
             "' " +
             s_lon +
-            "'' " +
-            +direction +
-            '' +
+            "''" +
+            longitudeDir +
+            ' ' +
             latitude +
             '° ' +
             m_lat +
             "' " +
             s_lat +
-            "'' " +
-            direction
+            "''" +
+            latitudeDir
         );
     }
 
     get filteredCenotes(): CenoteDTO[] {
-        // console.log(
-        //     this.cenotes.map((c) => {
-        //         return c.geojson.geometry.coordinates.map((v) => {
-        //             var d = Math.floor(v);
-        //             var minfloat = (v - d) * 60;
-        //             var m = Math.floor(minfloat);
-        //             var secfloat = (minfloat - m) * 60;
-        //             var s = Math.round(secfloat);
-        //             var direction = '';
-
-        //             // if (v < 0 && v >= -180) {
-        //             //     direction = 'W';
-        //             // } else if (v > 0 && v <= 180) {
-        //             //     direction = 'E';
-        //             // }
-
-        //             // if (v < 0 && v >= -90) {
-        //             //     direction = 'S';
-        //             // } else if (v > 0 && v <= 90) {
-        //             //     direction = 'N';
-        //             // }
-
-        //             if (s == 60) {
-        //                 m++;
-        //                 s = 0;
-        //             }
-        //             if (m == 60) {
-        //                 d++;
-        //                 m = 0;
-        //             }
-        //             return '' + d + '° ' + m + "' " + s + "'' ";
-        //         });
-        //     }),
-        // );
         return this.cenotes
             .filter(
                 (c) =>
@@ -296,7 +263,16 @@ export default class Cenotes extends Vue {
                     !this.filterIssues.length ||
                     this.filterIssues.filter((f) => c.issues.includes(f))
                         .length,
-            );
+            )
+            .map((c) => {
+                var newCoordinates = this.convertCoordinates(
+                    c.geojson.geometry.coordinates[0],
+                    c.geojson.geometry.coordinates[1],
+                );
+
+                Vue.set(c.geojson.geometry, 'coordinates', newCoordinates);
+                return c;
+            });
     }
 
     async created(): Promise<void> {
