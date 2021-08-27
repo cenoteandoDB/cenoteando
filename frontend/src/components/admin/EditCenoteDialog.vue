@@ -47,11 +47,11 @@
             </v-card-title>
             <v-card-text>
                 <v-form v-model="valid">
-                    <v-text-field
+                    <v-select
                         v-model="cenote.alternative_names"
                         label="Alternative Names"
-                        :rules="[(v) => !!v]"
-                    ></v-text-field>
+                        multiple
+                    ></v-select>
 
                     <v-select
                         v-model="cenote.type"
