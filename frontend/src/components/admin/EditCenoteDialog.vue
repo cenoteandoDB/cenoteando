@@ -6,8 +6,6 @@
 
         <v-card class="pt-5 mt-5 justify-center">
             <v-card-title>
-                <!-- TODO: Change title to the name of the cenote with a pencil icon for editing -->
-
                 <span v-if="editName === false" class="text-h6">{{
                     cenote.name
                 }}</span>
@@ -33,13 +31,8 @@
                         ></v-text-field>
                         <v-icon
                             v-if="editName === true"
-                            @click="
-                                () => {
-                                    editName = false;
-                                }
-                            "
-                            small
-                            color="green"
+                            @click="editName = false"
+                            color="primary"
                             >mdi-pencil
                         </v-icon>
                     </v-container>

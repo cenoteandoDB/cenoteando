@@ -142,6 +142,18 @@ import RemoteServices from '@/services/RemoteServices';
 import EditCenoteDialog from '@/components/admin/EditCenoteDialog.vue';
 import DeleteDialog from '@/components/admin/DeleteDialog.vue';
 import FileService from '@/services/FileService';
+import { Feature, Point } from 'geojson';
+
+interface CenoteData {
+    name: string;
+    state: string;
+    municipality: string;
+    alternativeNames: string;
+    type: string;
+    touristic: boolean;
+    coordinates: string;
+    issues: string;
+}
 
 @Component({
     components: {
@@ -156,13 +168,12 @@ export default class Cenotes extends Vue {
     headers = [
         { text: 'Name', value: 'name' },
         // TODO: fetch gadm from database
-        { text: 'State', value: 'gadm' },
-        { text: 'Municipality', value: 'gadm' },
-        { text: 'Alternative names', value: 'alternative_names' },
+        { text: 'State', value: 'state' },
+        { text: 'Municipality', value: 'municipality' },
+        { text: 'Alternative names', value: 'alternativeNames' },
         { text: 'Type', value: 'type' },
         { text: 'Touristic', value: 'touristic' },
-        // TODO: Convert to degrees minutes and seconsds
-        { text: 'Coordinates', value: 'geojson.geometry.coordinates' },
+        { text: 'Coordinates', value: 'coordinates' },
         { text: 'Issues', value: 'issues' },
         { text: 'Actions', value: 'action' },
     ];
@@ -182,71 +193,43 @@ export default class Cenotes extends Vue {
 
     cenotes: CenoteDTO[] = [];
 
-    convertCoordinates(lon: number, lat: number): string {
-        var longitude = Math.floor(lon);
-        var minfloat_lon = (lon - longitude) * 60;
-        var m_lon = Math.floor(minfloat_lon);
-        var secfloat_lon = (minfloat_lon - m_lon) * 60;
-        var s_lon = Math.round(secfloat_lon);
-        var latitude = Math.floor(lat);
-        var minfloat_lat = (lat - latitude) * 60;
-        var m_lat = Math.floor(minfloat_lat);
-        var secfloat_lat = (minfloat_lat - m_lat) * 60;
-        var s_lat = Math.round(secfloat_lat);
-        var longitudeDir = '';
-        var latitudeDir = '';
+    convertCoordinates(latitude: number, longitude: number): string {
+        const absLon = Math.abs(longitude);
+        let lonDeg = Math.floor(absLon);
+        let lonMin = Math.floor((absLon - lonDeg) * 60);
+        let lonSec = Math.floor(((absLon - lonDeg) * 60 - lonMin) * 60);
+        const lonDir = longitude >= 0 ? 'E' : 'W';
 
-        if (s_lon == 60) {
-            m_lon++;
-            s_lon = 0;
-        }
-        if (m_lon == 60) {
-            longitude++;
-            m_lon = 0;
-        }
-        if (s_lat == 60) {
-            m_lat++;
-            s_lat = 0;
-        }
-        if (m_lat == 60) {
-            latitude++;
-            m_lat = 0;
+        if (lonSec == 60) {
+            lonMin++;
+            lonSec = 0;
         }
 
-        if (longitude < 0 && longitude >= -180) {
-            longitudeDir = 'W';
-            longitude = longitude * -1;
-        } else if (longitude > 0 && longitude <= 180) {
-            longitudeDir = 'E';
-        }
-        if (latitude < 0 && latitude >= -90) {
-            latitudeDir = 'S';
-            latitude = latitude * -1;
-        } else if (latitude > 0 && latitude <= 90) {
-            latitudeDir = 'N';
+        if (lonMin == 60) {
+            lonDeg++;
+            lonMin = 0;
         }
 
-        return (
-            '' +
-            longitude +
-            '° ' +
-            m_lon +
-            "' " +
-            s_lon +
-            "''" +
-            longitudeDir +
-            ' ' +
-            latitude +
-            '° ' +
-            m_lat +
-            "' " +
-            s_lat +
-            "''" +
-            latitudeDir
-        );
+        const absLat = Math.abs(latitude);
+        let latDeg = Math.floor(absLat);
+        let latMin = Math.floor((absLat - latDeg) * 60);
+        let latSec = Math.floor(((absLat - latDeg) * 60 - latMin) * 60);
+        const latDir = latitude >= 0 ? 'N' : 'S';
+
+        if (latSec == 60) {
+            latMin++;
+            latSec = 0;
+        }
+
+        if (latMin == 60) {
+            latDeg++;
+            latMin = 0;
+        }
+
+        return `${latDeg}° ${latMin}' ${latSec}'' ${latDir}, ${lonDeg}° ${lonMin}' ${lonSec}'' ${lonDir}`;
     }
 
-    get filteredCenotes(): CenoteDTO[] {
+    get filteredCenotes(): CenoteData[] {
         return this.cenotes
             .filter(
                 (c) =>
@@ -265,13 +248,24 @@ export default class Cenotes extends Vue {
                         .length,
             )
             .map((c) => {
-                var newCoordinates = this.convertCoordinates(
-                    c.geojson.geometry.coordinates[0],
-                    c.geojson.geometry.coordinates[1],
+                const geojsonCoords = ((c.geojson as Feature).geometry as Point)
+                    .coordinates;
+                const coordinates = this.convertCoordinates(
+                    geojsonCoords[1],
+                    geojsonCoords[0],
                 );
 
-                Vue.set(c.geojson.geometry, 'coordinates', newCoordinates);
-                return c;
+                return {
+                    name: c.name,
+                    // TODO: Get state and municipality from gadm
+                    state: c.gadm.toString(),
+                    municipality: c.gadm.toString(),
+                    alternativeNames: c.alternative_names.join(', '),
+                    type: c.type.toString(),
+                    touristic: c.touristic,
+                    coordinates,
+                    issues: c.issues.join(', '),
+                };
             });
     }
 

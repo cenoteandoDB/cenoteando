@@ -1,5 +1,5 @@
 import createRouter from '@arangodb/foxx/router';
-import { UserService } from '../services/UserService';
+import { UserService } from '../services';
 import { Joi } from 'type-arango';
 import dd from 'dedent';
 
@@ -29,7 +29,8 @@ export default (): Foxx.Router => {
                 });
             } catch (e) {
                 // TODO: Only catch InvalidCredentialsError
-                res.throw('forbidden', e.message);
+                if (e instanceof Error) res.throw('forbidden', e.message);
+                else throw e;
             }
         })
         .body(
