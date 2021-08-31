@@ -9,6 +9,7 @@ import Cenote from '@/views/Cenote.vue';
 import Login from '@/views/auth/Login.vue';
 import Signup from '@/views/auth/Signup.vue';
 
+
 Vue.use(VueRouter);
 
 const APP_NAME = process.env.VUE_APP_NAME || 'Cenoteando';
@@ -85,6 +86,24 @@ const routes: Array<RouteConfig> = [
                 component: () => import('@/views/admin/Statistics.vue'),
                 meta: {
                     title: APP_NAME + ' - Dashboard',
+                    requiredAuth: 'Admin',
+                },
+            },
+            {
+                path: 'references',
+                name: 'references',
+                component: () => import('@/views/admin/References.vue'),
+                meta: {
+                    title: APP_NAME + ' - Manage References',
+                    requiredAuth: 'Admin',
+                },
+            },
+            {
+                path: 'species',
+                name: 'species',
+                component: () => import('@/views/admin/Species.vue'),
+                meta: {
+                    title: APP_NAME + ' - Manage Species',
                     requiredAuth: 'Admin',
                 },
             },

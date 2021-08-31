@@ -234,6 +234,16 @@ export default class NavBar extends Vue {
                         text: 'CENOTES',
                         to: '/admin/cenotes',
                     },
+                    {
+                        icon: 'mdi-monitor-edit',
+                        text: 'SPECIES',
+                        to: '/admin/species',
+                    },
+                    {
+                        icon: 'mdi-monitor-edit',
+                        text: 'REFERENCES',
+                        to: '/admin/references',
+                    },
                 ],
             },
             {
