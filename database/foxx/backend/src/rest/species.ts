@@ -1,6 +1,6 @@
 import createRouter from '@arangodb/foxx/router';
 
-import { VariableService } from '../services';
+import { SpeciesService } from '../services';
 import { User } from '../model/documents';
 
 export default (): Foxx.Router => {
@@ -11,13 +11,8 @@ export default (): Foxx.Router => {
     // TODO: Error handling
     router.get((req, res) => {
         let user: User | null = null;
-        let limit: number | undefined = undefined;
-        let continuationToken: string | undefined = undefined;
         if (req.session && req.session.data) user = new User(req.session.data);
-        if (req.queryParams.limit) limit = Number(req.queryParams.limit);
-        if (req.queryParams.continuationToken)
-            continuationToken = req.queryParams.continuationToken;
-        res.send(VariableService.listVariables(user, limit, continuationToken));
+        res.send(SpeciesService.getSpecies(user));
     });
 
     // TODO: Documentation
@@ -26,7 +21,7 @@ export default (): Foxx.Router => {
     router.get(':_key', (req, res) => {
         let user: User | null = null;
         if (req.session && req.session.data) user = new User(req.session.data);
-        res.send(VariableService.getVariable(user, req.pathParams._key));
+        res.send(SpeciesService.getSpeciesByKey(user, req.pathParams._key));
     });
 
     // TODO: Documentation
@@ -35,7 +30,7 @@ export default (): Foxx.Router => {
     router.put(':_key', (req, res) => {
         let user: User | null = null;
         if (req.session && req.session.data) user = new User(req.session.data);
-        VariableService.updateVariable(
+        SpeciesService.updateSpecies(
             user,
             req.pathParams._key,
             JSON.parse(req.body),
@@ -48,7 +43,7 @@ export default (): Foxx.Router => {
     router.delete(':_key', (req, res) => {
         let user: User | null = null;
         if (req.session && req.session.data) user = new User(req.session.data);
-        VariableService.deleteVariable(user, req.pathParams._key);
+        SpeciesService.deleteSpecies(user, req.pathParams._key);
     });
 
     // TODO: Documentation
@@ -57,7 +52,7 @@ export default (): Foxx.Router => {
     router.get('csv', (req, res) => {
         let user: User | null = null;
         if (req.session && req.session.data) user = new User(req.session.data);
-        res.send(VariableService.toCsv(user));
+        res.send(SpeciesService.toCsv(user));
     });
 
     // TODO: Documentation
@@ -66,7 +61,7 @@ export default (): Foxx.Router => {
     router.put('csv', (req, res) => {
         let user: User | null = null;
         if (req.session && req.session.data) user = new User(req.session.data);
-        res.send(VariableService.fromCsv(user, req.body));
+        res.send(SpeciesService.fromCsv(user, req.body.toString()));
     });
 
     return router;

@@ -1,7 +1,7 @@
 import { Collection, Entities } from 'type-arango';
-import { MeasurementOrFact } from '../documents';
+import { MeasurementOrFactBucket } from '../documents';
 
 @Collection({
-    of: MeasurementOrFact,
+    of: MeasurementOrFactBucket,
 })
 export class MeasurementsOrFacts extends Entities {}

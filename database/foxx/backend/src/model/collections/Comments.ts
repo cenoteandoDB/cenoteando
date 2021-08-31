@@ -1,11 +1,11 @@
 import { Collection, Entities } from 'type-arango';
 import { QueryOpt } from 'type-arango/dist/types';
 
-import { Comment } from '../documents';
+import { CommentBucket } from '../documents';
 import { Paginator } from '../../util/Paginator';
 
 @Collection({
-    of: Comment,
+    of: CommentBucket,
 })
 export class Comments extends Entities {
     static paginate(
@@ -13,11 +13,14 @@ export class Comments extends Entities {
         continuationToken?: string,
         options?: QueryOpt,
     ): {
-        data: Comment[];
+        data: CommentBucket[];
         hasMore: boolean;
         continuationToken: string;
     } {
-        const paginator = new Paginator<Comment>(Comments);
+        // TODO: Fix this for Comment bucket pattern
+        throw Error('Not Implemented!');
+
+        const paginator = new Paginator<CommentBucket>(Comments);
         return paginator.paginate(limit, continuationToken, options);
     }
 }

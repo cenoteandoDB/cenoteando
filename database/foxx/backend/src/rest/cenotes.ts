@@ -67,7 +67,7 @@ export default (): Foxx.Router => {
     router.put('csv', (req, res) => {
         let user: User | null = null;
         if (req.session && req.session.data) user = new User(req.session.data);
-        CenoteService.fromCsv(user, req.body);
+        res.send(CenoteService.fromCsv(user, req.body));
     });
 
     // TODO: Documentation

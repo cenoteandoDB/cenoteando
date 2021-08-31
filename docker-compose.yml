@@ -2,7 +2,7 @@ version: '3.9'
 services:
   database:
     container_name: database
-    image: cenoteando-database
+    image: cenoteando:database
     build:
       context: ./database
       target: database
@@ -18,7 +18,7 @@ services:
 
   frontend:
     container_name: frontend
-    image: cenoteando-frontend
+    image: cenoteando:frontend
     build:
       context: ./frontend/
       target: production-stage

@@ -1,5 +1,10 @@
 import { MeasurementsOrFacts } from '../model/collections';
-import { User, ValueType, Variable } from '../model/documents';
+import {
+    MeasurementOrFact,
+    User,
+    ValueType,
+    Variable,
+} from '../model/documents';
 import { CenoteService } from './CenoteService';
 import { VariableService } from './VariableService';
 
@@ -9,10 +14,7 @@ type AuthUser = User | null;
 export interface VariableValues {
     [variableKey: string]: {
         variable: Variable;
-        values: {
-            timestamp: string;
-            value: ValueType;
-        }[];
+        values: MeasurementOrFact<ValueType>[];
     };
 }
 
@@ -52,10 +54,7 @@ export class MoFService {
         mofs.forEach((mof) => {
             const variableKey = VariableService.idToKey(mof._from);
             if (!(variableKey in variablesMap)) return;
-            variablesMap[variableKey].values.push({
-                timestamp: mof.timestamp,
-                value: mof.value,
-            });
+            variablesMap[variableKey].values.concat(mof.measurements);
         });
 
         // Delete variables without values

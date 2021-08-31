@@ -4,13 +4,12 @@ import {
     Entity,
     Index,
     Nested,
-    OneToMany,
     OneToOne,
     Related,
     Type,
 } from 'type-arango';
 import { Feature, Geometry } from 'geojson';
-import { GadmDocument, Comment } from '.';
+import { GadmDocument } from '.';
 
 export enum Issue {
     GEOTAG_NOT_VERIFIED = 'GEOTAG_NOT_VERIFIED',
@@ -39,20 +38,15 @@ export class CenoteGeoJSON implements Feature {
 
 @Nested()
 export class Social {
-    // TODO: Make camelCase
     @Attribute()
-    total_comments: number;
+    totalComments: number;
 
     @Attribute()
     rating: number | null;
-
-    @OneToMany((type) => Comment, (Comment) => Comment.cenote_id)
-    comments: Related<Comment>;
 }
 
 @Document()
 export class Cenote extends Entity {
-    // TODO: Fix Cenote type case (to upper case)
     @Attribute()
     type: CenoteType;
 
@@ -65,13 +59,8 @@ export class Cenote extends Entity {
     @Attribute()
     issues: Array<Issue>;
 
-    // TODO: Remove attribute (store as variable)
     @Attribute()
-    contacts: Array<string>;
-
-    // TODO: Make camelCase
-    @Attribute()
-    alternative_names: Array<string>;
+    alternativeNames: Array<string>;
 
     @Attribute()
     geojson: CenoteGeoJSON;

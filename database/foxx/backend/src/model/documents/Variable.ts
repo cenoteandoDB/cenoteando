@@ -29,22 +29,26 @@ export class Variable extends Entity {
     @Attribute()
     description: string;
 
+    // TODO: Fix data type
     // TODO: Create enum with types: boolean, string, enum, number, number with units (see npm package "safe-units")
     @Attribute()
     type: string;
 
+    // TODO: Fix timeseries
     @Attribute()
     timeseries: boolean;
 
-    // TODO: Make camelCase
+    // TODO: Fix multiple
+    @Attribute()
+    multiple: boolean;
+
     // TODO: Fix access levels
     @Attribute()
-    access_level: AccessLevel;
+    accessLevel: AccessLevel;
 
     @Attribute()
     theme: Theme;
 
-    // TODO: Add createdAt & updatedAt attributes
     @Index('persistent')
     @Attribute()
     createdAt: Type.DateInsert;

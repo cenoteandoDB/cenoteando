@@ -1,8 +1,8 @@
 import { QueryFilter } from 'type-arango/dist/types';
-import { parse } from 'json2csv';
 
 import { Variables } from '../model/collections';
 import { AccessLevel, User, Variable } from '../model/documents';
+import { CsvImportExport } from '../util/CsvImportExport';
 
 // An authenticated user
 type AuthUser = User | null;
@@ -86,22 +86,17 @@ export class VariableService {
     }
 
     static toCsv(_: AuthUser): string {
-        const vars = Variables.find();
-        return parse(vars, { eol: '\n' });
+        const csvImporter = new CsvImportExport(Variables, Variable);
+        return csvImporter.toCsv();
     }
 
-    static fromCsv(user: AuthUser, csv: string): void {
+    static fromCsv(user: AuthUser, csv: string): Readonly<Variable>[] {
         if (!user?.isAdmin())
             throw new Error(
                 `VariableService.fromCsv: User does not have upload permissions.`,
             );
-
-        // TODO: Parse csv to json array
-        const variables = [];
-        // TODO: Try to make this operation atomic
-        variables.forEach((data) => {
-            VariableService.createVariable(user, data);
-        });
+        const csvImporter = new CsvImportExport(Variables, Variable);
+        return csvImporter.fromCsv(csv) as Readonly<Variable>[];
     }
 
     static keyToId(_key: string): string {

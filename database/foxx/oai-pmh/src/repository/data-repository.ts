@@ -97,9 +97,9 @@ function generateOaiID(identifier: string) {
     return 'oai:cenoteando.org:' + identifier;
 }
 
-function createRecord(cenote_data: CenoteData): Record {
+function createRecord(cenoteData: CenoteData): Record {
     // TODO: Store this in the database and retrieve here
-    function get_contributors() {
+    function getContributors() {
         return [
             {
                 type: 'DataCollector',
@@ -162,14 +162,14 @@ function createRecord(cenote_data: CenoteData): Record {
             'Registro de informacion general multidisciplinaria de cenotes de la peninsula de yucatan, proveniente de la base de datos de cenoteando.mx',
         creatorName: 'Fernando Nuno Dias Marques Simoes',
         creatorIdentifier: 'info:eu-repo/dai/mx/cvu/208814',
-        contributors: get_contributors(),
+        contributors: getContributors(),
         // TODO: Refactor oai id's
-        id: generateOaiID('Cenotes/' + cenote_data._key),
+        id: generateOaiID('Cenotes/' + cenoteData._key),
         // We use reverse because GeoJSON stores [lon, lat] and we need "lat lon"
-        geoLocationPoint: cenote_data.geoLocationPoint.reverse().join(' '),
-        title: cenote_data.name,
-        updatedAt: cenote_data.updatedAt,
-        createdAt: cenote_data.updatedAt,
+        geoLocationPoint: cenoteData.geoLocationPoint.reverse().join(' '),
+        title: cenoteData.name,
+        updatedAt: cenoteData.updatedAt,
+        createdAt: cenoteData.updatedAt,
     };
 }
 

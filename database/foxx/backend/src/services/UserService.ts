@@ -1,8 +1,8 @@
 import { QueryFilter } from 'type-arango/dist/types';
-import { parse } from 'json2csv';
 
 import { Users } from '../model/collections';
 import { User, UserRole } from '../model/documents';
+import { CsvImportExport } from '../util/CsvImportExport';
 
 // An authenticated user
 type AuthUser = User | null;
@@ -101,11 +101,11 @@ export class UserService {
             throw new Error(
                 `UserService.toCsv: User does not have read permissions.`,
             );
-        const users = Users.find({
+        const csvImporter = new CsvImportExport(Users, User);
+        return csvImporter.toCsv({
             filter: this.createReadFilter(authUser),
             unset: ['password'],
         });
-        return parse(users, { eol: '\n' });
     }
 
     static userExists(email: string): boolean {

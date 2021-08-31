@@ -1,6 +1,7 @@
 import { Attribute, Document, Entity, OneToMany, Related } from 'type-arango';
 import { User } from './User';
 
+// TODO: Implement groups
 @Document()
 export class UserGroup extends Entity {
     @Attribute()

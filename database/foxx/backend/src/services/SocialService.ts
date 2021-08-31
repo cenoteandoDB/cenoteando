@@ -1,5 +1,5 @@
 import { Comments } from '../model/collections';
-import { Comment, User } from '../model/documents';
+import { CommentBucket, User } from '../model/documents';
 import { CenoteService } from './CenoteService';
 
 // An authenticated user
@@ -12,10 +12,13 @@ export class SocialService {
         limit = 20,
         continuationToken?: string,
     ): {
-        data: Readonly<Comment>[];
+        data: Readonly<CommentBucket>[];
         hasMore: boolean;
         continuationToken: string;
     } {
+        // TODO: Fix this for Comment bucket pattern
+        throw Error('Not Implemented!');
+
         // Check access to cenote
         if (!CenoteService.hasAccess(user, cenoteKey))
             // TODO: Throw custom error
@@ -24,7 +27,7 @@ export class SocialService {
             );
 
         const filter = {
-            cenote_id: CenoteService.keyToId(cenoteKey),
+            cenoteKey: CenoteService.keyToId(cenoteKey),
         };
         return Comments.paginate(limit, continuationToken, {
             filter,

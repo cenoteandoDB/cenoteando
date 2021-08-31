@@ -1,5 +1,6 @@
 import createRouter from '@arangodb/foxx/router';
 
+// TODO: GadmService
 export default (): Foxx.Router => {
     const router = createRouter();
 

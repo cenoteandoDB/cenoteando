@@ -94,6 +94,7 @@ export default class Record extends Vue {
         await this.$store.dispatch('clearLoading');
     }
 
+    // TODO: Get this from backend
     async downloadCSV(): Promise<void> {
         await this.$store.dispatch('loading');
         try {

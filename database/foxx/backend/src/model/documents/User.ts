@@ -27,7 +27,11 @@ export enum UserRole {
 
 @Document()
 export class User extends Entity {
-    @Index('hash')
+    @Index({
+        type: 'persistent',
+        unique: true,
+        deduplicate: true,
+    })
     @Attribute()
     email: string;
 
@@ -41,11 +45,11 @@ export class User extends Entity {
     @Attribute()
     role: UserRole;
 
+    // TODO: Implement groups
     @Attribute()
     @OneToMany((type) => UserGroup, (UserGroup) => UserGroup.users)
     groups: Related<UserGroup[]>;
 
-    // TODO: Add createdAt & updatedAt attributes
     @Index('persistent')
     @Attribute()
     createdAt: Type.DateInsert;

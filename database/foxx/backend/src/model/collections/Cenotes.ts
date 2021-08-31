@@ -46,8 +46,6 @@ export class Cenotes extends Entities {
         const filter = { _key };
         if (!options.filter) options['filter'] = filter;
         else options.filter = Object.assign(options.filter, filter);
-
-        const paginator = new Paginator<Comment>(Comments);
-        return paginator.paginate(limit, continuationToken, options);
+        return Comments.paginate(limit, continuationToken, options);
     }
 }

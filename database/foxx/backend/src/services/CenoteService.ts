@@ -1,8 +1,8 @@
 import { QueryFilter } from 'type-arango/dist/types';
-import { parse } from 'json2csv';
 
 import { Cenotes } from '../model/collections';
 import { Cenote, User } from '../model/documents';
+import { CsvImportExport } from '../util/CsvImportExport';
 
 // An authenticated user
 type AuthUser = User | null;
@@ -69,24 +69,19 @@ export class CenoteService {
     }
 
     static toCsv(user: AuthUser): string {
-        const cenotes = Cenotes.find({
+        const csvImporter = new CsvImportExport(Cenotes, Cenote);
+        return csvImporter.toCsv({
             filter: this.createReadFilter(user),
         });
-        return parse(cenotes, { eol: '\n' });
     }
 
-    static fromCsv(user: AuthUser, csv: string): void {
+    static fromCsv(user: AuthUser, csv: string): Readonly<Cenote>[] {
         if (!user?.isAdmin())
             throw new Error(
                 `CenoteService.fromCsv: User does not have upload permissions.`,
             );
-
-        // TODO: Parse csv to json array
-        const cenotes = [];
-        // TODO: Try to make this operation atomic
-        cenotes.forEach((data) => {
-            CenoteService.createCenote(user, data);
-        });
+        const csvImporter = new CsvImportExport(Cenotes, Cenote);
+        return csvImporter.fromCsv(csv) as Readonly<Cenote>[];
     }
 
     static getBounds(): {
