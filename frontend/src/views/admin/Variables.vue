@@ -128,7 +128,8 @@
             </template>
 
             <template v-slot:[`item.action`]="{ item }">
-                <edit-variable-dialog
+            <v-container class="d-flex">
+              <edit-variable-dialog
                     :variable="item"
                     @onSave="updateVariable(item)"
                 >
@@ -145,6 +146,7 @@
                 </edit-variable-dialog>
 
                 <delete-dialog @onConfirm="deleteVariable(item)" />
+            </v-container>
             </template>
         </v-data-table>
     </v-card>
@@ -168,6 +170,7 @@ export default class Variables extends Vue {
     files: File[] = [];
     uploadProgress = 0;
     headers = [
+        { text: 'Variable ID', value: '_key'},
         { text: 'Name', value: 'name' },
         { text: 'Description', value: 'description' },
         { text: 'Theme', value: 'theme' },

@@ -145,6 +145,7 @@ import FileService from '@/services/FileService';
 import { Feature, Point } from 'geojson';
 
 interface CenoteData {
+    _key: string; 
     name: string;
     state: string;
     municipality: string;
@@ -166,8 +167,8 @@ export default class Cenotes extends Vue {
     uploadProgress = 0;
 
     headers = [
+        { text: 'Cenote ID', value: '_key' },
         { text: 'Name', value: 'name' },
-        // TODO: fetch gadm from database
         { text: 'State', value: 'state' },
         { text: 'Municipality', value: 'municipality' },
         { text: 'Alternative names', value: 'alternativeNames' },
@@ -256,6 +257,7 @@ export default class Cenotes extends Vue {
                 );
 
                 return {
+                    _key: c._key.toString(),
                     name: c.name,
                     // TODO: Get state and municipality from gadm
                     state: c.gadm.toString(),

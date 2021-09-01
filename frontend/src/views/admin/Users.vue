@@ -73,6 +73,7 @@ import DeleteDialog from '@/components/admin/DeleteDialog.vue';
 })
 export default class Users extends Vue {
     headers = [
+        { text: 'User ID', value: '_key' },
         { text: 'Name', value: 'name' },
         { text: 'Email', value: 'email' },
         { text: 'Role', value: 'role' },
