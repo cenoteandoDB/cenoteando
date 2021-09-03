@@ -128,25 +128,25 @@
             </template>
 
             <template v-slot:[`item.action`]="{ item }">
-            <v-container class="d-flex">
-              <edit-variable-dialog
-                    :variable="item"
-                    @onSave="updateVariable(item)"
-                >
-                    <template v-slot:activator="{ on, attrs }">
-                        <v-icon
-                            class="mr-2 action-button"
-                            v-on="on"
-                            v-bind="attrs"
-                            color="green"
-                            data-cy="editVariable"
-                            >mdi-pencil</v-icon
-                        >
-                    </template>
-                </edit-variable-dialog>
+                <v-container class="d-flex">
+                    <edit-variable-dialog
+                        :variable="item"
+                        @onSave="updateVariable(item)"
+                    >
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-icon
+                                class="mr-2 action-button"
+                                v-on="on"
+                                v-bind="attrs"
+                                color="green"
+                                data-cy="editVariable"
+                                >mdi-pencil</v-icon
+                            >
+                        </template>
+                    </edit-variable-dialog>
 
-                <delete-dialog @onConfirm="deleteVariable(item)" />
-            </v-container>
+                    <delete-dialog @onConfirm="deleteVariable(item)" />
+                </v-container>
             </template>
         </v-data-table>
     </v-card>
@@ -170,7 +170,7 @@ export default class Variables extends Vue {
     files: File[] = [];
     uploadProgress = 0;
     headers = [
-        { text: 'Variable ID', value: '_key'},
+        { text: 'Variable ID', value: '_key' },
         { text: 'Name', value: 'name' },
         { text: 'Description', value: 'description' },
         { text: 'Theme', value: 'theme' },

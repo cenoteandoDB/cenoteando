@@ -11,6 +11,8 @@ import AuthDto from '@/models/user/AuthDto';
 import VariableWithValuesDTO from '@/models/VariableWithValuesDTO';
 import VariableDTO from '@/models/VariableDTO';
 import UserDTO from '@/models/UserDTO';
+import ReferenceDTO from '@/models/ReferenceDTO';
+import SpecieDTO from '@/models/SpecieDTO';
 
 const httpClient = axios.create();
 httpClient.defaults.timeout = 100000;
@@ -129,6 +131,176 @@ export default class RemoteServices {
             .get('/oai/request?verb=ListRecords&metadataPrefix=oai_datacite')
             .then((response) => {
                 return xml2js(response.data, { compact: true });
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
+    //Species
+    static async *speciesGenerator(
+        limit?: number,
+    ): AsyncGenerator<SpecieDTO[]> {
+        let continuationToken: string | undefined = undefined;
+        let hasMore = true;
+        try {
+            while (hasMore) {
+                const response = await httpClient.get('/api/species', {
+                    params: { limit, continuationToken },
+                });
+                yield response.data.data.map((v) => new SpecieDTO(v));
+                hasMore = response.data.hasMore;
+                continuationToken = response.data.continuationToken;
+            }
+        } catch (e) {
+            throw Error(await this.errorMessage(e));
+        }
+    }
+
+    static async createSpecie(variable: SpecieDTO): Promise<SpecieDTO> {
+        return httpClient
+            .post('/api/species/', variable)
+            .then((response) => {
+                return new SpecieDTO(response.data);
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
+    static async updateSpecie(variable: SpecieDTO): Promise<SpecieDTO> {
+        return httpClient
+            .put('/api/species/' + variable._key, variable)
+            .then((response) => {
+                return new SpecieDTO(response.data);
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
+    static async deleteSpecie(_key: string): Promise<void> {
+        httpClient.delete('/api/species/' + _key).catch(async (error) => {
+            throw Error(await this.errorMessage(error));
+        });
+    }
+
+    static async speciesToCsv(): Promise<string> {
+        return httpClient
+            .get('/api/species/csv')
+            .then((response) => {
+                return response.data;
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
+    static async csvToSpecies(
+        files: File[],
+        onUploadProgress: (Event) => void,
+    ): Promise<SpecieDTO[]> {
+        const formData = new FormData();
+        files.forEach((file) => {
+            formData.append('file', file);
+        });
+
+        return httpClient
+            .post('/api/species/csv', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                onUploadProgress,
+            })
+            .then((response) => {
+                return response.data.data.map((v) => new SpecieDTO(v));
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
+    //References
+    static async *referencesGenerator(
+        limit?: number,
+    ): AsyncGenerator<ReferenceDTO[]> {
+        let continuationToken: string | undefined = undefined;
+        let hasMore = true;
+        try {
+            while (hasMore) {
+                const response = await httpClient.get('/api/references', {
+                    params: { limit, continuationToken },
+                });
+                yield response.data.data.map((v) => new ReferenceDTO(v));
+                hasMore = response.data.hasMore;
+                continuationToken = response.data.continuationToken;
+            }
+        } catch (e) {
+            throw Error(await this.errorMessage(e));
+        }
+    }
+
+    static async createReference(
+        variable: ReferenceDTO,
+    ): Promise<ReferenceDTO> {
+        return httpClient
+            .post('/api/references/', variable)
+            .then((response) => {
+                return new ReferenceDTO(response.data);
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
+    static async updateReferece(
+        reference: ReferenceDTO,
+    ): Promise<ReferenceDTO> {
+        return httpClient
+            .put('/api/reference/' + reference._key, reference)
+            .then((response) => {
+                return new ReferenceDTO(response.data);
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
+    static async deleteReference(_key: string): Promise<void> {
+        httpClient.delete('/api/references/' + _key).catch(async (error) => {
+            throw Error(await this.errorMessage(error));
+        });
+    }
+
+    static async referencesToCsv(): Promise<string> {
+        return httpClient
+            .get('/api/references/csv')
+            .then((response) => {
+                return response.data;
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
+    static async csvToReferences(
+        files: File[],
+        onUploadProgress: (Event) => void,
+    ): Promise<ReferenceDTO[]> {
+        const formData = new FormData();
+        files.forEach((file) => {
+            formData.append('file', file);
+        });
+
+        return httpClient
+            .post('/api/references/csv', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                onUploadProgress,
+            })
+            .then((response) => {
+                return response.data.data.map((v) => new ReferenceDTO(v));
             })
             .catch(async (error) => {
                 throw Error(await this.errorMessage(error));
