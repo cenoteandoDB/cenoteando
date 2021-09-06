@@ -5,7 +5,7 @@ import IdentifyDTO from '@/models/oai/IdentifyDTO';
 import { ElementCompact, xml2js } from 'xml-js';
 import CenoteDTO from '@/models/CenoteDTO';
 import L from 'leaflet';
-import { FeatureCollection } from 'geojson';
+//import { FeatureCollection } from 'geojson'; Related use Not working, add later
 import CommentDTO from '@/models/CommentDTO';
 import AuthDto from '@/models/user/AuthDto';
 import VariableWithValuesDTO from '@/models/VariableWithValuesDTO';
@@ -253,7 +253,7 @@ export default class RemoteServices {
             });
     }
 
-    static async updateReferece(
+    static async updateReference(
         reference: ReferenceDTO,
     ): Promise<ReferenceDTO> {
         return httpClient
