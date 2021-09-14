@@ -53,8 +53,15 @@ export class MoFService {
         // Add values from MoFs to mapped variables
         mofs.forEach((mof) => {
             const variableKey = VariableService.idToKey(mof._from);
+
+            // TODO: REMOVE THIS!
+            console.log(variableKey);
+
             if (!(variableKey in variablesMap)) return;
-            variablesMap[variableKey].values.concat(mof.measurements);
+            variablesMap[variableKey].values = variablesMap[
+                variableKey
+            ].values.concat(mof.measurements);
+            console.log(variablesMap[variableKey].values);
         });
 
         // Delete variables without values

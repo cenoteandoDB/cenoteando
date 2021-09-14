@@ -52,7 +52,12 @@
                                     <v-subheader>Known Issues</v-subheader>
                                 </v-expansion-panel-header>
                                 <v-expansion-panel-content>
-                                    <!-- TODO: Populate with cenote issues -->
+                                    <p
+                                        v-for="issue in cenote.issues"
+                                        :key="issue"
+                                    >
+                                        {{ issue }}
+                                    </p>
                                 </v-expansion-panel-content>
                             </v-expansion-panel>
                         </v-expansion-panels>

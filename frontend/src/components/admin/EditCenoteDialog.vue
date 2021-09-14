@@ -42,7 +42,7 @@
             <v-card-text>
                 <v-form v-model="valid">
                     <v-select
-                        v-model="cenote.alternative_names"
+                        v-model="cenote.alternativeNames"
                         label="Alternative Names"
                         multiple
                     ></v-select>

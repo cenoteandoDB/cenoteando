@@ -5,8 +5,7 @@ import IdentifyDTO from '@/models/oai/IdentifyDTO';
 import { ElementCompact, xml2js } from 'xml-js';
 import CenoteDTO from '@/models/CenoteDTO';
 import L from 'leaflet';
-//import { FeatureCollection } from 'geojson'; Related use Not working, add later
-import CommentDTO from '@/models/CommentDTO';
+import CommentBucketDTO from '@/models/CommentBucketDTO';
 import AuthDto from '@/models/user/AuthDto';
 import VariableWithValuesDTO from '@/models/VariableWithValuesDTO';
 import VariableDTO from '@/models/VariableDTO';
@@ -501,11 +500,11 @@ export default class RemoteServices {
             });
     }
 
-    static async getComments(key: string): Promise<CommentDTO[]> {
+    static async getComments(key: string): Promise<CommentBucketDTO> {
         return httpClient
             .get('/api/cenotes/' + key + '/comments/')
             .then((response) => {
-                return response.data.data.map((v) => new CommentDTO(v));
+                return new CommentBucketDTO(response.data);
             })
             .catch(async (error) => {
                 throw Error(await this.errorMessage(error));

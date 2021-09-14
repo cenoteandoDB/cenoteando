@@ -1,15 +1,21 @@
 <template>
     <v-container>
         <v-card elevation="2" class="mx-auto">
-            <v-virtual-scroll :items="comments" height="400" item-height="175">
+            <v-virtual-scroll
+                :items="commentBucket.comments"
+                height="400"
+                item-height="175"
+            >
                 <template v-slot:default="{ item }">
                     <v-container>
                         <v-row align="center" justify="space-between">
                             <v-col cols="auto">
                                 <v-btn
-                                    v-if="item.source === 'GOOGLE_PLACES'"
+                                    v-if="
+                                        commentBucket.source === 'GOOGLE_PLACES'
+                                    "
                                     icon
-                                    :href="item.url"
+                                    :href="commentBucket.url"
                                     target="_blank"
                                     class="pt-5 pl-5"
                                 >
@@ -17,9 +23,11 @@
                                     </v-img>
                                 </v-btn>
                                 <v-btn
-                                    v-else-if="item.source === 'TRIPADVISOR'"
+                                    v-else-if="
+                                        commentBucket.source === 'TRIPADVISOR'
+                                    "
                                     icon
-                                    :href="item.url"
+                                    :href="commentBucket.url"
                                     target="_blank"
                                     class="pt-5 pl-5"
                                 >
@@ -59,12 +67,12 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import CommentDTO from '@/models/CommentDTO';
+import CommentBucketDTO from '@/models/CommentBucketDTO';
 import RemoteServices from '@/services/RemoteServices';
 
 @Component
 export default class SocialTab extends Vue {
-    comments: CommentDTO[] = [];
+    commentBucket: CommentBucketDTO | null = null;
 
     logos = [
         {
@@ -84,7 +92,7 @@ export default class SocialTab extends Vue {
     async created(): Promise<void> {
         await this.$store.dispatch('loading');
         try {
-            this.comments = await RemoteServices.getComments(
+            this.commentBucket = await RemoteServices.getComments(
                 this.$route.params.key,
             );
         } catch (error) {

@@ -1,8 +1,7 @@
 import createRouter from '@arangodb/foxx/router';
 
-import { CenoteService, SocialService } from '../services';
+import { CenoteService, MoFService } from '../services';
 import { User } from '../model/documents';
-import { MoFService } from '../services/MoFService';
 
 export default (): Foxx.Router => {
     const router = createRouter();
@@ -67,7 +66,7 @@ export default (): Foxx.Router => {
     router.put('csv', (req, res) => {
         let user: User | null = null;
         if (req.session && req.session.data) user = new User(req.session.data);
-        res.send(CenoteService.fromCsv(user, req.body));
+        res.send(CenoteService.fromCsv(user, req.body.toString()));
     });
 
     // TODO: Documentation
@@ -86,20 +85,8 @@ export default (): Foxx.Router => {
     // TODO: Error handling
     router.get(':_key/comments', (req, res) => {
         let user: User | null = null;
-        let limit: number | undefined = undefined;
-        let continuationToken: string | undefined = undefined;
         if (req.session && req.session.data) user = new User(req.session.data);
-        if (req.queryParams.limit) limit = req.queryParams.limit;
-        if (req.queryParams.continuationToken)
-            continuationToken = req.queryParams.continuationToken;
-        res.send(
-            SocialService.listComments(
-                user,
-                req.pathParams._key,
-                limit,
-                continuationToken,
-            ),
-        );
+        res.send(CenoteService.listComments(user, req.pathParams._key));
     });
 
     // TODO: Documentation

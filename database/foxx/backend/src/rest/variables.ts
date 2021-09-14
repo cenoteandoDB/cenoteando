@@ -66,7 +66,7 @@ export default (): Foxx.Router => {
     router.put('csv', (req, res) => {
         let user: User | null = null;
         if (req.session && req.session.data) user = new User(req.session.data);
-        res.send(VariableService.fromCsv(user, req.body));
+        res.send(VariableService.fromCsv(user, req.body.toString()));
     });
 
     return router;

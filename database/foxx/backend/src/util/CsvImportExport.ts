@@ -14,11 +14,14 @@ export class CsvImportExport {
     }
 
     toCsv(options: QueryOpt = {}): string {
+        // TODO: Sort by numerical order instead of alphabetical
+        // Sort by key (default)
+        if (!options.sort) options.sort = ['_key ASC'];
+
         let data = this.col.find(options);
 
         if (data.length == 0) return '';
 
-        // NOTE: Might be computationally expensive. Estimate based on first entry?
         data = data.map((doc) => flatten(doc, { safe: true }));
         const headersSet = new Set<string>();
         data.forEach((doc) => {
@@ -39,6 +42,7 @@ export class CsvImportExport {
 
     fromCsv(
         csv: string,
+        // TODO: Implement validation
         validate: (doc: any) => boolean = () => true,
     ): Readonly<Entity>[] {
         if (csv.length == 0) return [];
@@ -52,18 +56,18 @@ export class CsvImportExport {
             if (row == '') return;
 
             // TODO: Improve row splitting
-            const obj = row.split(',').reduce(
+            let obj = row.split(',').reduce(
                 (object, value, index) => ({
                     ...object,
                     [headers[index]]: CsvImportExport.valueFromCsv(value),
                 }),
                 {},
             );
-
-            data.push(unflatten(obj, { safe: true }));
+            obj = unflatten(obj, { safe: true });
+            data.push(obj);
         });
 
-        // TODO: Check for errors (what happens when transaction aborts?)
+        // TODO: Check for errors
         db._executeTransaction({
             collections: { write: this.col._col.name },
             params: data,
@@ -96,6 +100,10 @@ export class CsvImportExport {
 
     private static valueFromCsv(value: string): any {
         if (value == '') return null;
-        return JSON.parse(value);
+        try {
+            return JSON.parse(value);
+        } catch (e) {
+            throw Error(`Could not parse value from CSV: '${value}'`);
+        }
     }
 }

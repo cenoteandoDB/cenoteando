@@ -13,7 +13,7 @@ export class VariableService {
         if (user) accessLevels.push(AccessLevel.PRIVATE);
         if (user && user.isAdmin()) accessLevels.push(AccessLevel.SENSITIVE);
         return {
-            access_level: accessLevels,
+            accessLevel: accessLevels,
         };
     }
 

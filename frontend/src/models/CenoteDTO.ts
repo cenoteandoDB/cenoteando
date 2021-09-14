@@ -1,10 +1,8 @@
 import { GeoJSON } from 'geojson';
-import CommentDTO from '@/models/CommentDTO';
 
 class CenoteSocialProperties {
-    total_comments!: number;
+    totalComments!: number;
     rating?: number;
-    comments?: Array<CommentDTO>;
 }
 
 export enum CenoteType {
@@ -25,8 +23,7 @@ export default class CenoteDTO {
     name!: string;
     touristic!: boolean;
     issues!: Array<CenoteIssue>;
-    contacts!: Array<string>;
-    alternative_names!: Array<string>;
+    alternativeNames!: Array<string>;
     geojson!: GeoJSON;
     gadm!: string | GeoJSON;
     social!: CenoteSocialProperties;
@@ -40,8 +37,7 @@ export default class CenoteDTO {
             this.name = jsonObj.name;
             this.touristic = jsonObj.touristic;
             this.issues = jsonObj.issues;
-            this.contacts = jsonObj.contacts;
-            this.alternative_names = jsonObj.alternative_names;
+            this.alternativeNames = jsonObj.alternativeNames;
             this.geojson = jsonObj.geojson;
             this.gadm = jsonObj.gadm;
             this.social = jsonObj.social;

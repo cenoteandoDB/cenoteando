@@ -1,10 +1,11 @@
 import { Collection, Entities } from 'type-arango';
 import { QueryOpt } from 'type-arango/dist/types';
 
-import { Cenote } from '../documents';
+import { Cenote, CommentBucket } from '../documents';
 import { Paginator } from '../../util/Paginator';
 import { query } from '@arangodb';
 import { Comments } from './Comments';
+import { CenoteService } from '../../services';
 
 @Collection({
     of: Cenote,
@@ -37,15 +38,11 @@ export class Cenotes extends Entities {
         `.next();
     }
 
-    static getComments(
-        _key: string,
-        limit: number,
-        continuationToken?: string,
-        options: QueryOpt = {},
-    ) {
-        const filter = { _key };
+    static getComments(_key: string, options: QueryOpt = {}): CommentBucket {
+        const filter = { cenoteId: CenoteService.keyToId(_key) };
         if (!options.filter) options['filter'] = filter;
         else options.filter = Object.assign(options.filter, filter);
-        return Comments.paginate(limit, continuationToken, options);
+        // TODO: Merge or return all
+        return Comments.findOne(options);
     }
 }

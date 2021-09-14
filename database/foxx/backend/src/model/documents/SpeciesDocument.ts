@@ -1,12 +1,12 @@
-import { Attribute, Document, Entity, Index, Type } from 'type-arango';
+import { Attribute, Document, Entity, Index, Joi, Type } from 'type-arango';
 
 @Document()
 export class SpeciesDocument extends Entity {
-    @Attribute()
-    aphiaId: string;
+    @Attribute(Joi.string().empty(''))
+    aphiaId: string | null;
 
-    @Attribute()
-    iNaturalistId: string;
+    @Attribute(Joi.string().empty(''))
+    iNaturalistId: string | null;
 
     // TODO: Add createdAt and updatedAt to database
     @Index('persistent')

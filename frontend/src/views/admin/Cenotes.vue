@@ -116,7 +116,10 @@
             </template>
 
             <template v-slot:[`item.action`]="{ item }">
-                <edit-cenote-dialog :cenote="item" @onSave="updateCenote(item)">
+                <edit-cenote-dialog
+                    :cenote="item.cenote"
+                    @onSave="updateCenote(item.cenote)"
+                >
                     <template v-slot:activator="{ on, attrs }">
                         <v-icon
                             class="mr-2 action-button"
@@ -129,7 +132,7 @@
                     </template>
                 </edit-cenote-dialog>
 
-                <delete-dialog @onConfirm="deleteCenote(item)" />
+                <delete-dialog @onConfirm="deleteCenote(item.cenote)" />
             </template>
         </v-data-table>
     </v-card>
@@ -154,6 +157,7 @@ interface CenoteData {
     touristic: boolean;
     coordinates: string;
     issues: string;
+    cenote: CenoteDTO;
 }
 
 @Component({
@@ -262,11 +266,12 @@ export default class Cenotes extends Vue {
                     // TODO: Get state and municipality from gadm
                     state: c.gadm.toString(),
                     municipality: c.gadm.toString(),
-                    alternativeNames: c.alternative_names.join(', '),
+                    alternativeNames: c.alternativeNames.join(', '),
                     type: c.type.toString(),
                     touristic: c.touristic,
                     coordinates,
                     issues: c.issues.join(', '),
+                    cenote: c,
                 };
             });
     }
@@ -275,9 +280,7 @@ export default class Cenotes extends Vue {
         await this.$store.dispatch('loading');
 
         (async () => {
-            let generator = RemoteServices.cenotesGenerator(
-                500 /* TODO: Change to 15 after adding createdAt & updatedAt attributes */,
-            );
+            let generator = RemoteServices.cenotesGenerator(30);
             for await (let batch of generator) {
                 if (!this.cenotes.length)
                     await this.$store.dispatch('clearLoading');

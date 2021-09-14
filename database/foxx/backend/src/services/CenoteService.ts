@@ -1,7 +1,7 @@
 import { QueryFilter } from 'type-arango/dist/types';
 
 import { Cenotes } from '../model/collections';
-import { Cenote, User } from '../model/documents';
+import { Cenote, CommentBucket, User } from '../model/documents';
 import { CsvImportExport } from '../util/CsvImportExport';
 
 // An authenticated user
@@ -89,6 +89,12 @@ export class CenoteService {
         max: { lat: number; lng: number };
     } {
         return Cenotes.getBounds();
+    }
+
+    static listComments(user: AuthUser, _key: string): Readonly<CommentBucket> {
+        return Cenotes.getComments(_key, {
+            filter: this.createReadFilter(user),
+        });
     }
 
     static keyToId(_key: string): string {

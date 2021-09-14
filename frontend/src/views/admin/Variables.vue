@@ -174,7 +174,7 @@ export default class Variables extends Vue {
         { text: 'Name', value: 'name' },
         { text: 'Description', value: 'description' },
         { text: 'Theme', value: 'theme' },
-        { text: 'Access Level', value: 'access_level' },
+        { text: 'Access Level', value: 'accessLevel' },
         { text: 'Timeseries', value: 'timeseries' },
         { text: 'Data type', value: 'type' },
         { text: 'Actions', value: 'action' },
@@ -235,9 +235,7 @@ export default class Variables extends Vue {
         await this.$store.dispatch('loading');
 
         (async () => {
-            let generator = RemoteServices.variablesGenerator(
-                500 /* TODO: Change to 15 after adding createdAt & updatedAt attributes */,
-            );
+            let generator = RemoteServices.variablesGenerator(30);
             for await (let batch of generator) {
                 if (!this.variables.length)
                     await this.$store.dispatch('clearLoading');
