@@ -11,7 +11,7 @@ import VariableWithValuesDTO from '@/models/VariableWithValuesDTO';
 import VariableDTO from '@/models/VariableDTO';
 import UserDTO from '@/models/UserDTO';
 import ReferenceDTO from '@/models/ReferenceDTO';
-import SpecieDTO from '@/models/SpecieDTO';
+import SpeciesDTO from '@/models/SpeciesDTO';
 
 const httpClient = axios.create();
 httpClient.defaults.timeout = 100000;
@@ -137,41 +137,33 @@ export default class RemoteServices {
     }
 
     //Species
-    static async *speciesGenerator(
-        limit?: number,
-    ): AsyncGenerator<SpecieDTO[]> {
-        let continuationToken: string | undefined = undefined;
-        let hasMore = true;
-        try {
-            while (hasMore) {
-                const response = await httpClient.get('/api/species', {
-                    params: { limit, continuationToken },
-                });
-                yield response.data.data.map((v) => new SpecieDTO(v));
-                hasMore = response.data.hasMore;
-                continuationToken = response.data.continuationToken;
-            }
-        } catch (e) {
-            throw Error(await this.errorMessage(e));
-        }
-    }
-
-    static async createSpecie(variable: SpecieDTO): Promise<SpecieDTO> {
+    static async getSpecies(): Promise<SpeciesDTO[]> {
         return httpClient
-            .post('/api/species/', variable)
+            .get('/api/species/')
             .then((response) => {
-                return new SpecieDTO(response.data);
+                return response.data.map((data) => new SpeciesDTO(data));
             })
             .catch(async (error) => {
                 throw Error(await this.errorMessage(error));
             });
     }
 
-    static async updateSpecie(variable: SpecieDTO): Promise<SpecieDTO> {
+    static async createSpecie(variable: SpeciesDTO): Promise<SpeciesDTO> {
+        return httpClient
+            .post('/api/species/', variable)
+            .then((response) => {
+                return new SpeciesDTO(response.data);
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
+    static async updateSpecie(variable: SpeciesDTO): Promise<SpeciesDTO> {
         return httpClient
             .put('/api/species/' + variable._key, variable)
             .then((response) => {
-                return new SpecieDTO(response.data);
+                return new SpeciesDTO(response.data);
             })
             .catch(async (error) => {
                 throw Error(await this.errorMessage(error));
@@ -198,7 +190,7 @@ export default class RemoteServices {
     static async csvToSpecies(
         files: File[],
         onUploadProgress: (Event) => void,
-    ): Promise<SpecieDTO[]> {
+    ): Promise<SpeciesDTO[]> {
         const formData = new FormData();
         files.forEach((file) => {
             formData.append('file', file);
@@ -212,7 +204,7 @@ export default class RemoteServices {
                 onUploadProgress,
             })
             .then((response) => {
-                return response.data.data.map((v) => new SpecieDTO(v));
+                return response.data.data.map((v) => new SpeciesDTO(v));
             })
             .catch(async (error) => {
                 throw Error(await this.errorMessage(error));
@@ -220,30 +212,22 @@ export default class RemoteServices {
     }
 
     //References
-    static async *referencesGenerator(
-        limit?: number,
-    ): AsyncGenerator<ReferenceDTO[]> {
-        let continuationToken: string | undefined = undefined;
-        let hasMore = true;
-        try {
-            while (hasMore) {
-                const response = await httpClient.get('/api/references', {
-                    params: { limit, continuationToken },
-                });
-                yield response.data.data.map((v) => new ReferenceDTO(v));
-                hasMore = response.data.hasMore;
-                continuationToken = response.data.continuationToken;
-            }
-        } catch (e) {
-            throw Error(await this.errorMessage(e));
-        }
+    static async getReferences(): Promise<ReferenceDTO[]> {
+        return httpClient
+            .get('/api/references/')
+            .then((response) => {
+                return response.data.map((data) => new ReferenceDTO(data));
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
     }
 
     static async createReference(
-        variable: ReferenceDTO,
+        reference: ReferenceDTO,
     ): Promise<ReferenceDTO> {
         return httpClient
-            .post('/api/references/', variable)
+            .post('/api/references/', reference)
             .then((response) => {
                 return new ReferenceDTO(response.data);
             })

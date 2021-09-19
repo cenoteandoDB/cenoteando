@@ -2,7 +2,7 @@
     <v-card class="table">
         <v-data-table
             :headers="headers"
-            :items="item"
+            :items="references"
             :items-per-page="15"
             :search="search"
             class="elevation-1"
@@ -16,20 +16,9 @@
                         class="mx-2"
                     />
                 </v-card-title>
-
-                <v-expansion-panels>
-                    <v-expansion-panel>
-                        <v-expansion-panel-header>
-                            Filters
-                        </v-expansion-panel-header>
-
-                        <v-expansion-panel-content>
-                            <v-card-text>Template</v-card-text>
-                        </v-expansion-panel-content>
-                    </v-expansion-panel>
-                </v-expansion-panels>
             </template>
 
+            <!-- TODO: Add edit and delete reference actions -->
             <template v-slot:[`item.action`]="{ item }">
                 <edit-user-dialog :user="item" @onSave="updateReference(item)">
                     <template v-slot:activator="{ on, attrs }">
@@ -82,19 +71,13 @@ export default class References extends Vue {
     async created(): Promise<void> {
         await this.$store.dispatch('loading');
 
-        (async () => {
-            let generator = RemoteServices.referencesGenerator(
-                500 /* TODO: Change to 15 after adding createdAt & updatedAt attributes */,
-            );
-            for await (let batch of generator) {
-                if (!this.references.length)
-                    await this.$store.dispatch('clearLoading');
-
-                this.references.push(...batch);
-            }
-        })().catch(async (error) => {
+        try {
+            this.references = await RemoteServices.getReferences();
+        } catch (error) {
             await this.$store.dispatch('error', error);
-        });
+        }
+
+        await this.$store.dispatch('clearLoading');
     }
 
     async createReference(): Promise<void> {

@@ -1,17 +1,19 @@
 export default class ReferenceDTO {
     _key!: string;
-    filename!: string;
+    authors!: string;
+    fileName!: string;
     reference!: string;
-    short_name!: string;
+    shortName!: string;
     type!: string;
     year!: string;
 
     constructor(jsonObj?: ReferenceDTO) {
         if (jsonObj) {
             this._key = jsonObj._key;
-            this.filename = jsonObj.filename;
+            this.authors = jsonObj.authors;
+            this.fileName = jsonObj.fileName;
             this.reference = jsonObj.reference;
-            this.short_name = jsonObj.short_name;
+            this.shortName = jsonObj.shortName;
             this.type = jsonObj.type;
             this.year = jsonObj.year;
         }

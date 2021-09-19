@@ -2,7 +2,7 @@
     <v-card class="table">
         <v-data-table
             :headers="headers"
-            :items="item"
+            :items="species"
             :items-per-page="15"
             :search="search"
             class="elevation-1"
@@ -16,20 +16,9 @@
                         class="mx-2"
                     />
                 </v-card-title>
-
-                <v-expansion-panels>
-                    <v-expansion-panel>
-                        <v-expansion-panel-header>
-                            Filters
-                        </v-expansion-panel-header>
-
-                        <v-expansion-panel-content>
-                            <v-card-text>Template</v-card-text>
-                        </v-expansion-panel-content>
-                    </v-expansion-panel>
-                </v-expansion-panels>
             </template>
 
+            <!-- TODO: Add edit and delete species actions -->
             <template v-slot:[`item.action`]="{ item }">
                 <edit-user-dialog :user="item" @onSave="updateSpecie(item)">
                     <template v-slot:activator="{ on, attrs }">
@@ -53,7 +42,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import RemoteServices from '@/services/RemoteServices';
-import SpecieDTO from '@/models/SpecieDTO';
+import SpeciesDTO from '@/models/SpeciesDTO';
 import FileService from '@/services/FileService';
 
 @Component({
@@ -64,35 +53,27 @@ export default class Species extends Vue {
     uploadProgress = 0;
     headers = [
         { text: 'Cenoteando ID', value: '_key' },
-        { text: 'Name', value: 'name' },
-        { text: 'Naturalista ID', value: 'iNaturalistId' },
-        { text: 'Alphia ID', value: 'aphiaId' },
-        { text: 'Gbif ID', value: 'gbifId' },
+        { text: 'iNaturalist ID', value: 'iNaturalistId' },
+        { text: 'Aphia ID', value: 'aphiaId' },
     ];
 
     item = [];
 
     search = '';
-    newSpecie = new SpecieDTO();
+    newSpecie = new SpeciesDTO();
 
-    species: SpecieDTO[] = [];
+    species: SpeciesDTO[] = [];
 
     async created(): Promise<void> {
         await this.$store.dispatch('loading');
 
-        (async () => {
-            let generator = RemoteServices.speciesGenerator(
-                500 /* TODO: Change to 15 after adding createdAt & updatedAt attributes */,
-            );
-            for await (let batch of generator) {
-                if (!this.species.length)
-                    await this.$store.dispatch('clearLoading');
-
-                this.species.push(...batch);
-            }
-        })().catch(async (error) => {
+        try {
+            this.species = await RemoteServices.getSpecies();
+        } catch (error) {
             await this.$store.dispatch('error', error);
-        });
+        }
+
+        await this.$store.dispatch('clearLoading');
     }
 
     async createSpecie(): Promise<void> {
@@ -105,10 +86,10 @@ export default class Species extends Vue {
         }
 
         await this.$store.dispatch('clearLoading');
-        this.newSpecie = new SpecieDTO();
+        this.newSpecie = new SpeciesDTO();
     }
 
-    async updateSpecie(specie: SpecieDTO): Promise<void> {
+    async updateSpecie(specie: SpeciesDTO): Promise<void> {
         await this.$store.dispatch('loading');
 
         try {
@@ -121,7 +102,7 @@ export default class Species extends Vue {
         await this.$store.dispatch('clearLoading');
     }
 
-    async deleteSpecie(specie: SpecieDTO): Promise<void> {
+    async deleteSpecie(specie: SpeciesDTO): Promise<void> {
         await RemoteServices.deleteSpecie(specie._key);
         this.species = this.species.filter((s) => s._key != specie._key);
     }
@@ -138,6 +119,7 @@ export default class Species extends Vue {
 
         await this.$store.dispatch('clearLoading');
     }
+
     selectFiles(files: File[]): void {
         this.uploadProgress = 0;
         this.files = files;
