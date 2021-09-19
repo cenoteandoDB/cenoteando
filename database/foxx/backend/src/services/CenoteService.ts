@@ -28,14 +28,14 @@ export class CenoteService {
         });
     }
 
-    static getCenote(user: AuthUser, _key: string): Cenote {
+    static getCenote(user: AuthUser, _key: string): Readonly<Cenote> {
         return Cenotes.findOne(_key, {
             filter: this.createReadFilter(user),
         });
     }
 
     // TODO: Implement this
-    static createCenote(user: AuthUser, data: never): Cenote {
+    static createCenote(user: AuthUser, data: never): Readonly<Cenote> {
         throw new Error('Not Implemented');
     }
 
@@ -91,6 +91,7 @@ export class CenoteService {
         return Cenotes.getBounds();
     }
 
+    // TODO: Change return type to allow for different sources / multiple buckets
     static listComments(user: AuthUser, _key: string): Readonly<CommentBucket> {
         return Cenotes.getComments(_key, {
             filter: this.createReadFilter(user),

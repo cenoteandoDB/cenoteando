@@ -1,59 +1,112 @@
 import createRouter from '@arangodb/foxx/router';
-import { User } from '../model/documents';
+import { Joi } from 'type-arango';
+import { User, UserRole } from '../model/documents';
 import { UserService } from '../services';
+
+const userSchema = Joi.object({
+    _key: Joi.string(),
+    email: Joi.string().email(),
+    name: Joi.string(),
+    role: Joi.string().allow(...Object.keys(UserRole)),
+    createdAt: Joi.string().isoDate(),
+    updatedAt: Joi.string().isoDate(),
+});
 
 export default (): Foxx.Router => {
     const router = createRouter();
 
-    // TODO: Documentation
     // TODO: Test this
     // TODO: Error handling
-    router.get((req, res) => {
-        let user: User | null = null;
-        let limit: number | undefined = undefined;
-        let continuationToken: string | undefined = undefined;
-        if (req.session && req.session.data) user = new User(req.session.data);
-        if (req.queryParams.limit) limit = Number(req.queryParams.limit);
-        if (req.queryParams.continuationToken)
-            continuationToken = req.queryParams.continuationToken;
-        res.send(UserService.listUsers(user, limit, continuationToken));
-    });
+    router
+        .get((req, res) => {
+            let user: User | null = null;
+            let limit: number | undefined = undefined;
+            let continuationToken: string | undefined = undefined;
+            if (req.session && req.session.data)
+                user = new User(req.session.data);
+            if (req.queryParams.limit) limit = Number(req.queryParams.limit);
+            if (req.queryParams.continuationToken)
+                continuationToken = req.queryParams.continuationToken;
+            res.send(UserService.listUsers(user, limit, continuationToken));
+        })
+        .summary('Get users')
+        .description('Fetches all known users.')
+        .response(
+            'ok',
+            Joi.array().items(userSchema).required(),
+            ['application/json'],
+            'All users',
+        );
 
-    // TODO: Documentation
     // TODO: Test this
     // TODO: Error handling
-    router.get(':_key', (req, res) => {
-        let user: User | null = null;
-        if (req.session && req.session.data) user = new User(req.session.data);
-        res.send(UserService.getUser(user, req.pathParams._key));
-    });
+    router
+        .get(':_key', (req, res) => {
+            let user: User | null = null;
+            if (req.session && req.session.data)
+                user = new User(req.session.data);
+            res.send(UserService.getUser(user, req.pathParams._key));
+        })
+        .summary('Get a user by key')
+        .description('Fetches a specific user by key.')
+        .response(
+            'ok',
+            userSchema.required(),
+            ['application/json'],
+            'The user requested',
+        );
 
-    // TODO: Documentation
     // TODO: Test this
     // TODO: Error handling
-    router.put(':_key', (req, res) => {
-        let user: User | null = null;
-        if (req.session && req.session.data) user = new User(req.session.data);
-        UserService.updateUser(user, req.pathParams._key, JSON.parse(req.body));
-    });
+    router
+        .put(':_key', (req, res) => {
+            let user: User | null = null;
+            if (req.session && req.session.data)
+                user = new User(req.session.data);
+            UserService.updateUser(
+                user,
+                req.pathParams._key,
+                JSON.parse(req.body),
+            );
+        })
+        .body(userSchema.required(), 'The user data to update.')
+        .summary('Update a user.')
+        .description('Updates information about a user by key.')
+        .response(
+            'ok',
+            userSchema.required(),
+            ['application/json'],
+            'The updated user.',
+        );
 
-    // TODO: Documentation
     // TODO: Test this
     // TODO: Error handling
-    router.delete(':_key', (req, res) => {
-        let user: User | null = null;
-        if (req.session && req.session.data) user = new User(req.session.data);
-        UserService.deleteUser(user, req.pathParams._key);
-    });
+    router
+        .delete(':_key', (req, res) => {
+            let user: User | null = null;
+            if (req.session && req.session.data)
+                user = new User(req.session.data);
+            UserService.deleteUser(user, req.pathParams._key);
+        })
+        .summary('Remove a user.')
+        .description('Removes information about a user by key.')
+        .response(
+            'no content',
+            'No data is returned by calls to this endpoint.',
+        );
 
-    // TODO: Documentation
     // TODO: Test this
     // TODO: Error handling
-    router.get('csv', (req, res) => {
-        let user: User | null = null;
-        if (req.session && req.session.data) user = new User(req.session.data);
-        res.send(UserService.toCsv(user));
-    });
+    router
+        .get('csv', (req, res) => {
+            let user: User | null = null;
+            if (req.session && req.session.data)
+                user = new User(req.session.data);
+            res.send(UserService.toCsv(user));
+        })
+        .summary('Get users in CSV format.')
+        .description('Returns all users the user has access to in CSV format.')
+        .response('ok', ['text/csv'], 'The species in CSV format.');
 
     return router;
 };

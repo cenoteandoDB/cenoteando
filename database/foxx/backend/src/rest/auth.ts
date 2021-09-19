@@ -148,13 +148,5 @@ export default (): Foxx.Router => {
             'User already logged in or the email provided is already being used. User is not registered.',
         );
 
-    // TODO: Documentation
-    // TODO: Test this
-    router.get('/me', (req, res) => {
-        let name = 'anonymous';
-        if (req.session && req.session.data) name = req.session.data.name;
-        res.send({ message: `Hello ${name}!` });
-    });
-
     return router;
 };

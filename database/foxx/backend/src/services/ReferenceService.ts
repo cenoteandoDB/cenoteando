@@ -40,12 +40,12 @@ export class ReferenceService {
                 `ReferenceService.updateSpecies: User does not have update permissions. reference._key = ${_key}.`,
             );
 
-        const species = References.findOne(_key);
+        const ref = References.findOne(_key);
         // TODO: Check same key
         // TODO: Check valid data
-        species.merge(data);
-        species.save();
-        return species;
+        ref.merge(data);
+        ref.save();
+        return ref;
     }
 
     static deleteReference(user: AuthUser, _key: string): void {
@@ -54,8 +54,8 @@ export class ReferenceService {
                 `ReferenceService.deleteSpecies: User does not have delete permissions. species._key = ${_key}.`,
             );
 
-        const species = References.findOne(_key);
-        species.remove();
+        const ref = References.findOne(_key);
+        ref.remove();
     }
 
     static toCsv(_: AuthUser): string {
