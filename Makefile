@@ -201,3 +201,7 @@ upgrade_frontend:
 	# FIXME
 	npm run build:dev --prefix frontend
 	docker cp frontend/dist frontend:/var/www/dist
+
+# Run Cypress E2E tests
+test_e2e:
+	npm run test:e2e --prefix frontend

@@ -9,7 +9,14 @@
                 <span class="text-h6" v-if="editName === false">{{
                     variable.name
                 }}</span>
-            <span v-if="(!variable.name ||variable.name === '') && editName === false" class="text-h6">Name</span>
+                <span
+                    v-if="
+                        (!variable.name || variable.name === '') &&
+                        editName === false
+                    "
+                    class="text-h6"
+                    >Name</span
+                >
                 <v-icon
                     v-if="editName === false"
                     @click="

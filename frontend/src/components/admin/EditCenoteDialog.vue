@@ -9,7 +9,14 @@
                 <span v-if="editName === false" class="text-h6">{{
                     cenote.name
                 }}</span>
-               <span v-if="(!cenote.name ||cenote.name === '') && editName === false" class="text-h6">Name</span>
+                <span
+                    v-if="
+                        (!cenote.name || cenote.name === '') &&
+                        editName === false
+                    "
+                    class="text-h6"
+                    >Name</span
+                >
                 <v-icon
                     v-if="editName === false"
                     @click="

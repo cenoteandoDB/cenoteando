@@ -148,7 +148,7 @@ import FileService from '@/services/FileService';
 import { Feature, Point } from 'geojson';
 
 interface CenoteData {
-    _key: string; 
+    _key: string;
     name: string;
     state: string;
     municipality: string;

@@ -13,7 +13,7 @@ export default class ReferenceDTO {
             this.reference = jsonObj.reference;
             this.short_name = jsonObj.short_name;
             this.type = jsonObj.type;
-            this.year= jsonObj.year;
+            this.year = jsonObj.year;
         }
     }
 }
