@@ -1,10 +1,4 @@
 describe('Sign-Up Test', () => {
-	Cypress.Commands.add('clickLink', (label) => {
-		cy.get('span').contains(label).click()
-	  })
-      Cypress.Commands.add('clickDiv', (label) => {
-		cy.get('div').contains(label).click()
-	  })
    
     it('Visits the app root url', () => {
         cy.visit('http://localhost:8080/');
@@ -15,7 +9,13 @@ describe('Sign-Up Test', () => {
 
     it('Sign up form', () => {
         cy.clickLink(' REGISTER ');
+        cy.get('input[name=name]').type("Test");
+        cy.get('input[name=email]').type("test@email.com");
+        cy.get('input[name=current-password]').type("testpass");
+        cy.clickButton(' SIGN UP ');
     })
+
+   
    
 });
 

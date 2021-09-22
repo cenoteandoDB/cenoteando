@@ -25,6 +25,7 @@
                     v-if="!link.children"
                     :key="i"
                     :to="link.to"
+                    :data-cy='link.dataCy'
                     @click="link.action"
                     text
                     link
@@ -54,6 +55,7 @@
                             v-for="child in link.children"
                             :key="child.text"
                             :to="child.to"
+                            :data-cy="child.dataCy"
                             @click="link.action"
                             link
                             color="primary"
@@ -114,6 +116,7 @@
                         v-if="!link.children"
                         :key="i"
                         :to="link.to"
+                        :data-cy='link.dataCy + "-side"'
                         @click="link.action"
                         dark
                     >
@@ -145,6 +148,7 @@
                                 v-for="child in link.children"
                                 :key="child.text"
                                 :to="child.to"
+                                :data-cy='child.dataCy + "-side"'
                                 @click="link.action"
                                 class="pl-6"
                                 color="white"
@@ -186,6 +190,7 @@ import { mapGetters } from 'vuex';
 
 interface NavIcon {
     icon: string;
+    dataCy: string;
     text: string;
     to?: string;
     action?: () => void;
@@ -210,37 +215,44 @@ export default class NavBar extends Vue {
         this._links = [
             {
                 icon: 'mdi-shield-account',
+                dataCy: 'admin',
                 text: 'ADMIN',
                 to: '/admin',
                 condition: () => this.isAdmin,
                 children: [
                     {
                         icon: 'mdi-monitor-dashboard',
+                        dataCy: 'dashboard',
                         text: 'DASHBOARD',
                         to: '/admin',
                     },
                     {
                         icon: 'mdi-monitor-edit',
+                        dataCy: 'variables',
                         text: 'VARIABLES',
                         to: '/admin/variables',
                     },
                     {
                         icon: 'mdi-monitor-edit',
+                        dataCy: 'users',
                         text: 'USERS',
                         to: '/admin/users',
                     },
                     {
                         icon: 'mdi-monitor-edit',
+                        dataCy: 'cenotes',
                         text: 'CENOTES',
                         to: '/admin/cenotes',
                     },
                     {
                         icon: 'mdi-monitor-edit',
+                        dataCy: 'species',
                         text: 'SPECIES',
                         to: '/admin/species',
                     },
                     {
                         icon: 'mdi-monitor-edit',
+                        dataCy: 'references',
                         text: 'REFERENCES',
                         to: '/admin/references',
                     },
@@ -248,39 +260,46 @@ export default class NavBar extends Vue {
             },
             {
                 icon: 'mdi-map',
+                dataCy: 'map',
                 text: 'MAP',
                 to: '/map',
             },
             {
                 icon: 'mdi-source-branch',
+                dataCy: 'oai-pmh',
                 text: 'OAI-PMH',
                 to: '/oai-pmh',
                 children: [
                     {
                         icon: 'mdi-account-box-outline',
+                        dataCy: 'identify',
                         text: 'IDENTIFY',
                         to: '/oai-pmh/identify',
                     },
                     {
                         icon: 'mdi-magnify',
                         text: 'GET RECORD',
+                        dataCy: 'get-record',
                         to: '/oai-pmh/get-record',
                     },
                     {
                         icon: 'mdi-view-list',
                         text: 'LIST RECORDS',
+                        dataCy: 'list-records',
                         to: '/oai-pmh/list-records',
                     },
                 ],
             },
             {
                 icon: 'mdi-account',
+                dataCy: 'login',
                 text: 'LOGIN / SIGN UP',
                 to: '/login',
                 condition: () => !this.isLoggedIn,
             },
             {
                 icon: 'mdi-account-off',
+                dataCy: 'logout',
                 text: 'LOGOUT',
                 action: this.logout,
                 condition: () => this.isLoggedIn,

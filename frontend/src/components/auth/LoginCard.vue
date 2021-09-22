@@ -26,13 +26,14 @@
             <v-card-actions>
                 <v-btn
                     :disabled="!this.validate()"
+                    data-cy='login-user'
                     @click="submit"
                     color="primary"
                 >
                     LOG IN
                 </v-btn>
                 <v-spacer></v-spacer>
-                <v-btn to="/signup" text> REGISTER </v-btn>
+                <v-btn data-cy="register" to="/signup" text> REGISTER </v-btn>
             </v-card-actions>
         </v-form>
     </v-card>
