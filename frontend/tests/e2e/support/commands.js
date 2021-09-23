@@ -27,3 +27,7 @@
 Cypress.Commands.add('clickDataCy', (label) => {
     cy.get(`[data-cy='${label}']`).click()
   })
+  
+Cypress.Commands.add('clickLink', (label) => {
+		cy.get('span').contains(label).click()
+	})
