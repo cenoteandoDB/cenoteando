@@ -33,6 +33,7 @@
                     <v-container class="d-flex">
                         <v-text-field
                             v-model="variable.name"
+                            data-cy="variable-name"
                             label="Name"
                             :rules="[(v) => !!v || 'Name is required']"
                             required
@@ -50,6 +51,7 @@
                 <v-form v-model="valid">
                     <v-textarea
                         v-model="variable.description"
+                        data-cy="description"
                         label="Description"
                         :rules="[(v) => !!v || 'Description is required']"
                         required
@@ -57,6 +59,7 @@
 
                     <v-select
                         v-model="variable.theme"
+                        data-cy="theme"
                         :items="themes"
                         label="Theme"
                         :rules="[(v) => !!v || 'Theme is required']"
@@ -65,6 +68,7 @@
 
                     <v-select
                         v-model="variable.access_level"
+                        data-cy="access-level"
                         :items="accessLevels"
                         label="Access Level"
                         :rules="[(v) => !!v || 'Access Level is required']"
@@ -73,6 +77,7 @@
 
                     <v-select
                         v-model="variable.type"
+                        data-cy="data-type"
                         :items="dataTypes"
                         label="Data Type"
                         :rules="[(v) => !!v || 'Data Type is required']"
@@ -81,6 +86,7 @@
 
                     <v-checkbox
                         v-model="variable.timeseries"
+                        data-cy="timeseries"
                         label="Timeseries"
                     ></v-checkbox>
                 </v-form>
@@ -93,6 +99,7 @@
                 <v-btn
                     color="blue darken-1"
                     text
+                    data-cy="save"
                     :disabled="!this.valid"
                     @click="save()"
                 >

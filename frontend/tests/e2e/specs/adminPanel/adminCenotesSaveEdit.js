@@ -42,7 +42,7 @@ describe('Admin Panel Access', () => {
 		cy.clickDataCy('coordinates').click();
 	});
 
-    it('Choose Cenote Issues', () => {
+    it('Save Edited Cenote', () => {
 		cy.clickDataCy('Save').click();
 	});
     

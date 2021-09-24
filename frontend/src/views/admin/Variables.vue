@@ -136,10 +136,10 @@
                         <template v-slot:activator="{ on, attrs }">
                             <v-icon
                                 class="mr-2 action-button"
+                                :data-cy='"editVariable_"+item._key'
                                 v-on="on"
                                 v-bind="attrs"
                                 color="green"
-                                data-cy="editVariable"
                                 >mdi-pencil</v-icon
                             >
                         </template>
