@@ -125,8 +125,8 @@
                             class="mr-2 action-button"
                             v-on="on"
                             v-bind="attrs"
+                            :data-cy='"editCenote"+item._key'
                             color="green"
-                            data-cy="editCenote"
                             >mdi-pencil</v-icon
                         >
                     </template>

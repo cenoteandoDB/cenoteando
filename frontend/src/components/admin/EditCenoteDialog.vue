@@ -57,6 +57,7 @@
                     <v-select
                         v-model="cenote.type"
                         :items="types"
+                        data-cy = "cenote-type"
                         label="Cenote Type"
                         :rules="[(v) => !!v || 'Cenote Type is required']"
                         required
@@ -64,15 +65,18 @@
 
                     <v-checkbox
                         v-model="cenote.touristic"
+                        data-cy="touristic"
                         label="Touristic"
                     ></v-checkbox>
                     <v-text-field
                         v-model="cenote.coordinates"
+                        data-cy="coordinates"
                         label="Coordinates"
                     ></v-text-field>
 
                     <v-select
                         v-model="cenote.issues"
+                        data-cy="cenote-issues"
                         :items="issues"
                         label="Cenote Issues"
                         multiple
@@ -89,6 +93,7 @@
                     color="blue darken-1"
                     text
                     :disabled="!this.valid"
+                    data-cy="Save"
                     @click="save()"
                 >
                     Save

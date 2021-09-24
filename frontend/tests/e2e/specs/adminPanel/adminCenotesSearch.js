@@ -10,8 +10,17 @@ describe('Admin Panel Access', () => {
     });
 
     it('Access Admin Panel', () => {
-        cy.get('div').contains(' ADMIN ').click(); //We have to change this in a way we can use the command that lets us use the datacy
+        cy.get('div').contains(' ADMIN ').click();
+    });
+    it('Access Cenotes', () => {
+        cy.get('div').contains('CENOTES').click();
     });
 
+    it('Searching', () => {
+        cy.get('[id = input-107]').type('121');
+        cy.get('[id = input-107]').clear();
+        cy.get('[id = input-107]').type('3');
+    });
+   
 });
 
