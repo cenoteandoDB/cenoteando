@@ -80,7 +80,10 @@
 
             <!-- TODO: Add edit and delete reference actions -->
             <template v-slot:[`item.action`]="{ item }">
-                <edit-reference-dialog :user="item" @onSave="updateReference(item)">
+                <edit-reference-dialog
+                    :reference="item"
+                    @onSave="updateReference(item)"
+                >
                     <template v-slot:activator="{ on, attrs }">
                         <v-icon
                             class="mr-2 action-button"

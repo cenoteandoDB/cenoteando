@@ -74,6 +74,12 @@
                         label="Coordinates"
                     ></v-text-field>
 
+                    <v-text-field
+                        v-model="cenote.coordinates"
+                        data-cy="coordinates"
+                        label="Coordinates"
+                    ></v-text-field>
+
                     <v-select
                         v-model="cenote.issues"
                         data-cy="cenote-issues"
