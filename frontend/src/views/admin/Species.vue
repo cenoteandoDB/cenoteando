@@ -15,8 +15,11 @@
                         label="Search"
                         class="mx-2"
                     />
-                     <v-spacer />
-                    
+                    <v-spacer />
+                    <edit-species-dialog
+                        :species="newSpecie"
+                        @onSave="createSpecie()"
+                    >
                         <template v-slot:activator="{ on, attrs }">
                             <v-btn
                                 v-on="on"
@@ -27,24 +30,82 @@
                                 <v-icon color="green">mdi-plus</v-icon>
                             </v-btn>
                         </template>
-                        
+                    </edit-species-dialog>
+
+                    <v-dialog max-width="600px">
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn
+                                v-on="on"
+                                v-bind="attrs"
+                                data-cy="uploadButton"
+                                class="ma-2"
+                                ><v-icon color="primary"
+                                    >mdi-upload</v-icon
+                                ></v-btn
+                            >
+                        </template>
+                        <v-card class="pt-5 mt-5 justify-center">
+                            <v-card-title>
+                                <span class="text-h5">Upload Species </span>
+                            </v-card-title>
+                            <v-card-text>
+                                <v-form>
+                                    <v-file-input
+                                        @change="selectFiles"
+                                        multiple
+                                        counter
+                                        show-size
+                                        chips
+                                        accept=".csv"
+                                    />
+                                </v-form>
+                                <!-- TODO: Add progressbar
+                                    <v-progress-linear
+                                        :value="this.uploadProgress"
+                                    ></v-progress-linear>
+                                    -->
+                                <v-btn @click="upload">Upload</v-btn>
+                            </v-card-text>
+                        </v-card>
+                    </v-dialog>
+
+                    <v-btn
+                        @click="download"
+                        data-cy="downloadButton"
+                        class="ma-2"
+                        ><v-icon color="primary">mdi-download</v-icon></v-btn
+                    >
+
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                            v-on="on"
+                            v-bind="attrs"
+                            data-cy="createButton"
+                            class="ma-2"
+                        >
+                            <v-icon color="green">mdi-plus</v-icon>
+                        </v-btn>
+                    </template>
                 </v-card-title>
             </template>
 
             <!-- TODO: Add edit and delete species actions -->
             <template v-slot:[`item.action`]="{ item }">
-                <edit-user-dialog :user="item" @onSave="updateSpecie(item)">
+                <edit-species-dialog
+                    :species="item"
+                    @onSave="updateSpecie(item)"
+                >
                     <template v-slot:activator="{ on, attrs }">
                         <v-icon
                             class="mr-2 action-button"
                             v-on="on"
                             v-bind="attrs"
                             color="green"
-                            data-cy="editUser"
+                            data-cy="editSpecie"
                             >mdi-pencil</v-icon
                         >
                     </template>
-                </edit-user-dialog>
+                </edit-species-dialog>
 
                 <delete-dialog @onConfirm="deleteSpecie(item)" />
             </template>
@@ -57,9 +118,14 @@ import { Component, Vue } from 'vue-property-decorator';
 import RemoteServices from '@/services/RemoteServices';
 import SpeciesDTO from '@/models/SpeciesDTO';
 import FileService from '@/services/FileService';
+import DeleteDialog from '@/components/admin/DeleteDialog.vue';
+import EditSpeciesDialog from '@/components/admin/EditSpeciesDialog.vue';
 
 @Component({
-    components: {},
+    components: {
+        EditSpeciesDialog,
+        DeleteDialog,
+    },
 })
 export default class Species extends Vue {
     files: File[] = [];
@@ -68,6 +134,7 @@ export default class Species extends Vue {
         { text: 'Cenoteando ID', value: '_key' },
         { text: 'iNaturalist ID', value: 'iNaturalistId' },
         { text: 'Aphia ID', value: 'aphiaId' },
+        { text: 'Actions', value: 'action' },
     ];
 
     item = [];
