@@ -15,23 +15,83 @@
                         label="Search"
                         class="mx-2"
                     />
+                    <v-spacer />
+                    <edit-reference-dialog
+                        :reference="newReference"
+                        @onSave="createReference()"
+                    >
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn
+                                v-on="on"
+                                v-bind="attrs"
+                                data-cy="createButton"
+                                class="ma-2"
+                            >
+                                <v-icon color="green">mdi-plus</v-icon>
+                            </v-btn>
+                        </template>
+                    </edit-reference-dialog>
+
+                    <v-dialog max-width="600px">
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn
+                                v-on="on"
+                                v-bind="attrs"
+                                data-cy="uploadButton"
+                                class="ma-2"
+                                ><v-icon color="primary"
+                                    >mdi-upload</v-icon
+                                ></v-btn
+                            >
+                        </template>
+                        <v-card class="pt-5 mt-5 justify-center">
+                            <v-card-title>
+                                <span class="text-h5">Upload References</span>
+                            </v-card-title>
+                            <v-card-text>
+                                <v-form>
+                                    <v-file-input
+                                        @change="selectFiles"
+                                        multiple
+                                        counter
+                                        show-size
+                                        chips
+                                        accept=".csv"
+                                    />
+                                </v-form>
+                                <!-- TODO: Add progressbar
+                                    <v-progress-linear
+                                        :value="this.uploadProgress"
+                                    ></v-progress-linear>
+                                    -->
+                                <v-btn @click="upload">Upload</v-btn>
+                            </v-card-text>
+                        </v-card>
+                    </v-dialog>
+
+                    <v-btn
+                        @click="download"
+                        data-cy="downloadButton"
+                        class="ma-2"
+                        ><v-icon color="primary">mdi-download</v-icon></v-btn
+                    >
                 </v-card-title>
             </template>
 
             <!-- TODO: Add edit and delete reference actions -->
             <template v-slot:[`item.action`]="{ item }">
-                <edit-user-dialog :user="item" @onSave="updateReference(item)">
+                <edit-reference-dialog :user="item" @onSave="updateReference(item)">
                     <template v-slot:activator="{ on, attrs }">
                         <v-icon
                             class="mr-2 action-button"
                             v-on="on"
                             v-bind="attrs"
                             color="green"
-                            data-cy="editUser"
+                            data-cy="editReference"
                             >mdi-pencil</v-icon
                         >
                     </template>
-                </edit-user-dialog>
+                </edit-reference-dialog>
 
                 <delete-dialog @onConfirm="deleteReference(item)" />
             </template>
@@ -44,9 +104,14 @@ import { Component, Vue } from 'vue-property-decorator';
 import RemoteServices from '@/services/RemoteServices';
 import ReferenceDTO from '@/models/ReferenceDTO';
 import FileService from '@/services/FileService';
+import EditReferenceDialog from '@/components/admin/EditReferenceDialog.vue';
+import DeleteDialog from '@/components/admin/DeleteDialog.vue';
 
 @Component({
-    components: {},
+    components: {
+        EditReferenceDialog,
+        DeleteDialog,
+    },
 })
 export default class References extends Vue {
     files: File[] = [];
@@ -59,6 +124,7 @@ export default class References extends Vue {
         { text: 'Short Name', value: 'shortName' },
         { text: 'Type', value: 'type' },
         { text: 'Year', value: 'year' },
+        { text: 'Actions', value: 'action' },
     ];
 
     item = [];

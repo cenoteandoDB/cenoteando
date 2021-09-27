@@ -15,6 +15,19 @@
                         label="Search"
                         class="mx-2"
                     />
+                     <v-spacer />
+                    
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn
+                                v-on="on"
+                                v-bind="attrs"
+                                data-cy="createButton"
+                                class="ma-2"
+                            >
+                                <v-icon color="green">mdi-plus</v-icon>
+                            </v-btn>
+                        </template>
+                        
                 </v-card-title>
             </template>
 
