@@ -306,7 +306,9 @@ export default class RemoteServices {
                 continuationToken = response.data.continuationToken;
             }
         } catch (e) {
-            throw Error(await this.errorMessage(e));
+            if (axios.isAxiosError(e)) throw Error(await this.errorMessage(e));
+            // TODO: Throw custom error
+            else throw Error('Unkown error in VariablesGenerator');
         }
     }
 
@@ -389,7 +391,9 @@ export default class RemoteServices {
                 continuationToken = response.data.continuationToken;
             }
         } catch (e) {
-            throw Error(await this.errorMessage(e));
+            if (axios.isAxiosError(e)) throw Error(await this.errorMessage(e));
+            // TODO: Throw custom error
+            else throw Error('Unkown error in CenotesGenerator');
         }
     }
 
@@ -520,7 +524,9 @@ export default class RemoteServices {
                 continuationToken = response.data.continuationToken;
             }
         } catch (e) {
-            throw Error(await this.errorMessage(e));
+            if (axios.isAxiosError(e)) throw Error(await this.errorMessage(e));
+            // TODO: Throw custom error
+            else throw Error('Unkown error in UsersGenerator');
         }
     }
 

@@ -24,7 +24,14 @@ export default class CenoteDTO {
     touristic!: boolean;
     issues!: Array<CenoteIssue>;
     alternativeNames!: Array<string>;
-    geojson!: GeoJSON;
+    geojson!: {
+        type: 'Feature';
+        geometry: {
+            type: 'Point';
+            coordinates: [number, number];
+        };
+        properties: Record<string, unknown>;
+    };
     gadm!: string | GeoJSON;
     social!: CenoteSocialProperties;
     createdAt!: Date;
@@ -44,5 +51,21 @@ export default class CenoteDTO {
             this.createdAt = jsonObj.createdAt;
             this.updatedAt = jsonObj.updatedAt;
         }
+    }
+
+    getLatitude(): number | null {
+        return this.geojson?.geometry.coordinates[1] || null;
+    }
+
+    getLongitude(): number | null {
+        return this.geojson?.geometry.coordinates[0] || null;
+    }
+
+    setLatitude(value: string): void {
+        this.geojson.geometry.coordinates[1] = JSON.parse(value);
+    }
+
+    setLongitude(value: string): void {
+        this.geojson.geometry.coordinates[0] = JSON.parse(value);
     }
 }

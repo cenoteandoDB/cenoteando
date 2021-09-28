@@ -302,6 +302,7 @@ export default class Cenotes extends Vue {
         }
 
         await this.$store.dispatch('clearLoading');
+        this.cenotes.unshift(this.newCenote);
         this.newCenote = new CenoteDTO();
     }
 

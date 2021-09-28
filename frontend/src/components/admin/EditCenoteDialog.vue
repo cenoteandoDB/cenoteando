@@ -70,9 +70,15 @@
                     ></v-checkbox>
 
                     <v-text-field
-                        v-model="cenote.coordinates"
-                        data-cy="coordinates"
-                        label="Coordinates"
+                        v-model="latitudeText"
+                        data-cy="latitude"
+                        label="Latitude"
+                    ></v-text-field>
+
+                    <v-text-field
+                        v-model="longitudeText"
+                        data-cy="longitude"
+                        label="Longitude"
                     ></v-text-field>
 
                     <v-select
@@ -119,11 +125,34 @@ export default class EditCenoteDialog extends Vue {
 
     types = Object.values(CenoteType);
     touristic = [true, false];
+    latitudeText = '';
+    longitudeText = '';
     issues = Object.values(CenoteIssue);
 
+    created(): void {
+        this.latitudeText = this.$props.cenote.getLatitude()?.toString() || '';
+        this.longitudeText =
+            this.$props.cenote.getLongitude()?.toString() || '';
+    }
+
     save(): void {
+        this.processCoordinates();
         this.$emit('onSave');
         this.dialog = false;
+    }
+
+    processCoordinates(): void {
+        // TODO: Deal with N, S and E, W
+        this.setLatitude(this.latitudeText);
+        this.setLongitude(this.longitudeText);
+    }
+
+    setLatitude(value: string): void {
+        this.$props.cenote.setLatitude(JSON.parse(value));
+    }
+
+    setLongitude(value: string): void {
+        this.$props.cenote.setLongitude(JSON.parse(value));
     }
 }
 </script>
