@@ -68,11 +68,6 @@
                         data-cy="touristic"
                         label="Touristic"
                     ></v-checkbox>
-                    <v-text-field
-                        v-model="cenote.coordinates"
-                        data-cy="coordinates"
-                        label="Coordinates"
-                    ></v-text-field>
 
                     <v-text-field
                         v-model="cenote.coordinates"
