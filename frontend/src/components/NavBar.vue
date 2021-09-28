@@ -25,7 +25,7 @@
                     v-if="!link.children"
                     :key="i"
                     :to="link.to"
-                    :data-cy='link.dataCy'
+                    :data-cy="link.dataCy"
                     @click="link.action"
                     text
                     link
@@ -116,7 +116,7 @@
                         v-if="!link.children"
                         :key="i"
                         :to="link.to"
-                        :data-cy='link.dataCy + "-side"'
+                        :data-cy="link.dataCy + '-side'"
                         @click="link.action"
                         dark
                     >
@@ -148,7 +148,7 @@
                                 v-for="child in link.children"
                                 :key="child.text"
                                 :to="child.to"
-                                :data-cy='child.dataCy + "-side"'
+                                :data-cy="child.dataCy + '-side'"
                                 @click="link.action"
                                 class="pl-6"
                                 color="white"

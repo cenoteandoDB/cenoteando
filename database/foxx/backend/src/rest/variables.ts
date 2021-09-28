@@ -3,7 +3,7 @@ import { Joi } from 'type-arango';
 import dd from 'dedent';
 
 import { VariableService } from '../services';
-import { AccessLevel, Theme, User } from '../model/documents';
+import { AccessLevel, Theme, User, Variable } from '../model/documents';
 
 const variableSchema = Joi.object({
     _key: Joi.string(),
@@ -77,11 +77,7 @@ export default (): Foxx.Router => {
             let user: User | null = null;
             if (req.session && req.session.data)
                 user = new User(req.session.data);
-            VariableService.updateVariable(
-                user,
-                req.pathParams._key,
-                JSON.parse(req.body),
-            );
+            VariableService.updateVariable(user, req.pathParams._key, req.body);
         })
         .body(variableSchema.required(), 'The variable data to update.')
         .summary('Update a variable.')
@@ -133,9 +129,19 @@ export default (): Foxx.Router => {
             let user: User | null = null;
             if (req.session && req.session.data)
                 user = new User(req.session.data);
-            res.send(VariableService.fromCsv(user, req.body.toString()));
+            let result: Readonly<Variable>[] = [];
+            req.body.forEach((data) => {
+                // TODO: REMOVE THIS
+                console.log(data);
+                console.log(JSON.stringify(data));
+                result.concat(VariableService.fromCsv(user, data.data));
+            });
+            res.send(result);
         })
-        .body(['text/csv'], 'The variable data to upload in CSV format.')
+        .body(
+            ['multipart/form-data'],
+            'The CSV files with variable data to upload.',
+        )
         .summary('Upload variable information in CSV format.')
         .description(
             dd`

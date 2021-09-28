@@ -10,6 +10,7 @@ interface State {
     loading: boolean;
     token: string;
     user: AuthUser | null;
+    expiry: number | null;
 }
 
 const state: State = {
@@ -18,6 +19,7 @@ const state: State = {
     loading: false,
     token: '',
     user: null,
+    expiry: null,
 };
 
 Vue.use(Vuex);
@@ -27,26 +29,36 @@ export default new Vuex.Store({
     state: state,
     mutations: {
         initializeStore(state) {
+            validateSession();
+
             const token = localStorage.getItem('token');
             if (token) {
                 state.token = token;
             }
+
             const user = localStorage.getItem('user');
             if (user) {
                 state.user = JSON.parse(user);
             }
+
+            const expiry = localStorage.getItem('expiry');
+            if (expiry) {
+                state.expiry = JSON.parse(expiry);
+            }
         },
         login(state, authResponse: AuthDto) {
-            localStorage.setItem('token', authResponse.token);
             state.token = authResponse.token;
-            localStorage.setItem('user', JSON.stringify(authResponse.user));
+            localStorage.setItem('token', state.token);
+
             state.user = authResponse.user;
+            localStorage.setItem('user', JSON.stringify(state.user));
+
+            // TODO: Get expiry from server
+            state.expiry = Date.now() + 60 * 60 * 1000; /* 1 hour */
+            localStorage.setItem('expiry', JSON.stringify(state.expiry));
         },
-        logout(state) {
-            localStorage.setItem('token', '');
-            state.token = '';
-            localStorage.setItem('user', '');
-            state.user = null;
+        logout() {
+            clearSession();
         },
         error(state, errorMessage: string) {
             state.error = true;
@@ -89,19 +101,16 @@ export default new Vuex.Store({
             commit('login', authResponse);
         },
         logout({ commit }) {
-            return new Promise<void>((resolve) => {
-                commit('logout');
-                localStorage.removeItem('token');
-                localStorage.removeItem('userRole');
-                resolve();
-            });
+            commit('logout');
         },
     },
     getters: {
         isLoggedIn(state): boolean {
+            validateSession();
             return !!state.token;
         },
         isAdmin(state): boolean {
+            validateSession();
             return (
                 !!state.token &&
                 state.user !== null &&
@@ -109,9 +118,11 @@ export default new Vuex.Store({
             );
         },
         getToken(state): string {
+            validateSession();
             return state.token;
         },
         getUser(state): AuthUser | null {
+            validateSession();
             return state.user;
         },
         getError(state): boolean {
@@ -125,3 +136,32 @@ export default new Vuex.Store({
         },
     },
 });
+
+function validateSession() {
+    const expiryStr = localStorage.getItem('expiry');
+
+    // if the item doesn't exist, return null
+    if (!expiryStr) {
+        return null;
+    }
+
+    const expiry = JSON.parse(expiryStr);
+    const now = new Date();
+
+    // compare the expiry time with the current time
+    if (now.getTime() > expiry) {
+        // If session is expired, clear session
+        clearSession();
+        return true;
+    }
+    return false;
+}
+
+function clearSession() {
+    state.token = '';
+    state.user = null;
+    state.expiry = null;
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    localStorage.removeItem('expiry');
+}

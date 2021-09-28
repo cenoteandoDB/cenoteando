@@ -69,7 +69,7 @@ export default (): Foxx.Router => {
                 ReferenceService.updateReference(
                     user,
                     req.pathParams._key,
-                    JSON.parse(req.body),
+                    req.body,
                 ),
             );
         })

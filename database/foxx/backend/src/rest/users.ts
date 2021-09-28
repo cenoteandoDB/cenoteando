@@ -63,11 +63,7 @@ export default (): Foxx.Router => {
             let user: User | null = null;
             if (req.session && req.session.data)
                 user = new User(req.session.data);
-            UserService.updateUser(
-                user,
-                req.pathParams._key,
-                JSON.parse(req.body),
-            );
+            UserService.updateUser(user, req.pathParams._key, req.body);
         })
         .body(userSchema.required(), 'The user data to update.')
         .summary('Update a user.')

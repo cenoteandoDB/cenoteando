@@ -57,7 +57,7 @@
                     <v-select
                         v-model="cenote.type"
                         :items="types"
-                        data-cy = "cenote-type"
+                        data-cy="cenote-type"
                         label="Cenote Type"
                         :rules="[(v) => !!v || 'Cenote Type is required']"
                         required

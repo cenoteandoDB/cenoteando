@@ -136,7 +136,7 @@
                         <template v-slot:activator="{ on, attrs }">
                             <v-icon
                                 class="mr-2 action-button"
-                                :data-cy='"editVariable_"+item._key'
+                                :data-cy="'editVariable_' + item._key"
                                 v-on="on"
                                 v-bind="attrs"
                                 color="green"
@@ -217,7 +217,7 @@ export default class Variables extends Vue {
             .filter(
                 (v) =>
                     !this.filterAccessLevels.length ||
-                    this.filterAccessLevels.includes(v.access_level),
+                    this.filterAccessLevels.includes(v.accessLevel),
             )
             .filter(
                 (v) =>

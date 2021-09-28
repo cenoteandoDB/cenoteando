@@ -108,11 +108,7 @@ export default (): Foxx.Router => {
             if (req.session && req.session.data)
                 user = new User(req.session.data);
             res.send(
-                CenoteService.updateCenote(
-                    user,
-                    req.pathParams._key,
-                    JSON.parse(req.body),
-                ),
+                CenoteService.updateCenote(user, req.pathParams._key, req.body),
             );
         })
         .body(cenoteSchema.required(), 'The cenote data to update.')

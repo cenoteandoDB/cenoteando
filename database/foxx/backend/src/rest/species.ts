@@ -63,7 +63,7 @@ export default (): Foxx.Router => {
                 SpeciesService.updateSpecies(
                     user,
                     req.pathParams._key,
-                    JSON.parse(req.body),
+                    req.body,
                 ),
             );
         })

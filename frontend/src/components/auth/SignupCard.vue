@@ -36,7 +36,7 @@
             <v-card-actions>
                 <v-btn
                     :disabled="!this.validate()"
-                    data-cy='submit'
+                    data-cy="submit"
                     @click="submit"
                     color="primary"
                 >

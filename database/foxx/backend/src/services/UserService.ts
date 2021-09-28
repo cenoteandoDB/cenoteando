@@ -8,8 +8,6 @@ import { CsvImportExport } from '../util/CsvImportExport';
 type AuthUser = User | null;
 
 export class UserService {
-    // TODO: Identify functions needed for UserService
-
     private static createReadFilter(user: AuthUser): QueryFilter {
         let filter = {};
         // If user is not authenticated, restrict access by filtering on an unused property
@@ -32,6 +30,7 @@ export class UserService {
 
     static getUser(user: AuthUser, _key: string): User {
         const filter = UserService.createReadFilter(user);
+        // TODO: Throw error if not ADMIN or self
         return Users.findOne(_key, { filter, unset: ['password'] });
     }
 
@@ -64,7 +63,7 @@ export class UserService {
             role: UserRole.CENOTERO,
         });
         user.insert();
-        return user;
+        return Object.assign({}, user, { password: undefined });
     }
 
     // TODO: Implement this
@@ -83,7 +82,7 @@ export class UserService {
         // TODO: Check valid data
         user.merge(data);
         user.save();
-        return user;
+        return Object.assign({}, user, { password: undefined });
     }
 
     static deleteUser(authUser: AuthUser, _key: string): void {

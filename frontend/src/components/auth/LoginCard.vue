@@ -26,7 +26,7 @@
             <v-card-actions>
                 <v-btn
                     :disabled="!this.validate()"
-                    data-cy='login-user'
+                    data-cy="login-user"
                     @click="submit"
                     color="primary"
                 >

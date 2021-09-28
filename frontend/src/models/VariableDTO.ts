@@ -1,6 +1,6 @@
 export default class VariableDTO {
     _key!: string;
-    access_level!: string;
+    accessLevel!: string;
     description!: string;
     name!: string;
     theme!: string;
@@ -10,7 +10,7 @@ export default class VariableDTO {
     constructor(jsonObj?: VariableDTO) {
         if (jsonObj) {
             this._key = jsonObj._key;
-            this.access_level = jsonObj.access_level;
+            this.accessLevel = jsonObj.accessLevel;
             this.description = jsonObj.description;
             this.name = jsonObj.name;
             this.theme = jsonObj.theme;

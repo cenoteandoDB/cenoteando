@@ -67,7 +67,7 @@
                     ></v-select>
 
                     <v-select
-                        v-model="variable.access_level"
+                        v-model="variable.accessLevel"
                         data-cy="access-level"
                         :items="accessLevels"
                         label="Access Level"
