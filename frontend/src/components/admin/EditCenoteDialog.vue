@@ -69,17 +69,37 @@
                         label="Touristic"
                     ></v-checkbox>
 
-                    <v-text-field
-                        v-model="latitudeText"
-                        data-cy="latitude"
-                        label="Latitude"
-                    ></v-text-field>
+                    <v-container class="d-flex d-row justify-end">
+                        <v-text-field
+                            v-model="latitudeText"
+                            data-cy="latitude"
+                            label="Latitude"
+                        ></v-text-field>
+                        <v-select
+                            class="pt-2 pl-10 pr-10"
+                            :items="latitudeDir"
+                            dense
+                            solo
+                            width="5"
+                            style="width: 5px"
+                        ></v-select>
+                    </v-container>
 
-                    <v-text-field
-                        v-model="longitudeText"
-                        data-cy="longitude"
-                        label="Longitude"
-                    ></v-text-field>
+                    <v-container class="d-flex d-row justify-center">
+                        <v-text-field
+                            v-model="longitudeText"
+                            data-cy="longitude"
+                            label="Longitude"
+                        ></v-text-field>
+                        <v-select
+                            class="pt-2 pl-10 pr-10"
+                            :items="longitudeDir"
+                            dense
+                            solo
+                            width="5"
+                            style="width: 5px"
+                        ></v-select>
+                    </v-container>
 
                     <v-select
                         v-model="cenote.issues"
@@ -129,6 +149,8 @@ export default class EditCenoteDialog extends Vue {
     longitudeText = '';
     issues = Object.values(CenoteIssue);
     cenote = new CenoteDTO();
+    latitudeDir = ['N', 'S'];
+    longitudeDir = ['W', 'E'];
 
     created(): void {
         this.cenote = new CenoteDTO(this.$props.cenoteProp);
