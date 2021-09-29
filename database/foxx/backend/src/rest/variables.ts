@@ -117,7 +117,7 @@ export default (): Foxx.Router => {
             let user: User | null = null;
             if (req.session && req.session.data)
                 user = new User(req.session.data);
-            let result: Readonly<Variable>[] = [];
+            const result: Readonly<Variable>[] = [];
             req.body.forEach((data) => {
                 // TODO: REMOVE THIS
                 console.log(data);

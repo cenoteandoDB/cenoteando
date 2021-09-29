@@ -10,8 +10,7 @@ Model.complete();
 
 context.use(
     sessionsMiddleware({
-        // TODO: Get secret from config file
-        storage: jwtStorage('SUPER SECRET!'),
+        storage: jwtStorage(module.context.configuration.jwtSecret),
         transport: 'header',
     }),
 );

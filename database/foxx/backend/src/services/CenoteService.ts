@@ -9,7 +9,7 @@ type AuthUser = User | null;
 
 export class CenoteService {
     private static createReadFilter(user: AuthUser): QueryFilter {
-        let filter = {};
+        const filter = {};
         if (!user) filter['touristic'] = true;
         return filter;
     }

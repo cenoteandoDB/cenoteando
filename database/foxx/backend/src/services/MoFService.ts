@@ -34,7 +34,7 @@ export class MoFService {
         );
 
         // Map authorized variables found to key-value pairs
-        let variablesMap = variables.reduce((acc, curr) => {
+        const variablesMap = variables.reduce((acc, curr) => {
             acc[curr._key!] = {
                 variable: curr,
                 values: [],
@@ -53,9 +53,6 @@ export class MoFService {
         // Add values from MoFs to mapped variables
         mofs.forEach((mof) => {
             const variableKey = VariableService.idToKey(mof._from);
-
-            // TODO: REMOVE THIS!
-            console.log(variableKey);
 
             if (!(variableKey in variablesMap)) return;
             variablesMap[variableKey].values = variablesMap[

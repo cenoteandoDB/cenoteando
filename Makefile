@@ -186,13 +186,11 @@ dev_frontend: install_frontend
 
 # Upgrade Backend code with local
 upgrade_backend:
-	# FIXME
 	npm run build --prefix database/foxx/backend
 	npm run upgrade --prefix database/foxx/backend
 
 # Upgrade oai-pmh code with local
 upgrade_oai-pmh:
-	# FIXME
 	npm run build --prefix database/foxx/oai-pmh
 	npm run upgrade --prefix database/foxx/oai-pmh
 

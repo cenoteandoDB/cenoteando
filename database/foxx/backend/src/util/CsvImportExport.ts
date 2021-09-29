@@ -51,7 +51,7 @@ export class CsvImportExport {
 
         const headers = headerRow.split(',');
 
-        let data: any[] = [];
+        const data: any[] = [];
         rows.forEach((row) => {
             if (row == '') return;
 

@@ -36,7 +36,7 @@ export class VariableService {
     static getVariables(
         user: AuthUser,
         filter: QueryFilter,
-        filterValueReadAccess: boolean = false,
+        filterValueReadAccess = false,
     ): Readonly<Variable>[] {
         filter = Object.assign(
             filter,

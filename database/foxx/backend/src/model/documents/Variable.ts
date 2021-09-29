@@ -12,7 +12,6 @@ export enum Theme {
     ORGANIZATION = 'ORGANIZATION',
     REGULATION = 'REGULATION',
     WATER = 'WATER',
-    EVENT = 'EVENT',
 }
 
 export enum AccessLevel {
@@ -24,9 +23,13 @@ export enum AccessLevel {
 export enum VariableType {
     STRING = 'STRING',
     BOOLEAN = 'BOOLEAN',
+    ENUM = 'ENUM',
+    JSON = 'JSON',
     UNITLESS_NUMBER = 'UNITLESS_NUMBER',
     NUMBER_WITH_UNITS = 'NUMBER_WITH_UNITS',
-    ENUM = 'ENUM',
+    DATETIME = 'DATETIME',
+    DATE = 'DATE',
+    TIME = 'TIME',
     NO_TYPE = 'NO_TYPE',
 }
 
@@ -38,13 +41,11 @@ export class Variable extends Entity {
     @Attribute()
     description: string;
 
-    // TODO: Fix data type
     @Attribute()
     type: VariableType;
 
-    // Use units compatible with the node.js package "safe-units"
     @Attribute()
-    units: string;
+    dimension: string;
 
     // TODO: Fix timeseries
     @Attribute()
