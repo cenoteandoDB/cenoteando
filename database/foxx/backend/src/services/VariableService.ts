@@ -67,9 +67,11 @@ export class VariableService {
                 `VariableService.updateVariable: User does not have update permissions. variable._key = ${_key}.`,
             );
 
-        const variable = Variables.findOne(_key);
+        let variable: Variable = Variables.findOne(_key);
+        if (!variable) variable = new Variable();
         // TODO: Check same key
         // TODO: Check valid data
+        // TODO: Throw error with details
         variable.merge(data);
         variable.save();
         return variable;

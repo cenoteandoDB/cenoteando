@@ -1,6 +1,6 @@
 import createRouter from '@arangodb/foxx/router';
 import { UserService } from '../services';
-import { Joi } from 'type-arango';
+import Joi from 'joi';
 import dd from 'dedent';
 
 export default (): Foxx.Router => {

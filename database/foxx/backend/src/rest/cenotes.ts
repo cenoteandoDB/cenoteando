@@ -1,54 +1,14 @@
 import createRouter from '@arangodb/foxx/router';
-import { Joi } from 'type-arango';
+import Joi from 'joi';
 import dd from 'dedent';
 
 import { CenoteService, MoFService } from '../services';
+import { User } from '../model/documents';
 import {
-    AccessLevel,
-    CenoteType,
-    Issue,
-    Theme,
-    User,
-} from '../model/documents';
-
-const cenoteSchema = Joi.object({
-    _key: Joi.string(),
-    type: Joi.string().allow(...Object.keys(CenoteType)),
-    name: Joi.string(),
-    touristic: Joi.boolean(),
-    issues: Joi.array().items(Joi.string().allow(...Object.keys(Issue))),
-    alternativeNames: Joi.array().items(Joi.string()),
-    geojson: Joi.object({
-        geometry: Joi.object({
-            type: 'Point',
-            coordinates: [Joi.number(), Joi.number()],
-        }),
-        type: 'Feature',
-        properties: Joi.object({}),
-    }),
-    // TODO: Also allow returning the document properties?
-    gadm: Joi.string(),
-    social: Joi.object({
-        totalComments: Joi.number(),
-        rating: Joi.number().optional(),
-    }),
-    createdAt: Joi.string().isoDate(),
-    updatedAt: Joi.string().isoDate(),
-});
-const variableSchema = Joi.object({
-    _key: Joi.string(),
-    name: Joi.string(),
-    description: Joi.string(),
-    type: Joi.string(),
-    timeseries: Joi.boolean(),
-    multiple: Joi.boolean(),
-    accessLevel: Joi.string().allow(...Object.keys(AccessLevel)),
-    theme: Joi.string().allow(...Object.keys(Theme)),
-    createdAt: Joi.string().isoDate(),
-    updatedAt: Joi.string().isoDate(),
-});
-// TODO: Implement comment bucket schema
-const commentBucketSchema = Joi.object({});
+    CenoteSchema,
+    CommentBucketSchema,
+    VariableSchema,
+} from '../model/schema';
 
 export default (): Foxx.Router => {
     const router = createRouter();
@@ -74,7 +34,7 @@ export default (): Foxx.Router => {
         .response(
             'ok',
             Joi.object({
-                data: Joi.array().items(cenoteSchema).required(),
+                data: Joi.array().items(CenoteSchema).required(),
                 hasMore: Joi.boolean().required(),
                 continuationToken: Joi.string().required(),
             }).required(),
@@ -95,7 +55,7 @@ export default (): Foxx.Router => {
         .description('Get information about a cenote by key.')
         .response(
             'ok',
-            cenoteSchema.required(),
+            CenoteSchema.required(),
             ['application/json'],
             'The cenote requested.',
         );
@@ -111,12 +71,12 @@ export default (): Foxx.Router => {
                 CenoteService.updateCenote(user, req.pathParams._key, req.body),
             );
         })
-        .body(cenoteSchema.required(), 'The cenote data to update.')
+        .body(CenoteSchema.required(), 'The cenote data to update.')
         .summary('Update a cenote.')
         .description('Updates information about a cenote by key.')
         .response(
             'ok',
-            cenoteSchema.required(),
+            CenoteSchema.required(),
             ['application/json'],
             'The updated cenote.',
         );
@@ -174,7 +134,7 @@ export default (): Foxx.Router => {
         .response(
             'ok',
             Joi.object({
-                data: Joi.array().items(cenoteSchema).required(),
+                data: Joi.array().items(CenoteSchema).required(),
             }).required(),
             ['application/json'],
             'The uploaded cenote information in JSON format.',
@@ -204,7 +164,7 @@ export default (): Foxx.Router => {
             Joi.object().pattern(
                 Joi.string(),
                 Joi.object({
-                    variable: variableSchema.required(),
+                    variable: VariableSchema.required(),
                     values: Joi.array()
                         .items(
                             Joi.object({
@@ -233,7 +193,7 @@ export default (): Foxx.Router => {
         .description('Gets all comments for a specific cenote')
         .response(
             'ok',
-            commentBucketSchema.required(),
+            CommentBucketSchema.required(),
             ['application/json'],
             'All comments for the specified cenote.',
         );

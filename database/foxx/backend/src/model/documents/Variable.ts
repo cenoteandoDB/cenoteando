@@ -21,6 +21,15 @@ export enum AccessLevel {
     SENSITIVE = 'SENSITIVE',
 }
 
+export enum VariableType {
+    STRING = 'STRING',
+    BOOLEAN = 'BOOLEAN',
+    UNITLESS_NUMBER = 'UNITLESS_NUMBER',
+    NUMBER_WITH_UNITS = 'NUMBER_WITH_UNITS',
+    ENUM = 'ENUM',
+    NO_TYPE = 'NO_TYPE',
+}
+
 @Document()
 export class Variable extends Entity {
     @Attribute()
@@ -30,9 +39,12 @@ export class Variable extends Entity {
     description: string;
 
     // TODO: Fix data type
-    // TODO: Create enum with types: boolean, string, enum, number, number with units (see npm package "safe-units")
     @Attribute()
-    type: string;
+    type: VariableType;
+
+    // Use units compatible with the node.js package "safe-units"
+    @Attribute()
+    units: string;
 
     // TODO: Fix timeseries
     @Attribute()

@@ -1,16 +1,8 @@
 import createRouter from '@arangodb/foxx/router';
-import { Joi } from 'type-arango';
-import { User, UserRole } from '../model/documents';
+import Joi from 'joi';
+import { User } from '../model/documents';
 import { UserService } from '../services';
-
-const userSchema = Joi.object({
-    _key: Joi.string(),
-    email: Joi.string().email(),
-    name: Joi.string(),
-    role: Joi.string().allow(...Object.keys(UserRole)),
-    createdAt: Joi.string().isoDate(),
-    updatedAt: Joi.string().isoDate(),
-});
+import { UserSchema } from '../model/schema';
 
 export default (): Foxx.Router => {
     const router = createRouter();
@@ -33,7 +25,7 @@ export default (): Foxx.Router => {
         .description('Fetches all known users.')
         .response(
             'ok',
-            Joi.array().items(userSchema).required(),
+            Joi.array().items(UserSchema).required(),
             ['application/json'],
             'All users',
         );
@@ -51,7 +43,7 @@ export default (): Foxx.Router => {
         .description('Fetches a specific user by key.')
         .response(
             'ok',
-            userSchema.required(),
+            UserSchema.required(),
             ['application/json'],
             'The user requested',
         );
@@ -65,12 +57,12 @@ export default (): Foxx.Router => {
                 user = new User(req.session.data);
             UserService.updateUser(user, req.pathParams._key, req.body);
         })
-        .body(userSchema.required(), 'The user data to update.')
+        .body(UserSchema.required(), 'The user data to update.')
         .summary('Update a user.')
         .description('Updates information about a user by key.')
         .response(
             'ok',
-            userSchema.required(),
+            UserSchema.required(),
             ['application/json'],
             'The updated user.',
         );

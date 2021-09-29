@@ -57,9 +57,11 @@ export class SpeciesService {
                 `SpeciesService.updateSpecies: User does not have update permissions. species._key = ${_key}.`,
             );
 
-        const species = Species.findOne(_key);
+        let species = Species.findOne(_key);
+        if (!species) species = new Species();
         // TODO: Check same key
         // TODO: Check valid data
+        // TODO: Throw error with details
         species.merge(data);
         species.save();
         return species;

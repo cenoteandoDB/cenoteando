@@ -115,7 +115,7 @@ import CenoteDTO, { CenoteIssue, CenoteType } from '@/models/CenoteDTO';
 
 @Component({
     props: {
-        cenote: CenoteDTO,
+        cenoteProp: CenoteDTO,
     },
 })
 export default class EditCenoteDialog extends Vue {
@@ -128,31 +128,24 @@ export default class EditCenoteDialog extends Vue {
     latitudeText = '';
     longitudeText = '';
     issues = Object.values(CenoteIssue);
+    cenote = new CenoteDTO();
 
     created(): void {
-        this.latitudeText = this.$props.cenote.getLatitude()?.toString() || '';
-        this.longitudeText =
-            this.$props.cenote.getLongitude()?.toString() || '';
+        this.cenote = new CenoteDTO(this.$props.cenoteProp);
+        this.latitudeText = this.cenote.getLatitude()?.toString() || '';
+        this.longitudeText = this.cenote.getLongitude()?.toString() || '';
     }
 
     save(): void {
-        this.processCoordinates();
+        // TODO: Deal with N, S and E, W
+        const lat = JSON.parse(this.latitudeText);
+        const lon = JSON.parse(this.longitudeText);
+        this.cenote.setLatitude(lat);
+        this.cenote.setLongitude(lon);
+
+        Object.assign(this.$props.cenoteProp, this.cenote);
         this.$emit('onSave');
         this.dialog = false;
-    }
-
-    processCoordinates(): void {
-        // TODO: Deal with N, S and E, W
-        this.setLatitude(this.latitudeText);
-        this.setLongitude(this.longitudeText);
-    }
-
-    setLatitude(value: string): void {
-        this.$props.cenote.setLatitude(JSON.parse(value));
-    }
-
-    setLongitude(value: string): void {
-        this.$props.cenote.setLongitude(JSON.parse(value));
     }
 }
 </script>

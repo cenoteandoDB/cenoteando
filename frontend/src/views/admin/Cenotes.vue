@@ -17,7 +17,7 @@
                     />
                     <v-spacer />
                     <edit-cenote-dialog
-                        :cenote="newCenote"
+                        :cenoteProp="newCenote"
                         @onSave="createCenote()"
                     >
                         <template v-slot:activator="{ on, attrs }">
@@ -117,7 +117,7 @@
 
             <template v-slot:[`item.action`]="{ item }">
                 <edit-cenote-dialog
-                    :cenote="item.cenote"
+                    :cenoteProp="item.cenote"
                     @onSave="updateCenote(item.cenote)"
                 >
                     <template v-slot:activator="{ on, attrs }">

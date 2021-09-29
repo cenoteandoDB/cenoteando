@@ -77,9 +77,11 @@ export class UserService {
                 `UserService.updateUser: User does not have update permissions. user._key = ${_key}.`,
             );
 
-        const user = Users.findOne(_key);
+        let user = Users.findOne(_key);
+        if (!user) user = new User();
         // TODO: Check same key
         // TODO: Check valid data
+        // TODO: Throw error with details
         user.merge(data);
         user.save();
         return Object.assign({}, user, { password: undefined });

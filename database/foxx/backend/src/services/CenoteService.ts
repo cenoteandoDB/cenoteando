@@ -50,9 +50,13 @@ export class CenoteService {
                 `CenoteService.updateCenote: User does not have update permissions. cenote._key = ${_key}.`,
             );
 
-        const cenote = Cenotes.findOne(_key);
+        let cenote = Cenotes.findOne(_key);
+        // TODO: Throw error if not found
+        if (!cenote) cenote = new Cenote();
         // TODO: Check same key
         // TODO: Check valid data
+        // TODO: Throw error with details
+
         cenote.merge(data);
         cenote.save();
         return cenote;

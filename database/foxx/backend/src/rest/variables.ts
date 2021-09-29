@@ -1,22 +1,10 @@
 import createRouter from '@arangodb/foxx/router';
-import { Joi } from 'type-arango';
+import Joi from 'joi';
 import dd from 'dedent';
 
 import { VariableService } from '../services';
-import { AccessLevel, Theme, User, Variable } from '../model/documents';
-
-const variableSchema = Joi.object({
-    _key: Joi.string(),
-    name: Joi.string(),
-    description: Joi.string(),
-    type: Joi.string(),
-    timeseries: Joi.boolean(),
-    multiple: Joi.boolean(),
-    accessLevel: Joi.string().allow(...Object.keys(AccessLevel)),
-    theme: Joi.string().allow(...Object.keys(Theme)),
-    createdAt: Joi.string().isoDate(),
-    updatedAt: Joi.string().isoDate(),
-});
+import { User, Variable } from '../model/documents';
+import { VariableSchema } from '../model/schema';
 
 export default (): Foxx.Router => {
     const router = createRouter();
@@ -44,7 +32,7 @@ export default (): Foxx.Router => {
         .response(
             'ok',
             Joi.object({
-                data: Joi.array().items(variableSchema).required(),
+                data: Joi.array().items(VariableSchema).required(),
                 hasMore: Joi.boolean().required(),
                 continuationToken: Joi.string().required(),
             }).required(),
@@ -65,7 +53,7 @@ export default (): Foxx.Router => {
         .description('Get information about a variable by key.')
         .response(
             'ok',
-            variableSchema.required(),
+            VariableSchema.required(),
             ['application/json'],
             'The variable requested.',
         );
@@ -79,12 +67,12 @@ export default (): Foxx.Router => {
                 user = new User(req.session.data);
             VariableService.updateVariable(user, req.pathParams._key, req.body);
         })
-        .body(variableSchema.required(), 'The variable data to update.')
+        .body(VariableSchema.required(), 'The variable data to update.')
         .summary('Update a variable.')
         .description('Updates information about a variable by key.')
         .response(
             'ok',
-            variableSchema.required(),
+            VariableSchema.required(),
             ['application/json'],
             'The updated variable.',
         );
@@ -152,7 +140,7 @@ export default (): Foxx.Router => {
         .response(
             'ok',
             Joi.object({
-                data: Joi.array().items(variableSchema).required(),
+                data: Joi.array().items(VariableSchema).required(),
             }).required(),
             ['application/json'],
             'The uploaded variable information in JSON format.',

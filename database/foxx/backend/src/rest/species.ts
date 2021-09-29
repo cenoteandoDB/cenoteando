@@ -1,17 +1,10 @@
 import createRouter from '@arangodb/foxx/router';
-import { Joi } from 'type-arango';
+import Joi from 'joi';
 import dd from 'dedent';
 
 import { SpeciesService } from '../services';
 import { User } from '../model/documents';
-
-const speciesSchema = Joi.object({
-    _key: Joi.string(),
-    aphiaId: Joi.string(),
-    iNaturalistId: Joi.string(),
-    createdAt: Joi.string().isoDate(),
-    updatedAt: Joi.string().isoDate(),
-});
+import { SpeciesSchema } from '../model/schema';
 
 export default (): Foxx.Router => {
     const router = createRouter();
@@ -29,7 +22,7 @@ export default (): Foxx.Router => {
         .description('Fetches all known species.')
         .response(
             'ok',
-            Joi.array().items(speciesSchema).required(),
+            Joi.array().items(SpeciesSchema).required(),
             ['application/json'],
             'All species',
         );
@@ -47,7 +40,7 @@ export default (): Foxx.Router => {
         .description('Fetches a specific species by key.')
         .response(
             'ok',
-            speciesSchema.required(),
+            SpeciesSchema.required(),
             ['application/json'],
             'The species requested',
         );
@@ -67,12 +60,12 @@ export default (): Foxx.Router => {
                 ),
             );
         })
-        .body(speciesSchema.required(), 'The species data to update.')
+        .body(SpeciesSchema.required(), 'The species data to update.')
         .summary('Update a species.')
         .description('Updates information about a species by key.')
         .response(
             'ok',
-            speciesSchema.required(),
+            SpeciesSchema.required(),
             ['application/json'],
             'The updated species.',
         );
@@ -128,7 +121,7 @@ export default (): Foxx.Router => {
         .response(
             'ok',
             Joi.object({
-                data: Joi.array().items(speciesSchema).required(),
+                data: Joi.array().items(SpeciesSchema).required(),
             }).required(),
             ['application/json'],
             'The uploaded species information in JSON format.',

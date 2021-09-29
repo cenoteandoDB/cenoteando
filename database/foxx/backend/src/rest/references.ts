@@ -1,21 +1,10 @@
 import createRouter from '@arangodb/foxx/router';
-import { Joi } from 'type-arango';
+import Joi from 'joi';
 import dd from 'dedent';
 
 import { ReferenceService } from '../services';
-import { ReferenceType, User } from '../model/documents';
-
-const referenceSchema = Joi.object({
-    _key: Joi.string(),
-    authors: Joi.string(),
-    fileName: Joi.string(),
-    reference: Joi.string(),
-    shortName: Joi.string(),
-    type: Joi.string().allow(...Object.keys(ReferenceType)),
-    year: Joi.string(),
-    createdAt: Joi.string().isoDate(),
-    updatedAt: Joi.string().isoDate(),
-});
+import { User } from '../model/documents';
+import { ReferenceSchema } from '../model/schema';
 
 export default (): Foxx.Router => {
     const router = createRouter();
@@ -33,7 +22,7 @@ export default (): Foxx.Router => {
         .description('Fetches all known references.')
         .response(
             'ok',
-            Joi.array().items(referenceSchema).required(),
+            Joi.array().items(ReferenceSchema).required(),
             ['application/json'],
             'All references',
         );
@@ -53,7 +42,7 @@ export default (): Foxx.Router => {
         .description('Fetches a specific reference by key.')
         .response(
             'ok',
-            referenceSchema.required(),
+            ReferenceSchema.required(),
             ['application/json'],
             'The reference requested',
         );
@@ -73,12 +62,12 @@ export default (): Foxx.Router => {
                 ),
             );
         })
-        .body(referenceSchema.required(), 'The reference data to update.')
+        .body(ReferenceSchema.required(), 'The reference data to update.')
         .summary('Update a reference.')
         .description('Updates information about a reference by key.')
         .response(
             'ok',
-            referenceSchema.required(),
+            ReferenceSchema.required(),
             ['application/json'],
             'The updated reference.',
         );
@@ -134,7 +123,7 @@ export default (): Foxx.Router => {
         .response(
             'ok',
             Joi.object({
-                data: Joi.array().items(referenceSchema).required(),
+                data: Joi.array().items(ReferenceSchema).required(),
             }).required(),
             ['application/json'],
             'The uploaded references information in JSON format.',
