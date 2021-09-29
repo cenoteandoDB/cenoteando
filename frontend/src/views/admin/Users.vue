@@ -1,5 +1,5 @@
 <template>
-    <v-card class="table">
+    <v-card class="table mx-16">
         <v-data-table
             :headers="headers"
             :items="filteredUsers"
@@ -104,7 +104,7 @@ export default class Users extends Vue {
 
         (async () => {
             let generator = RemoteServices.usersGenerator(
-                500 /* TODO: Change to 15 after adding createdAt & updatedAt attributes */,
+                15,
             );
             for await (let batch of generator) {
                 if (!this.users.length)

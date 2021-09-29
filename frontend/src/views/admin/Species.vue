@@ -1,5 +1,5 @@
 <template>
-    <v-card class="table">
+    <v-card class="table mx-16">
         <v-data-table
             :headers="headers"
             :items="species"
