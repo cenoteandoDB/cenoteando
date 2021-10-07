@@ -177,6 +177,9 @@ export default class Variables extends Vue {
         { text: 'Access Level', value: 'accessLevel' },
         { text: 'Timeseries', value: 'timeseries' },
         { text: 'Data type', value: 'type' },
+        { text: 'Enum Values', value: 'enumValues' },
+        { text: 'Units', value: 'units' },
+        { text: 'Methodology', value: 'methodology' },
         { text: 'Actions', value: 'action' },
     ];
 

@@ -89,6 +89,26 @@
                         data-cy="timeseries"
                         label="Timeseries"
                     ></v-checkbox>
+
+                    <v-text-field
+                        v-if="variable.type === 'ENUM'"
+                        v-model="variable.enumValues"
+                        data-cy="enum-values"
+                        label="Enum Values"
+                    ></v-text-field>
+
+                    <v-text-field
+                        v-model="variable.methodology"
+                        data-cy="methodology"
+                        label="Methodology"
+                    ></v-text-field>
+
+                    <v-text-field
+                        v-if="variable.type === 'NUMBER_WITH_UNITS'"
+                        v-model="variable.units"
+                        data-cy="units"
+                        label="Units"
+                    ></v-text-field>
                 </v-form>
             </v-card-text>
             <v-card-actions>
