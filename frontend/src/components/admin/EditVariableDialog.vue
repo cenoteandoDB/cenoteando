@@ -98,16 +98,16 @@
                     ></v-text-field>
 
                     <v-text-field
-                        v-model="variable.methodology"
-                        data-cy="methodology"
-                        label="Methodology"
-                    ></v-text-field>
-
-                    <v-text-field
                         v-if="variable.type === 'NUMBER_WITH_UNITS'"
                         v-model="variable.units"
                         data-cy="units"
                         label="Units"
+                    ></v-text-field>
+
+                    <v-text-field
+                        v-model="variable.methodology"
+                        data-cy="methodology"
+                        label="Methodology"
                     ></v-text-field>
                 </v-form>
             </v-card-text>
@@ -157,7 +157,7 @@ export default class EditVariableDialog extends Vue {
         'TOURISM',
         'WATER',
     ];
-    dataTypes = ['NO_TYPE'];
+    dataTypes = ['NO_TYPE', 'NUMBER_WITH_UNITS', 'BOOLEAN', 'ENUM'];
     accessLevels = ['PUBLIC', 'PRIVATE', 'SENSITIVE'];
 
     save(): void {
