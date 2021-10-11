@@ -40,7 +40,7 @@
                     <v-select
                         v-model="reference.type"
                         data-cy="Type"
-                        :items="type"
+                        :items="types"
                         label="Type"
                     ></v-select>
                 </v-form>
