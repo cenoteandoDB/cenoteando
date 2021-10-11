@@ -78,6 +78,7 @@
                         <v-select
                             class="pt-2 pl-10 pr-10"
                             :items="latitudeDir"
+                            @input="setSelected"
                             dense
                             solo
                             width="5"
@@ -90,10 +91,13 @@
                             v-model="longitudeText"
                             data-cy="longitude"
                             label="Longitude"
+                            required
                         ></v-text-field>
                         <v-select
+                            v-model="select"
                             class="pt-2 pl-10 pr-10"
                             :items="longitudeDir"
+                            @input="setSelected"
                             dense
                             solo
                             width="5"
@@ -156,6 +160,23 @@ export default class EditCenoteDialog extends Vue {
         this.cenote = new CenoteDTO(this.$props.cenoteProp);
         this.latitudeText = this.cenote.getLatitude()?.toString() || '';
         this.longitudeText = this.cenote.getLongitude()?.toString() || '';
+    }
+
+    //STILL TESTING / NOT WORKING
+    setSelected(value): void {
+        for (let i = 0; i < 2; i++) {
+            if (value === 'N') {
+                Number(this.latitudeText) * 1;
+            } else if (value === 'S') {
+                Number(this.latitudeText) * -1;
+            }
+
+            if (value === 'W') {
+                Number(this.longitudeText) * 1;
+            } else if (value === 'E') {
+                Number(this.longitudeText) * -1;
+            }
+        }
     }
 
     save(): void {
