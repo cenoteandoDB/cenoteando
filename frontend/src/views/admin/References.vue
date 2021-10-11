@@ -25,7 +25,6 @@
                                 v-on="on"
                                 v-bind="attrs"
                                 data-cy="createButton"
-                                class="ma-2"
                             >
                                 <v-icon color="green">mdi-plus</v-icon>
                             </v-btn>
@@ -69,10 +68,7 @@
                         </v-card>
                     </v-dialog>
 
-                    <v-btn
-                        @click="download"
-                        data-cy="downloadButton"
-                        class="ma-2"
+                    <v-btn @click="download" data-cy="downloadButton"
                         ><v-icon color="primary">mdi-download</v-icon></v-btn
                     >
                 </v-card-title>
