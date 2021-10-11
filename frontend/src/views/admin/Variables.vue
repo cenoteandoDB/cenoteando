@@ -131,7 +131,7 @@
                     >
                         <template v-slot:activator="{ on, attrs }">
                             <v-icon
-                                class="mr-2 action-button"
+                                class="action-button"
                                 :data-cy="'editVariable_' + item._key"
                                 v-on="on"
                                 v-bind="attrs"
@@ -171,9 +171,9 @@ export default class Variables extends Vue {
         { text: 'Description', value: 'description' },
         { text: 'Theme', value: 'theme' },
         { text: 'Access Level', value: 'accessLevel' },
-        { text: 'Data type', value: 'type' },
+        { text: 'Data Type', value: 'type' },
         { text: 'Timeseries', value: 'timeseries' },
-        { text: 'Timeseries', value: 'multiple' },
+        { text: 'Multiple', value: 'multiple' },
         { text: 'Enum Values', value: 'enumValues' },
         { text: 'Units', value: 'units' },
         { text: 'Methodology', value: 'methodology' },

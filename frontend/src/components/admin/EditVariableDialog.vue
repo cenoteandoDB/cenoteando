@@ -90,12 +90,38 @@
                         label="Timeseries"
                     ></v-checkbox>
 
-                    <v-text-field
-                        v-if="variable.type === 'ENUM'"
+                    <v-checkbox
+                        v-model="variable.multiple"
+                        data-cy="multiple"
+                        label="multiple"
+                    ></v-checkbox>
+
+                    <v-combobox
                         v-model="variable.enumValues"
-                        data-cy="enum-values"
+                        v-if="variable.type === 'ENUM'"
+                        chips
+                        deletable-chips
+                        clearable
                         label="Enum Values"
-                    ></v-text-field>
+                        multiple
+                        data-cy="enum-values"
+                        solo
+                    >
+                        <template
+                            v-slot:selection="{ attrs, item, select, selected }"
+                        >
+                            <v-chip
+                                small
+                                v-bind="attrs"
+                                :input-value="selected"
+                                close
+                                @click="select"
+                                @click:close="remove(item)"
+                            >
+                                {{ item }}
+                            </v-chip>
+                        </template>
+                    </v-combobox>
 
                     <v-text-field
                         v-if="variable.type === 'NUMBER_WITH_UNITS'"
@@ -143,6 +169,8 @@ export default class EditVariableDialog extends Vue {
     dialog = false;
     valid = false;
 
+    chips = [''];
+
     themes = [
         'BIODIVERSITY',
         'CULTURAL',
@@ -159,6 +187,11 @@ export default class EditVariableDialog extends Vue {
     ];
     dataTypes = ['NO_TYPE', 'NUMBER_WITH_UNITS', 'BOOLEAN', 'ENUM'];
     accessLevels = ['PUBLIC', 'PRIVATE', 'SENSITIVE'];
+
+    remove(item: string): void {
+        this.chips.splice(this.chips.indexOf(item), 1);
+        this.chips = [...this.chips];
+    }
 
     save(): void {
         this.$emit('onSave');

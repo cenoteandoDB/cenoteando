@@ -13,6 +13,7 @@
                         v-model="search"
                         append-icon="mdi-magnify"
                         label="Search"
+                        class="mx-2"
                     />
                     <v-spacer />
                     <edit-cenote-dialog
