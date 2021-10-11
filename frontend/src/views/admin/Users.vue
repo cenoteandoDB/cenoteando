@@ -103,9 +103,7 @@ export default class Users extends Vue {
         await this.$store.dispatch('loading');
 
         (async () => {
-            let generator = RemoteServices.usersGenerator(
-                15,
-            );
+            let generator = RemoteServices.usersGenerator(15);
             for await (let batch of generator) {
                 if (!this.users.length)
                     await this.$store.dispatch('clearLoading');

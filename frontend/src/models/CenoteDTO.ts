@@ -61,11 +61,19 @@ export default class CenoteDTO {
         return this.geojson?.geometry.coordinates[0] || null;
     }
 
-    setLatitude(value: string): void {
-        this.geojson.geometry.coordinates[1] = JSON.parse(value);
-    }
-
-    setLongitude(value: string): void {
-        this.geojson.geometry.coordinates[0] = JSON.parse(value);
+    setCoordinates(latitude: number, longitude: number): void {
+        // TODO: Validate coordinates (Error handling)
+        if (this.geojson?.geometry?.coordinates) {
+            this.geojson.geometry.coordinates = [longitude, latitude];
+        } else {
+            this.geojson = {
+                type: 'Feature',
+                geometry: {
+                    type: 'Point',
+                    coordinates: [longitude, latitude],
+                },
+                properties: this.geojson?.properties || {},
+            };
+        }
     }
 }

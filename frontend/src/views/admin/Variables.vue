@@ -171,8 +171,9 @@ export default class Variables extends Vue {
         { text: 'Description', value: 'description' },
         { text: 'Theme', value: 'theme' },
         { text: 'Access Level', value: 'accessLevel' },
-        { text: 'Timeseries', value: 'timeseries' },
         { text: 'Data type', value: 'type' },
+        { text: 'Timeseries', value: 'timeseries' },
+        { text: 'Timeseries', value: 'multiple' },
         { text: 'Enum Values', value: 'enumValues' },
         { text: 'Units', value: 'units' },
         { text: 'Methodology', value: 'methodology' },
@@ -195,7 +196,16 @@ export default class Variables extends Vue {
     ];
     accessLevels = ['PUBLIC', 'PRIVATE', 'SENSITIVE'];
     timeseries = [true, false];
-    dataTypes = ['NO_TYPE'];
+    dataTypes = [
+        'BOOLEAN',
+        'DATE',
+        'ENUM',
+        'NUMBER_WITH_UNITS',
+        'STRING',
+        'TEXT',
+        'TIME',
+        'UNITLESS_NUMBER',
+    ];
 
     search = '';
     newVariable = new VariableDTO();

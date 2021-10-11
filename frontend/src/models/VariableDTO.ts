@@ -23,13 +23,13 @@ export default class VariableDTO {
             this.theme = jsonObj.theme;
             this.timeseries = jsonObj.timeseries;
             this.type = jsonObj.type;
-            if (this.units) {
+            if (jsonObj.units) {
                 this.units = jsonObj.units;
             }
-            if (this.enumValues) {
+            if (jsonObj.enumValues) {
                 this.enumValues = jsonObj.enumValues;
             }
-            if (this.methodology) {
+            if (jsonObj.methodology) {
                 this.methodology = jsonObj.methodology;
             }
         }

@@ -76,9 +76,9 @@
                             label="Latitude"
                         ></v-text-field>
                         <v-select
+                            v-model="latitudeDirSelection"
                             class="pt-2 pl-10 pr-10"
                             :items="latitudeDir"
-                            @input="setSelected"
                             dense
                             solo
                             width="5"
@@ -94,10 +94,9 @@
                             required
                         ></v-text-field>
                         <v-select
-                            v-model="select"
+                            v-model="longitudeDirSelection"
                             class="pt-2 pl-10 pr-10"
                             :items="longitudeDir"
-                            @input="setSelected"
                             dense
                             solo
                             width="5"
@@ -151,6 +150,8 @@ export default class EditCenoteDialog extends Vue {
     touristic = [true, false];
     latitudeText = '';
     longitudeText = '';
+    latitudeDirSelection = 'N';
+    longitudeDirSelection = 'W';
     issues = Object.values(CenoteIssue);
     cenote = new CenoteDTO();
     latitudeDir = ['N', 'S'];
@@ -158,33 +159,28 @@ export default class EditCenoteDialog extends Vue {
 
     created(): void {
         this.cenote = new CenoteDTO(this.$props.cenoteProp);
-        this.latitudeText = this.cenote.getLatitude()?.toString() || '';
-        this.longitudeText = this.cenote.getLongitude()?.toString() || '';
-    }
+        let lat = this.cenote.getLatitude();
+        let lon = this.cenote.getLongitude();
 
-    //STILL TESTING / NOT WORKING
-    setSelected(value): void {
-        for (let i = 0; i < 2; i++) {
-            if (value === 'N') {
-                Number(this.latitudeText) * 1;
-            } else if (value === 'S') {
-                Number(this.latitudeText) * -1;
-            }
+        if (lat) {
+            this.latitudeText = Math.abs(lat).toString();
+            if (lat >= 0) this.latitudeDirSelection = 'N';
+            else this.latitudeDirSelection = 'S';
+        } else this.latitudeText = '';
 
-            if (value === 'W') {
-                Number(this.longitudeText) * 1;
-            } else if (value === 'E') {
-                Number(this.longitudeText) * -1;
-            }
-        }
+        if (lon) {
+            this.longitudeText = Math.abs(lon).toString();
+            if (lon >= 0) this.longitudeDirSelection = 'E';
+            else this.longitudeDirSelection = 'W';
+        } else this.longitudeText = '';
     }
 
     save(): void {
-        // TODO: Deal with N, S and E, W
-        const lat = JSON.parse(this.latitudeText);
-        const lon = JSON.parse(this.longitudeText);
-        this.cenote.setLatitude(lat);
-        this.cenote.setLongitude(lon);
+        let lat = JSON.parse(this.latitudeText);
+        let lon = JSON.parse(this.longitudeText);
+        if (this.latitudeDirSelection === 'S') lat = -lat;
+        if (this.longitudeDirSelection === 'W') lat = -lon;
+        this.cenote.setCoordinates(lat, lon);
 
         Object.assign(this.$props.cenoteProp, this.cenote);
         this.$emit('onSave');
