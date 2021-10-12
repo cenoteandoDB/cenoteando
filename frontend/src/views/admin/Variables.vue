@@ -118,6 +118,15 @@
                                 hint="Timeseries or constant"
                                 persistent-hint
                             ></v-select>
+                            <v-select
+                                v-model="filterMultiple"
+                                :items="multiple"
+                                label="Multiple"
+                                multiple
+                                chips
+                                hint="Multiple or constant"
+                                persistent-hint
+                            ></v-select>
                         </v-expansion-panel-content>
                     </v-expansion-panel>
                 </v-expansion-panels>
@@ -196,6 +205,7 @@ export default class Variables extends Vue {
     ];
     accessLevels = ['PUBLIC', 'PRIVATE', 'SENSITIVE'];
     timeseries = [true, false];
+    multiple = [true, false];
     dataTypes = [
         'BOOLEAN',
         'DATE',
@@ -213,6 +223,7 @@ export default class Variables extends Vue {
     filterAccessLevels: string[] = [];
     filterTimeseries: boolean[] = [];
     filterDataTypes: string[] = [];
+    filterMultiple: boolean[] = [];
 
     variables: VariableDTO[] = [];
 
@@ -232,6 +243,11 @@ export default class Variables extends Vue {
                 (v) =>
                     !this.filterTimeseries.length ||
                     this.filterTimeseries.includes(v.timeseries),
+            )
+            .filter(
+                (v) =>
+                    !this.filterMultiple.length ||
+                    this.filterMultiple.includes(v.multiple),
             )
             .filter(
                 (v) =>
