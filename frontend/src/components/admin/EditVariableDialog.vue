@@ -97,7 +97,7 @@
                     ></v-checkbox>
 
                     <v-combobox
-                        v-model="variable.enumValues"
+                        v-model="chips"
                         v-if="variable.type === 'ENUM'"
                         chips
                         deletable-chips
@@ -111,6 +111,7 @@
                             v-slot:selection="{ attrs, item, select, selected }"
                         >
                             <v-chip
+                                item="variable.enumValues"
                                 small
                                 v-bind="attrs"
                                 :input-value="selected"
@@ -169,6 +170,7 @@ export default class EditVariableDialog extends Vue {
     dialog = false;
     valid = false;
 
+    items = [''];
     chips = [''];
 
     themes = [

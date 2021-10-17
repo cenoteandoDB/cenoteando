@@ -133,7 +133,7 @@
             </template>
 
             <template v-slot:[`item.action`]="{ item }">
-                <v-container class="d-flex">
+                <v-container class="d-flex pr-15">
                     <edit-variable-dialog
                         :variable="item"
                         @onSave="updateVariable(item)"
