@@ -1,0 +1,1 @@
+2021/10/17 14:54:52 [error] 33#33: *1 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: localhost, request: "OPTIONS /api/auth/login HTTP/1.1", upstream: "http://172.18.0.2:8529/_db/cenoteando/api/auth/login", host: "localhost", referrer: "http://localhost:8080/"

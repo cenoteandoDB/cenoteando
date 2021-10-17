@@ -1,5 +1,5 @@
 <template>
-    <v-card class="table mx-16">
+    <v-card class="table mx-17">
         <v-data-table
             :headers="headers"
             :items="references"
@@ -76,23 +76,38 @@
 
             <!-- TODO: Add edit and delete reference actions -->
             <template v-slot:[`item.action`]="{ item }">
-                <edit-reference-dialog
-                    :reference="item"
-                    @onSave="updateReference(item)"
-                >
-                    <template v-slot:activator="{ on, attrs }">
-                        <v-icon
-                            class="mr-2 action-button"
-                            v-on="on"
-                            v-bind="attrs"
-                            color="green"
-                            data-cy="editReference"
-                            >mdi-pencil</v-icon
-                        >
-                    </template>
-                </edit-reference-dialog>
+                <v-container class="d-flex d-row">
+                    <edit-reference-dialog
+                        :reference="item"
+                        @onSave="updateReference(item)"
+                    >
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-icon
+                                class="mr-2 action-button"
+                                v-on="on"
+                                v-bind="attrs"
+                                color="green"
+                                data-cy="editReference"
+                                >mdi-pencil</v-icon
+                            >
+                        </template>
+                    </edit-reference-dialog>
 
-                <delete-dialog @onConfirm="deleteReference(item)" />
+                    <delete-dialog @onConfirm="deleteReference(item)" />
+
+                    <v-icon
+                        v-if="
+                            item.filename !== '' ||
+                            item.filename !== undefined ||
+                            item.filename !== null
+                        "
+                        @click="download"
+                        data-cy="downloadButton"
+                        fab
+                        color="primary"
+                        >mdi-download</v-icon
+                    >
+                </v-container>
             </template>
         </v-data-table>
     </v-card>

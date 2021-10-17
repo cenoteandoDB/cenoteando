@@ -19,11 +19,6 @@
                         data-cy="authors"
                         label="Authors"
                     ></v-text-field>
-                    <v-text-field
-                        v-model="reference.reference"
-                        data-cy="reference"
-                        label="Reference"
-                    ></v-text-field>
 
                     <v-text-field
                         v-model="reference.shortName"
