@@ -170,9 +170,6 @@ export default class EditVariableDialog extends Vue {
     dialog = false;
     valid = false;
 
-    items = [''];
-    chips = [''];
-
     themes = [
         'BIODIVERSITY',
         'CULTURAL',
@@ -191,8 +188,7 @@ export default class EditVariableDialog extends Vue {
     accessLevels = ['PUBLIC', 'PRIVATE', 'SENSITIVE'];
 
     remove(item: string): void {
-        this.chips.splice(this.chips.indexOf(item), 1);
-        this.chips = [...this.chips];
+        this.$props.variable.enumValues.splice(this.$props.variable.enumValues.indexOf(item), 1);
     }
 
     save(): void {
