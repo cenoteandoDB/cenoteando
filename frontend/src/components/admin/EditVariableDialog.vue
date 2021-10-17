@@ -97,21 +97,21 @@
                     ></v-checkbox>
 
                     <v-combobox
-                        v-model="chips"
                         v-if="variable.type === 'ENUM'"
+                        label="Enum Values"
+                        data-cy="enum-values"
+                        v-model="variable.enumValues"
+                        append-icon=""
                         chips
                         deletable-chips
                         clearable
-                        label="Enum Values"
                         multiple
-                        data-cy="enum-values"
                         solo
                     >
                         <template
                             v-slot:selection="{ attrs, item, select, selected }"
                         >
                             <v-chip
-                                item="variable.enumValues"
                                 small
                                 v-bind="attrs"
                                 :input-value="selected"

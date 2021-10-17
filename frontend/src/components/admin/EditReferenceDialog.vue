@@ -5,25 +5,19 @@
         </template>
 
         <v-card class="pt-5 mt-5 justify-center">
-            <v-card-title>
-                <span>Reference</span>
-                <v-form v-model="valid">
-                    <v-container class="d-flex">
-                        <v-text-field
-                            v-model="reference.fullName"
-                            label="Name"
-                            :rules="[(v) => !!v || 'Name is required']"
-                            required
-                        ></v-text-field>
-                    </v-container>
-                </v-form>
-            </v-card-title>
+            <v-card-title> Reference {{ reference._key }} </v-card-title>
             <v-card-text>
                 <v-form v-model="valid">
                     <v-text-field
+                        v-model="reference.reference"
+                        data-cy="reference"
+                        label="Reference"
+                        required
+                    ></v-text-field>
+                    <v-text-field
                         v-model="reference.authors"
                         data-cy="authors"
-                        label="authors"
+                        label="Authors"
                     ></v-text-field>
                     <v-text-field
                         v-model="reference.reference"
@@ -76,7 +70,15 @@ export default class EditReferenceDialog extends Vue {
     dialog = false;
     valid = false;
 
-    types = ['BOOKCHAPTER', 'THESIS', 'JOURNAL'];
+    types = [
+        'BOOK',
+        'BOOK_CHAPTER',
+        'JOURNAL',
+        'OTHER',
+        'REPORT',
+        'THESIS',
+        'WEBPAGE',
+    ];
 
     save(): void {
         this.$emit('onSave');
