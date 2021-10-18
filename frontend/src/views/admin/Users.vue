@@ -1,5 +1,5 @@
 <template>
-    <v-card class="table mx-16">
+    <v-card class="table mx-17">
         <v-data-table
             :headers="headers"
             :items="filteredUsers"
