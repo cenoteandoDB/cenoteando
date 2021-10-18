@@ -1,5 +1,5 @@
 <template>
-    <v-card class="table mx-16">
+    <v-card class="table mx-17">
         <v-data-table
             :headers="headers"
             :items="species"
@@ -16,10 +16,65 @@
                         class="mx-2"
                     />
                     <v-spacer />
-                    <edit-species-dialog
-                        :species="newSpecie"
-                        @onSave="createSpecie()"
-                    >
+
+                    <v-container class="d-flex flex-row justify-center">
+                        <edit-species-dialog
+                            :species="newSpecie"
+                            @onSave="createSpecie()"
+                        >
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn
+                                    v-on="on"
+                                    v-bind="attrs"
+                                    data-cy="createButton"
+                                >
+                                    <v-icon color="green">mdi-plus</v-icon>
+                                </v-btn>
+                            </template>
+                        </edit-species-dialog>
+
+                        <v-dialog max-width="600px">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn
+                                    v-on="on"
+                                    v-bind="attrs"
+                                    data-cy="uploadButton"
+                                    ><v-icon color="primary"
+                                        >mdi-upload</v-icon
+                                    ></v-btn
+                                >
+                            </template>
+                            <v-card class="pt-5 mt-5 justify-center">
+                                <v-card-title>
+                                    <span class="text-h5">Upload Species </span>
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-form>
+                                        <v-file-input
+                                            @change="selectFiles"
+                                            multiple
+                                            counter
+                                            show-size
+                                            chips
+                                            accept=".csv"
+                                        />
+                                    </v-form>
+                                    <!-- TODO: Add progressbar
+                                    <v-progress-linear
+                                        :value="this.uploadProgress"
+                                    ></v-progress-linear>
+                                    -->
+                                    <v-btn @click="upload">Upload</v-btn>
+                                </v-card-text>
+                            </v-card>
+                        </v-dialog>
+
+                        <v-btn @click="download" data-cy="downloadButton"
+                            ><v-icon color="primary"
+                                >mdi-download</v-icon
+                            ></v-btn
+                        >
+
                         <template v-slot:activator="{ on, attrs }">
                             <v-btn
                                 v-on="on"
@@ -29,59 +84,7 @@
                                 <v-icon color="green">mdi-plus</v-icon>
                             </v-btn>
                         </template>
-                    </edit-species-dialog>
-
-                    <v-dialog max-width="600px">
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-btn
-                                v-on="on"
-                                v-bind="attrs"
-                                data-cy="uploadButton"
-                                class="ma-2"
-                                ><v-icon color="primary"
-                                    >mdi-upload</v-icon
-                                ></v-btn
-                            >
-                        </template>
-                        <v-card class="pt-5 mt-5 justify-center">
-                            <v-card-title>
-                                <span class="text-h5">Upload Species </span>
-                            </v-card-title>
-                            <v-card-text>
-                                <v-form>
-                                    <v-file-input
-                                        @change="selectFiles"
-                                        multiple
-                                        counter
-                                        show-size
-                                        chips
-                                        accept=".csv"
-                                    />
-                                </v-form>
-                                <!-- TODO: Add progressbar
-                                    <v-progress-linear
-                                        :value="this.uploadProgress"
-                                    ></v-progress-linear>
-                                    -->
-                                <v-btn @click="upload">Upload</v-btn>
-                            </v-card-text>
-                        </v-card>
-                    </v-dialog>
-
-                    <v-btn @click="download" data-cy="downloadButton"
-                        ><v-icon color="primary">mdi-download</v-icon></v-btn
-                    >
-
-                    <template v-slot:activator="{ on, attrs }">
-                        <v-btn
-                            v-on="on"
-                            v-bind="attrs"
-                            data-cy="createButton"
-                            class="ma-2"
-                        >
-                            <v-icon color="green">mdi-plus</v-icon>
-                        </v-btn>
-                    </template>
+                    </v-container>
                 </v-card-title>
             </template>
 
