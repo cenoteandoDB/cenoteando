@@ -133,8 +133,6 @@ export default class References extends Vue {
     headers = [
         { text: 'Cenoteando ID', value: '_key' },
         { text: 'Authors', value: 'authors' },
-        { text: 'File Name', value: 'fileName' },
-        { text: 'Reference', value: 'reference' },
         { text: 'Short Name', value: 'shortName' },
         { text: 'Type', value: 'type' },
         { text: 'Year', value: 'year' },
