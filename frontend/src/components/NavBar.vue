@@ -154,10 +154,10 @@
                                 color="white"
                             >
                                 <v-list-item-action>
-                                    <v-icon>{{ child.icon }}</v-icon>
+                                    <v-icon color="white">{{ child.icon }}</v-icon>
                                 </v-list-item-action>
                                 <v-list-item-content>
-                                    <v-list-item-title>{{
+                                    <v-list-item-title class="white--text">{{
                                         child.text
                                     }}</v-list-item-title>
                                 </v-list-item-content>
