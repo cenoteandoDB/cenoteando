@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import AuthDto from '@/models/user/AuthDto';
 import RemoteServices from '@/services/RemoteServices';
 import AuthUser from '@/models/user/AuthUser';
+import CenoteDTO from './models/CenoteDTO';
 
 interface State {
     error: boolean;
@@ -11,6 +12,7 @@ interface State {
     token: string;
     user: AuthUser | null;
     expiry: number | null;
+    cenotes: Array<CenoteDTO>;
 }
 
 const state: State = {
@@ -20,6 +22,7 @@ const state: State = {
     token: '',
     user: null,
     expiry: null,
+    cenotes: [],
 };
 
 Vue.use(Vuex);
@@ -45,6 +48,12 @@ export default new Vuex.Store({
             if (expiry) {
                 state.expiry = JSON.parse(expiry);
             }
+
+            const cenotes = localStorage.getItem('cenotes');
+            if (cenotes) {
+                state.cenotes = JSON.parse(cenotes);
+            }
+
         },
         login(state, authResponse: AuthDto) {
             state.token = authResponse.token;
@@ -56,6 +65,7 @@ export default new Vuex.Store({
             // TODO: Get expiry from server
             state.expiry = Date.now() + 60 * 60 * 1000; /* 1 hour */
             localStorage.setItem('expiry', JSON.stringify(state.expiry));
+
         },
         logout() {
             clearSession();
@@ -127,6 +137,9 @@ export default new Vuex.Store({
         },
         getError(state): boolean {
             return state.error;
+        },
+        getCenotes(state): Array<CenoteDTO> {
+            return state.cenotes;
         },
         getErrorMessage(state): string {
             return state.errorMessage;
