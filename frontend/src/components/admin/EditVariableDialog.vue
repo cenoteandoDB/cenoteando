@@ -188,7 +188,10 @@ export default class EditVariableDialog extends Vue {
     accessLevels = ['PUBLIC', 'PRIVATE', 'SENSITIVE'];
 
     remove(item: string): void {
-        this.$props.variable.enumValues.splice(this.$props.variable.enumValues.indexOf(item), 1);
+        this.$props.variable.enumValues.splice(
+            this.$props.variable.enumValues.indexOf(item),
+            1,
+        );
     }
 
     save(): void {

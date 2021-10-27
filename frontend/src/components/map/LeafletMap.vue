@@ -184,20 +184,19 @@ export default class LeafletMap extends Vue {
         }
         await this.$store.dispatch('clearLoading');
 
-        (async () => {
-            let generator = RemoteServices.cenotesGenerator();
-            for await (let batch of generator) {
-                this.cenotes.push(...batch);
-                
-                localStorage.cenotes = this.cenotes;
-
-                if (localStorage.cenotes) {
-                    localStorage.cenotes = this.cenotes;
+        const tempCenotes = this.$store.getters.getCenotes;
+        if (tempCenotes) this.cenotes = tempCenotes;
+        else {
+            (async () => {
+                let generator = RemoteServices.cenotesGenerator();
+                for await (let batch of generator) {
+                    this.cenotes.push(...batch);
                 }
-            }
-        })().catch(async (error) => {
-            await this.$store.dispatch('error', error);
-        });
+                await this.$store.dispatch('setCenotes', this.cenotes);
+            })().catch(async (error) => {
+                await this.$store.dispatch('error', error);
+            });
+        }
 
         /* TODO: Implement this in RemoteServices.ts
         RemoteServices.getProtectedNaturalAreas()
