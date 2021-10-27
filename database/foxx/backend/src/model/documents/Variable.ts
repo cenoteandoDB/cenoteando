@@ -33,6 +33,12 @@ export enum VariableType {
     NO_TYPE = 'NO_TYPE',
 }
 
+export enum VariableOrigin {
+    FIELD = 'FIELD',
+    OFFICE = 'OFFICE',
+    BOTH = 'BOTH',
+}
+
 @Document()
 export class Variable extends Entity {
     @Attribute()
@@ -45,22 +51,28 @@ export class Variable extends Entity {
     type: VariableType;
 
     @Attribute()
-    dimension: string;
+    units: string | null;
 
-    // TODO: Fix timeseries
+    @Attribute()
+    enumValues: string[] | null;
+
     @Attribute()
     timeseries: boolean;
 
-    // TODO: Fix multiple
     @Attribute()
     multiple: boolean;
 
-    // TODO: Fix access levels
     @Attribute()
     accessLevel: AccessLevel;
 
     @Attribute()
     theme: Theme;
+
+    @Attribute()
+    origin: VariableOrigin;
+
+    @Attribute()
+    methodology: string | null;
 
     @Index('persistent')
     @Attribute()
