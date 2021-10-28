@@ -92,7 +92,7 @@ export class CsvImportExport {
     }
 
     private static valueToCsv(value: any): string {
-        if (value === null) return '';
+        if (value == null) return '';
         if (typeof value === 'object' || typeof value === 'string')
             return JSON.stringify(value);
         return value.toString();

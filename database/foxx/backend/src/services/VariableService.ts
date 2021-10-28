@@ -50,10 +50,17 @@ export class VariableService {
         });
     }
 
-    // TODO: Implement this
+    
     static createVariable(user: AuthUser, data: any): Readonly<Variable> {
-        // TODO: Check errors and return array with keys of variables with error and error message
-        throw new Error('Not Implemented');
+        if (!user?.isAdmin())
+            throw new Error(
+                `VariableService.createVariable: User does not have create permissions.`,
+            );
+
+        let variable = new Variable();
+        variable.merge(data);
+        variable.insert();
+        return variable;
     }
 
     // TODO: Implement this

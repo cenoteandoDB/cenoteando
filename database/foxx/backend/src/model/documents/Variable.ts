@@ -1,4 +1,4 @@
-import { Attribute, Document, Entity, Index, Type } from 'type-arango';
+import { Attribute, Document, Entity, Index, Type, Joi } from 'type-arango';
 
 export enum Theme {
     LOCATION = 'LOCATION',
@@ -50,7 +50,7 @@ export class Variable extends Entity {
     @Attribute()
     type: VariableType;
 
-    @Attribute()
+    @Attribute(Joi.string().empty(''))
     units: string | null;
 
     @Attribute()
@@ -71,7 +71,7 @@ export class Variable extends Entity {
     @Attribute()
     origin: VariableOrigin;
 
-    @Attribute()
+    @Attribute(Joi.string().empty(''))
     methodology: string | null;
 
     @Index('persistent')

@@ -58,6 +58,23 @@ export default (): Foxx.Router => {
             'The variable requested.',
         );
 
+    router
+        .post((req, res) => {
+            let user: User | null = null;
+            if (req.session && req.session.data)
+                user = new User(req.session.data);
+            res.send(VariableService.createVariable(user, req.body));
+        })
+        .body(VariableSchema.required(), 'The variable data to create.')
+        .summary('Create a variable.')
+        .description('Creates variable with information given.')
+        .response(
+            'created',
+            VariableSchema.required(),
+            ['application/json'],
+            'The created variable.',
+        );
+
     // TODO: Test this
     // TODO: Error handling
     router
