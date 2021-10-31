@@ -45,6 +45,26 @@ export default (): Foxx.Router => {
             'The species requested',
         );
 
+
+
+    router
+        .post((req, res) => {
+            let user: User | null = null;
+            if (req.session && req.session.data)
+                user = new User(req.session.data);
+            res.send(SpeciesService.createSpecies(user, req.body));
+        })
+        .body(SpeciesSchema.required(), 'The variable data to create.')
+        .summary('Create a specie.')
+        .description('Creates specie with information given.')
+        .response(
+            'created',
+            SpeciesSchema.required(),
+            ['application/json'],
+            'The created specie.',
+        );
+
+
     // TODO: Test this
     // TODO: Error handling
     router

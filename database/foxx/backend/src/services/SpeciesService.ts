@@ -40,10 +40,16 @@ export class SpeciesService {
         return Species.findByAphiaId(AphiaId);
     }
 
-    // TODO: Implement this
     static createSpecies(user: AuthUser, data: any): Readonly<Species> {
-        // TODO: Check errors and return array with keys of variables with error and error message
-        throw new Error('Not Implemented');
+        if (!user?.isAdmin())
+            throw new Error(
+                `VariableService.createSpecies: User does not have create permissions.`,
+            );
+
+        let specie = new SpeciesDocument();
+        specie.merge(data);
+        specie.insert();
+        return specie;
     }
 
     // TODO: Implement this
