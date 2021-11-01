@@ -23,10 +23,16 @@ export class ReferenceService {
         });
     }
 
-    // TODO: Implement this
     static createReference(user: AuthUser, data: any): Readonly<Reference> {
-        // TODO: Check errors and return array with keys of variables with error and error message
-        throw new Error('Not Implemented');
+        if (!user?.isAdmin())
+            throw new Error(
+                `ReferenceService.createReference: User does not have create permissions.`,
+            );
+
+        let ref = new Reference();
+        ref.merge(data);
+        ref.insert();
+        return ref;
     }
 
     // TODO: Implement this

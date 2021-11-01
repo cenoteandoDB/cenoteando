@@ -47,6 +47,25 @@ export default (): Foxx.Router => {
             'The reference requested',
         );
 
+
+    router
+        .post((req, res) => {
+            let user: User | null = null;
+            if (req.session && req.session.data)
+                user = new User(req.session.data);
+            res.send(ReferenceService.createReference(user, req.body));
+        })
+        .body(ReferenceSchema.required(), 'The variable data to create.')
+        .summary('Create a reference.')
+        .description('Creates reference with information given.')
+        .response(
+            'created',
+            ReferenceSchema.required(),
+            ['application/json'],
+            'The created reference.',
+        );
+
+        
     // TODO: Test this
     // TODO: Error handling
     router

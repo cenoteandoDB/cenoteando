@@ -240,7 +240,7 @@ export default class RemoteServices {
         reference: ReferenceDTO,
     ): Promise<ReferenceDTO> {
         return httpClient
-            .put('/api/reference/' + reference._key, reference)
+            .put('/api/references/' + reference._key, reference)
             .then((response) => {
                 return new ReferenceDTO(response.data);
             })
