@@ -281,7 +281,7 @@ export default class Variables extends Vue {
         await this.$store.dispatch('loading');
 
         try {
-            await RemoteServices.updateVariable(this.newVariable);
+            await RemoteServices.createVariable(this.newVariable);
         } catch (error) {
             await this.$store.dispatch('error', error);
         }

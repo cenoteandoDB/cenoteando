@@ -295,7 +295,7 @@ export default class Cenotes extends Vue {
         await this.$store.dispatch('loading');
 
         try {
-            await RemoteServices.updateCenote(this.newCenote);
+            await RemoteServices.createCenote(this.newCenote);
         } catch (error) {
             await this.$store.dispatch('error', error);
         }
