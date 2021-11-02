@@ -177,10 +177,9 @@ export default class LeafletMap extends Vue {
             await this.$store.dispatch('error', error);
         }
         await this.$store.dispatch('clearLoading');
-        // const tempCenotes = this.$store.getters.getCenotes;
-        // if (tempCenotes) this.cenotes = tempCenotes;
-
-        if (this.$store.getters.getCenotes) {
+        const tempCenotes = this.$store.getters.getCenotes;
+        if (tempCenotes) this.cenotes = tempCenotes;
+        else {
             (async () => {
                 let generator = RemoteServices.cenotesGenerator();
                 for await (let batch of generator) {
