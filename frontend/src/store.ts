@@ -55,29 +55,15 @@ export default new Vuex.Store({
                 state.expiry = JSON.parse(expiry);
             }
 
-            localforage
-                .getItem('cenotes', (cenotes) => {
-                    state.cenotes = cenotes;
-                    return new CenoteDTO(cenotes);
-                })
-                .then((c) => {
-                    return c;
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
+            localforage.getItem('cenotes', (cenotes) => {
+                state.cenotes = cenotes;
+                return new CenoteDTO(cenotes);
+            });
 
-            localforage
-                .getItem('cenotesExpiry', (cenotesExpiry) => {
-                    state.cenotesExpiry = cenotesExpiry;
-                    return cenotesExpiry;
-                })
-                .then((c) => {
-                    return c;
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
+            localforage.getItem('cenotesExpiry', (cenotesExpiry) => {
+                state.cenotesExpiry = cenotesExpiry;
+                return cenotesExpiry;
+            });
 
             // const cenotes = localStorage.getItem('cenotes');
             // if (cenotes) {
