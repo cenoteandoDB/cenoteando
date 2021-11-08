@@ -132,6 +132,15 @@
                 </edit-cenote-dialog>
 
                 <delete-dialog @onConfirm="deleteCenote(item.cenote)" />
+                <v-btn
+                    :to="'/cenote/' + item._key"
+                    fab
+                    dark
+                    x-small
+                    color="white"
+                >
+                    <v-icon color="blue"> mdi-eye </v-icon>
+                </v-btn>
             </template>
         </v-data-table>
     </v-card>
@@ -197,41 +206,69 @@ export default class Cenotes extends Vue {
 
     cenotes: CenoteDTO[] = [];
 
-    convertCoordinates(latitude: number, longitude: number): string {
-        const absLon = Math.abs(longitude);
-        let lonDeg = Math.floor(absLon);
-        let lonMin = Math.floor((absLon - lonDeg) * 60);
-        let lonSec = Math.floor(((absLon - lonDeg) * 60 - lonMin) * 60);
-        const lonDir = longitude >= 0 ? 'E' : 'W';
+    toDegreesMinutesAndSeconds(coordinate: number): string {
+        var absolute = Math.abs(coordinate);
+        var degrees = Math.floor(absolute);
+        var minutesNotTruncated = (absolute - degrees) * 60;
+        var minutes = Math.floor(minutesNotTruncated);
+        var seconds = Math.floor((minutesNotTruncated - minutes) * 60);
 
-        if (lonSec == 60) {
-            lonMin++;
-            lonSec = 0;
-        }
-
-        if (lonMin == 60) {
-            lonDeg++;
-            lonMin = 0;
-        }
-
-        const absLat = Math.abs(latitude);
-        let latDeg = Math.floor(absLat);
-        let latMin = Math.floor((absLat - latDeg) * 60);
-        let latSec = Math.floor(((absLat - latDeg) * 60 - latMin) * 60);
-        const latDir = latitude >= 0 ? 'N' : 'S';
-
-        if (latSec == 60) {
-            latMin++;
-            latSec = 0;
-        }
-
-        if (latMin == 60) {
-            latDeg++;
-            latMin = 0;
-        }
-
-        return `${latDeg}° ${latMin}' ${latSec}'' ${latDir}, ${lonDeg}° ${lonMin}' ${lonSec}'' ${lonDir}`;
+        return degrees + 'º ' + minutes + "' " + seconds + "'' ";
     }
+
+    convertCoordinates(lat: number, lng: number): string {
+        var latitude = this.toDegreesMinutesAndSeconds(lat);
+        var latitudeCardinal = lat >= 0 ? 'N' : 'S';
+
+        var longitude = this.toDegreesMinutesAndSeconds(lng);
+        var longitudeCardinal = lng >= 0 ? 'E' : 'W';
+
+        return (
+            latitude +
+            ' ' +
+            latitudeCardinal +
+            '\n' +
+            longitude +
+            ' ' +
+            longitudeCardinal
+        );
+    }
+
+    // convertCoordinates(latitude: number, longitude: number): string {
+    //     const absLon = Math.abs(longitude);
+    //     let lonDeg = Math.floor(absLon);
+    //     let lonMin = Math.floor((absLon - lonDeg) * 60);
+    //     let lonSec = Math.floor(((absLon - lonDeg) * 60 - lonMin) * 60);
+    //     const lonDir = longitude >= 0 ? 'E' : 'W';
+
+    //     if (lonSec == 60) {
+    //         lonMin++;
+    //         lonSec = 0;
+    //     }
+
+    //     if (lonMin == 60) {
+    //         lonDeg++;
+    //         lonMin = 0;
+    //     }
+
+    //     const absLat = Math.abs(latitude);
+    //     let latDeg = Math.floor(absLat);
+    //     let latMin = Math.floor((absLat - latDeg) * 60);
+    //     let latSec = Math.floor(((absLat - latDeg) * 60 - latMin) * 60);
+    //     const latDir = latitude >= 0 ? 'N' : 'S';
+
+    //     if (latSec == 60) {
+    //         latMin++;
+    //         latSec = 0;
+    //     }
+
+    //     if (latMin == 60) {
+    //         latDeg++;
+    //         latMin = 0;
+    //     }
+
+    //     return `${latDeg}° ${latMin}' ${latSec}'' ${latDir}, ${lonDeg}° ${lonMin}' ${lonSec}'' ${lonDir}`;
+    // }
 
     get filteredCenotes(): CenoteData[] {
         return this.cenotes

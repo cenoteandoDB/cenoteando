@@ -48,11 +48,32 @@
             </v-card-title>
             <v-card-text>
                 <v-form v-model="valid">
-                    <v-select
-                        v-model="cenote.alternativeNames"
+                    <v-combobox
                         label="Alternative Names"
+                        data-cy="alt-names"
+                        v-model="cenote.alternativeNames"
+                        append-icon=""
+                        chips
+                        deletable-chips
+                        clearable
                         multiple
-                    ></v-select>
+                        solo
+                    >
+                        <template
+                            v-slot:selection="{ attrs, item, select, selected }"
+                        >
+                            <v-chip
+                                small
+                                v-bind="attrs"
+                                :input-value="selected"
+                                close
+                                @click="select"
+                                @click:close="remove(item)"
+                            >
+                                {{ item }}
+                            </v-chip>
+                        </template>
+                    </v-combobox>
 
                     <v-select
                         v-model="cenote.type"
@@ -74,6 +95,10 @@
                             v-model="latitudeText"
                             data-cy="latitude"
                             label="Latitude"
+                            :rules="[
+                                (v) => !!v || 'Cenote Latitude is required',
+                            ]"
+                            required
                         ></v-text-field>
                         <v-select
                             v-model="latitudeDirSelection"
@@ -91,6 +116,9 @@
                             v-model="longitudeText"
                             data-cy="longitude"
                             label="Longitude"
+                            :rules="[
+                                (v) => !!v || 'Cenote Longitude is required',
+                            ]"
                             required
                         ></v-text-field>
                         <v-select
@@ -156,6 +184,13 @@ export default class EditCenoteDialog extends Vue {
     cenote = new CenoteDTO();
     latitudeDir = ['N', 'S'];
     longitudeDir = ['W', 'E'];
+
+    remove(item: string): void {
+        this.$props.cenoteProp.alternativeNames.splice(
+            this.$props.cenoteProp.alternativeNames.indexOf(item),
+            1,
+        );
+    }
 
     created(): void {
         this.cenote = new CenoteDTO(this.$props.cenoteProp);

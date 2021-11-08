@@ -93,7 +93,7 @@
                     <v-checkbox
                         v-model="variable.multiple"
                         data-cy="multiple"
-                        label="multiple"
+                        label="Multiple"
                     ></v-checkbox>
 
                     <v-combobox
@@ -135,6 +135,12 @@
                         v-model="variable.methodology"
                         data-cy="methodology"
                         label="Methodology"
+                    ></v-text-field>
+
+                    <v-text-field
+                        v-model="variable.origin"
+                        data-cy="origin"
+                        label="Origin"
                     ></v-text-field>
                 </v-form>
             </v-card-text>

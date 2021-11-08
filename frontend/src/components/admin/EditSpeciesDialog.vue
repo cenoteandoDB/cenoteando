@@ -15,8 +15,6 @@
                         <v-text-field
                             v-model="species.aphiaId"
                             label="Aphia Id"
-                            :rules="[(v) => !!v || 'Aphia ID is required']"
-                            required
                         ></v-text-field>
                     </v-container>
                 </v-form>
@@ -25,8 +23,6 @@
                         <v-text-field
                             v-model="species.iNaturalistId"
                             label="Naturalist ID"
-                            :rules="[(v) => !!v || 'Naturalist ID is required']"
-                            required
                         ></v-text-field>
                     </v-container>
                 </v-form>
