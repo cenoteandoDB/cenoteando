@@ -132,13 +132,7 @@
                 </edit-cenote-dialog>
 
                 <delete-dialog @onConfirm="deleteCenote(item.cenote)" />
-                <v-btn
-                    :to="'/cenote/' + item._key"
-                    fab
-                    dark
-                    x-small
-                    color="white"
-                >
+                <v-btn icon :to="'/cenote/' + item._key" small color="white">
                     <v-icon color="blue"> mdi-eye </v-icon>
                 </v-btn>
             </template>
