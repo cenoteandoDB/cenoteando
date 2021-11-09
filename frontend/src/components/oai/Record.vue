@@ -34,6 +34,20 @@
                     </v-col>
                 </v-row>
             </v-col>
+            <v-col cols="auto">
+                <v-row>
+                    <v-col cols="auto">
+                        <h3>Visit Cenote Page</h3>
+                    </v-col>
+                </v-row>
+                <v-row align="center" justify="space-around">
+                    <v-col cols="auto">
+                        <v-btn class="ma-3" :to="'/cenote/' + this.key()">
+                            Cenote
+                        </v-btn>
+                    </v-col>
+                </v-row>
+            </v-col>
         </v-row>
         <v-divider class="my-3"></v-divider>
         <v-row>
