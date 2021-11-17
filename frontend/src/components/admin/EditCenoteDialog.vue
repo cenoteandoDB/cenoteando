@@ -180,6 +180,7 @@ export default class EditCenoteDialog extends Vue {
     longitudeText = '';
     latitudeDirSelection = 'N';
     longitudeDirSelection = 'W';
+
     issues = Object.values(CenoteIssue);
     cenote = new CenoteDTO();
     latitudeDir = ['N', 'S'];

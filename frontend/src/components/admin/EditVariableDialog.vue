@@ -137,11 +137,12 @@
                         label="Methodology"
                     ></v-text-field>
 
-                    <v-text-field
+                    <v-select
                         v-model="variable.origin"
+                        :items="origin"
                         data-cy="origin"
                         label="Origin"
-                    ></v-text-field>
+                    ></v-select>
                 </v-form>
             </v-card-text>
             <v-card-actions>
@@ -164,7 +165,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import VariableDTO from '@/models/VariableDTO';
+import VariableDTO, { Origin } from '@/models/VariableDTO';
 
 @Component({
     props: {
@@ -175,6 +176,8 @@ export default class EditVariableDialog extends Vue {
     editName = false;
     dialog = false;
     valid = false;
+
+    origin = Object.values(Origin);
 
     themes = [
         'BIODIVERSITY',

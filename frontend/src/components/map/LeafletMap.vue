@@ -53,20 +53,16 @@ import {
 } from 'vue2-leaflet';
 import Vue2LeafletMarkerCluster from 'vue2-leaflet-markercluster';
 import { GeoJSON } from 'geojson';
-
 import RemoteServices from '@/services/RemoteServices';
 import CenoteDTO from '@/models/CenoteDTO';
 import MapMarker from '@/components/map/MapMarker.vue';
-
 type Overlay = {
     geojson: GeoJSON;
     visible?: boolean;
 };
-
 interface Overlays {
     [key: string]: Overlay;
 }
-
 @Component({
     components: {
         LMap,
@@ -170,11 +166,9 @@ export default class LeafletMap extends Vue {
             },
         },
     ];
-
     bounds: L.LatLngBounds | null = null;
     cenotes: Array<CenoteDTO> = [];
     overlays: Overlays = {};
-
     async created(): Promise<void> {
         await this.$store.dispatch('loading');
         try {
@@ -183,7 +177,6 @@ export default class LeafletMap extends Vue {
             await this.$store.dispatch('error', error);
         }
         await this.$store.dispatch('clearLoading');
-
         const tempCenotes = this.$store.getters.getCenotes;
         if (tempCenotes) this.cenotes = tempCenotes;
         else {
@@ -197,7 +190,6 @@ export default class LeafletMap extends Vue {
                 await this.$store.dispatch('error', error);
             });
         }
-
         /* TODO: Implement this in RemoteServices.ts
         RemoteServices.getProtectedNaturalAreas()
             .then((geojson) => {
@@ -208,7 +200,6 @@ export default class LeafletMap extends Vue {
             .catch(async (error) => {
                 await this.$store.dispatch('error', error);
             });
-
         RemoteServices.getMinTemperature()
             .then((geojson) => {
                 this.$set(this.overlays, 'Min Temperature', { geojson });
@@ -216,7 +207,6 @@ export default class LeafletMap extends Vue {
             .catch(async (error) => {
                 await this.$store.dispatch('error', error);
             });
-
         RemoteServices.getMaxTemperature()
             .then((geojson) => {
                 this.$set(this.overlays, 'Max Temperature', { geojson });
@@ -224,7 +214,6 @@ export default class LeafletMap extends Vue {
             .catch(async (error) => {
                 await this.$store.dispatch('error', error);
             });
-
         RemoteServices.getCoastline().then((geojson) => {
             this.$set(this.overlays, 'Coastline', { geojson });
         });

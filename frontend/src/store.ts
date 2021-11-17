@@ -4,6 +4,7 @@ import AuthDto from '@/models/user/AuthDto';
 import RemoteServices from '@/services/RemoteServices';
 import AuthUser from '@/models/user/AuthUser';
 import CenoteDTO from './models/CenoteDTO';
+import * as localforage from 'localforage';
 
 // TODO: Get session expiry from server
 // TODO: Get cenote updates from server (using HATEOAS)
@@ -54,15 +55,39 @@ export default new Vuex.Store({
                 state.expiry = JSON.parse(expiry);
             }
 
-            const cenotes = localStorage.getItem('cenotes');
-            if (cenotes) {
-                state.cenotes = JSON.parse(cenotes);
-            }
+            localforage.getItem('cenotes', (cenotes) => {
+                state.cenotes = cenotes;
+                return new CenoteDTO(cenotes);
+            });
 
-            const cenotesExpiry = localStorage.getItem('cenotesExpiry');
-            if (cenotesExpiry) {
-                state.cenotes = JSON.parse(cenotesExpiry);
-            }
+            localforage.getItem('cenotesExpiry', (cenotesExpiry) => {
+                state.cenotesExpiry = cenotesExpiry;
+                return cenotesExpiry;
+            });
+
+            // const cenotes = localStorage.getItem('cenotes');
+            // if (cenotes) {
+            //     state.cenotes = JSON.parse(cenotes);
+            // }
+
+            // try {
+            //     const cenotes = await localforage.getItem(
+            //         'cenotes',
+            //         (cenotes) => {
+            //             state.cenotes = cenotes;
+            //             return new CenoteDTO(cenotes);
+            //         },
+            //     );
+
+            //     console.log(cenotes);
+            // } catch (err) {
+            //     console.log(err);
+            // }
+
+            // const cenotesExpiry = localStorage.getItem('cenotesExpiry');
+            // if (cenotesExpiry) {
+            //      state.cenotes = JSON.parse(cenotesExpiry);
+            // }
         },
         login(state, authResponse: AuthDto) {
             state.token = authResponse.token;
@@ -93,10 +118,9 @@ export default new Vuex.Store({
             state.loading = false;
         },
         setCenotes(state, cenotes: CenoteDTO[]) {
-            state.cenotes = cenotes;
+            localforage.setItem('cenotes', cenotes);
             state.cenotesExpiry = Date.now() + 20 * 60 * 1000 /* 20 minutes */;
-            localStorage.cenotes = JSON.stringify(state.cenotes);
-            localStorage.cenotesExpiry = JSON.stringify(state.cenotesExpiry);
+            localforage.setItem('cenoteExpiry', state.cenotesExpiry);
         },
     },
     actions: {
@@ -162,28 +186,27 @@ export default new Vuex.Store({
             return state.loading;
         },
         getCenotes(state): Array<CenoteDTO> | null {
-            const cenotesStr = localStorage.getItem('cenotes');
-            const expiryStr = localStorage.getItem('cenotesExpiry');
+            const cenotesStr = localforage.getItem('cenotes');
+            const expiryStr = localforage.getItem('cenotesExpiry', (expiry) => {
+                return Number(expiry);
+            });
 
             // if the item doesn't exist, return null
             if (!cenotesStr || !expiryStr) {
                 return null;
             }
 
-            const expiry = JSON.parse(expiryStr);
+            const expiry = Number(expiryStr);
             const now = new Date();
 
             // compare the expiry time with the current time
             if (now.getTime() > expiry) {
                 state.cenotes = [];
                 state.cenotesExpiry = null;
-                localStorage.removeItem('cenotes');
-                localStorage.removeItem('cenotesExpiry');
-                return null;
+                localforage.removeItem('cenotes');
+                localforage.removeItem('cenotesExpiry');
             }
 
-            const tempCenotes = JSON.parse(cenotesStr);
-            tempCenotes.map((c) => new CenoteDTO(c));
             return state.cenotes;
         },
     },

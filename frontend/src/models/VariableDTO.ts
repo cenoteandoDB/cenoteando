@@ -1,3 +1,8 @@
+export enum Origin {
+    FIELD = 'FIELD',
+    OFFICE = 'OFFICE',
+}
+
 export default class VariableDTO {
     _key!: string;
     accessLevel!: string;
