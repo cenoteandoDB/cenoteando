@@ -159,7 +159,7 @@ export default class Species extends Vue {
         await this.$store.dispatch('loading');
 
         try {
-            await RemoteServices.updateSpecie(this.newSpecie);
+            await RemoteServices.createSpecie(this.newSpecie);
         } catch (error) {
             await this.$store.dispatch('error', error);
         }

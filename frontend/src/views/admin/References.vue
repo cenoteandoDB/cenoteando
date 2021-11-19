@@ -167,7 +167,7 @@ export default class References extends Vue {
         await this.$store.dispatch('loading');
 
         try {
-            await RemoteServices.updateReference(this.newReference);
+            await RemoteServices.createReference(this.newReference);
         } catch (error) {
             await this.$store.dispatch('error', error);
         }

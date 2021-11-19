@@ -57,7 +57,6 @@
                         deletable-chips
                         clearable
                         multiple
-                        solo
                     >
                         <template
                             v-slot:selection="{ attrs, item, select, selected }"
