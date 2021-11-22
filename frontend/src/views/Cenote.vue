@@ -44,20 +44,32 @@
                     </v-col>
                 </v-row>
                 <v-col>
-                    <v-carousel hide-delimiters>
+                    <v-carousel
+                        show-arrows-on-hover
+                        hide-delimiter-background
+                        cycle
+                    >
                         <v-carousel-item
-                            v-for="(image, i) in images"
+                            v-for="(image, i) in pictures"
                             :key="i"
-                            :src="image.pictures"
+                            :src="image.src"
+                            reverse-transition="fade-transition"
+                            transition="fade-transition"
                         ></v-carousel-item>
                     </v-carousel>
                 </v-col>
                 <v-col>
-                    <v-carousel hide-delimiters>
+                    <v-carousel
+                        hide-delimiter-background
+                        show-arrows-on-hover
+                        cycle
+                    >
                         <v-carousel-item
-                            v-for="(image, i) in images"
+                            v-for="(image, i) in maps"
                             :key="i"
-                            :src="image.maps"
+                            :src="image.src"
+                            reverse-transition="fade-transition"
+                            transition="fade-transition"
                         ></v-carousel-item>
                     </v-carousel>
                 </v-col>
@@ -76,6 +88,7 @@
                                     <p
                                         v-for="issue in cenote.issues"
                                         :key="issue"
+                                        class="text-center pt-5"
                                     >
                                         {{ issue }}
                                     </p>
@@ -123,11 +136,21 @@ export default class Cenote extends Vue {
     //     ],
     // };
 
-    images = [
+    pictures = [
         {
-            pictures:
-                'https://media.tacdn.com/media/attractions-splice-spp-674x446/06/7b/1e/ee.jpg',
-            maps: 'https://www.researchgate.net/profile/Dorottya-Angyal-2/publication/331176795/figure/fig1/AS:727864316010496@1550547784184/Map-of-the-cenote-distribution-in-the-Yucatan-state-Mexico-with-studied-localities-The.png',
+            src: 'https://media.tacdn.com/media/attractions-splice-spp-674x446/06/7b/1e/ee.jpg',
+        },
+        {
+            src: 'https://www.oyster.com/wp-content/uploads/sites/35/2019/05/17912-9696492595-0b73d63c88-o.jpg',
+        },
+    ];
+
+    maps = [
+        {
+            src: 'https://www.researchgate.net/profile/Dorottya-Angyal-2/publication/331176795/figure/fig1/AS:727864316010496@1550547784184/Map-of-the-cenote-distribution-in-the-Yucatan-state-Mexico-with-studied-localities-The.png',
+        },
+        {
+            src: 'https://www.researchgate.net/profile/Jeremy-Stalker/publication/271631426/figure/fig5/AS:613445569359913@1523268229636/Ring-of-Cenote-groundwater-flow-map-Ring-of-Cenote-water-flows-to-the-coast-along-a.png',
         },
     ];
 
