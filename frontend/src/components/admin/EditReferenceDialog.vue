@@ -32,6 +32,12 @@
                         :items="types"
                         label="Type"
                     ></v-select>
+
+                    <v-text-field
+                        v-model="reference.year"
+                        data-cy="year"
+                        label="Year"
+                    ></v-text-field>
                 </v-form>
             </v-card-text>
             <v-card-actions>

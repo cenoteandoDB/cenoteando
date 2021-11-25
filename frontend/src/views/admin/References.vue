@@ -77,6 +77,25 @@
                         >
                     </v-container>
                 </v-card-title>
+                <v-expansion-panels class="pa-5">
+                    <v-expansion-panel>
+                        <v-expansion-panel-header>
+                            Filters
+                        </v-expansion-panel-header>
+
+                        <v-expansion-panel-content>
+                            <v-select
+                                v-model="filterType"
+                                :items="types"
+                                label="Type"
+                                multiple
+                                chips
+                                hint="Reference Type"
+                                persistent-hint
+                            ></v-select>
+                        </v-expansion-panel-content>
+                    </v-expansion-panel>
+                </v-expansion-panels>
             </template>
 
             <!-- TODO: Add edit and delete reference actions -->
@@ -143,13 +162,18 @@ export default class References extends Vue {
         { text: 'Year', value: 'year' },
         { text: 'Actions', value: 'action' },
     ];
-
+    types = ['JOURNAL', 'BOOK', 'REPORT', 'THESIS'];
     item = [];
-
     search = '';
     newReference = new ReferenceDTO();
-
     references: ReferenceDTO[] = [];
+    filterType: string[] = [];
+
+    get filteredReferences(): ReferenceDTO[] {
+        return this.references.filter(
+            (r) => !this.filterType.length || this.filterType.includes(r.type),
+        );
+    }
 
     async created(): Promise<void> {
         await this.$store.dispatch('loading');

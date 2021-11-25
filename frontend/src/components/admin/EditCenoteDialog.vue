@@ -54,7 +54,6 @@
                         v-model="cenote.alternativeNames"
                         append-icon=""
                         chips
-                        deletable-chips
                         clearable
                         multiple
                     >
@@ -87,6 +86,8 @@
                         v-model="cenote.touristic"
                         data-cy="touristic"
                         label="Touristic"
+                        :rules="[(v) => !!v || 'This field is required']"
+                        required
                     ></v-checkbox>
 
                     <v-container class="d-flex d-row justify-end">
@@ -107,6 +108,7 @@
                             solo
                             width="5"
                             style="width: 5px"
+                            required
                         ></v-select>
                     </v-container>
 
@@ -128,6 +130,7 @@
                             solo
                             width="5"
                             style="width: 5px"
+                            required
                         ></v-select>
                     </v-container>
 
@@ -190,6 +193,9 @@ export default class EditCenoteDialog extends Vue {
             this.$props.cenoteProp.alternativeNames.indexOf(item),
             1,
         );
+        this.$props.cenoteProp.alternativeNames = [
+            ...this.$props.cenoteProp.alternativeNames,
+        ];
     }
 
     created(): void {
