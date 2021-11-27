@@ -1,6 +1,7 @@
 export enum Origin {
     FIELD = 'FIELD',
     OFFICE = 'OFFICE',
+    BOTH = 'BOTH',
 }
 
 export default class VariableDTO {

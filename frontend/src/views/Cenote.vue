@@ -18,63 +18,56 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-col cols="12" md="6">
-                <v-row>
-                    <v-col>
-                        <l-map
-                            ref="map"
-                            :zoom="zoom"
-                            :options="mapOptions"
-                            :center="
-                                cenote.geojson.geometry.coordinates
-                                    .slice()
-                                    .reverse()
-                            "
-                            style="height: 400px; z-index: 0"
-                        >
-                            <l-tile-layer
-                                :url="url"
-                                :attribution="attribution"
-                            ></l-tile-layer>
-                            <map-marker
-                                :cenote="cenote"
-                                :single="true"
-                            ></map-marker>
-                        </l-map>
-                    </v-col>
-                </v-row>
-                <v-col>
-                    <v-carousel
-                        show-arrows-on-hover
-                        hide-delimiter-background
-                        cycle
-                    >
-                        <v-carousel-item
-                            v-for="(image, i) in pictures"
-                            :key="i"
-                            :src="image.src"
-                            reverse-transition="fade-transition"
-                            transition="fade-transition"
-                        ></v-carousel-item>
-                    </v-carousel>
-                </v-col>
-                <v-col>
-                    <v-carousel
-                        hide-delimiter-background
-                        show-arrows-on-hover
-                        cycle
-                    >
-                        <v-carousel-item
-                            v-for="(image, i) in maps"
-                            :key="i"
-                            :src="image.src"
-                            reverse-transition="fade-transition"
-                            transition="fade-transition"
-                        ></v-carousel-item>
-                    </v-carousel>
-                </v-col>
+            <v-col>
+                <v-carousel
+                    show-arrows-on-hover
+                    hide-delimiter-background
+                    cycle
+                >
+                    <v-carousel-item
+                        v-for="(image, i) in pictures"
+                        :key="i"
+                        :src="image.src"
+                        reverse-transition="fade-transition"
+                        transition="fade-transition"
+                    ></v-carousel-item>
+                </v-carousel>
             </v-col>
-            <v-col cols="12" md="6">
+            <v-col>
+                <l-map
+                    ref="map"
+                    :zoom="zoom"
+                    :options="mapOptions"
+                    :center="
+                        cenote.geojson.geometry.coordinates.slice().reverse()
+                    "
+                    style="min-height: 400px; min-width: 20vw; z-index: 0"
+                >
+                    <l-tile-layer
+                        :url="url"
+                        :attribution="attribution"
+                    ></l-tile-layer>
+                    <map-marker :cenote="cenote" :single="true"></map-marker>
+                </l-map>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col>
+                <v-carousel
+                    hide-delimiter-background
+                    show-arrows-on-hover
+                    cycle
+                >
+                    <v-carousel-item
+                        v-for="(image, i) in maps"
+                        :key="i"
+                        :src="image.src"
+                        reverse-transition="fade-transition"
+                        transition="fade-transition"
+                    ></v-carousel-item>
+                </v-carousel>
+            </v-col>
+            <v-col>
                 <cenote-details />
                 <v-row>
                     <v-col>

@@ -2,7 +2,7 @@
     <v-card class="table mx-8">
         <v-data-table
             :headers="headers"
-            :items="references"
+            :items="filteredReferences"
             :items-per-page="15"
             :search="search"
             class="elevation-1"
@@ -98,7 +98,6 @@
                 </v-expansion-panels>
             </template>
 
-            <!-- TODO: Add edit and delete reference actions -->
             <template v-slot:[`item.action`]="{ item }">
                 <v-container class="d-flex d-row">
                     <edit-reference-dialog
@@ -163,7 +162,16 @@ export default class References extends Vue {
         { text: 'Year', value: 'year' },
         { text: 'Actions', value: 'action' },
     ];
-    types = ['JOURNAL', 'BOOK', 'REPORT', 'THESIS'];
+    types = [
+        '',
+        'BOOK',
+        'BOOK_CHAPTER',
+        'JOURNAL',
+        'OTHER',
+        'REPORT',
+        'THESIS',
+        'WEBPAGE',
+    ];
     item = [];
     search = '';
     newReference = new ReferenceDTO();
