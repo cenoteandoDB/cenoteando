@@ -220,7 +220,7 @@ export default class EditCenoteDialog extends Vue {
         let lat = JSON.parse(this.latitudeText);
         let lon = JSON.parse(this.longitudeText);
         if (this.latitudeDirSelection === 'S') lat = -lat;
-        if (this.longitudeDirSelection === 'W') lat = -lon;
+        if (this.longitudeDirSelection === 'W') lon = -lon;
         this.cenote.setCoordinates(lat, lon);
 
         Object.assign(this.$props.cenoteProp, this.cenote);

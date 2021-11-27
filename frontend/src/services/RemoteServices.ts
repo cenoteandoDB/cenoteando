@@ -266,6 +266,17 @@ export default class RemoteServices {
             });
     }
 
+    static async referencesToCsvSingle(_key: string): Promise<string> {
+        return httpClient
+            .get('/api/references/' + _key + '/download')
+            .then((response) => {
+                return response.data;
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
     static async csvToReferences(
         files: File[],
         onUploadProgress: (Event) => void,

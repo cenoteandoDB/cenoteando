@@ -125,7 +125,8 @@
                             item.filename !== undefined ||
                             item.filename !== null
                         "
-                        @click="download"
+                        v-model="item._key"
+                        @click="downloadReference(item)"
                         data-cy="downloadButton"
                         fab
                         color="primary"
@@ -225,6 +226,22 @@ export default class References extends Vue {
 
         try {
             const csv = await RemoteServices.referencesToCsv();
+            FileService.download(csv, 'references.csv', 'text/csv');
+        } catch (error) {
+            await this.$store.dispatch('error', error);
+        }
+
+        await this.$store.dispatch('clearLoading');
+    }
+
+    async downloadReference(reference: ReferenceDTO): Promise<void> {
+        await this.$store.dispatch('loading');
+
+        try {
+            const csv = await RemoteServices.referencesToCsvSingle(
+                reference._key,
+            );
+
             FileService.download(csv, 'references.csv', 'text/csv');
         } catch (error) {
             await this.$store.dispatch('error', error);
