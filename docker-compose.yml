@@ -7,6 +7,10 @@ services:
       context: ./database
       target: database
       dockerfile: Dockerfile
+    depends_on:
+      - filerun
+    links:
+      - filerun
     ports:
       - 8529:8529
     restart: unless-stopped
@@ -27,8 +31,10 @@ services:
         NODE_ENV: development
     depends_on:
       - database
+      - filerun
     links:
       - database
+      - filerun
     ports:
       - 80:80
     restart: unless-stopped
