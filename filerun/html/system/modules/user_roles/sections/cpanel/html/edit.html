@@ -1,0 +1,12 @@
+<script>
+FR.roleInfo = {$app.roleInfo};
+FR.userCanSetHomeFolder = {if $app.can_set_homefolder}false{else}true{/if};
+FR.adminHomeFolderPath = '{$app.user.perms.homefolder|forHTML}';
+FR.settings = {
+	disable_file_history: {if $app.settings.disable_file_history}true{else}false{/if}
+};
+ScriptMgr.load({ scripts:[
+	'?module=fileman&section=utils&sec=Admin%3A%20Roles&sec2=Admin%3A%20Users&lang={$app.language|forURL}&v={$app.settings.currentVersion|forURL}&page=translation.js',
+	'js/cpanel/forms/edit_role.js?v={$app.settings.currentVersion|forURL}'
+]});
+</script>

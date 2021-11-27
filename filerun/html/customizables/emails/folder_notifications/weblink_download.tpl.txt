@@ -1,0 +1,9 @@
+<Action>
+<div style="margin-top:3px;">
+	<div style="color:gray">{$info.details.date} (<em>{$info.details.date|MySQLTimeDiff}</em>)</div>
+	{t 1=$info.details.details.relative_path|nicerRelativePath}Your file "<strong>%1</strong>" was downloaded through the shared link.{/t}
+    {if $info.details.details.ip_address}
+        <div style="color:silver">{t 1=$info.details.details.ip_address}From the IP address: %1{/t}</div>
+    {/if}
+</div>
+</Action>

@@ -1,0 +1,16 @@
+{lang section="Admin: Licensing"}
+<script>
+	var licenseInfo = {
+		users: {
+			current: {$app.licenseInfo.currentNrOfUsers},
+			maximum: {if $app.licenseInfo.availableNr > 9999}'{t}unlimited{/t}'{else}{$app.licenseInfo.availableNr}{/if}
+		},
+		expiry: {if $app.licenseInfo.expiry}'{$app.licenseInfo.expiry}'{else}false{/if},
+		key: '{$app.licenseInfo.key}'
+	};
+	var userEmail = '{$app.userEmail|safeHTML|safeJS}';
+ScriptMgr.load({ scripts:[
+	'?module=fileman&section=utils&sec=Admin%3A%20Licensing&lang={$app.language|forURL}&v={$app.settings.currentVersion|forURL}&page=translation.js',
+	'js/cpanel/licensing.js?v={$app.settings.currentVersion|forURL}'
+]});
+</script>

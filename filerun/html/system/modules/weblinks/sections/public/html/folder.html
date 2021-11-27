@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta property="og:image" content="{$app.config.url.root}images/fico/folder.svg" />
+	<meta property="og:image:width" content="256" />
+	<meta property="og:image:height" content="256" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="alternate" type="application/rss+xml" title="{$app.folderName|safeHTML}" href="{$app.rssURL}" />
+	<title>{if $app.breadCrumbs}{foreach key=key from=$app.breadCrumbs item=breadCrumb}{if $key > 0 && $key < count($app.breadCrumbs)} &raquo; {/if}{$breadCrumb.title|safeHTML}{/foreach}{else}{/if}</title>
+	<link rel="stylesheet" type="text/css" href="css/folder.css?v={$app.settings.currentVersion|forURL}" />
+	<script src="../js/jquery/jquery.min.js?v={$app.settings.currentVersion|forURL}"></script>
+	<script src="../js/jquery/jquery.lazy.min.js?v={$app.settings.currentVersion|forURL}"></script>
+	<script>
+		var hasTerms = {if $app.linkInfo.download_terms}1{else}0{/if};
+		var downloadAllURL = '{$app.downloadURL|safeJS}';
+		var listMode = false;
+	</script>
+</head>
+<body>
+
+<div class="header">
+	<div class="left">
+		{if $app.breadCrumbs}
+			{foreach key=key from=$app.breadCrumbs item=breadCrumb}
+			{if $key > 0 && $key < count($app.breadCrumbs)}<span class="bcSep">&gt;</span>{/if}
+			{if $breadCrumb.href}<a href="{$breadCrumb.href}" class="breadCrumb">{/if}{$breadCrumb.title|safeHTML}{if $breadCrumb.href}</a>{/if}
+			{/foreach}
+		{/if}
+	</div>
+	<div class="right">
+		{if $app.allowUpload}
+		<a href="javascript:FR.showUpload()" class="actionBtn">{t}Upload{/t}</a>
+		{/if}
+		{if $app.downloadURL}
+			{if $app.linkInfo.download_terms}
+			<a href="javascript:FR.downloadAll()" class="actionBtn">{t}Download All{/t}</a>
+			{else}
+			<a href="{$app.downloadURL}" class="actionBtn">{t}Download All{/t}</a>
+			{/if}
+		{/if}
+	</div>
+</div>
+
+<div class="main">
+
+	{if sizeof($app.list.folders) > 0}
+	<div class="itemsList">
+		{foreach from=$app.list.folders item=item}
+		<a href="{$item.url}">
+			<div class="item folder">
+				<div class="icon" style="background-image:url(../images/fico/folder.svg)"></div>
+				<div class="filename" title="{$item.fileName|safeHTML|forHTML}">{$item.fileName|safeHTML|forHTML}</div>
+			</div>
+		</a>
+		{/foreach}
+	</div>
+	{/if}
+
+	{if sizeof($app.list.files) > 0}
+	<div class="itemsList">
+		{foreach from=$app.list.files item=item}
+			<div class="item file">
+				{if $item.hasThumb}
+				<a href="{$item.url}" class="thumb lazy" data-src="{$item.url}&thumbnail=1"  title="{$item.fileName|safeHTML|forHTML}"></a>
+				{else}
+				<a href="{$item.url}" class="thumb tmbicon" style="background-image:url('../{$item.iconURL}')" title="{$item.fileName|safeHTML|forHTML}"></a>
+				{/if}
+				<a href="{$item.url}&download=1" class="filenameRow">
+					<div class="icon" style="background-image:url('../{$item.iconURL}')"></div>
+					<div class="filename" title="{$item.fileName|safeHTML|forHTML}">{$item.fileName|safeHTML|forHTML}</div>
+				</a>
+			</div>
+		{/foreach}
+	</div>
+	{/if}
+
+</div>
+<script src="js/folder.js?v={$app.settings.currentVersion|forURL}"></script>
+
+{if $app.linkInfo.allow_uploads}
+<div class="overlay" id="upload">
+	<div class="panel">
+		<iframe class="panel-contents" id="uploadFrame" frameborder="0" data-src="{$app.uploadURL}"></iframe>
+		<a class="actionBtn cancelBtn" href="javascript:FR.hideEl('upload');location.reload();">{t}Close{/t}</a>
+	</div>
+</div>
+{/if}
+
+{if $app.linkInfo.download_terms}
+<div class="overlay" id="terms">
+	<div class="panel">
+		<div class="panel-contents">
+			<div>{$app.linkInfo.download_terms|forHTML}</div>
+		</div>
+		<a class="actionBtn acceptBtn" id="termsDownBtn" href="{$app.downloadURL}" onclick="FR.hideEl('terms')">{t}Download{/t}</a>
+		<a class="actionBtn cancelBtn" href="javascript:FR.hideEl('terms')">{t}Cancel{/t}</a>
+	</div>
+</div>
+{/if}
+
+<script>
+	$('.lazy').Lazy({
+		threshold: 200,
+		appendScroll: $('.main')
+	});
+</script>
+<div style="display:none;">
+	{if $app.settings.tracker_codes}{$app.settings.tracker_codes}{/if}
+</div>

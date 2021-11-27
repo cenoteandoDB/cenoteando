@@ -1,0 +1,17 @@
+<html>
+<head>
+	<title></title>
+</head>
+
+<body>
+	{t}Your session has expired!{/t}
+	<br>
+	<br>
+	{t}Please wait while you are being redirected to the login page...{/t}
+	<script>
+	window.setTimeout(function() {
+			window.parent.location.href = '{$app.config.url.root}';
+	}, 3000);
+	</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>{$app.fileInfo.name|forHTML|safeHTML}</title>
+	<link rel="stylesheet" type="text/css" href="css/comments_print.css?v={$app.settings.currentVersion|forURL}" />
+</head>
+
+<body onload="window.print()">
+
+<div class="header">
+	<div class="fileName">
+		{$app.fileInfo.name|forHTML|safeHTML}
+	</div>
+</div>
+
+<div class="list">
+	{if $app.totalCount == 0}
+		{t}No comments available for this file.{/t}
+	{else}
+		{foreach $app.comments AS $p => $comment}
+		<div class="comment">
+			{$comment.val}
+			<div class="author">
+				{$comment.fullName}
+				<span class="date">({$comment.date_added})</span>
+			</div>
+		</div>
+		{/foreach}
+	{/if}
+</div>
+
+</body>
+</html>

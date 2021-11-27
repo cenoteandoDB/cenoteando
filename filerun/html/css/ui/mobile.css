@@ -1,0 +1,6 @@
+@media only screen and (max-device-width: 480px) {
+	.fr-details-panel .x-superboxselect-item,
+	.fr-details-fields {
+		font-size: 16px;
+	}
+}

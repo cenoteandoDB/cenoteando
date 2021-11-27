@@ -1,0 +1,67 @@
+/* Tree */
+
+#FR-Tree-Region-xcollapsed {
+	display: none !important;
+}
+#FR-Tree-Region .x-panel-body {
+	-webkit-overflow-scrolling: touch;
+	padding-top: 8px;
+	padding-bottom: 25px;
+}
+#FR-Tree-Region .x-tree-node {
+	position: relative;
+}
+
+.x-tree-node-el .avatar {
+	background-size:cover;
+	margin: 0 10px 0 7px;
+	width: 18px;
+	height: 18px;
+	display: inline-block;
+	vertical-align: middle;
+	border-radius: 50%;
+}
+.x-tree-node-el i.fa-spin {
+	background-image: none !important;
+}
+.x-tree-node-el .icons {
+	vertical-align: middle;
+}
+.x-tree-node-el .icons i:first-child {
+	margin-left:5px;
+}
+.x-tree-node-el .icons i {
+	color:silver;
+	display: inline;
+}
+.nodeMenu {
+	position: absolute;
+    right: 0;
+    top: 0;
+    width: 20px;
+    color: #8B8B8B;
+	padding-left: 5px;
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+	visibility: hidden;
+	cursor: default !important;
+}
+.nodeMenu i {
+	cursor: default !important;
+	vertical-align: middle;
+}
+.nodeMenu:hover i {
+	color: black;
+}
+.x-tree-node-el:hover .nodeMenu {
+	visibility: visible;
+}
+
+.x-tree-node-icon.icon-folder {
+    height: 18px;
+}
+
+.x-tree-node .x-tree-drag-append {
+	box-shadow: inset 0 0 0 2px #969696 !important;
+	background-color: #EEEEEE !important;
+}

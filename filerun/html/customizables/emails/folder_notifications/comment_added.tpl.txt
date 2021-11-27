@@ -1,0 +1,8 @@
+<Action>
+<div>
+	<div style="color:gray">{$info.details.date} (<em>{$info.details.date|MySQLTimeDiff}</em>)</div>
+	<div style="margin-left:5px;">{t 1=$info.actionUserInfo.fullName|forHTML 2=$info.relativePath|forHTML}<strong>%1</strong> added the following comment on the file "<strong>%2</strong>":{/t}
+		<div style="margin-left:15px;"><em>{$info.details.details.comment|safeHTML|nl2br}</em></div>
+	</div>
+</div>
+</Action>

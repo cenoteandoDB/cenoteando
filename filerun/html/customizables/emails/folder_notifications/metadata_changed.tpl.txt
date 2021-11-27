@@ -1,0 +1,24 @@
+<Action>
+<div style="margin-top:3px;">
+	<div style="color:gray">{$info.details.date} (<em>{$info.details.date|MySQLTimeDiff}</em>)</div>
+	<div>{t 1=$info.actionUserInfo.fullName|forHTML 2=$info.relativePath|forHTML}<strong>%1</strong> updated the metadata of the file "<strong>%2</strong>".{/t}</div>
+	{if $info.details.details.details.metadata}
+		<table border="1" cellspacing="0" cellpadding="2"  style="font-family:arial,sans-serif;font-size:13px;">
+		<tr>
+			<td>&nbsp;</td>
+			<td><strong>{t}Field{/t}<strong></td>
+			<td><strong>{t}Old value{/t}</strong></td>
+			<td><strong>{t}New value{/t}</strong></td>
+		</tr>
+		{foreach from=$info.details.details.details.metadata item=record}
+			<tr>
+				<td>{$record.fieldInfo.id}</td>
+				<td>{$record.fieldInfo.name|forHTML}</td>
+				<td>{$record.oldValue|forHTML|safeHTML}</td>
+				<td>{$record.newValue|forHTML|safeHTML}</td>
+			</tr>
+		{/foreach}
+		</table>
+	{/if}
+</div>
+</Action>

@@ -1,0 +1,31 @@
+<From>{$settings.default_notification_address}</From>
+<FromName>{$app.settings.default_notification_name}</FromName>
+<BCC>{$settings.default_notification_address}</BCC>
+<Subject>{$settings.app_title|safeHTML} - Account information</Subject>
+<Body>
+Hi {$info.name},<br>
+<br>
+Thank you for signing up!<br>
+<br>
+Here is your login information:<br>
+<div style="padding:15px;background-color:whitesmoke;margin:15px 0px;border-radius:2px;line-height:20px;">
+Username: <strong>{$info.username|safeHTML}</strong><br>
+Password: <strong>{$info.password|safeHTML}</strong><br>
+</div>
+{if $settings.user_registration_email_verification && !$settings.user_registration_approval}
+In order to activate your account, please click <a href="{$config.url.root}/?module=fileman&page=register&uid={$info.id}&hash={$hash}&action=activate">here</a>.
+{else}
+To access the client area, click <a href="{$config.url.root}">here</a>.
+{/if}
+{if $settings.user_registration_approval}
+<br>
+<br>
+Please note that your account is not active just yet, as it is awaiting the admin's moderation. You will receive an e-mail confirmation as soon as the account gets activated.
+{/if}
+<br>
+<br>
+Best regards,<br>
+<br>
+{$settings.app_title|safeHTML}<br>
+<a href="{$config.url.root}">{$config.url.root}</a>
+</Body>

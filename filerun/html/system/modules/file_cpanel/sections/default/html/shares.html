@@ -1,0 +1,11 @@
+<script>
+FR = {
+	path: '{$app.path|forHTML|safeJS}',
+	popupId: '{$app.popupId}',
+	UI: { translations: [] },
+	sharesInfo: {$app.sharesInfo}
+};
+</script>
+<script src="?module=fileman&section=utils&v={$app.settings.currentVersion|forURL}&sec=File%20Control%20Panel%3A%20Shares&lang={$app.language|forURL}&page=translation.js"></script>
+<script src="js/fileman/file_cpanel/shares.js?v={$app.settings.currentVersion|forURL}"></script>
+<link rel="stylesheet" href="css/file_cpanel.css?v={$app.settings.currentVersion|forURL}" />

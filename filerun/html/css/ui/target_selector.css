@@ -1,0 +1,57 @@
+.targetSelector .x-window-header {
+	padding:0;
+	height:10px;
+	background-color:#F1F1F1;
+}
+.targetSelector .x-window-body {
+	padding:0;
+	border-bottom:1px solid #E5E5E5;
+	border-top:1px solid #E5E5E5;
+}
+.targetSelector .x-window-footer {
+	padding:10px;
+}
+.targetSelector .topToolbar {
+	background-color:#F1F1F1;
+	padding-bottom: 10px;
+}
+.targetSelector .topToolbar i {
+	font-weight: bold;
+}
+.targetSelector .backButton {
+	margin-left: 10px;
+}
+.targetSelector .x-toolbar div.xtb-text.folderName {
+    cursor: default;
+	font-size: 14px;
+	font-weight: bold;
+	margin-left: 10px;
+	padding: 0;
+}
+.targetSelector .closeButton {
+	margin-right: 10px;
+}
+
+.targetSelector .backButton:hover,
+.targetSelector .closeButton:hover {
+	background-color: #E2E2E2;
+}
+
+.targetSelector dt {
+	line-height: 33px;
+	color: #474747;
+}
+.targetSelector dl .frBtn {
+	visibility: hidden;
+	margin: 3px 20px;
+}
+.targetSelector dl .frBtn:hover {
+	background: rgba(0, 0, 0, .12);
+}
+.targetSelector dl .frBtn i {
+	font-weight: bold;
+}
+.targetSelector dl.x-list-selected .frBtn,
+.targetSelector dl:hover .frBtn {
+	visibility: visible;
+}

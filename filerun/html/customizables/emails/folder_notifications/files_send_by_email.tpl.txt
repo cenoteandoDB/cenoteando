@@ -1,0 +1,14 @@
+<Action>
+<div style="margin-top:3px;">
+	<div style="color:gray">{$info.details.date} (<em>{$info.details.date|MySQLTimeDiff}</em>)</div>
+	<div>{t 1=$info.actionUserInfo.fullName|forHTML}%1 has e-mailed the following files{/t}:</div>
+{foreach from=$info.details.details.files item=file}
+	<div style="margin-top:5px;margin-left:5px;">
+	<strong>{$info.relativePath|forHTML}/{$file.name|forHTML}</strong>
+	{if !$file.isDir}
+	<span style="color:gray">({$file.size|niceFileSize})</span>
+	{/if}
+	</div>
+{/foreach}
+</div>
+</Action>

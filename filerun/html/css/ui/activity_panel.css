@@ -1,0 +1,37 @@
+.eventItem {
+	display: flex;
+	flex-direction: row;
+	padding: 5px 5px 5px 0;
+}
+.eventItem .ico {
+	display: flex;
+    flex-direction: column;
+	width: 65px;
+	height: 54px;
+}
+.eventItem .ico img {
+	max-width: 32px;
+    max-height: 32px;
+	margin: 3px auto;
+}
+.eventItem .ico i {
+	margin: 0 auto;
+}
+.eventItem .txt {
+	display: flex;
+    flex-direction: column;
+	flex: 1;
+}
+.eventItem .txt .fn {
+	margin-bottom: 2px;
+	font-size: 14px;
+	color: #474747;
+	word-break: break-word;
+}
+.eventItem .txt .d {
+	margin-top: 3px;
+}
+.eventItem .txt .t {
+	color:#999;
+	font-size:11px;
+}

@@ -1,0 +1,19 @@
+<From>{$settings.default_notification_address}</From>
+<FromName>{$app.settings.default_notification_name}</FromName>
+<Subject>{t}Shared files available{/t}</Subject>
+<Body>
+{t 1=$userInfo.name}Hi %1,{/t}
+<br>
+<br>
+{t 1=$creatorUserInfo.fullName}%1 has shared some files with you.{/t}
+<br>
+<br>
+{t}To access them, please follow this link:{/t}
+<br><br>
+<a href="{$access_url}">{$access_url}</a>
+<br>
+<br>
+{t}Best regards,{/t}<br>
+<br>
+<a href="{$config.url.root}">{$config.url.root}</a>
+</Body>

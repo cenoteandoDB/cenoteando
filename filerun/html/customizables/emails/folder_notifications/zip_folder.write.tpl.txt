@@ -1,0 +1,6 @@
+<Action>
+<div style="margin-top:3px;">
+	<div style="color:gray">{$info.details.date} (<em>{$info.details.date|MySQLTimeDiff}</em>)</div>
+	<div>{t 1=$info.actionUserInfo.fullName|forHTML 2=$info.relativePath|forHTML}<strong>%1</strong> created the "<strong>%2</strong>" Zip archive.{/t}</div>
+</div>
+</Action>

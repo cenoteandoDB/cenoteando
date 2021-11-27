@@ -1,0 +1,157 @@
+#explorer-shadow {
+	display: none;
+}
+#FR-Tree-Region .x-panel-body {
+	background-color: #282828;
+}
+
+.headerTbar {
+	background-color: #F6F6F6;
+	border-bottom: 1px solid #E9E9E9;
+}
+.headerTbar .frBtn i,
+.logo3d, .logo3d a {
+	color: #686868;
+}
+.headerTbar .xtb-sep {
+	border-color: #DADADA;
+	border-width:2px;
+	opacity:1;
+}
+
+#FR-Tree-Region .x-tree-node a,
+#FR-Tree-Region .x-tree-node-icon {
+	color: #E3E3E3;
+}
+.x-tree-node-el:hover {
+	background-color: #28B294;
+}
+
+#FR-Tree-Region .x-tree-node .x-tree-selected a,
+#FR-Tree-Region .x-tree-node .x-tree-node-icon {
+	color: white;
+}
+
+
+.tmbItemSel.typeFolder,
+#FR-Grid-Panel .photoMode .tmbItemSel,
+.x-grid3-row-selected {
+	background-color: white;
+}
+.tmbItem .selOverlay {
+	background-color: gray;
+}
+
+.fr-btn-new {
+	background-color: #28B294;
+	color: white;
+	box-shadow: none;
+}
+.fr-btn-new i.fa {
+	color: white;
+}
+
+.tmbItem,
+.tmbItem .tmbInner,
+.tmbItem .selOverlay,
+.headerTbar .frBtn,
+.fr-nav-bar .frBtn,
+.fr-nav-bar .x-btn-icon,
+.x-tree-node-el .avatar,
+.fr-info-panel .x-panel-header-icon i.round,
+.basicAvatar {
+	border-radius: 2px;
+}
+
+.x-tree-node-el {
+	border-radius: 0;
+}
+
+.x-toolbar.fr-nav-bar {
+	padding:2px;
+}
+
+.fr-nav-bar .fa-angle-right {
+	margin-left:4px;
+	margin-right:4px;
+}
+
+.fr-nav-bar .x-btn-icon.x-btn-pressed {
+	background-color: #EDEBE9;
+}
+.fr-nav-bar .frBtn:hover {
+	background-color: #F3F2F1;
+}
+
+.headerTbar .frBtn.fr-btn-user {
+	border-radius: 3px;
+	border:1px solid white;
+	width: 42px;
+}
+.fr-btn-user i {
+	border-radius: 3px;
+}
+.headerTbar .frBtn {
+	margin-top:0;
+	margin-bottom:0;
+	line-height: 46px;
+	width: 46px;
+}
+
+.headerTbar .frBtn:hover i {
+	color: white;
+}
+.x-btn-icon {
+	border:1px solid transparent;
+}
+.x-btn-icon:hover {
+	background-color: #DADADA;
+	border:1px solid #CBCBCB;
+}
+.x-btn-icon:hover i.fa {
+	color: black;
+}
+.fr-btn-new:hover,
+.fr-btn-primary:hover {
+	background-color: #0E997B;
+	box-shadow: none;
+}
+
+.x-window,
+.x-menu-floating {
+	border-radius:2px;
+	box-shadow: 0 0 0 1px rgba(76, 86, 103, 0.2),
+	0 2px 15px 0 rgba(31, 37, 50, 0.2);
+}
+.x-window-header {
+	border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+}
+
+.fa-folder {
+	color: #28B294;
+}
+.x-list-selected .fa-folder,
+.x-list-selected {
+	color: white;
+}
+
+.x-toolbar.FR-NavBar {
+	padding:5px;
+}
+.FR-NavBar .frBtn span {
+	color: black;
+	font-size: 14px;
+}
+
+#FR-Info-Region-xsplit {
+	border-right: 1px solid #EDEDED;
+}
+#FR-Center-Region, #FR-Info-Region,
+.fr-nav-bar .frBtn:hover {
+	box-shadow: none;
+}
+
+#FR-Tree-Region .sysConfMenuItem a {
+	color: black;
+}

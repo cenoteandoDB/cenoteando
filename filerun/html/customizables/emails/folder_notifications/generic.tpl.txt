@@ -1,0 +1,6 @@
+<Action>
+<div>
+	<div style="color:gray">{$info.details.date} (<em>{$info.details.date|MySQLTimeDiff}</em>)</div>
+	<div>{t 1=$info.actionUserInfo.fullName|forHTML 2=$info.details.action}<strong>%1</strong> performed the following action: "<strong>%2</strong>".{/t}</div>
+</div>
+</Action>

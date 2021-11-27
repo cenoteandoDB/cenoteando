@@ -1,0 +1,16 @@
+<script>
+FR.roles = {$app.roles};
+FR.userInfo = {$app.userInfo};
+FR.settings = {
+	disable_file_history: {if $app.settings.disable_file_history}true{else}false{/if}
+};
+FR.FileRunInstallPath = '{$app.config.path.root|forHTML}';
+FR.adminHomeFolderPath = '{$app.user.perms.homefolder|forHTML}';
+FR.currentUserPerms = {
+	admin_homefolder_template: {if $app.user.perms.admin_homefolder_template}true{else}false{/if}
+}
+ScriptMgr.load({ scripts:[
+	'?module=fileman&section=utils&sec=Admin%3A%20Users&calendar=1&lang={$app.language|forURL}&v={$app.settings.currentVersion|forURL}&page=translation.js',
+	'js/cpanel/forms/edit_user.js?v={$app.settings.currentVersion|forURL}'
+]});
+</script>

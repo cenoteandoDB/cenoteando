@@ -1,0 +1,22 @@
+<script>
+FR = {
+    UI: {},
+    language: '{$app.language}',
+    userCanUpload: {if $app.user.perms.upload}true{else}false{/if},
+    userCanEdit: {if !$app.user.perms.read_only}true{else}false{/if},
+	userCanEmail: {if $app.user.perms.email}true{else}false{/if},
+    disableShortURL: {if $app.config.app.weblinks.disableShortURL}true{else}false{/if},
+    useClientEmail: {if $app.config.app.weblinks.useClientEmail}true{else}false{/if},
+    showQR: {if $app.config.app.weblinks.hideQRCode}false{else}true{/if},
+    defaultMode: '{$app.settings.weblinks_default_mode|default:"grid"}'
+};
+</script>
+<script src="js/ext/ext-htmleditor.js?&v={$app.settings.currentVersion|forURL}"></script>
+<script src="?module=fileman&section=utils&sec=Web%20Links&calendar=1&lang={$app.language|forURL}&v={$app.settings.currentVersion|forURL}&page=translation.js"></script>
+<script src="js/fileman/weblink.js?v={$app.settings.currentVersion|forURL}"></script>
+<script src="js/genpass.js?v={$app.settings.currentVersion|forURL}"></script>
+<style>
+	.x-tab-strip-top .x-tab-right {
+		padding: 0 2px;
+	}
+</style>

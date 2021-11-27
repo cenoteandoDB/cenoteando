@@ -1,0 +1,149 @@
+/* Image Preview */
+.fr-prv-tbar.top {
+	background: linear-gradient(to bottom,rgba(0,0,0,0.70) 0%,transparent 100%);
+}
+
+.fr-prv-tbar .x-btn-icon {
+	margin: 5px 5px;
+	width: 42px;
+	line-height: 42px;
+}
+.fr-prv-tbar .x-btn-icon i {
+	color: white;
+	font-size: 21px;
+}
+.fr-prv-tbar .frBtn:hover,
+.fr-prv-tbar .frBtn.x-btn-pressed {
+	background-color: rgba(150,150,150,0.6);
+}
+
+.fr-prv-tbar-icon {
+	padding-top: 5px;
+}
+.fr-prv-tbar-filename {
+	font-size:14px;
+	color:white;
+	overflow: hidden;
+	white-space: nowrap;
+	max-width: 200px;
+	text-overflow: ellipsis;
+	padding-left:15px;
+	line-height: 52px;
+	height: 52px;
+}
+.fr-prv-tbar-extension {
+	line-height: 52px;
+	height: 52px;
+	color:white;
+	text-transform: uppercase;
+}
+.fr-prv-tbar-status {
+	width: 80px;
+	color:silver;
+	margin-left: 20px;
+	padding-top: 1px;
+}
+.fr-prv-nav-left-wrap {
+	position: absolute;
+	top: 45%;
+	left: 10px;
+	width: 40px;
+	height: 40px;
+	z-index: 2;
+}
+.fr-prv-nav-right-wrap {
+	position: absolute;
+	top: 45%;
+	right: 10px;
+	width: 40px;
+	height: 40px;
+	z-index: 2;
+}
+
+.fr-prv-nav-btn {
+	margin-top:5px;
+	width: 40px;
+	height: 40px;
+	background: rgba(0,0,0,0.5);
+	border-radius: 50%;
+	color: white;
+	text-align:center;
+	cursor: pointer;
+	transition:
+			background .2s,opacity .34s,
+			transform .34s cubic-bezier(0.4,0.0,0.2,1),
+			opacity 1s;
+}
+.fr-prv-nav-btn i {
+	color: white;
+	font-weight:bold;
+	cursor: pointer;
+	margin-top: 14px;
+	text-shadow: 0px 0px 4px black;
+}
+.fr-prv-nav-btn-hover {
+	background: #1A73E7;
+}
+.fr-prv-tbar-slider {
+	margin-left: 20px;
+	margin-right: 20px;
+}
+.image-viewer {
+	background:rgba(0,0,0,0.85);
+}
+.image-viewer .canvas {
+	position:relative;
+	padding-bottom: 10px;
+}
+.image-viewer.mobile .canvas {
+	padding: 0;
+}
+.image-viewer .centered {
+	width: 100%;
+	height: 100%;
+}
+.image-viewer .spinner {
+	visibility: hidden;
+	position: absolute;
+	z-index: 99;
+	width: 80px;
+	height: 80px;
+	margin: auto;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
+.image-viewer .activeImage {
+	background-size: contain;
+	background-repeat:no-repeat;
+	background-position: center;
+	text-align:center;
+}
+.image-viewer .dragging-zoom {
+	position: absolute;
+}
+
+.headerTbar-btn-tooltip {
+	background-color: black;
+	color: white;
+	border-radius:5px;
+	padding:5px;
+}
+
+#ImageViewerInfoPanel {
+	border-left: 1px solid #E5E5E5;
+}
+
+@media only screen and (min-device-width: 800px) {
+	.fr-prv-tbar.top,
+	.fr-prv-nav-btn {
+		opacity: 0;
+		transition: opacity 1s 1s;
+	}
+	body:hover .fr-prv-tbar.top,
+	body:hover .fr-prv-nav-btn {
+		opacity: 1;
+		transition: opacity 0.5s 0s;
+	}
+}

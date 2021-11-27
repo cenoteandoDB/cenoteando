@@ -1,0 +1,60 @@
+#FR-Tree-Region-xsplit  {
+	background-color: transparent;
+	border-right: 1px solid #E0E0E0;
+	border-left-color: transparent;
+}
+#displayArea {
+	box-shadow: 0 0 10px 0 silver;
+}
+#FR-Tree-Region .x-tree-ec-icon {
+	display: none;
+}
+#FR-Tree-Region .x-tree-elbow-line {
+	width: 12px;
+}
+
+.sysConfMenuItem {
+	color: gray;
+	margin-top:10px;
+	margin-bottom:10px;
+	cursor: default;
+	padding-left:0;
+	background-color: whitesmoke;
+	border-radius: 0;
+}
+.sysConfMenuItem:hover {
+	background-color: whitesmoke;
+}
+.adminSection.x-tree-node-el:hover {
+	background-color: transparent;
+}
+.sysConfMenuItem a span {color: black;font-size:16px;}
+.sysConfMenuItem * {cursor:default;}
+
+
+.avatar-s {
+	height: 24px;
+	width: 24px;
+	border-radius:50%;
+	margin: 0 5px;
+	vertical-align:middle;
+}
+.avatar-group-s {
+	height: 24px;
+	width: 24px;
+	margin: 0 5px;
+	vertical-align:middle;
+}
+.grid-icon {
+	font-size: 16px;
+	vertical-align: middle;
+	margin: 0 5px;
+}
+.fileIcon {
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	width: 18px;
+	height: 18px;
+	margin: 0 5px;
+}

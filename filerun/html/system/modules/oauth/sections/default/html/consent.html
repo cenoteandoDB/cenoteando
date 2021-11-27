@@ -1,0 +1,142 @@
+{lang section="OAuth2"}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{$app.settings.app_title|safeHTML} :: {t}OAuth2 Consent{/t}</title>
+    <link rel="stylesheet" href="../../css/ext.php?oauth2=1&v={$app.settings.currentVersion|forURL}">
+	<script>
+		function showAccess() {
+			document.getElementById('appsRow').style.display = 'none';
+			document.getElementById('permsLarge').style.display = 'block';
+		}
+	</script>
+</head>
+<body>
+
+
+<div class="container {if !$app.requiresFullAccess}withList{/if}" style="margin-bottom:10%">
+	<div class="row">
+		<div style="text-align:center">
+			<h2>{t}Authorization{/t}</h2>
+		</div>
+	</div>
+
+	<div class="row" id="appsRow">
+		<div class="one-half column">
+			<div class="appBox">
+				<div class="u-cf">
+					{if $app.clientInfo.logo_url}
+					<div class="u-pull-left logo" style="background-image:url({$app.clientInfo.logo_url|safeJS})">
+					</div>
+					{/if}
+					<div class="u-pull-left appDetails" {if $app.clientInfo.logo_url}style="margin-left:10px"{/if}>
+						<div>{if $app.clientInfo.website}<a href="{$app.clientInfo.website}" target="_blank">{$app.clientInfo.name|forHTML}</a>{else}{$app.clientInfo.name|forHTML}{/if}
+						</div>
+						{if $app.clientInfo.publisher}<div class="sub">{t}by{/t} <strong>{if $app.clientInfo.publisher_website}<a href="{$app.clientInfo.publisher_website}" target="_blank">{$app.clientInfo.publisher|forHTML}</a>{else}{$app.clientInfo.publisher|forHTML}{/if}</strong></div>{/if}
+					</div>
+				</div>
+			</div>
+
+			<div class="perms">
+				{if $app.requiresFullAccess}
+					{t}Would like to receive full access to:{/t}
+				{else}
+					{t}Would like to receive <a href="javascript:showAccess()">access</a> to:{/t}
+				{/if}
+			</div>
+
+		</div>
+		<div class="one-half column second-app">
+			<div class="appBox" style="position:relative">
+				<div class="u-cf">
+					{if $app.settings.ui_login_logo}
+					<div class="u-pull-left logo" style="background-image:url({$app.settings.ui_login_logo})">
+					</div>
+					{/if}
+					<div class="u-pull-left appDetails" {if $app.settings.ui_login_logo}style="margin-left:10px"{/if}>
+						<div><a href="{$app.config.url.root}" target="_blank">{$app.settings.app_title|forHTML|safeHTML}</a></div>
+						<div class="sub">
+							<div class="loggedAs">
+								<div>
+									{t}as{/t} <img src="{$app.config.url.root}/a/?uid={$app.userInfo.id}" class="avatar" /><strong><a href="javascript:;">{$app.userInfo.fullName|forHTML}</a></strong>
+								</div>
+								<div style="position:relative">
+									<div class="signOut"><a href="{$app.logoutURL}">{t}Sign in as a different user{/t}</a></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+    <div class="row perms-large" id="permsLarge">
+	    {if $app.requiresFullAccess}
+	        {t 1=$app.clientInfo.name|forHTML 2=$app.settings.app_title|forHTML|safeHTML 3=$app.userInfo.fullName|forHTML}The app <strong>%1</strong> would like full access to <strong>%2</strong> as <span class="nowrap-bold">%3</span>.{/t}
+	    {else}
+	        <div style="margin:1em;">{t 1=$app.clientInfo.name|forHTML}The app <strong>%1</strong> would like to:{/t}</div>
+	    <div class="permsList">
+		    <ul>
+		    {foreach $app.scopes as $scope}
+		    <li>
+				    {if $scope == 'list'}
+				    {t 1=$app.settings.app_title|safeHTML}List files and folders in your "%1" account.{/t}
+				    {elseif $scope == 'webdav'}
+				    {t 1=$app.settings.app_title|safeHTML}Access and manage files available in your "%1" account.{/t}
+				    {elseif $scope == 'list.sandbox'}
+				    {t 1=$app.clientInfo.name|safeHTML}List files and folders inside your "Apps/%1" folder.{/t}
+				    {elseif $scope == 'download'}
+				    {t 1=$app.settings.app_title|safeHTML}Download files available in your "%1" account.{/t}
+				    {elseif $scope == 'download.sandbox'}
+				    {t 1=$app.clientInfo.name|safeHTML}Download files from your "Apps/%1" folder.{/t}
+				    {elseif $scope == 'upload'}
+				    {t 1=$app.settings.app_title|safeHTML}Upload files to your "%1" account.{/t}
+				    {elseif $scope == 'upload.sandbox'}
+				    {t 1=$app.clientInfo.name|safeHTML}Upload files inside your "Apps/%1" folder.{/t}
+				    {elseif $scope == 'modify'}
+				    {t 1=$app.settings.app_title|safeHTML}Make changes to the files and folders inside your "%1" account.{/t}
+				    {elseif $scope == 'delete'}
+				    {t 1=$app.settings.app_title|safeHTML}Delete files from your "%1" account.{/t}
+				    {elseif $scope == 'delete.sandbox'}
+				    {t 1=$app.clientInfo.name|safeHTML}Delete files inside your "Apps/%1" folder.{/t}
+				    {elseif $scope == 'profile'}
+				    {t 1=$app.settings.app_title|safeHTML}View your basic "%1" account information.{/t}<br>
+				    <span style="color:gray;font-size:11px;margin-left:15px">{t}That includes your name, company name, website and logo.{/t}</span>
+				    {elseif $scope == 'email'}
+				        {if $app.userInfo.email}
+				            {t 1=$app.userInfo.email}View your e-mail address (%1).{/t}
+				        {else}
+				            {t}View your e-mail address, although your account currently doesn't have one set.{/t}
+				        {/if}
+				    {elseif $scope == 'weblink'}
+				    {t 1=$app.settings.app_title|safeHTML}Create public links to files inside your "%1" account.{/t}
+				    {elseif $scope == 'weblink.sandbox'}
+				    {t 1=$app.clientInfo.name|safeHTML}Create public links to files inside your "Apps/%1" folder.{/t}
+				    {elseif $scope == 'share'}
+				    {t 1=$app.settings.app_title|safeHTML}Share folders with other users.{/t}
+				    {elseif $scope == 'share.sandbox'}
+				    {t 1=$app.settings.app_title|safeHTML}Share folders inside your "Apps/%1" folder with other users.{/t}
+				    {elseif $scope == 'admin'}
+				    {t 1=$app.settings.app_title|safeHTML}Manage "%1" user accounts with your administrative privileges.{/t}
+				    {/if}
+			  </li>
+		    {/foreach}
+		    </ul>
+	    </div>
+	    {/if}
+    </div>
+
+	<div class="row" style="text-align:center;">
+		<div style="margin-top:2em;color:gray;">{t 1=$app.clientInfo.name}Use of your data is subject to the privacy policy of <span class="nowrap-bold">%1</span>.{/t}</div>
+		<div style="margin-top:2em;">
+			<a class="button button-primary" href="{$app.confirmURL}">{t}Accept{/t}</a> <a href="{$app.cancelURL}" class="button cancel" style="margin-left:10px">{t}Cancel{/t}</a>
+		</div>
+	</div>
+
+</div>
+
+</body>
+</html>

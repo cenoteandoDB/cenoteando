@@ -1,0 +1,8 @@
+<script>
+FR.settings = {$app.AllSettings};
+FR.customActionsInfo = {$app.custom_actions};
+ScriptMgr.load({ scripts:[
+	'?module=fileman&section=utils&sec=Admin%3A%20Setup&lang={$app.language|forURL}&v={$app.settings.currentVersion|forURL}&page=translation.js',
+	'js/cpanel/forms/settings_file_openers.js?v={$app.settings.currentVersion|forURL}'
+]});
+</script>

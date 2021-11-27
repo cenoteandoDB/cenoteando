@@ -1,0 +1,8 @@
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteRule ^rw/([^/]+)/([^/]+)/(.*)/download$ %{REQUEST_URI}/../../../../../../wl/?opts=$1&filename=$2&path=$3&download=1 [NC,R=301,L]
+RewriteRule ^rw/([^/]+)/([^/]+)/download$ %{REQUEST_URI}/../../../../../wl/?opts=$1&filename=$2&download=1 [NC,R=301,L]
+RewriteRule ^rw/([^/]+)/([^/]+)/(.*)$ %{REQUEST_URI}/../../../../../wl/?opts=$1&filename=$2&path=$3 [NC,R=301,L]
+RewriteRule ^rw/([^/]+)/([^/]+)$ %{REQUEST_URI}/../../../../wl/?opts=$1&filename=$2 [NC,R=301,L]
+RewriteRule ^rw/([^/]+)$ %{REQUEST_URI}/../../../wl/?opts=$1 [NC,R=301,L]
+</IfModule>

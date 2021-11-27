@@ -1,0 +1,143 @@
+.x-form-item-label em {color: red;}
+span.formComment {color: #6a6a6a;}
+
+div.error {color: red;}
+div.ok {color: green;}
+
+table.verysmall td {font-size:9px;}
+
+#FR-Tree-Region-xsplit  {
+	background-color: transparent;
+	border-left-color: transparent;
+}
+#FR-Tree-Region .x-panel-tbar {
+	border-bottom: 1px solid #E1E1E1;
+}
+#cardDisplayArea {
+	box-shadow: 0 0 10px 0 silver;
+}
+#FR-Tree-Region .x-tree-ec-icon {
+	position: absolute;
+    right: 5px;
+    top: 9px;
+}
+#FR-Tree-Region .x-tree-elbow-line {
+	width: 12px;
+}
+
+#gridTab .x-panel-tbar {
+	border-bottom: 1px solid #E1E1E1;
+	min-height: 48px;
+}
+#gridTab .x-panel-bbar {
+	border-top: 1px solid #E1E1E1;
+}
+#gridTab .x-panel-tbar .x-toolbar-left {
+	padding-left: 5px;
+}
+#gridTabPanel > .x-tab-panel-header .x-tab-strip span.x-tab-strip-text {
+	padding: 12px 18px;
+	font-size: 16px;
+}
+.FREditForm .x-panel-tbar {
+	border-bottom: 1px solid #E1E1E1;
+}
+.FREditForm .x-panel-tbar .x-toolbar-left {
+	padding-left: 10px;
+}
+.FREditForm .x-panel-header {
+	border-bottom: 1px solid #E1E1E1;
+	padding: 10px 15px;
+}
+.FREditForm .x-panel-header-text {
+	font-weight: normal;
+	color: gray;
+}
+#gridTabPanel .x-grid3-row td,
+#gridTabPanel .x-grid3-hd-row td {
+	font-size: 12px;
+	user-select:auto;
+}
+
+.adminSection {
+	cursor:default;
+	color: gray;
+}
+.adminSection .x-tree-node-icon {display: none;}
+.adminSection * {cursor:default;}
+.adminSection a {color: gray;}
+.adminNoIcon .x-tree-node-icon {display: none;}
+.sysConfMenuItem {
+	margin-bottom:5px;
+	cursor: default;
+	padding-left:0;
+	border-radius: 0;
+	background-color: #EEEEEE;
+}
+.sysConfMenuItem .x-tree-node-icon {
+	width: 0;
+}
+.x-tree-node-ct {
+	padding-top:5px;
+	padding-bottom:5px;
+}
+
+.adminSection {
+	border-radius: 0;
+	border-top: 1px solid #E1E1E1;
+}
+.sysConfMenuItem a span {color: black;font-size:16px;}
+.sysConfMenuItem * {cursor:default;}
+
+.x-grid3-row .avatar-s {
+	vertical-align: middle;
+}
+
+.avatar-s {
+	height: 24px;
+	width: 24px;
+	border-radius:50%;
+	margin: 0 5px;
+}
+.grid-icon {
+	font-size: 16px;
+	vertical-align: middle;
+	margin: 0 5px;
+}
+.fileIcon {
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	width: 18px;
+	height: 18px;
+	margin: 0 5px;
+}
+
+
+.color-white {
+	color:white;
+}
+
+.x-grid3-cell {
+	overflow:hidden;
+}
+.x-grid3-cell-inner {
+	overflow:inherit;
+}
+
+.updateDetails {
+	padding: 25px;
+}
+.updateDetails li {
+	padding-left: 3px;
+	margin-left: 10px;
+	list-style: circle;
+}
+.updateDetails span.code {
+	color: navy;
+	background-color: whitesmoke;
+	border: 1px solid silver;
+}
+.updateDetails strong {
+	font-weight: bold;
+}

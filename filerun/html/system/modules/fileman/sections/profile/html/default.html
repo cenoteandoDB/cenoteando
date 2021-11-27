@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>{$app.settings.app_title} :: {t s="Main Interface"}Account settings{/t}</title>
+	{insertCSSLink}{/insertCSSLink}
+	<link rel="stylesheet" href="js/jquery/croppie/croppie.css?v={$app.settings.currentVersion|forURL}" />
+	<script src="js/jquery/jquery.min.js?v={$app.settings.currentVersion|forURL}"></script>
+	<script src="js/jquery/croppie/croppie.min.js?v={$app.settings.currentVersion|forURL}"></script>
+	<script src="js/jquery/croppie/canvas.toBlob.js?v={$app.settings.currentVersion|forURL}"></script>
+	<script src="js/jquery/croppie/exif.js?v={$app.settings.currentVersion|forURL}"></script>
+	<script src="js/min.php?extjs=1&v={$app.settings.currentVersion|forURL}{if $app.config.misc.developmentMode}&debug=1{/if}"></script>
+	<script src="js/user_settings.js?v={$app.settings.currentVersion|forURL}"></script>
+	<script src="?module=fileman&section=utils&sec=Account%20Settings&lang={$app.language|forURL}&v={$app.settings.currentVersion|forURL}&page=translation.js"></script>
+	<script type="text/javascript" src="js/min.php?flow=1&v={$app.settings.currentVersion|forURL}{if $app.config.misc.developmentMode}&debug=1{/if}"></script>
+	<script>
+		FR.URLRoot = '{$app.url.root}';
+		FR.system = {$app.system_json};
+		FR.userInfo = {$app.userInfo};
+		{if $app.system.showApps}
+		FR.apps = {$app.connectedApps};
+		{/if}
+	</script>
+</head>
+<body></body>
+</html>

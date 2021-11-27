@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta property="og:image" content="{$app.config.url.root}/{$app.fileInfo.iconURL}" />
+	<meta property="og:image:width" content="512" />
+	<meta property="og:image:height" content="512" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<title>{$app.fileInfo.name|safeHTML}</title>
+	<link rel="stylesheet" type="text/css" href="css/preview.css?v={$app.settings.currentVersion|forURL}" />
+</head>
+<body>
+
+<div class="header">
+	<div class="left">
+		<span class="filename"><img src="../{$app.fileInfo.iconURL}" height="18" border="0" /> {$app.fileInfo.name|safeHTML}</span>
+	</div>
+	<div class="right">
+		<div class="details">
+			{$app.fileInfo.niceFileSize}
+		</div>
+		{if $app.isEditable}
+		{if $app.displayMode == 'preview_plugin_frame'}
+		<a href="{$app.fileInfo.url}&fmode=edit" class="actionBtn">{t}Edit{/t}</a>
+		{else}
+		<a href="{$app.fileInfo.url}" class="actionBtn">{t}Preview{/t}</a>
+		{/if}
+		{/if}
+
+		{if $app.isDownloadable}
+			{if $app.linkInfo.download_terms}
+			<a href="javascript:;" onclick="document.getElementById('terms').style.display='block';" class="actionBtn">{t}Download{/t}</a>
+			{else}
+			<a href="{$app.fileInfo.url}&download=1" class="actionBtn">{t}Download{/t}</a>
+			{/if}
+		{/if}
+
+		{if sizeof($app.fileComments) > 0}
+		<a href="javascript:;" onclick="document.getElementById('comments').style.display='block';" class="actionBtn commentsBtn">{t}Comments{/t} ({$app.fileComments|count})</a>
+		{/if}
+
+		{if $app.showMetadata && $app.metadata}
+		<a href="javascript:;" onclick="document.getElementById('metadata').style.display='block';" class="actionBtn commentsBtn">{t}Details{/t}</a>
+		{/if}
+	</div>
+</div>
+
+<div class="main">
+	{if $app.displayMode == 'frame'}
+	<iframe frameborder="0" src="{$app.fileInfo.url}&download=1&inline=1"></iframe>
+	{else if $app.displayMode == 'preview_plugin_frame'}
+	<iframe frameborder="0" src="{$app.fileInfo.url}&preview_plugin=1"></iframe>
+	{else if $app.displayMode == 'edit_plugin_frame'}
+	<iframe frameborder="0" src="{$app.fileInfo.url}&edit_plugin=1"></iframe>
+	{else if $app.displayMode == 'image'}
+	<div class="image" style="background-image:url({$app.fileInfo.url}&download=1&inline=1)"></div>
+	{else}
+	<div style="text-align:center">
+		<img class="icon" src="../{$app.fileInfo.iconURL}" />
+		<div style="margin-top:10px">{t}No preview available{/t}</div>
+	</div>
+	{/if}
+</div>
+
+{if $app.linkInfo.download_terms}
+<div class="overlay" id="terms">
+	<div class="panel">
+		<div class="panel-contents">
+			<div>{$app.linkInfo.download_terms|forHTML}</div>
+		</div>
+		<a class="actionBtn acceptBtn" href="{$app.fileInfo.url}&download=1" onclick="document.getElementById('terms').style.display='none';">{t}Download{/t}</a>
+		<a class="actionBtn cancelBtn" href="javascript:;" onclick="document.getElementById('terms').style.display='none'">{t}Cancel{/t}</a>
+	</div>
+</div>
+{/if}
+
+{if sizeof($app.fileComments) > 0}
+<div class="overlay" id="comments">
+	<div class="panel">
+		<div class="panel-contents">
+			{foreach $app.fileComments AS $p => $comment}
+			<div class="comment">
+				{$comment.val|forHTML|safeHTML}
+				{if $app.showNames}
+				{if $comment.uid != $app.fileComments[$p+1].uid}
+				<div class="author">{$comment.userInfo.fullName|forHTML|safeHTML}</div>
+				{/if}
+				{/if}
+			</div>
+			{if $comment.uid != $app.fileComments[$p+1].uid}
+			<div class="separator"></div>
+			{/if}
+			{/foreach}
+		</div>
+		<a class="actionBtn cancelBtn" href="javascript:;" onclick="document.getElementById('comments').style.display='none'">{t}Close{/t}</a>
+	</div>
+</div>
+{/if}
+
+{if $app.showMetadata}
+<div class="overlay" id="metadata">
+	<div class="panel">
+		<div class="panel-contents">
+			{foreach $app.metadata.fieldsets AS $fieldset}
+			<div class="fieldset">
+				<div class="fieldset-name">{$fieldset.name}</div>
+				{foreach $fieldset.fields AS $field}
+					<div class="metadata-field">
+						{$field.name|forHTML|safeHTML}:
+						{foreach $field.values AS $fieldValue}
+							<span{if $field.type == 'multiple'} class="multiple"{/if}>
+							{$fieldValue|forHTML|safeHTML}
+							</span>
+						{/foreach}
+					</div>
+				{/foreach}
+			</div>
+			{/foreach}
+			{if sizeof($app.metadata.tags) > 0}
+			<div class="fieldset">
+				<div class="fieldset-name">{t}Tags{/t}</div>
+					<div class="metadata-field">
+					{foreach $app.metadata.tags AS $tag}
+							<span class="multiple">
+							{$tag.v|forHTML|safeHTML}
+							</span>
+					{/foreach}
+					</div>
+			</div>
+			{/if}
+			{if $app.metadata.rating}
+				<div class="fieldset">
+				<div class="fieldset-name">{t}Rating{/t}</div>
+					<div class="metadata-field">
+						{for $i=1 to $app.metadata.rating}
+							&#x2B50;
+						{/for}
+					</div>
+			</div>
+			{/if}
+		</div>
+		<a class="actionBtn cancelBtn" href="javascript:;" onclick="document.getElementById('metadata').style.display='none'">{t}Close{/t}</a>
+	</div>
+</div>
+{/if}
+
+
+<div style="display:none;">
+{if $app.settings.tracker_codes}{$app.settings.tracker_codes}{/if}
+</div>

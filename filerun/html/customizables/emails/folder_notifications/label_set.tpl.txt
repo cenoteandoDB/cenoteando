@@ -1,0 +1,12 @@
+<Action>
+<div>
+	<div style="color:gray">{$info.details.date} (<em>{$info.details.date|MySQLTimeDiff}</em>)</div>
+	<div style="margin-left:5px;">
+	{if $info.details.details.label}
+		{t 1=$info.actionUserInfo.fullName|forHTML 2=$info.relativePath|forHTML 3=$info.details.details.label.color 4=$info.details.details.label.text|safeHTML|nl2br}<strong>%1</strong> changed the label on the file "<strong>%2</strong>": <span style="margin-left:5px;padding:1px;border:1px solid %3">%4</span>{/t}
+	{else}
+		{t 1=$info.actionUserInfo.fullName|forHTML 2=$info.relativePath|forHTML}<strong>%1</strong> removed the label from the file "<strong>%2</strong>"{/t}
+	{/if}
+	</div>
+</div>
+</Action>

@@ -1,0 +1,9 @@
+<script>
+	FR.types = {$app.types};
+	FR.viewers = {$app.viewers};
+	FR.weblink_handlers = {$app.weblink_handlers};
+	ScriptMgr.load({ scripts:[
+		'?module=fileman&section=utils&sec=Admin%3A%20Plugins&lang={$app.language|forURL}&v={$app.settings.currentVersion|forURL}&page=translation.js',
+		'js/cpanel/forms/add_default_viewer.js?v={$app.settings.currentVersion|forURL}'
+	]});
+</script>

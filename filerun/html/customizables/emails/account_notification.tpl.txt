@@ -1,0 +1,16 @@
+<From>{$app.settings.default_notification_address}</From>
+<FromName>{$app.settings.default_notification_name}</FromName>
+<Subject>Account information</Subject>
+<Body>
+Hi {$info.name|forHTML},<br>
+<br>
+Your user account for "<a href="{$app.url.root}">{$app.url.root}</a>" has just been created.<br>
+You can login with the following information:<br>
+<br>
+Username: <strong>{$info.username}</strong><br>
+Password: <strong>{$info.password}</strong><br>
+<br>
+Best regards,<br>
+<br>
+<a href="{$app.url.root}">{$app.url.root}</a>
+</Body>

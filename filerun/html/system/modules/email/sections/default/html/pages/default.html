@@ -1,0 +1,19 @@
+<script>
+FR = {
+	fromName: '{$app.user.info.fullName|safeHTML|safeJS}',
+	defaultFrom: '{$app.default.from}',
+	filenames: '',
+	language: '{$app.language}',
+	userCanCreateWebLinks: {if $app.user.perms.weblink}true{else}false{/if},
+	usersCanEditAddress: {if $app.settings.send_from_custom_email}true{else}false{/if},
+	WebLinksForLargerFiles: {$app.config.app.email.enableWebLinkThreshold},
+	UI: {
+		translations: []
+	},
+	csrf_token: '{$app.csrf_token|safeJS}'
+}
+</script>
+<script src="js/fileman/user_chooser.js?v={$app.settings.currentVersion|forURL}"></script>
+<script src="?module=fileman&section=utils&v={$app.settings.currentVersion|forURL}&sec=E-mail%20Files&sec2=Web%20Links&lang={$app.language|forURL}&page=translation.js"></script>
+<script src="js/fileman/email.js?v={$app.settings.currentVersion|forURL}"></script>
+<script src="js/genpass.js?v={$app.settings.currentVersion|forURL}"></script>

@@ -1,0 +1,6 @@
+<Action>
+<div style="margin-top:3px;">
+	<div style="color:gray">{$info.details.date} (<em>{$info.details.date|MySQLTimeDiff}</em>)</div>
+	<div style="margin-left:5px;">{t 1=$info.actionUserInfo.fullName|forHTML 2=$info.relativePath|forHTML 3=$info.details.details.file_size|niceFileSize}<strong>%1</strong> downloaded the file "<strong>%2</strong>" (<em>%3</em>).{/t}</div>
+</div>
+</Action>

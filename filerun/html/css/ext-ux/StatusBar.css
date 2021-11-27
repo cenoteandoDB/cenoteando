@@ -1,0 +1,26 @@
+.x-statusbar .x-status-text {
+	cursor: default;
+}
+.x-statusbar .x-status-saving,
+.x-statusbar .x-status-busy {
+	padding-left: 15px !important;
+	background: transparent url(../../images/loading.gif) no-repeat 2px;
+    background-size:8px;
+}
+.x-statusbar .x-status-saved {
+	background-image: url(../../images/generic/saved.png);
+}
+.x-statusbar .x-status-error {
+	padding-left: 15px !important;
+	background: transparent url(../../images/generic/exclamation.gif) no-repeat 2px;
+	color: #C33;
+}
+.x-statusbar .x-status-valid {
+	padding-left: 15px !important;
+	background: transparent url(../../images/generic/accept.png) no-repeat 2px;
+}
+.x-toolbar div.xtb-text .x-statusbar .x-status-text-panel {
+	border: 1px solid;
+	padding: 2px 8px 2px 5px;
+	border-color: #99bbe8 #fff #fff #99bbe8;
+}

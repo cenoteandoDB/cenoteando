@@ -1,0 +1,12 @@
+<script>
+var FR = {
+	popupId: '{$app.get._popup_id}',
+	UI: {
+		translations: []
+	},
+	currentPath: '{$app.path|safeJS}',
+	gridData: {$app.list}
+};
+</script>
+<script src="?module=fileman&section=utils&page=translation.js&sec=Versioning&lang={$app.language|forURL}"></script>
+<script src="js/fileman/versioning.js?v={$app.settings.currentVersion|forURL}"></script>

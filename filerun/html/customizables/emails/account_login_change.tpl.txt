@@ -1,0 +1,15 @@
+<From>{$app.settings.default_notification_address}</From>
+<FromName>{$app.settings.default_notification_name}</FromName>
+<Subject>Your access information changed</Subject>
+<Body>
+Hi {$info.name|forHTML},<br>
+<br>
+Your "<a href="{$app.url.root}">{$app.url.root}</a>" login information has been updated:<br>
+<br>
+Username: <strong>{$info.username|forHTML}</strong><br>
+Password: <strong>{$info.password|forHTML}</strong><br>
+<br>
+Best regards,<br>
+<br>
+{$app.settings.app_title|forHTML}
+</Body>
