@@ -180,7 +180,7 @@ export default class Cenotes extends Vue {
         { text: 'Alternative names', value: 'alternativeNames' },
         { text: 'Type', value: 'type' },
         { text: 'Touristic', value: 'touristic' },
-        { text: 'Coordinates', value: 'coordinates' },
+        { text: 'Coordinates', value: 'coordinates', filterable: false },
         { text: 'Issues', value: 'issues' },
         { text: 'Actions', value: 'action' },
     ];
