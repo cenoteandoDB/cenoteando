@@ -117,35 +117,26 @@ import CenoteDetails from '@/components/cenote/CenoteDetails.vue';
 export default class Cenote extends Vue {
     marker: L.CircleMarker | null = null;
     cenote: CenoteDTO | null = null;
+    photos: Array<string> | null = null;
+    maps: Array<string> | null = null;
 
-    // images = {
-    //     pictures: [
-    //         'https://media.tacdn.com/media/attractions-splice-spp-674x446/06/7b/1e/ee.jpg',
-    //         'https://1.bp.blogspot.com/-L3if49qKYa4/WTBmY67sKMI/AAAAAAAArBE/FUCA3JwrcDA5wikNbd41ebTq-ZI-hoUbgCLcB/s1600/CENOTEME%25CC%2581XICO.png',
-    //     ],
-    //     maps: [
-    //         'https://www.researchgate.net/profile/Dorottya-Angyal-2/publication/331176795/figure/fig1/AS:727864316010496@1550547784184/Map-of-the-cenote-distribution-in-the-Yucatan-state-Mexico-with-studied-localities-The.png',
-    //         'https://nsscds.org/wp-content/uploads/images/products/p-2349-2015_10_16_12.02.12__90546.1445210020.1280.1280.jpg',
-    //     ],
-    // };
+    // pictures = [
+    //     {
+    //         src: 'https://media.tacdn.com/media/attractions-splice-spp-674x446/06/7b/1e/ee.jpg',
+    //     },
+    //     {
+    //         src: 'https://www.oyster.com/wp-content/uploads/sites/35/2019/05/17912-9696492595-0b73d63c88-o.jpg',
+    //     },
+    // ];
 
-    pictures = [
-        {
-            src: 'https://media.tacdn.com/media/attractions-splice-spp-674x446/06/7b/1e/ee.jpg',
-        },
-        {
-            src: 'https://www.oyster.com/wp-content/uploads/sites/35/2019/05/17912-9696492595-0b73d63c88-o.jpg',
-        },
-    ];
-
-    maps = [
-        {
-            src: 'https://www.researchgate.net/profile/Dorottya-Angyal-2/publication/331176795/figure/fig1/AS:727864316010496@1550547784184/Map-of-the-cenote-distribution-in-the-Yucatan-state-Mexico-with-studied-localities-The.png',
-        },
-        {
-            src: 'https://www.researchgate.net/profile/Jeremy-Stalker/publication/271631426/figure/fig5/AS:613445569359913@1523268229636/Ring-of-Cenote-groundwater-flow-map-Ring-of-Cenote-water-flows-to-the-coast-along-a.png',
-        },
-    ];
+    // maps = [
+    //     {
+    //         src: 'https://www.researchgate.net/profile/Dorottya-Angyal-2/publication/331176795/figure/fig1/AS:727864316010496@1550547784184/Map-of-the-cenote-distribution-in-the-Yucatan-state-Mexico-with-studied-localities-The.png',
+    //     },
+    //     {
+    //         src: 'https://www.researchgate.net/profile/Jeremy-Stalker/publication/271631426/figure/fig5/AS:613445569359913@1523268229636/Ring-of-Cenote-groundwater-flow-map-Ring-of-Cenote-water-flows-to-the-coast-along-a.png',
+    //     },
+    // ];
 
     zoom = 12;
     url = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -158,6 +149,12 @@ export default class Cenote extends Vue {
     async created(): Promise<void> {
         await this.$store.dispatch('loading');
         try {
+            this.photos = await RemoteServices.getPhotosCenotes(
+                this.$route.params.key,
+            );
+            this.maps = await RemoteServices.getMapsCenotes(
+                this.$route.params.key,
+            );
             this.cenote = await RemoteServices.getCenote(
                 this.$route.params.key,
             );

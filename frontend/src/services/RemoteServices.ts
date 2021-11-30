@@ -521,6 +521,28 @@ export default class RemoteServices {
             });
     }
 
+    static async getPhotosCenotes(key: string): Promise<Array<string>> {
+        return httpClient
+            .get('/api/cenotes/' + key + '/photos')
+            .then((response) => {
+                return response.data;
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
+    static async getMapsCenotes(key: string): Promise<Array<string>> {
+        return httpClient
+            .get('/api/cenotes/' + key + '/maps')
+            .then((response) => {
+                return response.data;
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
     // Users
     static async *usersGenerator(limit?: number): AsyncGenerator<UserDTO[]> {
         let continuationToken: string | undefined = undefined;
