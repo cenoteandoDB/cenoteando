@@ -25,7 +25,7 @@
                     cycle
                 >
                     <v-carousel-item
-                        v-for="(image, i) in pictures"
+                        v-for="(image, i) in photos"
                         :key="i"
                         :src="image.src"
                         reverse-transition="fade-transition"
@@ -120,7 +120,7 @@ export default class Cenote extends Vue {
     photos: Array<string> | null = null;
     maps: Array<string> | null = null;
 
-    // pictures = [
+    // photosTest = [
     //     {
     //         src: 'https://media.tacdn.com/media/attractions-splice-spp-674x446/06/7b/1e/ee.jpg',
     //     },
@@ -129,7 +129,7 @@ export default class Cenote extends Vue {
     //     },
     // ];
 
-    // maps = [
+    // mapsTest = [
     //     {
     //         src: 'https://www.researchgate.net/profile/Dorottya-Angyal-2/publication/331176795/figure/fig1/AS:727864316010496@1550547784184/Map-of-the-cenote-distribution-in-the-Yucatan-state-Mexico-with-studied-localities-The.png',
     //     },

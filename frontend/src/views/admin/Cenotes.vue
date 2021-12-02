@@ -289,7 +289,6 @@ export default class Cenotes extends Vue {
                     geojsonCoords[1],
                     geojsonCoords[0],
                 );
-
                 return {
                     _key: c._key.toString(),
                     name: c.name,
