@@ -27,7 +27,7 @@
                     <v-carousel-item
                         v-for="(image, i) in photos"
                         :key="i"
-                        :src="image.src"
+                        :src="image"
                         reverse-transition="fade-transition"
                         transition="fade-transition"
                     ></v-carousel-item>
@@ -61,7 +61,7 @@
                     <v-carousel-item
                         v-for="(image, i) in maps"
                         :key="i"
-                        :src="image.src"
+                        :src="image"
                         reverse-transition="fade-transition"
                         transition="fade-transition"
                     ></v-carousel-item>
