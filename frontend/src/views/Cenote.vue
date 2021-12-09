@@ -30,6 +30,7 @@
                         :src="image"
                         reverse-transition="fade-transition"
                         transition="fade-transition"
+                        width="600px"
                     ></v-carousel-item>
                 </v-carousel>
             </v-col>
