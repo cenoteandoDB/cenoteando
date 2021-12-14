@@ -1,5 +1,5 @@
 <template>
-    <v-sheet elevation="2" style="min-height: 500px">
+    <v-sheet elevation="2" style="min-height: 420px" :width="540">
         <v-tabs v-model="currentTab" fixed-tabs slider-color="amber darken-3">
             <v-tab v-for="tab in tabs" :key="tab.tab">
                 {{ tab.tab }}
