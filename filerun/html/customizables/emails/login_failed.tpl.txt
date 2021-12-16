@@ -1,6 +1,0 @@
-<Action>
-<div>
-	<div style="color:gray">{$info.details.date} (<em>{$info.details.date|MySQLTimeDiff}</em>)</div>
-	<div style="margin-left:5px;">{t 1=$info.userInfo.name 2=$info.details.details.IP}User "<strong>%1</strong>" failed to login, using the IP address %2.{/t}</div>
-</div>
-</Action>

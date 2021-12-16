@@ -1,9 +1,0 @@
-{lang section="Admin: Tools: Import Users"}
-<script>
-FR.roles = {$app.roles};
-FR.importColumns = {$app.importColumns};
-ScriptMgr.load({ scripts:[
-	'?module=fileman&section=utils&page=translation.js&sec=Admin%3A%20Tools%3A%20Import%20Users&lang={$app.language|forURL}',
-	'js/cpanel/import_users.js?v={$app.settings.currentVersion|forURL}'
-]});
-</script>
