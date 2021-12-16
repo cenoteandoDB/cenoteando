@@ -7,10 +7,6 @@ services:
       context: ./database
       target: database
       dockerfile: Dockerfile
-    depends_on:
-      - filerun
-    links:
-      - filerun
     ports:
       - 8529:8529
     restart: unless-stopped
@@ -31,10 +27,8 @@ services:
         NODE_ENV: development
     depends_on:
       - database
-      - filerun
     links:
       - database
-      - filerun
     ports:
       - 80:80
     restart: unless-stopped
@@ -43,39 +37,3 @@ services:
     volumes:
       - ./frontend/nginx/error.log:/var/log/nginx/error.log
       - ./frontend/nginx/access.log:/var/log/nginx/access.log
-
-  filerun_db:
-    container_name: filerun_db
-    image: mariadb:10.1
-    environment:
-      MYSQL_ROOT_PASSWORD: cenoteando_mysql_root_password
-      MYSQL_USER: cenoteando_filerun_username
-      MYSQL_PASSWORD: cenoteando_filerun_password
-      MYSQL_DATABASE: cenoteando_filerun_database
-    restart: unless-stopped
-    volumes:
-      - ./filerun/db:/var/lib/mysql
-
-  filerun:
-    container_name: filerun
-    image: afian/filerun
-    environment:
-      FR_DB_HOST: filerun_db
-      FR_DB_PORT: 3306
-      FR_DB_NAME: cenoteando_filerun_database
-      FR_DB_USER: cenoteando_filerun_username
-      FR_DB_PASS: cenoteando_filerun_password
-      APACHE_RUN_USER: www-data
-      APACHE_RUN_USER_ID: 33
-      APACHE_RUN_GROUP: www-data
-      APACHE_RUN_GROUP_ID: 33
-    depends_on:
-      - filerun_db
-    links:
-      - filerun_db:filerun_db
-    restart: unless-stopped
-    ports:
-      - 8000:80
-    volumes:
-      - ./filerun/html:/var/www/html
-      - ./filerun/files:/user-files

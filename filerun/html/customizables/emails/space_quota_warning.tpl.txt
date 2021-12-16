@@ -1,7 +1,0 @@
-<Action>
-<div style="margin-top:3px;">
-	Dear {$info.userInfo.username}:
-	Your home folder is now <strong>{$info.details.details.percent} percent</strong> full.<br>
-	Please delete unnecessary files or request more storage space.
-</div>
-</Action>
