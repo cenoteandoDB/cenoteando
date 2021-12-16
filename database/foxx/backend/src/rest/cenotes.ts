@@ -9,6 +9,7 @@ import {
     CommentBucketSchema,
     VariableSchema,
 } from '../model/schema';
+import CloudinaryServices from '../services/Cloudinary';
 
 export default (): Foxx.Router => {
     const router = createRouter();
@@ -222,6 +223,39 @@ export default (): Foxx.Router => {
             }),
             ['application/json'],
             'The latitude and longitude boundaries of all cenotes in the database',
+        );
+
+    router
+        .get(':_key/photos', (req, res) => {
+            res.send(CloudinaryServices.getPhotos(req.pathParams._key));
+        })
+        .summary('Get cenote photos')
+        .description(
+            'Returns all the photos os the given cenote.',
+        )
+        
+        .response(
+            'ok',
+            Joi.array().items(Joi.string()).required(),
+            ['application/json'],
+            'List of url of cenote\'s photos',
+        );
+    
+    
+    router
+        .get(':_key/maps', (req, res) => {
+            res.send(CloudinaryServices.getMaps(req.pathParams._key));
+        })
+        .summary('Get cenote maps')
+        .description(
+            'Returns all the maps os the given cenote.',
+        )
+        
+        .response(
+            'ok',
+            Joi.array().items(Joi.string()).required(),
+            ['application/json'],
+            'List of url of cenote\'s maps',
         );
 
     return router;

@@ -6,6 +6,21 @@
             "type": "password",
             "description": "Secret key to use for signing session tokens.",
             "default": "SUPER SECRET"
+        },
+        "apiSecret": {
+            "type": "password",
+            "description": "Secret cloudinary api secret.",
+            "default": "SUPER SECRET"
+        },
+        "apiKey": {
+            "type": "password",
+            "description": "Secret cloudinary api key.",
+            "default": "SUPER SECRET"
+        },
+        "cloudName": {
+            "type": "password",
+            "description": "Secret cloudinary name.",
+            "default": "SUPER SECRET"
         }
     },
     "engines": {
