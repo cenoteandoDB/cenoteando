@@ -6,6 +6,3 @@
 	path = database/foxx/type-arango
 	url = https://github.com/cenoteandoDB/type-arango.git
 	branch = master
-[submodule "filerun/files"]
-	path = filerun/files
-	url = https://github.com/cenoteandoDB/files.git
