@@ -210,6 +210,20 @@ export default class Cenotes extends Vue {
         return degrees + 'º ' + minutes + "' " + seconds + "'' ";
     }
 
+    ConvertDMSToDD(
+        degrees: number,
+        minutes: number,
+        seconds: number,
+        direction: string,
+    ): number {
+        var dd = degrees + minutes / 60 + seconds / (60 * 60);
+
+        if (direction == 'S' || direction == 'W') {
+            dd = dd * -1;
+        } // Don't do anything for N or E
+        return dd;
+    }
+
     convertCoordinates(lat: number, lng: number): string {
         var latitude = this.toDegreesMinutesAndSeconds(lat);
         var latitudeCardinal = lat >= 0 ? 'N' : 'S';

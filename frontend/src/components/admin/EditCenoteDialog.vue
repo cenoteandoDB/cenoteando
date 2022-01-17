@@ -184,7 +184,7 @@ export default class EditCenoteDialog extends Vue {
     longitudeDirSelection = 'W';
 
     issues = Object.values(CenoteIssue);
-    cenote = new CenoteDTO();
+    cenote = this.$props.cenoteProp;
     latitudeDir = ['N', 'S'];
     longitudeDir = ['W', 'E'];
 
@@ -199,7 +199,7 @@ export default class EditCenoteDialog extends Vue {
     }
 
     created(): void {
-        this.cenote = new CenoteDTO(this.$props.cenoteProp);
+        // this.cenote = new CenoteDTO(this.$props.cenoteProp);
         let lat = this.cenote.getLatitude();
         let lon = this.cenote.getLongitude();
 
@@ -216,16 +216,20 @@ export default class EditCenoteDialog extends Vue {
         } else this.longitudeText = '';
     }
 
-    save(): void {
-        let lat = JSON.parse(this.latitudeText);
-        let lon = JSON.parse(this.longitudeText);
-        if (this.latitudeDirSelection === 'S') lat = -lat;
-        if (this.longitudeDirSelection === 'W') lon = -lon;
-        this.cenote.setCoordinates(lat, lon);
+    async save(): Promise<void> {
+        try {
+            let lat = JSON.parse(this.latitudeText);
+            let lon = JSON.parse(this.longitudeText);
+            if (this.latitudeDirSelection === 'S') lat = -lat;
+            if (this.longitudeDirSelection === 'W') lon = -lon;
+            this.cenote.setCoordinates(lat, lon);
 
-        Object.assign(this.$props.cenoteProp, this.cenote);
-        this.$emit('onSave');
-        this.dialog = false;
+            Object.assign(this.$props.cenoteProp, this.cenote);
+            this.$emit('onSave');
+            this.dialog = false;
+        } catch (error) {
+            await this.$store.dispatch('error', error);
+        }
     }
 }
 </script>
