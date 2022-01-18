@@ -168,7 +168,7 @@ import CenoteDTO, { CenoteIssue, CenoteType } from '@/models/CenoteDTO';
 
 @Component({
     props: {
-        cenoteProp: CenoteDTO,
+        cenote: CenoteDTO,
     },
 })
 export default class EditCenoteDialog extends Vue {
@@ -184,24 +184,23 @@ export default class EditCenoteDialog extends Vue {
     longitudeDirSelection = 'W';
 
     issues = Object.values(CenoteIssue);
-    cenote = this.$props.cenoteProp;
     latitudeDir = ['N', 'S'];
     longitudeDir = ['W', 'E'];
 
     remove(item: string): void {
-        this.$props.cenoteProp.alternativeNames.splice(
-            this.$props.cenoteProp.alternativeNames.indexOf(item),
+        this.$props.cenote.alternativeNames.splice(
+            this.$props.cenote.alternativeNames.indexOf(item),
             1,
         );
-        this.$props.cenoteProp.alternativeNames = [
-            ...this.$props.cenoteProp.alternativeNames,
+        this.$props.cenote.alternativeNames = [
+            ...this.$props.cenote.alternativeNames,
         ];
     }
 
     created(): void {
         // this.cenote = new CenoteDTO(this.$props.cenoteProp);
-        let lat = this.cenote.getLatitude();
-        let lon = this.cenote.getLongitude();
+        let lat = this.$props.cenote.getLatitude();
+        let lon = this.$props.cenote.getLongitude();
 
         if (lat) {
             this.latitudeText = Math.abs(lat).toString();
@@ -222,9 +221,8 @@ export default class EditCenoteDialog extends Vue {
             let lon = JSON.parse(this.longitudeText);
             if (this.latitudeDirSelection === 'S') lat = -lat;
             if (this.longitudeDirSelection === 'W') lon = -lon;
-            this.cenote.setCoordinates(lat, lon);
+            this.$props.cenote.setCoordinates(lat, lon);
 
-            Object.assign(this.$props.cenoteProp, this.cenote);
             this.$emit('onSave');
             this.dialog = false;
         } catch (error) {

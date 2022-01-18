@@ -18,7 +18,7 @@
                     <v-spacer />
                     <v-container class="d-flex flex-row justify-center">
                         <edit-cenote-dialog
-                            :cenoteProp="newCenote"
+                            :cenote="newCenote"
                             @onSave="createCenote()"
                         >
                             <template v-slot:activator="{ on, attrs }">
@@ -116,7 +116,7 @@
 
             <template v-slot:[`item.action`]="{ item }">
                 <edit-cenote-dialog
-                    :cenoteProp="item.cenote"
+                    :cenote="item.cenote"
                     @onSave="updateCenote(item.cenote)"
                 >
                     <template v-slot:activator="{ on, attrs }">
