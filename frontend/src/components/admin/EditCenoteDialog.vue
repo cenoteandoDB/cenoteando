@@ -114,6 +114,15 @@
 
                     <v-container class="d-flex d-row justify-center">
                         <v-text-field
+                            v-model="dmsLatitude"
+                            label="DMS"
+                            data-cy="latitude dms"
+                            required
+                        ></v-text-field>
+                    </v-container>
+
+                    <v-container class="d-flex d-row justify-center">
+                        <v-text-field
                             v-model="longitudeText"
                             data-cy="longitude"
                             label="Longitude"
@@ -132,6 +141,15 @@
                             style="width: 5px"
                             required
                         ></v-select>
+                    </v-container>
+
+                    <v-container class="d-flex d-row justify-center">
+                        <v-text-field
+                            v-model="dmsLongitude"
+                            label="DMS"
+                            data-cy="longitude dms"
+                            required
+                        ></v-text-field>
                     </v-container>
 
                     <v-select
@@ -197,6 +215,43 @@ export default class EditCenoteDialog extends Vue {
         ];
     }
 
+    toDMSLatitude(latitudeText: number): string {
+        var absolute = Math.abs(latitudeText);
+        var degrees = Math.floor(absolute);
+        var minutesNotTruncated = (absolute - degrees) * 60;
+        var minutes = Math.floor(minutesNotTruncated);
+        var seconds = Math.floor((minutesNotTruncated - minutes) * 60);
+
+        return degrees + 'º ' + minutes + "' " + seconds + "'' ";
+    }
+
+    toDMSLongitude(longitudeText: number): string {
+        var absolute = Math.abs(longitudeText);
+        var degrees = Math.floor(absolute);
+        var minutesNotTruncated = (absolute - degrees) * 60;
+        var minutes = Math.floor(minutesNotTruncated);
+        var seconds = Math.floor((minutesNotTruncated - minutes) * 60);
+
+        return degrees + 'º ' + minutes + "' " + seconds + "'' ";
+    }
+
+    dmsLatitude = this.toDMSLatitude(this.$props.cenote.getLatitude());
+    dmsLongitude = this.toDMSLongitude(this.$props.cenote.getLongitude());
+
+    ConvertDMSToDD(
+        degrees: number,
+        minutes: number,
+        seconds: number,
+        direction: string,
+    ): number {
+        var dd = degrees + minutes / 60 + seconds / (60 * 60);
+
+        if (direction == 'S' || direction == 'W') {
+            dd = dd * -1;
+        } // Don't do anything for N or E
+        return dd;
+    }
+
     created(): void {
         // this.cenote = new CenoteDTO(this.$props.cenoteProp);
         let lat = this.$props.cenote.getLatitude();
@@ -204,12 +259,14 @@ export default class EditCenoteDialog extends Vue {
 
         if (lat) {
             this.latitudeText = Math.abs(lat).toString();
+
             if (lat >= 0) this.latitudeDirSelection = 'N';
             else this.latitudeDirSelection = 'S';
         } else this.latitudeText = '';
 
         if (lon) {
             this.longitudeText = Math.abs(lon).toString();
+
             if (lon >= 0) this.longitudeDirSelection = 'E';
             else this.longitudeDirSelection = 'W';
         } else this.longitudeText = '';
