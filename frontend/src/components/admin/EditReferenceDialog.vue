@@ -18,6 +18,7 @@
                         v-model="reference.authors"
                         data-cy="authors"
                         label="Authors"
+                        required
                     ></v-text-field>
 
                     <v-text-field
@@ -37,6 +38,7 @@
                         v-model="reference.year"
                         data-cy="year"
                         label="Year"
+                        required
                     ></v-text-field>
                 </v-form>
             </v-card-text>
