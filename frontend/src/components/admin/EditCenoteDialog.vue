@@ -90,7 +90,10 @@
                         required
                     ></v-checkbox>
 
-                    <v-container class="d-flex d-row justify-end">
+                    <v-container
+                        v-if="dms === false"
+                        class="d-flex d-row justify-end"
+                    >
                         <v-text-field
                             v-model="latitudeText"
                             data-cy="latitude"
@@ -112,16 +115,10 @@
                         ></v-select>
                     </v-container>
 
-                    <v-container class="d-flex d-row justify-center">
-                        <v-text-field
-                            v-model="dmsLatitude"
-                            label="DMS"
-                            data-cy="latitude dms"
-                            required
-                        ></v-text-field>
-                    </v-container>
-
-                    <v-container class="d-flex d-row justify-center">
+                    <v-container
+                        v-if="dms === false"
+                        class="d-flex d-row justify-center"
+                    >
                         <v-text-field
                             v-model="longitudeText"
                             data-cy="longitude"
@@ -143,13 +140,69 @@
                         ></v-select>
                     </v-container>
 
-                    <v-container class="d-flex d-row justify-center">
+                    <v-container
+                        v-if="dms === true"
+                        class="d-flex d-row justify-center"
+                    >
+                        <v-text-field
+                            v-if="dms == true"
+                            v-model="dmsLatitude"
+                            label="Latitude"
+                            data-cy="latitude dms"
+                            required
+                        ></v-text-field>
+                        <v-select
+                            v-model="latitudeDirSelection"
+                            class="pt-2 pl-10 pr-10"
+                            :items="latitudeDir"
+                            dense
+                            solo
+                            width="5"
+                            style="width: 5px"
+                            required
+                        ></v-select>
+                    </v-container>
+
+                    <v-container
+                        v-if="dms == true"
+                        class="d-flex d-row justify-center"
+                    >
                         <v-text-field
                             v-model="dmsLongitude"
-                            label="DMS"
+                            label="Longitude"
                             data-cy="longitude dms"
                             required
                         ></v-text-field>
+                        <v-select
+                            v-model="longitudeDirSelection"
+                            class="pt-2 pl-10 pr-10"
+                            :items="longitudeDir"
+                            dense
+                            solo
+                            width="5"
+                            style="width: 5px"
+                            required
+                        ></v-select>
+                    </v-container>
+
+                    <v-container>
+                        <v-select
+                            v-model="modeSet"
+                            :items="mode"
+                            dense
+                            solo
+                            required
+                            placeholder="Change coordinate format"
+                            @input="
+                                () => {
+                                    if (modeSet === 'DMS') {
+                                        dms = true;
+                                    } else if (modeSet === 'DD') {
+                                        dms = false;
+                                    }
+                                }
+                            "
+                        ></v-select>
                     </v-container>
 
                     <v-select
@@ -193,6 +246,7 @@ export default class EditCenoteDialog extends Vue {
     dialog = false;
     valid = false;
     editName = false;
+    dms = false;
 
     types = Object.values(CenoteType);
     touristic = [true, false];
@@ -200,6 +254,8 @@ export default class EditCenoteDialog extends Vue {
     longitudeText = '';
     latitudeDirSelection = 'N';
     longitudeDirSelection = 'W';
+    mode = ['DMS', 'DD'];
+    modeSet = '';
 
     issues = Object.values(CenoteIssue);
     latitudeDir = ['N', 'S'];
