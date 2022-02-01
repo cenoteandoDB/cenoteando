@@ -37,3 +37,20 @@ services:
     volumes:
       - ./frontend/nginx/error.log:/var/log/nginx/error.log
       - ./frontend/nginx/access.log:/var/log/nginx/access.log
+
+  backend:
+    container_name: backend
+    image: cenoteando:backend
+    build:
+      context: ./backend
+      target: backend
+      dockerfile: Dockerfile
+      args:
+        PROFILE: dev
+    depends_on:
+      - database
+    links:
+      - database
+    ports:
+      - 8080:8080
+    restart: unless-stopped
