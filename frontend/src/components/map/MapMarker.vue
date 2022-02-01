@@ -20,7 +20,7 @@
             </label>
             <br v-if="!single" />
             <v-btn
-                :to="'/cenote/' + cenote._key"
+                :to="'/cenote/' + cenote.id"
                 v-if="!single"
                 x-small
                 class="ma-1"

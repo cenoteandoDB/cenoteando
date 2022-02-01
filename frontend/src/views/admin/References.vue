@@ -124,7 +124,7 @@
                             item.filename !== undefined ||
                             item.filename !== null
                         "
-                        v-model="item._key"
+                        v-model="item.id"
                         @click="downloadReference(item)"
                         data-cy="downloadButton"
                         fab
@@ -155,7 +155,7 @@ export default class References extends Vue {
     files: File[] = [];
     uploadProgress = 0;
     headers = [
-        { text: 'Cenoteando ID', value: '_key' },
+        { text: 'Cenoteando ID', value: 'id' },
         { text: 'Authors', value: 'authors' },
         { text: 'Short Name', value: 'shortName' },
         { text: 'Type', value: 'type' },
@@ -187,13 +187,17 @@ export default class References extends Vue {
     async created(): Promise<void> {
         await this.$store.dispatch('loading');
 
-        try {
-            this.references = await RemoteServices.getReferences();
-        } catch (error) {
-            await this.$store.dispatch('error', error);
-        }
+        (async () => {
+            let generator = RemoteServices.referencesGenerator(30);
+            for await (let batch of generator) {
+                if (!this.references.length)
+                    await this.$store.dispatch('clearLoading');
 
-        await this.$store.dispatch('clearLoading');
+                this.references.push(...batch);
+            }
+        })().catch(async (error) => {
+            await this.$store.dispatch('error', error);
+        });
     }
 
     async createReference(): Promise<void> {
@@ -223,9 +227,9 @@ export default class References extends Vue {
     }
 
     async deleteReference(reference: ReferenceDTO): Promise<void> {
-        await RemoteServices.deleteReference(reference._key);
+        await RemoteServices.deleteReference(reference.id);
         this.references = this.references.filter(
-            (r) => r._key != reference._key,
+            (r) => r.id != reference.id,
         );
     }
 
@@ -247,7 +251,7 @@ export default class References extends Vue {
 
         try {
             const csv = await RemoteServices.referencesToCsvSingle(
-                reference._key,
+                reference.id,
             );
 
             FileService.download(csv, 'references.csv', 'text/csv');

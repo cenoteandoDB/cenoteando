@@ -10,7 +10,7 @@
                     <br />
                     <v-row
                         v-for="variable in variables[theme]"
-                        :key="variable.variable._key"
+                        :key="variable.variable.id"
                     >
                         <v-col cols="auto">
                             <v-tooltip top>

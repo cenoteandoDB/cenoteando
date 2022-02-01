@@ -7,14 +7,14 @@ export enum UserRole {
 }
 
 export default class UserDTO {
-    _key!: string;
+    id!: string;
     name!: string;
     email!: string;
     role!: UserRole;
 
     constructor(jsonObj?: UserDTO) {
         if (jsonObj) {
-            this._key = jsonObj._key;
+            this.id = jsonObj.id;
             this.name = jsonObj.name;
             this.email = jsonObj.email;
             this.role = jsonObj.role;

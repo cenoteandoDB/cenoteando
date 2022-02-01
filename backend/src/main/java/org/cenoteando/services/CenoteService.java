@@ -32,8 +32,7 @@ public class CenoteService {
     @Autowired
     private CommentBucketRepository commentBucketRepository;
 
-    public Page<Cenote> getCenotes(int pageNum){
-        Pageable page = PageRequest.of(pageNum, 30);
+    public Page<Cenote> getCenotes(Pageable page){
         return cenoteRepository.findAll(page);
     }
 

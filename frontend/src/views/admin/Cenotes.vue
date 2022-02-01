@@ -124,7 +124,7 @@
                             class="mr-2 action-button"
                             v-on="on"
                             v-bind="attrs"
-                            :data-cy="'editCenote' + item._key"
+                            :data-cy="'editCenote' + item.id"
                             color="green"
                             >mdi-pencil</v-icon
                         >
@@ -132,7 +132,7 @@
                 </edit-cenote-dialog>
 
                 <delete-dialog @onConfirm="deleteCenote(item.cenote)" />
-                <v-btn icon :to="'/cenote/' + item._key" small color="white">
+                <v-btn icon :to="'/cenote/' + item.id" small color="white">
                     <v-icon color="blue"> mdi-eye </v-icon>
                 </v-btn>
             </template>
@@ -150,7 +150,7 @@ import FileService from '@/services/FileService';
 import { Feature, Point } from 'geojson';
 
 interface CenoteData {
-    _key: string;
+    id: string;
     name: string;
     state: string;
     municipality: string;
@@ -173,7 +173,7 @@ export default class Cenotes extends Vue {
     uploadProgress = 0;
 
     headers = [
-        { text: 'Cenote ID', value: '_key' },
+        { text: 'Cenote ID', value: 'id' },
         { text: 'Name', value: 'name' },
         { text: 'State', value: 'state' },
         { text: 'Municipality', value: 'municipality' },
@@ -304,11 +304,10 @@ export default class Cenotes extends Vue {
                     geojsonCoords[0],
                 );
                 return {
-                    _key: c._key.toString(),
+                    id: c.id.toString(),
                     name: c.name,
-                    // TODO: Get state and municipality from gadm
-                    state: c.gadm.toString(),
-                    municipality: c.gadm.toString(),
+                    state: c.gadm?.name_1.toString(),
+                    municipality: c.gadm?.name_2.toString(),
                     alternativeNames: c.alternativeNames.join(', '),
                     type: c.type.toString(),
                     touristic: c.touristic,
@@ -363,8 +362,8 @@ export default class Cenotes extends Vue {
     }
 
     async deleteCenote(cenote: CenoteDTO): Promise<void> {
-        await RemoteServices.deleteCenote(cenote._key);
-        this.cenotes = this.cenotes.filter((v) => v._key != cenote._key);
+        await RemoteServices.deleteCenote(cenote.id);
+        this.cenotes = this.cenotes.filter((v) => v.id != cenote.id);
     }
 
     async download(): Promise<void> {

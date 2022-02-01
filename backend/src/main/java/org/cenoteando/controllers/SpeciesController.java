@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,9 +28,9 @@ public class SpeciesController {
 
 
     @GetMapping()
-    public Page<Species> getSpecies(@RequestParam int page){
-        Page<Species> species = speciesService.getSpecies(page);
-        return species;
+    public Page<Species> getSpecies(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "30") int size){
+        Pageable pageable = PageRequest.of(page, size);
+        return speciesService.getSpecies(pageable);
     }
 
     @GetMapping("/{id}")

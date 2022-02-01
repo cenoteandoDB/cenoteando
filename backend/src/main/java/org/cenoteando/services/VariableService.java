@@ -1,7 +1,5 @@
 package org.cenoteando.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.cenoteando.models.Species;
 import org.json.CDL;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -30,13 +28,8 @@ public class VariableService {
     @Autowired
     private VariablesRepository variablesRepository;
 
-    public Iterable<Variable> getVariables(){
-        return variablesRepository.findAll();
-    }
-
-    public Page<Variable> getVariables(int pageNum){
-        Pageable page = PageRequest.of(pageNum, 30);
-        return this.variablesRepository.findAll(page);
+    public Page<Variable> getVariables(Pageable pageable) {
+        return variablesRepository.findAll(pageable);
     }
 
     public Variable getVariable(String id){

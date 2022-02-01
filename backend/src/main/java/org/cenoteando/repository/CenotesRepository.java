@@ -14,7 +14,6 @@ import java.util.Date;
 public interface CenotesRepository extends ArangoRepository<Cenote, String>, PagingAndSortingRepository<Cenote, String> {
 
     Cenote findByArangoId(String id);
-    Page<Cenote> findAll(Pageable page);
 
     @Query("FOR c IN #collection COLLECT AGGREGATE m = MIN(c.createdAt) RETURN m")
     Date getEarliestCreationDate();

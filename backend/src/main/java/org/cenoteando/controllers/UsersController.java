@@ -1,5 +1,8 @@
 package org.cenoteando.controllers;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.cenoteando.models.User;
@@ -19,8 +22,9 @@ public class UsersController {
     }
 
     @GetMapping()
-    public Iterable<User> getUsers(){
-        return usersService.getUsers();
+    public Page<User> getUsers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "30") int size){
+        Pageable pageable = PageRequest.of(page, size);
+        return usersService.getUsers(pageable);
     }
 
     @GetMapping("/{id}")

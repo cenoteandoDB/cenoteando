@@ -1,5 +1,8 @@
 package org.cenoteando.controllers;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,8 +24,9 @@ public class VariableController {
     }
 
     @GetMapping()
-    public Iterable<Variable> getVariables(){
-        return variableService.getVariables();
+    public Page<Variable> getVariables(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "30") int size){
+        Pageable pageable = PageRequest.of(page, size);
+        return variableService.getVariables(pageable);
     }
 
     @GetMapping("/{id}")
@@ -49,13 +53,13 @@ public class VariableController {
         return "no content";
     }
 
-
     @GetMapping("/csv")
     public String toCsv(HttpServletResponse response) throws IOException, IllegalAccessException {
         response.setContentType("text/csv");
         response.setHeader("Content-Disposition", "attachment; filename=variables.csv");
         return variableService.toCsv();
     }
+
     @PutMapping("/csv")
     public List<String> fromCsv(@RequestParam("file") MultipartFile multipartfile) throws Exception {
         return variableService.fromCsv(multipartfile);

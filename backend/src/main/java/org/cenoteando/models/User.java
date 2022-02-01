@@ -35,6 +35,8 @@ public class User {
 
     private Role role;
 
+    // TODO: Add name to Users
+
     //groups
 
     @CreatedDate

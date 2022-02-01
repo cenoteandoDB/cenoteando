@@ -146,7 +146,7 @@
                         <template v-slot:activator="{ on, attrs }">
                             <v-icon
                                 class="action-button"
-                                :data-cy="'editVariable_' + item._key"
+                                :data-cy="'editVariable_' + item.id"
                                 v-on="on"
                                 v-bind="attrs"
                                 color="green"
@@ -180,7 +180,7 @@ export default class Variables extends Vue {
     files: File[] = [];
     uploadProgress = 0;
     headers = [
-        { text: 'Variable ID', value: '_key' },
+        { text: 'Variable ID', value: 'id' },
         { text: 'Name', value: 'name' },
         { text: 'Description', value: 'description' },
         { text: 'Theme', value: 'theme' },
@@ -304,8 +304,8 @@ export default class Variables extends Vue {
     }
 
     async deleteVariable(variable: VariableDTO): Promise<void> {
-        await RemoteServices.deleteVariable(variable._key);
-        this.variables = this.variables.filter((v) => v._key != variable._key);
+        await RemoteServices.deleteVariable(variable.id);
+        this.variables = this.variables.filter((v) => v.id != variable.id);
     }
 
     async download(): Promise<void> {

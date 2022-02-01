@@ -5,6 +5,8 @@ import org.json.CDL;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.supercsv.cellprocessor.ift.CellProcessor;
@@ -27,8 +29,8 @@ public class ReferenceService {
     @Autowired
     private ReferenceRepository referenceRepository;
 
-    public Iterable<Reference> getReferences(){
-        return this.referenceRepository.findAll();
+    public Page<Reference> getReferences(Pageable pageable){
+        return this.referenceRepository.findAll(pageable);
     }
 
     public Reference getReference(String id){

@@ -136,16 +136,26 @@ export default class RemoteServices {
             });
     }
 
-    //Species
-    static async getSpecies(): Promise<SpeciesDTO[]> {
-        return httpClient
-            .get('/api/species/')
-            .then((response) => {
-                return response.data.map((data) => new SpeciesDTO(data));
-            })
-            .catch(async (error) => {
-                throw Error(await this.errorMessage(error));
-            });
+    // Species
+    static async *speciesGenerator(
+        size?: number,
+    ): AsyncGenerator<SpeciesDTO[]> {
+        let page = 0;
+        let hasMore = true;
+        try {
+            while (hasMore) {
+                const response = await httpClient.get('/api/species', {
+                    params: { size, page },
+                });
+                yield response.data.content.map((v) => new SpeciesDTO(v));
+                hasMore = !response.data.last;
+                page = response.data.number + 1;
+            }
+        } catch (e) {
+            if (axios.isAxiosError(e)) throw Error(await this.errorMessage(e));
+            // TODO: Throw custom error
+            else throw Error('Unkown error in SpeciesGenerator');
+        }
     }
 
     static async createSpecie(variable: SpeciesDTO): Promise<SpeciesDTO> {
@@ -161,7 +171,7 @@ export default class RemoteServices {
 
     static async updateSpecie(variable: SpeciesDTO): Promise<SpeciesDTO> {
         return httpClient
-            .put('/api/species/' + variable._key, variable)
+            .put('/api/species/' + variable.id, variable)
             .then((response) => {
                 return new SpeciesDTO(response.data);
             })
@@ -170,8 +180,8 @@ export default class RemoteServices {
             });
     }
 
-    static async deleteSpecie(_key: string): Promise<void> {
-        httpClient.delete('/api/species/' + _key).catch(async (error) => {
+    static async deleteSpecie(id: string): Promise<void> {
+        httpClient.delete('/api/species/' + id).catch(async (error) => {
             throw Error(await this.errorMessage(error));
         });
     }
@@ -211,16 +221,26 @@ export default class RemoteServices {
             });
     }
 
-    //References
-    static async getReferences(): Promise<ReferenceDTO[]> {
-        return httpClient
-            .get('/api/references/')
-            .then((response) => {
-                return response.data.map((data) => new ReferenceDTO(data));
-            })
-            .catch(async (error) => {
-                throw Error(await this.errorMessage(error));
-            });
+    // References
+    static async *referencesGenerator(
+        size?: number,
+    ): AsyncGenerator<ReferenceDTO[]> {
+        let page = 0;
+        let hasMore = true;
+        try {
+            while (hasMore) {
+                const response = await httpClient.get('/api/references', {
+                    params: { size, page },
+                });
+                yield response.data.content.map((v) => new ReferenceDTO(v));
+                hasMore = !response.data.last;
+                page = response.data.number + 1;
+            }
+        } catch (e) {
+            if (axios.isAxiosError(e)) throw Error(await this.errorMessage(e));
+            // TODO: Throw custom error
+            else throw Error('Unkown error in ReferencesGenerator');
+        }
     }
 
     static async createReference(
@@ -240,7 +260,7 @@ export default class RemoteServices {
         reference: ReferenceDTO,
     ): Promise<ReferenceDTO> {
         return httpClient
-            .put('/api/references/' + reference._key, reference)
+            .put('/api/references/' + reference.id, reference)
             .then((response) => {
                 return new ReferenceDTO(response.data);
             })
@@ -249,8 +269,8 @@ export default class RemoteServices {
             });
     }
 
-    static async deleteReference(_key: string): Promise<void> {
-        httpClient.delete('/api/references/' + _key).catch(async (error) => {
+    static async deleteReference(id: string): Promise<void> {
+        httpClient.delete('/api/references/' + id).catch(async (error) => {
             throw Error(await this.errorMessage(error));
         });
     }
@@ -266,9 +286,9 @@ export default class RemoteServices {
             });
     }
 
-    static async referencesToCsvSingle(_key: string): Promise<string> {
+    static async referencesToCsvSingle(id: string): Promise<string> {
         return httpClient
-            .get('/api/references/' + _key + '/download')
+            .get('/api/references/' + id + '/download')
             .then((response) => {
                 return response.data;
             })
@@ -303,18 +323,18 @@ export default class RemoteServices {
 
     // Variables
     static async *variablesGenerator(
-        limit?: number,
+        size?: number,
     ): AsyncGenerator<VariableDTO[]> {
-        let continuationToken: string | undefined = undefined;
+        let page = 0;
         let hasMore = true;
         try {
             while (hasMore) {
                 const response = await httpClient.get('/api/variables', {
-                    params: { limit, continuationToken },
+                    params: { size, page },
                 });
-                yield response.data.data.map((v) => new VariableDTO(v));
-                hasMore = response.data.hasMore;
-                continuationToken = response.data.continuationToken;
+                yield response.data.content.map((v) => new VariableDTO(v));
+                hasMore = !response.data.last;
+                page = response.data.number + 1;
             }
         } catch (e) {
             if (axios.isAxiosError(e)) throw Error(await this.errorMessage(e));
@@ -336,7 +356,7 @@ export default class RemoteServices {
 
     static async updateVariable(variable: VariableDTO): Promise<VariableDTO> {
         return httpClient
-            .put('/api/variables/' + variable._key, variable)
+            .put('/api/variables/' + variable.id, variable)
             .then((response) => {
                 return new VariableDTO(response.data);
             })
@@ -345,8 +365,8 @@ export default class RemoteServices {
             });
     }
 
-    static async deleteVariable(_key: string): Promise<void> {
-        httpClient.delete('/api/variables/' + _key).catch(async (error) => {
+    static async deleteVariable(id: string): Promise<void> {
+        httpClient.delete('/api/variables/' + id).catch(async (error) => {
             throw Error(await this.errorMessage(error));
         });
     }
@@ -388,18 +408,18 @@ export default class RemoteServices {
 
     // Cenotes
     static async *cenotesGenerator(
-        limit?: number,
+        size?: number,
     ): AsyncGenerator<CenoteDTO[]> {
-        let continuationToken: string | undefined = undefined;
+        let page = 0;
         let hasMore = true;
         try {
             while (hasMore) {
                 const response = await httpClient.get('/api/cenotes', {
-                    params: { limit, continuationToken },
+                    params: { size, page },
                 });
-                yield response.data.data.map((c) => new CenoteDTO(c));
-                hasMore = response.data.hasMore;
-                continuationToken = response.data.continuationToken;
+                yield response.data.content.map((c) => new CenoteDTO(c));
+                hasMore = !response.data.last;
+                page = response.data.number + 1;
             }
         } catch (e) {
             if (axios.isAxiosError(e)) throw Error(await this.errorMessage(e));
@@ -432,7 +452,7 @@ export default class RemoteServices {
 
     static async updateCenote(cenote: CenoteDTO): Promise<CenoteDTO> {
         return httpClient
-            .put('/api/cenotes/' + cenote._key, cenote)
+            .put('/api/cenotes/' + cenote.id, cenote)
             .then((response) => {
                 return new CenoteDTO(response.data);
             })
@@ -441,8 +461,8 @@ export default class RemoteServices {
             });
     }
 
-    static async deleteCenote(_key: string): Promise<void> {
-        httpClient.delete('/api/cenotes/' + _key).catch(async (error) => {
+    static async deleteCenote(id: string): Promise<void> {
+        httpClient.delete('/api/cenotes/' + id).catch(async (error) => {
             throw Error(await this.errorMessage(error));
         });
     }
@@ -545,16 +565,16 @@ export default class RemoteServices {
 
     // Users
     static async *usersGenerator(limit?: number): AsyncGenerator<UserDTO[]> {
-        let continuationToken: string | undefined = undefined;
+        let page = 0;
         let hasMore = true;
         try {
             while (hasMore) {
                 const response = await httpClient.get('/api/users', {
-                    params: { limit, continuationToken },
+                    params: { limit, page },
                 });
-                yield response.data.data.map((v) => new UserDTO(v));
-                hasMore = response.data.hasMore;
-                continuationToken = response.data.continuationToken;
+                yield response.data.content.map((v) => new UserDTO(v));
+                hasMore = !response.data.last;
+                page = response.data.number + 1;
             }
         } catch (e) {
             if (axios.isAxiosError(e)) throw Error(await this.errorMessage(e));
@@ -563,15 +583,15 @@ export default class RemoteServices {
         }
     }
 
-    static async deleteUser(_key: string): Promise<void> {
-        httpClient.delete('/api/users/' + _key).catch(async (error) => {
+    static async deleteUser(id: string): Promise<void> {
+        httpClient.delete('/api/users/' + id).catch(async (error) => {
             throw Error(await this.errorMessage(error));
         });
     }
 
     static async updateUser(user: UserDTO): Promise<UserDTO> {
         return httpClient
-            .put('/api/users/' + user._key, user)
+            .put('/api/users/' + user.id, user)
             .then((response) => {
                 return new UserDTO(response.data);
             })

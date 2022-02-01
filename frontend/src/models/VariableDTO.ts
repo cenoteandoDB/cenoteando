@@ -5,7 +5,7 @@ export enum Origin {
 }
 
 export default class VariableDTO {
-    _key!: string;
+    id!: string;
     accessLevel!: string;
     description!: string;
     multiple!: boolean;
@@ -20,7 +20,7 @@ export default class VariableDTO {
 
     constructor(jsonObj?: VariableDTO) {
         if (jsonObj) {
-            this._key = jsonObj._key;
+            this.id = jsonObj.id;
             this.accessLevel = jsonObj.accessLevel;
             this.description = jsonObj.description;
             this.multiple = jsonObj.multiple;

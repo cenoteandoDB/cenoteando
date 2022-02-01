@@ -1,6 +1,9 @@
 package org.cenoteando.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,8 +32,9 @@ public class CenoteController {
     }
 
     @GetMapping()
-    public Iterable<Cenote> getCenotes(@RequestParam int page){
-        return cenoteService.getCenotes(page);
+    public Page<Cenote> getCenotes(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "30") int size){
+        Pageable pageable = PageRequest.of(page, size);
+        return cenoteService.getCenotes(pageable);
     }
 
     @GetMapping("/{id}")

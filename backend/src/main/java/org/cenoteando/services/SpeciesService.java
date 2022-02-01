@@ -33,9 +33,8 @@ public class SpeciesService {
     private SpeciesRepository speciesRepository;
 
 
-    public Page<Species> getSpecies(int pageNum){
-        Pageable page = PageRequest.of(pageNum, 30);
-        return this.speciesRepository.findAll(page);
+    public Page<Species> getSpecies(Pageable pageable){
+        return this.speciesRepository.findAll(pageable);
     }
 
     public Species getSpecies(String id){

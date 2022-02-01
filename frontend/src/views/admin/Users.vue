@@ -73,7 +73,7 @@ import DeleteDialog from '@/components/admin/DeleteDialog.vue';
 })
 export default class Users extends Vue {
     headers = [
-        { text: 'User ID', value: '_key' },
+        { text: 'User ID', value: 'id' },
         { text: 'Name', value: 'name' },
         { text: 'Email', value: 'email' },
         { text: 'Role', value: 'role' },
@@ -129,8 +129,8 @@ export default class Users extends Vue {
     }
 
     async deleteUser(user: UserDTO): Promise<void> {
-        await RemoteServices.deleteUser(user._key);
-        this.users = this.users.filter((u) => u._key != user._key);
+        await RemoteServices.deleteUser(user.id);
+        this.users = this.users.filter((u) => u.id != user.id);
     }
 }
 </script>

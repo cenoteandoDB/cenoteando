@@ -4,7 +4,7 @@
             <v-col
                 class="d-flex justify-center"
                 v-for="variable in variables"
-                :key="variable.variable._key"
+                :key="variable.variable.id"
             >
                 <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
@@ -14,7 +14,7 @@
                             v-bind="attrs"
                             v-on="on"
                         >
-                            {{ icons[variable.variable._key] }}
+                            {{ icons[variable.variable.id] }}
                         </v-icon>
                     </template>
                     <span class="mx-auto">{{

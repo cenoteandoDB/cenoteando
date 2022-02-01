@@ -5,7 +5,7 @@
         </template>
 
         <v-card class="pt-5 mt-5 justify-center">
-            <v-card-title> Reference {{ reference._key }} </v-card-title>
+            <v-card-title> Reference {{ reference.id }} </v-card-title>
             <v-card-text>
                 <v-form v-model="valid">
                     <v-text-field

@@ -5,7 +5,7 @@ export class CommentDto {
 }
 
 export default class CommentBucketDTO {
-    _key!: string;
+    id!: string;
     cenoteId!: string;
     source!: string;
     url!: string;
@@ -15,7 +15,7 @@ export default class CommentBucketDTO {
 
     constructor(jsonObj?: CommentBucketDTO) {
         if (jsonObj) {
-            this._key = jsonObj._key;
+            this.id = jsonObj.id;
             this.cenoteId = jsonObj.cenoteId;
             this.source = jsonObj.source;
             this.url = jsonObj.url;

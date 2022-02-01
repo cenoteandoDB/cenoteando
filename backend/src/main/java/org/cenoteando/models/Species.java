@@ -25,6 +25,8 @@ public class Species {
     private String arangoId;
 
     private String aphiaId;
+
+    // TODO: Fix this (it is being returned as inaturalistId instead of iNaturalistId)
     private String iNaturalistId;
 
     @CreatedDate
@@ -49,7 +51,7 @@ public class Species {
     }
 
     public String getAphiaId(){return this.aphiaId;}
-    public String getInaturalistId(){return this.iNaturalistId;}
+    public String getINaturalistId(){return this.iNaturalistId;}
 
     public Date getCreatedAt(){return this.createdAt;}
     public Date getUpdatedAt(){return this.updatedAt;}
@@ -78,7 +80,7 @@ public class Species {
 
     public void merge(Species species){
         this.aphiaId = species.getAphiaId();
-        this.iNaturalistId = species.getInaturalistId();
+        this.iNaturalistId = species.getINaturalistId();
     }
 
     public boolean validate(){
@@ -86,7 +88,7 @@ public class Species {
     }
 
     public static JSONArray getHeaders(){
-        return new JSONArray("['id', 'arangoId', 'aphiaId', 'inaturalistId', 'createdAt', 'updatedAt']");
+        return new JSONArray("['id', 'arangoId', 'aphiaId', 'iNaturalistId', 'createdAt', 'updatedAt']");
     }
 
     public static CellProcessor[] getProcessors(){

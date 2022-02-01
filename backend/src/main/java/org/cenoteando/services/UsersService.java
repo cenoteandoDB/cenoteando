@@ -6,6 +6,8 @@ import org.json.CDL;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,8 +29,8 @@ public class UsersService implements UserDetailsService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public Iterable<User> getUsers(){
-        return this.usersRepository.findAll();
+    public Page<User> getUsers(Pageable pageable){
+        return this.usersRepository.findAll(pageable);
     }
 
     public User getUser(String id){

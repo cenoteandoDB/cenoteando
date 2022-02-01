@@ -1,5 +1,8 @@
 package org.cenoteando.controllers;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,14 +25,14 @@ public class ReferenceController {
 
 
     @GetMapping()
-    public Iterable<Reference> getReferences(){
-        Iterable<Reference> references = referenceService.getReferences();
-        return references;
+    public Page<Reference> getReferences(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "30") int size){
+        Pageable pageable = PageRequest.of(page, size);
+        return referenceService.getReferences(pageable);
     }
 
     @GetMapping("/{id}")
     public Reference getReference(@PathVariable String id){
-        return (Reference) referenceService.getReference(id);
+        return referenceService.getReference(id);
     }
 
     @PostMapping()

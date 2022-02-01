@@ -130,7 +130,7 @@ export default class Species extends Vue {
     files: File[] = [];
     uploadProgress = 0;
     headers = [
-        { text: 'Cenoteando ID', value: '_key' },
+        { text: 'Cenoteando ID', value: 'id' },
         { text: 'iNaturalist ID', value: 'iNaturalistId' },
         { text: 'Aphia ID', value: 'aphiaId' },
         { text: 'Actions', value: 'action' },
@@ -146,13 +146,17 @@ export default class Species extends Vue {
     async created(): Promise<void> {
         await this.$store.dispatch('loading');
 
-        try {
-            this.species = await RemoteServices.getSpecies();
-        } catch (error) {
-            await this.$store.dispatch('error', error);
-        }
+        (async () => {
+            let generator = RemoteServices.speciesGenerator(30);
+            for await (let batch of generator) {
+                if (!this.species.length)
+                    await this.$store.dispatch('clearLoading');
 
-        await this.$store.dispatch('clearLoading');
+                this.species.push(...batch);
+            }
+        })().catch(async (error) => {
+            await this.$store.dispatch('error', error);
+        });
     }
 
     async createSpecie(): Promise<void> {
@@ -182,8 +186,8 @@ export default class Species extends Vue {
     }
 
     async deleteSpecie(specie: SpeciesDTO): Promise<void> {
-        await RemoteServices.deleteSpecie(specie._key);
-        this.species = this.species.filter((s) => s._key != specie._key);
+        await RemoteServices.deleteSpecie(specie.id);
+        this.species = this.species.filter((s) => s.id != specie.id);
     }
 
     async download(): Promise<void> {

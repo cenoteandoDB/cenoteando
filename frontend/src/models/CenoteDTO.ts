@@ -1,4 +1,4 @@
-import { GeoJSON } from 'geojson';
+import { GeoJsonProperties } from 'geojson';
 
 class CenoteSocialProperties {
     totalComments!: number;
@@ -18,7 +18,7 @@ export enum CenoteIssue {
 }
 
 export default class CenoteDTO {
-    _key!: string;
+    id!: string;
     type!: CenoteType;
     name!: string;
     touristic!: boolean;
@@ -32,14 +32,14 @@ export default class CenoteDTO {
         };
         properties: Record<string, unknown>;
     };
-    gadm!: string | GeoJSON;
+    gadm!: GeoJsonProperties;
     social!: CenoteSocialProperties;
     createdAt!: Date;
     updatedAt!: Date;
 
     constructor(jsonObj?: CenoteDTO) {
         if (jsonObj) {
-            this._key = jsonObj._key;
+            this.id = jsonObj.id;
             this.type = jsonObj.type;
             this.name = jsonObj.name;
             this.touristic = jsonObj.touristic;

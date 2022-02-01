@@ -1,5 +1,5 @@
 export default class ReferenceDTO {
-    _key!: string;
+    id!: string;
     authors!: string;
     fileName!: string;
     reference!: string;
@@ -9,7 +9,7 @@ export default class ReferenceDTO {
 
     constructor(jsonObj?: ReferenceDTO) {
         if (jsonObj) {
-            this._key = jsonObj._key;
+            this.id = jsonObj.id;
             this.authors = jsonObj.authors;
             this.fileName = jsonObj.fileName;
             this.reference = jsonObj.reference;

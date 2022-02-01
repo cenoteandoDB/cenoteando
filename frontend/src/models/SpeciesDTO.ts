@@ -1,11 +1,11 @@
 export default class SpeciesDTO {
-    _key!: string;
+    id!: string;
     iNaturalistId!: string;
     aphiaId!: string;
 
     constructor(jsonObj?: SpeciesDTO) {
         if (jsonObj) {
-            this._key = jsonObj._key;
+            this.id = jsonObj.id;
             this.iNaturalistId = jsonObj.iNaturalistId;
             this.aphiaId = jsonObj.aphiaId;
         }
