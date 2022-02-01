@@ -32,6 +32,7 @@
                         data-cy="Type"
                         :items="types"
                         label="Type"
+                        required
                     ></v-select>
 
                     <v-text-field
