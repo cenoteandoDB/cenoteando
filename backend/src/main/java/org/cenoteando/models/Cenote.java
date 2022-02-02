@@ -141,7 +141,7 @@ public class Cenote {
         return gadm.getGadmProperties();
     }
 
-    @JsonSetter
+    @JsonSetter("type")
     public void setType(Type type) {
         this.type = type;
     }
@@ -158,7 +158,7 @@ public class Cenote {
         this.touristic = touristic;
     }
 
-    @JsonSetter
+    @JsonSetter("issues")
     public void setIssues(List<Issue> issues) {
         this.issues = issues;
     }
@@ -184,7 +184,7 @@ public class Cenote {
 
     }
 
-    @JsonSetter
+    @JsonSetter("alternativeNames")
     public void setAlternativeNames(List<String> alternativeNames) {
         this.alternativeNames = alternativeNames;
     }
@@ -193,7 +193,7 @@ public class Cenote {
         this.alternativeNames = CsvImportExport.stringToList(alternativeNames);
     }
 
-    @JsonSetter
+    @JsonSetter("geojson")
     public void setGeojson(CenoteGeoJSON geojson) {
         this.geojson = geojson;
     }
