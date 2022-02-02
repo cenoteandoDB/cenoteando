@@ -2,6 +2,8 @@ package org.cenoteando.models;
 
 import com.arangodb.springframework.annotation.*;
 import com.arangodb.springframework.core.geo.GeoJsonPoint;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import org.cenoteando.utils.CsvImportExport;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -139,6 +141,7 @@ public class Cenote {
         return gadm.getGadmProperties();
     }
 
+    @JsonSetter
     public void setType(Type type) {
         this.type = type;
     }
@@ -155,6 +158,7 @@ public class Cenote {
         this.touristic = touristic;
     }
 
+    @JsonSetter
     public void setIssues(List<Issue> issues) {
         this.issues = issues;
     }
@@ -163,6 +167,10 @@ public class Cenote {
         List<String> string_list =  CsvImportExport.stringToList(issues);
         this.issues = string_list.stream().map(Issue::valueOf).toList();
 
+    }
+
+    public void setSocial(Social social){
+        this.social = social;
     }
 
     public void setSocial(String social) {
@@ -176,6 +184,7 @@ public class Cenote {
 
     }
 
+    @JsonSetter
     public void setAlternativeNames(List<String> alternativeNames) {
         this.alternativeNames = alternativeNames;
     }
@@ -184,6 +193,7 @@ public class Cenote {
         this.alternativeNames = CsvImportExport.stringToList(alternativeNames);
     }
 
+    @JsonSetter
     public void setGeojson(CenoteGeoJSON geojson) {
         this.geojson = geojson;
     }

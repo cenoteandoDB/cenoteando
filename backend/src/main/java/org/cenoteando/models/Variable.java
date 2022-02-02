@@ -3,6 +3,7 @@ package org.cenoteando.models;
 import com.arangodb.springframework.annotation.ArangoId;
 import com.arangodb.springframework.annotation.Document;
 import com.arangodb.springframework.annotation.PersistentIndexed;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import org.cenoteando.utils.CsvImportExport;
 import org.json.JSONArray;
 import org.springframework.data.annotation.CreatedDate;
@@ -126,6 +127,7 @@ public class Variable {
         return enumValues;
     }
 
+    @JsonSetter
     public void setEnumValues(List<String> enumValues) {
         this.enumValues = enumValues;
     }
