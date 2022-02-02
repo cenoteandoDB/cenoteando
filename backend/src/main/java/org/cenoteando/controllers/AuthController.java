@@ -54,6 +54,8 @@ public class AuthController {
     @PostMapping("/register")
     public User Register(@RequestBody AuthenticationRequest authenticationRequest, HttpServletResponse response) throws Exception {
 
+        authenticationRequest.validatePassword();
+
         User user = new User(authenticationRequest.getEmail(), authenticationRequest.getPassword(), CENOTERO);
         usersService.createUser(user);
 

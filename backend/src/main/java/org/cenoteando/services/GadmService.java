@@ -1,5 +1,6 @@
 package org.cenoteando.services;
 
+import com.arangodb.springframework.core.geo.GeoJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.cenoteando.models.Gadm;
@@ -26,4 +27,12 @@ public class GadmService {
     public Iterable<Gadm> municipalities(){
         return gadmRepository.findByMunicipalities("Municipality");
     }*/
+
+    public Gadm findGadm(GeoJson geojson) throws Exception {
+        Gadm gadm = gadmRepository.findGadm(geojson);
+        if(gadm == null)
+            throw new Exception("Gadm not found. Check cenote geometry.");
+
+        return gadm;
+    }
 }

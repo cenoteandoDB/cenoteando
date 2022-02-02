@@ -3,6 +3,7 @@ package org.cenoteando.models;
 import com.arangodb.springframework.annotation.ArangoId;
 import com.arangodb.springframework.annotation.Document;
 import com.arangodb.springframework.annotation.PersistentIndexed;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.json.JSONArray;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -27,15 +28,13 @@ public class User {
     @ArangoId // db document field: _id
     private String arangoId;
 
-    //Unique
+    private String name;
     private String email;
 
-    // TODO: Make sure this is not returned to the client at any point
+    @JsonIgnore
     private String password;
 
     private Role role;
-
-    // TODO: Add name to Users
 
     //groups
 
@@ -64,8 +63,16 @@ public class User {
         return email;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPassword() {

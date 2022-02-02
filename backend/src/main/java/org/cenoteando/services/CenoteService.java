@@ -30,6 +30,9 @@ public class CenoteService {
     private CenotesRepository cenoteRepository;
 
     @Autowired
+    private GadmService gadmService;
+
+    @Autowired
     private CommentBucketRepository commentBucketRepository;
 
     public Page<Cenote> getCenotes(Pageable page){
@@ -43,7 +46,11 @@ public class CenoteService {
     public Cenote createCenote(Cenote cenote) throws Exception {
         if(!cenote.validate())
             throw new Exception("Validation failed for Cenote creation.");
-        //cenote.findGadm();
+
+        Gadm gadm = gadmService.findGadm(cenote.getGeojson().getGeometry());
+
+        cenote.setGadm(gadm);
+
         return cenoteRepository.save(cenote);
     }
 
@@ -51,7 +58,11 @@ public class CenoteService {
         if(!cenote.validate())
             throw new Exception("Validation failed for Cenote update.");
         Cenote oldCenote = this.getCenote(id);
-        oldCenote = cenote;
+
+        if(!cenote.getGeojson().equals(oldCenote.getGeojson()))
+            oldCenote.setGadm(gadmService.findGadm(cenote.getGeojson().getGeometry()));
+
+        oldCenote.merge(cenote);
         return cenoteRepository.save(oldCenote);
     }
 

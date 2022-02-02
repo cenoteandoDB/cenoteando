@@ -225,9 +225,9 @@ public class Variable {
     public boolean validate(){
         if(name != null && description != null && type != null && accessLevel != null && theme != null && origin != null && timeseries != null && multiple != null){
             if(type == VariableType.ENUM)
-                return enumValues != null;
+                return enumValues != null && units == null;
             else if(type == VariableType.NUMBER_WITH_UNITS)
-                return units != null;
+                return units != null && enumValues == null;
         }
         return false;
     }

@@ -4,6 +4,7 @@ import com.arangodb.springframework.annotation.*;
 import com.arangodb.springframework.core.geo.GeoJsonPoint;
 import org.cenoteando.utils.CsvImportExport;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -53,44 +54,6 @@ class Social {
     }
 }
 
-class CenoteGeoJSON {
-
-    @GeoIndexed(geoJson = true)
-    private GeoJsonPoint geometry;
-
-    private String type;
-
-    //TODO properties
-
-    public CenoteGeoJSON(){}
-
-    public CenoteGeoJSON(GeoJsonPoint geometry, String type) {
-        this.geometry = geometry;
-        this.type = type;
-    }
-
-    public GeoJsonPoint getGeometry() {
-        return geometry;
-    }
-
-    public void setGeometry(GeoJsonPoint geometry) {
-        this.geometry = geometry;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    @Override
-    public String toString() {
-        return "{geometry=" + geometry + ", type='" + type + "'}";
-    }
-}
-
 @Document("Cenotes")
 public class Cenote {
 
@@ -109,10 +72,7 @@ public class Cenote {
     private boolean touristic;
     private List<Issue> issues;
     private List<String> alternativeNames;
-
-    //Social
     private Social social;
-
     private CenoteGeoJSON geojson;
 
     @Ref
@@ -201,14 +161,12 @@ public class Cenote {
 
     public void setIssues(String issues){
         List<String> string_list =  CsvImportExport.stringToList(issues);
-        if(string_list != null)
-            this.issues = string_list.stream().map(Issue::valueOf).toList();
+        this.issues = string_list.stream().map(Issue::valueOf).toList();
 
     }
 
-    //TODO social
     public void setSocial(String social) {
-        if(social.equals("[]") || social == null)
+        if(social == null || social.equals("[]"))
             return;
         social = social.replaceAll(" ", "");
         social = social.substring(1, social.length() - 1);
@@ -230,8 +188,17 @@ public class Cenote {
         this.geojson = geojson;
     }
 
-    //TODO geojson
     public void setGeojson(String geojson){
+        JSONObject obj = new JSONObject(geojson);
+        JSONObject geometry = (JSONObject) obj.get("geometry");
+
+        Double x = geometry.getDouble("x");
+        Double y = geometry.getDouble("y");
+        GeoJsonPoint point = new GeoJsonPoint(x, y);
+        String geojsonType = obj.getString("type");
+        String type = geometry.getString("type");
+
+        this.geojson = new CenoteGeoJSON(point, geojsonType);
     }
 
     public void setGadm(Gadm gadm) {
@@ -259,13 +226,11 @@ public class Cenote {
         this.issues = cenote.getIssues();
         this.alternativeNames = cenote.getAlternativeNames();
         this.social = cenote.getSocial();
-        //TODO geojson
         this.geojson = cenote.getGeojson();
     }
 
     public boolean validate(){
-        //TODO
-        return true;
+        return type != null && name != null && !name.isEmpty() && social != null && geojson != null;
     }
 
     public static JSONArray getHeaders(){
@@ -273,7 +238,6 @@ public class Cenote {
     }
 
     public static CellProcessor[] getProcessors(){
-        List<Object> alternativeNames = new ArrayList<>();
         return new CellProcessor[]{
                 new NotNull(), // id
                 new NotNull(), // arandoId
@@ -281,7 +245,7 @@ public class Cenote {
                 new NotNull(), // name
                 new NotNull(new ParseBool()), // touristic
                 new NotNull(), // issues
-                new Collector(alternativeNames), // alternativeNames
+                new NotNull(), // alternativeNames
                 new NotNull(), // social
                 new NotNull(), // geojson
                 new Optional(), // createdAt
