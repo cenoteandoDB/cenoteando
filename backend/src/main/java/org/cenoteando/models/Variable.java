@@ -127,7 +127,7 @@ public class Variable {
         return enumValues;
     }
 
-    @JsonSetter
+    @JsonSetter("enumValues")
     public void setEnumValues(List<String> enumValues) {
         this.enumValues = enumValues;
     }
