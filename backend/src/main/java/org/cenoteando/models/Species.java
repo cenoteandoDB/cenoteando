@@ -2,13 +2,13 @@ package org.cenoteando.models;
 
 import com.arangodb.springframework.annotation.ArangoId;
 import com.arangodb.springframework.annotation.Document;
-import com.arangodb.springframework.annotation.PersistentIndexed;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import org.json.JSONArray;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.supercsv.cellprocessor.Optional;
-import org.supercsv.cellprocessor.ParseDate;
 import org.supercsv.cellprocessor.constraint.NotNull;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 
@@ -26,7 +26,6 @@ public class Species {
 
     private String aphiaId;
 
-    // TODO: Fix this (it is being returned as inaturalistId instead of iNaturalistId)
     private String iNaturalistId;
 
     @CreatedDate
@@ -51,7 +50,9 @@ public class Species {
     }
 
     public String getAphiaId(){return this.aphiaId;}
-    public String getINaturalistId(){return this.iNaturalistId;}
+
+    @JsonGetter("iNaturalistId")
+    public String getInaturalistId(){return this.iNaturalistId;}
 
     public Date getCreatedAt(){return this.createdAt;}
     public Date getUpdatedAt(){return this.updatedAt;}
@@ -68,19 +69,14 @@ public class Species {
         this.aphiaId = aphiaId;
     }
 
-    public void setCreatedAt(String createdAt) {
-    }
-
-    public void setUpdatedAt(String updatedAt) {
-    }
-
-    public void setINaturalistId(String iNaturalistId){
-        this.iNaturalistId = iNaturalistId;
+    @JsonSetter("iNaturalistId")
+    public void setInaturalistId(String inaturalistId){
+        this.iNaturalistId = inaturalistId;
     }
 
     public void merge(Species species){
         this.aphiaId = species.getAphiaId();
-        this.iNaturalistId = species.getINaturalistId();
+        this.iNaturalistId = species.getInaturalistId();
     }
 
     public boolean validate(){
@@ -88,17 +84,14 @@ public class Species {
     }
 
     public static JSONArray getHeaders(){
-        return new JSONArray("['id', 'arangoId', 'aphiaId', 'iNaturalistId', 'createdAt', 'updatedAt']");
+        return new JSONArray("['id', 'aphiaId', 'inaturalistId']");
     }
 
     public static CellProcessor[] getProcessors(){
         return new CellProcessor[]{
                 new NotNull(), // id
-                new NotNull(), // arandoId
                 new Optional(), // aphiaId
                 new Optional(), // iNaturalistId
-                new Optional(), // createdAt
-                new Optional() // updatedAt
         };
     }
 

@@ -60,7 +60,7 @@ public class VariableController {
         return variableService.toCsv();
     }
 
-    @PutMapping("/csv")
+    @PostMapping("/csv")
     public List<String> fromCsv(@RequestParam("file") MultipartFile multipartfile) throws Exception {
         return variableService.fromCsv(multipartfile);
     }

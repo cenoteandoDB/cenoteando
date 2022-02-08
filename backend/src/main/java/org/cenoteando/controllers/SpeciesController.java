@@ -1,8 +1,5 @@
 package org.cenoteando.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -66,7 +63,7 @@ public class SpeciesController {
         return speciesService.toCsv();
     }
 
-    @PutMapping("/csv")
+    @PostMapping("/csv")
     public List<String> fromCsv(@RequestParam("file") MultipartFile multipartfile) throws Exception {
         return speciesService.fromCsv(multipartfile);
     }

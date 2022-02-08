@@ -5,7 +5,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,7 +19,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.cenoteando.utils.CsvImportExport.convertMultiPartToFile;
 
 @Service
 public class VariableService {
@@ -74,11 +72,11 @@ public class VariableService {
 
     public List<String> fromCsv(MultipartFile multipartfile) throws Exception {
 
-        File file = convertMultiPartToFile(multipartfile);
+        Reader file_reader = new InputStreamReader(multipartfile.getInputStream());
 
         ArrayList<String> values = new ArrayList<>();
 
-        ICsvBeanReader reader = new CsvBeanReader(new FileReader(file), CsvPreference.STANDARD_PREFERENCE);
+        ICsvBeanReader reader = new CsvBeanReader(file_reader, CsvPreference.STANDARD_PREFERENCE);
 
         final String[] header = reader.getHeader(true);
         final CellProcessor[] processors = Variable.getProcessors();
@@ -86,9 +84,9 @@ public class VariableService {
         Variable variable, oldVariable;
         while( (variable = reader.read(Variable.class, header, processors)) != null ) {
             if(!variable.validate()){
-                throw new Exception("Validation failed for " + variable.getArangoId());
+                throw new Exception("Validation failed for " + variable.getId());
             }
-            if((oldVariable = variablesRepository.findByArangoId(variable.getArangoId())) != null) {
+            if((oldVariable = getVariable(variable.getId())) != null) {
                 oldVariable.merge(variable);
                 variablesRepository.save(oldVariable);
             }

@@ -5,7 +5,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,7 +20,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.cenoteando.utils.CsvImportExport.convertMultiPartToFile;
 
 @Service
 public class CenoteService {
@@ -93,11 +91,11 @@ public class CenoteService {
 
     public List<String> fromCsv(MultipartFile multipartfile) throws Exception {
 
-        File file = convertMultiPartToFile(multipartfile);
+        Reader file_reader = new InputStreamReader(multipartfile.getInputStream());
 
         ArrayList<String> values = new ArrayList<>();
 
-        ICsvBeanReader reader = new CsvBeanReader(new FileReader(file), CsvPreference.STANDARD_PREFERENCE);
+        ICsvBeanReader reader = new CsvBeanReader(file_reader, CsvPreference.STANDARD_PREFERENCE);
 
         final String[] header = reader.getHeader(true);
         final CellProcessor[] processors = Cenote.getProcessors();
@@ -105,9 +103,9 @@ public class CenoteService {
         Cenote cenote, oldCenote;
         while( (cenote = reader.read(Cenote.class, header, processors)) != null ) {
             if(!cenote.validate()){
-                throw new Exception("Validation failed for " + cenote.getArangoId());
+                throw new Exception("Validation failed for " + cenote.getId());
             }
-            if((oldCenote = cenoteRepository.findByArangoId(cenote.getArangoId())) != null) {
+            if((oldCenote = getCenote(cenote.getId())) != null) {
                 oldCenote.merge(cenote);
                 cenoteRepository.save(oldCenote);
             }

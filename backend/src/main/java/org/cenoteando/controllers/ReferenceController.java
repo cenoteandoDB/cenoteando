@@ -63,7 +63,7 @@ public class ReferenceController {
         return referenceService.toCsv();
     }
 
-    @PutMapping("/csv")
+    @PostMapping("/csv")
     public List<String> fromCsv(@RequestParam("file") MultipartFile multipartfile) throws Exception {
         return referenceService.fromCsv(multipartfile);
     }

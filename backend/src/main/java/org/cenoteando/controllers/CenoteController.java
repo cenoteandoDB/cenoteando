@@ -86,7 +86,7 @@ public class CenoteController {
         return  cenoteService.toCsv();
     }
 
-    @PutMapping("/csv")
+    @PostMapping("/csv")
     public List<String> fromCsv(@RequestParam("file") MultipartFile multipartfile) throws Exception {
         return cenoteService.fromCsv(multipartfile);
     }

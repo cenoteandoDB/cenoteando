@@ -13,5 +13,4 @@ public interface SpeciesRepository extends ArangoRepository<Species, String> {
     Page<Species> findAll(Pageable page);
     Species findByArangoId(String id);
     Species findByAphiaId(String alphaId);
-    Species findByINaturalistId(String iNaturalistId);
 }

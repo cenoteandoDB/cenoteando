@@ -1,6 +1,5 @@
 package org.cenoteando.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.cenoteando.models.AuthDetails;
 import org.json.CDL;
 import org.json.JSONArray;
@@ -12,13 +11,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.supercsv.io.CsvBeanWriter;
 import org.cenoteando.repository.UsersRepository;
 import org.cenoteando.models.User;
-import org.supercsv.prefs.CsvPreference;
 
 import java.io.IOException;
-import java.io.StringWriter;
 
 @Service
 public class UsersService implements UserDetailsService {

@@ -107,6 +107,7 @@ public class Variable {
         return type;
     }
 
+    @JsonSetter("type")
     public void setType(VariableType type) {
         this.type = type;
     }
@@ -156,6 +157,7 @@ public class Variable {
         return accessLevel;
     }
 
+    @JsonSetter("accessLevel")
     public void setAccessLevel(AccessLevel accessLevel) {
         this.accessLevel = accessLevel;
     }
@@ -168,6 +170,7 @@ public class Variable {
         return theme;
     }
 
+    @JsonSetter("theme")
     public void setTheme(Theme theme) {
         this.theme = theme;
     }
@@ -180,6 +183,7 @@ public class Variable {
         return origin;
     }
 
+    @JsonSetter("origin")
     public void setOrigin(VariableOrigin origin) {
         this.origin = origin;
     }
@@ -204,11 +208,6 @@ public class Variable {
         this.methodology = methodology;
     }
 
-    public void setUpdatedAt(String updatedAt) {
-    }
-
-    public void setCreatedAt(String createdAt) {
-    }
 
     public void merge(Variable variable){
         this.name = variable.getName();
@@ -225,25 +224,26 @@ public class Variable {
     }
 
     public boolean validate(){
-        if(name != null && description != null && type != null && accessLevel != null && theme != null && origin != null && timeseries != null && multiple != null){
+        if(name != null && description != null && type != null && accessLevel != null && theme != null && origin != null){
             if(type == VariableType.ENUM)
-                return enumValues != null && units == null;
+                return enumValues != null;
             else if(type == VariableType.NUMBER_WITH_UNITS)
-                return units != null && enumValues == null;
+                return units != null;
+            else
+                return true;
         }
         return false;
     }
 
     public static JSONArray getHeaders(){
-        return new JSONArray("['id', 'arangoId', 'name', 'description', 'type', 'units', 'enumValues', 'timeseries', " +
-                "'multiple', 'accessLevel', 'theme', 'origin', 'methodology', 'createdAt', 'updatedAt']");
+        return new JSONArray("['id', 'name', 'description', 'type', 'units', 'enumValues', 'timeseries', " +
+                "'multiple', 'accessLevel', 'theme', 'origin', 'methodology']");
     }
 
     public static CellProcessor[] getProcessors(){
         CellProcessor string = null;
         return new CellProcessor[]{
                 new NotNull(), // id
-                new NotNull(), // arangoId
                 new NotNull(), // name
                 new NotNull(), // description
                 new NotNull(), // type
@@ -255,9 +255,28 @@ public class Variable {
                 new NotNull(), // theme
                 new NotNull(), // origin
                 new Optional(), // methodology
-                new Optional(), // createdAt
-                new Optional(), // updatedAt
         };
     }
 
+
+    @Override
+    public String toString() {
+        return "Variable{" +
+                "id='" + id + '\'' +
+                ", arangoId='" + arangoId + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", type=" + type +
+                ", units='" + units + '\'' +
+                ", enumValues=" + enumValues +
+                ", timeseries=" + timeseries +
+                ", multiple=" + multiple +
+                ", accessLevel=" + accessLevel +
+                ", theme=" + theme +
+                ", origin=" + origin +
+                ", methodology='" + methodology + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
 }

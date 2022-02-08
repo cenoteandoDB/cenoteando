@@ -114,15 +114,10 @@ public class Reference {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
-    }
-
     public Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(String updatedAt) {
-    }
 
     public void merge(Reference ref){
         authors = ref.getAuthors();
@@ -137,35 +132,18 @@ public class Reference {
     }
 
     public static JSONArray getHeaders(){
-        return new JSONArray("['id', 'arangoId', 'authors', 'fileName', 'reference', 'year', 'createdAt', 'updatedAt']");
+        return new JSONArray("['id', 'authors', 'fileName', 'reference', 'year']");
     }
 
     public static CellProcessor[] getProcessors(){
         return new CellProcessor[]{
                 new NotNull(), // id
-                new NotNull(), // arandoId
                 new NotNull(), // authors
                 new Optional(), // fileName
                 new NotNull(), // reference
                 new Optional(), // year
-                new Optional(), // createdAt
-                new Optional() // updatedAt
         };
     }
 
-    @Override
-    public String toString() {
-        return "Reference{" +
-                "id='" + id + '\'' +
-                ", arangoId='" + arangoId + '\'' +
-                ", authors='" + authors + '\'' +
-                ", fileName='" + fileName + '\'' +
-                ", reference='" + reference + '\'' +
-                ", type='" + type + '\'' +
-                ", year='" + year + '\'' +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
-    }
 }
 

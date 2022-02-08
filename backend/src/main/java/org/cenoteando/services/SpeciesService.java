@@ -1,22 +1,17 @@
 package org.cenoteando.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.json.JSONArray;
 import org.json.CDL;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.cenoteando.models.Species;
 import org.cenoteando.repository.SpeciesRepository;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.io.CsvBeanReader;
-import org.supercsv.io.CsvBeanWriter;
 import org.supercsv.io.ICsvBeanReader;
 import org.supercsv.prefs.CsvPreference;
 
@@ -24,7 +19,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.cenoteando.utils.CsvImportExport.convertMultiPartToFile;
 
 @Service
 public class SpeciesService {
@@ -78,19 +72,21 @@ public class SpeciesService {
 
         JSONArray objs = new JSONArray();
         JSONArray names = Species.getHeaders();
+        JSONArray header = new JSONArray("['id', 'aphiaId', 'iNaturalistId']");
         for(Species species: data){
             objs.put(new JSONObject(species));
         }
-        return CDL.rowToString(names) + CDL.toString(names, objs);
+        return CDL.rowToString(header) + CDL.toString(names, objs);
     }
 
     public List<String> fromCsv(MultipartFile multipartfile) throws Exception, IOException {
 
-        File file = convertMultiPartToFile(multipartfile);
+        Reader file_reader = new InputStreamReader(multipartfile.getInputStream());
 
         ArrayList<String> values = new ArrayList<>();
 
-        ICsvBeanReader reader = new CsvBeanReader(new FileReader(file), CsvPreference.STANDARD_PREFERENCE);
+        ICsvBeanReader reader = new CsvBeanReader(file_reader, CsvPreference.STANDARD_PREFERENCE);
+
 
         final String[] header = reader.getHeader(true);
         final CellProcessor[] processors = Species.getProcessors();
@@ -98,9 +94,9 @@ public class SpeciesService {
         Species species, oldSpecies;
         while( (species = reader.read(Species.class, header, processors)) != null ) {
             if(!species.validate()){
-                throw new Exception("Validation failed for " + species.getArangoId());
+                throw new Exception("Validation failed for " + species.getId());
             }
-            if((oldSpecies = speciesRepository.findByArangoId(species.getArangoId())) != null) {
+            if((oldSpecies = getSpecies(species.getId())) != null) {
                 oldSpecies.merge(species);
                 speciesRepository.save(oldSpecies);
             }

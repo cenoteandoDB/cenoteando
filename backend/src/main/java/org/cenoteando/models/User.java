@@ -104,6 +104,6 @@ public class User {
     }
 
     public static JSONArray getHeaders(){
-        return new JSONArray("['id', 'arangoId', 'name','email', 'role', 'createdAt', 'updatedAt']");
+        return new JSONArray("['id', 'name','email', 'role', 'createdAt', 'updatedAt']");
     }
 }

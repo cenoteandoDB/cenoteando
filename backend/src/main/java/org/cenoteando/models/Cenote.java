@@ -2,6 +2,7 @@ package org.cenoteando.models;
 
 import com.arangodb.springframework.annotation.*;
 import com.arangodb.springframework.core.geo.GeoJsonPoint;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import org.cenoteando.utils.CsvImportExport;
@@ -169,19 +170,9 @@ public class Cenote {
 
     }
 
+    @JsonSetter("social")
     public void setSocial(Social social){
         this.social = social;
-    }
-
-    public void setSocial(String social) {
-        if(social == null || social.equals("[]"))
-            return;
-        social = social.replaceAll(" ", "");
-        social = social.substring(1, social.length() - 1);
-        String[] values = social.split(",");
-
-        this.social = new Social(Integer.parseInt(values[0]), Float.parseFloat(values[1]));
-
     }
 
     @JsonSetter("alternativeNames")
@@ -198,7 +189,7 @@ public class Cenote {
         this.geojson = geojson;
     }
 
-    public void setGeojson(String geojson){
+    /*public void setGeojson(String geojson){
         JSONObject obj = new JSONObject(geojson);
         JSONObject geometry = (JSONObject) obj.get("geometry");
 
@@ -209,6 +200,20 @@ public class Cenote {
         String type = geometry.getString("type");
 
         this.geojson = new CenoteGeoJSON(point, geojsonType);
+    }*/
+
+    @JsonIgnore
+    public List<Double> getCoordinates(){
+        return this.geojson.getGeometry().getCoordinates();
+    }
+
+    public void setCoordinates(String coordinates){
+        if(coordinates == null || coordinates.equals("[]"))
+            return;
+        coordinates = coordinates.substring(1, coordinates.length() - 1);
+        String[] values = coordinates.split(",");
+
+        this.geojson = new CenoteGeoJSON(Double.parseDouble(values[0]), Double.parseDouble(values[1]));
     }
 
     public void setGadm(Gadm gadm) {
@@ -223,11 +228,6 @@ public class Cenote {
         return updatedAt;
     }
 
-    public void setCreatedAt(String createdAt) {
-    }
-
-    public void setUpdatedAt(String updatedAt) {
-    }
 
     public void merge(Cenote cenote){
         this.type = cenote.getType();
@@ -235,31 +235,26 @@ public class Cenote {
         this.touristic = cenote.getTouristic();
         this.issues = cenote.getIssues();
         this.alternativeNames = cenote.getAlternativeNames();
-        this.social = cenote.getSocial();
         this.geojson = cenote.getGeojson();
     }
 
     public boolean validate(){
-        return type != null && name != null && !name.isEmpty() && social != null && geojson != null;
+        return type != null && name != null && !name.isEmpty() && geojson != null;
     }
 
     public static JSONArray getHeaders(){
-        return new JSONArray("['id', 'arangoId', 'type', 'name', 'touristic', 'issues', 'alternativeNames', 'social', 'geojson', 'createdAt', 'updatedAt']");
+        return new JSONArray("['id', 'type', 'name', 'touristic', 'issues', 'alternativeNames', 'coordinates']");
     }
 
     public static CellProcessor[] getProcessors(){
         return new CellProcessor[]{
                 new NotNull(), // id
-                new NotNull(), // arandoId
                 new NotNull(), // type
                 new NotNull(), // name
                 new NotNull(new ParseBool()), // touristic
                 new NotNull(), // issues
                 new NotNull(), // alternativeNames
-                new NotNull(), // social
-                new NotNull(), // geojson
-                new Optional(), // createdAt
-                new Optional() // updatedAt
+                new NotNull(), // coordinates
         };
     }
 }

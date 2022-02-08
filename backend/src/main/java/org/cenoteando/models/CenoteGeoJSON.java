@@ -4,9 +4,12 @@ import com.arangodb.springframework.annotation.GeoIndexed;
 import com.arangodb.springframework.core.geo.GeoJsonPoint;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import org.cenoteando.utils.CsvImportExport;
 
 import java.util.HashMap;
 
+@JsonDeserialize(using = CsvImportExport.CenoteGeoJsonDeserialize.class)
 public class CenoteGeoJSON {
 
     @GeoIndexed(geoJson = true)
@@ -22,6 +25,12 @@ public class CenoteGeoJSON {
     public CenoteGeoJSON(GeoJsonPoint geometry, String type) {
         this.geometry = geometry;
         this.type = type;
+        this.properties = new HashMap<>();
+    }
+
+    public CenoteGeoJSON(Double x, Double y){
+        this.geometry = new GeoJsonPoint(x, y);
+        this.type = "Feature";
         this.properties = new HashMap<>();
     }
 
