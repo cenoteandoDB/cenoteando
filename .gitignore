@@ -17,3 +17,5 @@ tsconfig.tsbuildinfo
 *.njsproj
 *.sln
 *.sw?
+vetur.config.js
+.markdownlint.json
