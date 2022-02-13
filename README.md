@@ -55,24 +55,24 @@
 
 # About
 
-<!-- TODO: Screenshot -->
+<div align="center">
+  <img align="center" src="https://cenoteando.org/img/screenshots/frontpage.png" alt="Cenoteando Frontpage" width="400">
+</div>
 
-<!-- TODO: About this project -->
-
+<!-- TODO: About this project (short description) -->
 (COMING SOON)
 
 # Technologies
 
-<!-- TODO: Make link -->
-<!-- TODO: Java version and link -->
-<!-- TODO: Node version and link -->
 * Download required
-  * [Make](https://www.example.com/)
-  * [Java XX](https://www.example.com/)
-  * [Maven](https://maven.apache.org/download.cgi)
-  * [Node XX.XX](https://www.example.com/)
+  * [Make](https://www.gnu.org/software/make/)
   * [Docker](https://www.docker.com/)
   * [Docker Compose](https://docs.docker.com/compose/)
+* Frontend (development)
+  * [Node 16](https://nodejs.org/en/) ([Node Version Manager](https://github.com/nvm-sh/nvm) recommended)
+* Backend (development)
+  * [Java 17](https://www.oracle.com/java/technologies/downloads/#java17)
+  * [Maven](https://maven.apache.org/download.cgi)
 * No download required
   * [ArangoDB](https://arangodb.com/)
   * [Spring-boot](https://www.arangodb.com/docs/stable/foxx.html)
@@ -82,16 +82,42 @@
 
 ## Debian
 
-### 1. Install Docker
+### 0. Clone repository and sub-modules
+
+```bash
+# Clone repository
+git clone https://github.com/cenoteandoDB/cenoteando.git
+
+# Change into cloned directory
+cd cenoteando
+
+# Checkout dev branch
+git checkout dev
+
+# Initialize submodules
+git submodule init
+
+# Update submodules
+git submodule update
+```
+
+### 1. Update system and install dependencies
+
+```bash
+# Update apt index and upgrade packages
+sudo apt update && sudo apt upgrade -y
+
+# Install make and other build tools
+sudo apt install build-essential
+```
+
+### 2. Install Docker
 
 Follow instructions in [Install Docker Engine on Debian](https://docs.docker.com/engine/install/debian/).
 
 As of Feb 2022, install instructions can be summarized as follows:
 
-```
-# Update apt index and upgrade system packages
-sudo apt update && sudo apt upgrade -y
-
+```bash
 # Remove old versions (it's OK to ignore errors in this step)
 sudo apt remove docker docker-engine docker.io containerd runc
 
@@ -118,12 +144,13 @@ sudo apt install -y docker-ce docker-ce-cli containerd.io
 sudo usermod -aG docker $(whoami)
 ```
 
-### 2. Install Docker Compose
+### 3. Install Docker Compose
+
 Follow instructions in [Install Docker Compose](https://docs.docker.com/compose/install/).
 
 As of Feb 2022, install instructions can be summarized as follows:
 
-```
+```bash
 # Download Docker Compose (version 1.29.2) binary
 sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 
@@ -132,8 +159,9 @@ sudo chmod +x /usr/local/bin/docker-compose
 ```
 
 Install Docker Compose bash completion _(optional)_:
-```
-# Download bash completions
+
+```bash
+# Download bash completions (version 1.29.2)
 sudo curl \
     -L https://raw.githubusercontent.com/docker/compose/1.29.2/contrib/completion/bash/docker-compose \
     -o /etc/bash_completion.d/docker-compose
@@ -142,20 +170,53 @@ sudo curl \
 source ~/.bashrc
 ```
 
-### 3. Reboot
+### 4. Install Node.js for Frontend Development (optional)
+
+Follow instructions in [Installing Node Version Manager](https://github.com/nvm-sh/nvm#installing-and-updating).
+
+As of Feb 2022, install instructions can be summarized as follows:
+
+```bash
+# Download & run nvm install script (version 0.39.1)
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+
+# Reload settings (alternatively, reload terminal)
+source ~/.bashrc
+
+# Install Node.js 16
+nvm install 16
 ```
+
+### 4. Install Java 17 for Backend Development (optional)
+
+Download `jdk-17_linux-x64_bin.deb` from [this link](https://www.oracle.com/java/technologies/downloads/#java17)
+
+Open a terminal in the directory where `jdk-17_linux-x64_bin.deb` is and run the following commands:
+
+```bash
+# Install Oracle JDK 17 (it's OK to ignore unmet dependencies)
+sudo dpkg -i jdk-17_linux-x64_bin.deb
+
+# Fix missing dependencies
+sudo apt --fix-broken install
+```
+
+### 5. Reboot
+
+```bash
 sudo reboot
 ```
 
-### 4. Run project
-```
+### 6. Run project
+
+```bash
 make start
 ```
 
 <!-- TODO: Create documentation page -->
-* **Access http://localhost to see the frontend**
-* **The backend is mounted at http://localhost/api**
-* **Access http://localhost:8529 to navigate the database**
+* **Access <http://localhost> to see the frontend**
+* **The backend is mounted at <http://localhost/api>**
+* **Access <http://localhost:8529> to navigate the database**
 * **Check out the [documentation](https://example.com).** (COMING SOON)
 
 # Contributing
