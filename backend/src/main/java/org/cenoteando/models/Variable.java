@@ -22,13 +22,43 @@ import java.util.*;
 @Document("Variables")
 public class Variable {
 
-    public enum VariableOrigin {FIELD, OFFICE, BOTH};
+    public enum VariableOrigin {
+        FIELD, 
+        OFFICE, 
+        BOTH
+    };
 
-    public enum VariableType {TEXT, STRING, BOOLEAN, ENUM, JSON, UNITLESS_NUMBER, NUMBER_WITH_UNITS, DATETIME, DATE, TIME, NO_TYPE};
+    public enum VariableType {
+        TEXT,
+        BOOLEAN,
+        ENUM,
+        JSON,
+        UNITLESS_NUMBER,
+        NUMBER_WITH_UNITS,
+        DATETIME,
+        DATE,
+        TIME
+    };
 
-    public enum AccessLevel {PUBLIC, PRIVATE, SENSITIVE};
+    public enum AccessLevel {
+        PUBLIC, 
+        PRIVATE, 
+        SENSITIVE
+    };
 
-    public enum Theme {LOCATION, GEOREFERENCE, CULTURAL, GEOMORPHOLOGY, BIODIVERSITY, DISTURBANCE, TOURISM, DIVING, ORGANIZATION, REGULATION, WATER}
+    public enum Theme {
+        LOCATION, 
+        GEOREFERENCE, 
+        CULTURAL, 
+        GEOMORPHOLOGY, 
+        BIODIVERSITY, 
+        DISTURBANCE, 
+        TOURISM, 
+        DIVING, 
+        ORGANIZATION, 
+        REGULATION, 
+        WATER
+    }
 
     @Id // db document field: _key
     private String id;

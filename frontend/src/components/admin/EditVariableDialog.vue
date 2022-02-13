@@ -180,21 +180,34 @@ export default class EditVariableDialog extends Vue {
     origin = Object.values(Origin);
 
     themes = [
-        'BIODIVERSITY',
-        'CULTURAL',
-        'DISTURBANCE',
-        'DIVING',
-        'EVENT',
-        'GEOMORPHOLOGY',
-        'GEOREFERENCE',
-        'LOCATION',
-        'ORGANIZATION',
-        'REGULATION',
-        'TOURISM',
-        'WATER',
+        'LOCATION', 
+        'GEOREFERENCE', 
+        'CULTURAL', 
+        'GEOMORPHOLOGY', 
+        'BIODIVERSITY', 
+        'DISTURBANCE', 
+        'TOURISM', 
+        'DIVING', 
+        'ORGANIZATION', 
+        'REGULATION', 
+        'WATER'
     ];
-    dataTypes = ['NO_TYPE', 'NUMBER_WITH_UNITS', 'BOOLEAN', 'ENUM'];
-    accessLevels = ['PUBLIC', 'PRIVATE', 'SENSITIVE'];
+    dataTypes = [
+        'TEXT',
+        'BOOLEAN',
+        'ENUM',
+        'JSON',
+        'UNITLESS_NUMBER',
+        'NUMBER_WITH_UNITS',
+        'DATETIME',
+        'DATE',
+        'TIME'
+    ];
+    accessLevels = [
+        'PUBLIC', 
+        'PRIVATE', 
+        'SENSITIVE'
+    ];
 
     remove(item: string): void {
         this.$props.variable.enumValues.splice(

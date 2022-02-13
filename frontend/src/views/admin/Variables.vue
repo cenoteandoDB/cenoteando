@@ -195,32 +195,36 @@ export default class Variables extends Vue {
     ];
 
     themes = [
-        'BIODIVERSITY',
-        'CULTURAL',
-        'DISTURBANCE',
-        'DIVING',
-        'EVENT',
-        'GEOMORPHOLOGY',
-        'GEOREFERENCE',
-        'LOCATION',
-        'ORGANIZATION',
-        'REGULATION',
-        'TOURISM',
-        'WATER',
+        'LOCATION', 
+        'GEOREFERENCE', 
+        'CULTURAL', 
+        'GEOMORPHOLOGY', 
+        'BIODIVERSITY', 
+        'DISTURBANCE', 
+        'TOURISM', 
+        'DIVING', 
+        'ORGANIZATION', 
+        'REGULATION', 
+        'WATER'
     ];
-    accessLevels = ['PUBLIC', 'PRIVATE', 'SENSITIVE'];
+    dataTypes = [
+        'TEXT',
+        'BOOLEAN',
+        'ENUM',
+        'JSON',
+        'UNITLESS_NUMBER',
+        'NUMBER_WITH_UNITS',
+        'DATETIME',
+        'DATE',
+        'TIME'
+    ];
+    accessLevels = [
+        'PUBLIC', 
+        'PRIVATE', 
+        'SENSITIVE'
+    ];
     timeseries = [true, false];
     multiple = [true, false];
-    dataTypes = [
-        'BOOLEAN',
-        'DATE',
-        'ENUM',
-        'NUMBER_WITH_UNITS',
-        'STRING',
-        'TEXT',
-        'TIME',
-        'UNITLESS_NUMBER',
-    ];
 
     search = '';
     newVariable = new VariableDTO();
