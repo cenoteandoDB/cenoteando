@@ -2,7 +2,3 @@
 	path = database/dumps
 	url = https://github.com/cenoteandoDB/database.git
 	branch = main
-[submodule "database/foxx/type-arango"]
-	path = database/foxx/type-arango
-	url = https://github.com/cenoteandoDB/type-arango.git
-	branch = master
