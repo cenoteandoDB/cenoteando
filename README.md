@@ -59,8 +59,15 @@
   <img align="center" src="https://cenoteando.org/img/screenshots/frontpage.png" alt="Cenoteando Frontpage" width="400">
 </div>
 
-<!-- TODO: About this project (short description) -->
-(COMING SOON)
+Cenoteando.org is a non-profit organization that focus on the shared development of a repository and database of all available data and information on the innundated caves or sinkholes of Yucatán, also known in spanish as "cenotes".
+
+The multidisciplinary team and objetives behind the project cover both biophysical and socioeconomic variables with the hope to create and deliver impact assessment metrics to better manage touristic activities and other uses in the Yucatán cenotes.
+
+We work closely with government authorities, academia, cenote owners and other stakeholders.
+
+The academic branch team gather on a parallel project, [cenoteando.mx](https://cenoteando.mx), that centers on the unique underwater trophic webs in the Yucatán Cenotes. Current research aims at a better understanding of the stygobitic aquatic species taxonomy, systematics, behavior, interactions and distribution patterns. This group also invests a lot of energy into the communication of science through citizen science projects (iNaturalist) and visual materials such as infographics, posters and videos.
+
+We are committed to the conservation and responsible use of the cenotes, as well as to the investigation of their resources, to create products for scientific, academic, social and tourist purposes that positively optimize the use of these natural assets that are so important for the local ecosystem.
 
 # Technologies
 
