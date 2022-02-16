@@ -86,8 +86,6 @@
                         v-model="cenote.touristic"
                         data-cy="touristic"
                         label="Touristic"
-                        :rules="[(v) => !!v || 'This field is required']"
-                        required
                     ></v-checkbox>
 
                     <v-container
@@ -254,12 +252,12 @@ export default class EditCenoteDialog extends Vue {
     longitudeText = '';
     latitudeDirSelection = 'N';
     longitudeDirSelection = 'W';
-    mode = ['DMS', 'DD'];
-    modeSet = '';
+    modeSet = 'DD';
 
     issues = Object.values(CenoteIssue);
     latitudeDir = ['N', 'S'];
     longitudeDir = ['W', 'E'];
+    mode = ['DD', 'DMS'];
 
     remove(item: string): void {
         this.$props.cenote.alternativeNames.splice(

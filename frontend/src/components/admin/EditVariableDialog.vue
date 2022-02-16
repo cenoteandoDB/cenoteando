@@ -107,6 +107,8 @@
                         clearable
                         multiple
                         solo
+                        :rules="[(v) => (!!v && !!v.length) || 'Enum Values are required for type ENUM']"
+                        required
                     >
                         <template
                             v-slot:selection="{ attrs, item, select, selected }"
@@ -129,6 +131,8 @@
                         v-model="variable.units"
                         data-cy="units"
                         label="Units"
+                        :rules="[(v) => !!v || 'Units are required for type NUMBER_WITH_UNITS']"
+                        required
                     ></v-text-field>
 
                     <v-text-field
@@ -142,6 +146,8 @@
                         :items="origin"
                         data-cy="origin"
                         label="Origin"
+                        :rules="[(v) => !!v || 'Origin is required']"
+                        required
                     ></v-select>
                 </v-form>
             </v-card-text>
