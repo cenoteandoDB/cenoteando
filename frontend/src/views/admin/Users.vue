@@ -82,18 +82,15 @@ export default class Users extends Vue {
     ];
 
     roles = [
-        'CENOTERO',
-        'OWNER',
-        'REGIONAL_MANAGER',
-        'THEMATIC_MANAGER',
+        'CENOTERO BASIC',
+        'CENOTERO ADVANCED',
+        'RESEARCHER',
         'ADMIN',
     ];
 
     permissions = [
-        'ADMIN',
-        'CENOTERO (Basic)',
-        'CENOTERO (Advanced)',
-        'RESEARCHER/PROFESSIONAL',
+        'WRITE',
+        'READ',
     ]
 
     search = '';
