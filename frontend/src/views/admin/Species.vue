@@ -212,7 +212,7 @@ export default class Species extends Vue {
         await this.$store.dispatch('loading');
 
         try {
-            await RemoteServices.csvToVariables(this.files, (event) => {
+            await RemoteServices.csvToSpecies(this.files, (event) => {
                 this.uploadProgress = Math.round(
                     (100 * event.loaded) / event.total,
                 );
