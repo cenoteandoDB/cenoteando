@@ -1,25 +1,29 @@
 package org.cenoteando.repository;
 
 import com.arangodb.springframework.annotation.Query;
-import com.arangodb.springframework.core.geo.GeoJson;
-import org.springframework.stereotype.Repository;
+import com.arangodb.springframework.core.geo.GeoJsonPoint;
 import com.arangodb.springframework.repository.ArangoRepository;
-import org.cenoteando.models.Gadm;
 
-import java.util.List;
+import org.cenoteando.models.Gadm;
+import org.springframework.stereotype.Repository;
 
 
 @Repository
 public interface GadmRepository extends ArangoRepository<Gadm, String> {
 
-    /*
-    @Query("FOR c IN Gadm FILTER c.properties.ENGTYPE_1 == @0 RETURN c")
+    @Query("FOR g IN Gadm FILTER g.properties.NAME_1 == @state RETURN g")
     Iterable<Gadm> findByState(String state);
 
-    @Query("FOR c IN Gadm FILTER c.properties.ENGTYPE_2 == @0 RETURN c")
-    Iterable<Gadm> findByMunicipalities(String municipalities);
-*/
-    @Query("FOR c IN Gadm FILTER c.properties.TYPE_2 GEO_CONTAINS(c.geometry, @geometry) RETURN c")
-    Gadm findGadm(GeoJson geometry);
+    @Query("FOR g IN Gadm FILTER g.properties.ENGTYPE_2 == @municipality RETURN g")
+    Iterable<Gadm> findByMunicipality(String municipality);
+
+    @Query("FOR g IN Gadm FILTER g.properties.ENGTYPE_1 == \"State\" AND g.properties.NAME_1 IN [\"Yucatán\", \"Campeche\", \"Quintana Roo\"] RETURN g")
+    Iterable<Gadm> getStates();
+
+    @Query("FOR g IN Gadm FILTER g.properties.ENGTYPE_2 == \"Municipality\" AND g.properties.NAME_1 IN [\"Yucatán\", \"Campeche\", \"Quintana Roo\"] RETURN g")
+    Iterable<Gadm> getMunicipalities();
+
+    @Query("FOR g IN Gadm FILTER g.properties.TYPE_2 GEO_CONTAINS(g.geometry, @geometry) RETURN g")
+    Gadm findGadm(GeoJsonPoint geometry);
 
 }
