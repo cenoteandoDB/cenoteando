@@ -77,6 +77,7 @@ export default class Users extends Vue {
         { text: 'Name', value: 'name' },
         { text: 'Email', value: 'email' },
         { text: 'Role', value: 'role' },
+        { text: 'Permissions', value: 'permission'},
         { text: 'Actions', value: 'action' },
     ];
 
@@ -87,6 +88,13 @@ export default class Users extends Vue {
         'THEMATIC_MANAGER',
         'ADMIN',
     ];
+
+    permissions = [
+        'ADMIN',
+        'CENOTERO (Basic)',
+        'CENOTERO (Advanced)',
+        'RESEARCHER/PROFESSIONAL',
+    ]
 
     search = '';
     filterRole: string[] = [];
