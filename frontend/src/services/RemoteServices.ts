@@ -20,11 +20,12 @@ httpClient.defaults.baseURL =
 httpClient.defaults.headers.post['Content-Type'] = 'application/json';
 httpClient.interceptors.request.use(
     (config) => {
-        if (!config.headers['X-Session-Id']) {
-            const token = Store.getters.getToken;
+        if (!config.headers['Authorization']) {
+            const accessToken = Store.getters.getAccessToken;
+            const tokenType = Store.getters.getTokenType;
 
-            if (token) {
-                config.headers['X-Session-Id'] = token;
+            if (accessToken && tokenType) {
+                config.headers['Authorization'] =  tokenType + " " + accessToken;
             }
         }
         return config;
@@ -70,10 +71,7 @@ export default class RemoteServices {
         return httpClient
             .post('/api/auth/login', { email, password })
             .then((response) => {
-                return new AuthDto({
-                    token: response.headers['x-session-id'],
-                    user: response.data,
-                });
+                return new AuthDto(response.data);
             })
             .catch(async (error) => {
                 throw Error(await this.errorMessage(error));
@@ -88,10 +86,7 @@ export default class RemoteServices {
         return httpClient
             .post('/api/auth/register', { name, email, password })
             .then((response) => {
-                return new AuthDto({
-                    token: response.headers['x-session-id'],
-                    user: response.data,
-                });
+                return new AuthDto(response.data);
             })
             .catch(async (error) => {
                 throw Error(await this.errorMessage(error));

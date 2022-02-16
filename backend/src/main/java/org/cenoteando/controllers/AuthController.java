@@ -1,6 +1,11 @@
 package org.cenoteando.controllers;
 
-import javax.servlet.http.HttpServletResponse;
+import org.cenoteando.dtos.AuthDto;
+import org.cenoteando.jwt.JwtUtil;
+import org.cenoteando.models.AuthDetails;
+import org.cenoteando.models.User;
+import org.cenoteando.services.UsersService;
+import org.cenoteando.utils.AuthenticationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -9,13 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.cenoteando.jwt.JwtUtil;
-import org.cenoteando.models.User;
-import org.cenoteando.models.AuthDetails;
-import org.cenoteando.services.UsersService;
-import org.cenoteando.utils.AuthenticationRequest;
-
-import static org.cenoteando.models.User.Role.CENOTERO;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -30,8 +28,10 @@ public class AuthController {
     @Autowired
     private UsersService usersService;
 
+    private static String tokenType = "Bearer";
+
     @PostMapping("/login")
-    public User Login(@RequestBody AuthenticationRequest authenticationRequest, HttpServletResponse response) throws Exception {
+    public AuthDto Login(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
 
         try {
             authenticationManager.authenticate(
@@ -46,17 +46,16 @@ public class AuthController {
                 .loadUserByUsername(authenticationRequest.getEmail());
 
         final String jwt = jwtTokenUtil.generateToken(auth);
-        response.addHeader("X-Session-Id", jwt);
 
-        return auth.getUser();
+        return new AuthDto(auth.getUser(), jwt, tokenType, jwtTokenUtil.getTTL());
     }
 
     @PostMapping("/register")
-    public User Register(@RequestBody AuthenticationRequest authenticationRequest, HttpServletResponse response) throws Exception {
+    public AuthDto Register(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
 
         authenticationRequest.validatePassword();
 
-        User user = new User(authenticationRequest.getEmail(), authenticationRequest.getPassword(), CENOTERO);
+        User user = new User(authenticationRequest.getEmail(), authenticationRequest.getPassword(), User.Role.CENOTERO);
         usersService.createUser(user);
 
         try {
@@ -72,8 +71,7 @@ public class AuthController {
                 .loadUserByUsername(authenticationRequest.getEmail());
 
         final String jwt = jwtTokenUtil.generateToken(auth);
-        response.addHeader("X-Session-Id", jwt);
 
-        return auth.getUser();
+        return new AuthDto(auth.getUser(), jwt, tokenType, jwtTokenUtil.getTTL());
     }
 }

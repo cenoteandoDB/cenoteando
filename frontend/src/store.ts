@@ -6,15 +6,15 @@ import AuthUser from '@/models/user/AuthUser';
 import CenoteDTO from './models/CenoteDTO';
 import * as localforage from 'localforage';
 
-// TODO: Get session expiry from server
-// TODO: Get cenote updates from server (using HATEOAS)
+// TODO: Get cenote updates from server (using HATEOAS?)
 
 interface State {
     error: boolean;
     errorMessage: string;
     loading: boolean;
-    token: string;
     user: AuthUser | null;
+    accessToken: string;
+    tokenType: string;
     expiry: number | null;
     cenotes: Array<CenoteDTO>;
     cenotesExpiry: number | null;
@@ -24,8 +24,9 @@ const state: State = {
     error: false,
     errorMessage: '',
     loading: false,
-    token: '',
     user: null,
+    accessToken: '',
+    tokenType: '',
     expiry: null,
     cenotes: [],
     cenotesExpiry: null,
@@ -40,14 +41,19 @@ export default new Vuex.Store({
         initializeStore(state) {
             validateSession();
 
-            const token = localStorage.getItem('token');
-            if (token) {
-                state.token = token;
-            }
-
             const user = localStorage.getItem('user');
             if (user) {
                 state.user = JSON.parse(user);
+            }
+
+            const accessToken = localStorage.getItem('accessToken');
+            if (accessToken) {
+                state.accessToken = accessToken;
+            }
+
+            const tokenType = localStorage.getItem('tokenType');
+            if (tokenType) {
+                state.tokenType = tokenType;
             }
 
             const expiry = localStorage.getItem('expiry');
@@ -90,14 +96,16 @@ export default new Vuex.Store({
             // }
         },
         login(state, authResponse: AuthDto) {
-            state.token = authResponse.token;
-            localStorage.setItem('token', state.token);
-
             state.user = authResponse.user;
             localStorage.setItem('user', JSON.stringify(state.user));
 
-            // TODO: Get expiry from server
-            state.expiry = Date.now() + 60 * 60 * 1000; /* 1 hour */
+            state.accessToken = authResponse.accessToken;
+            localStorage.setItem('accessToken', state.accessToken);
+
+            state.tokenType = authResponse.tokenType;
+            localStorage.setItem('tokenType', state.tokenType);
+
+            state.expiry = Date.now() + authResponse.expiresIn * 1000;
             localStorage.setItem('expiry', JSON.stringify(state.expiry));
         },
         logout() {
@@ -158,19 +166,23 @@ export default new Vuex.Store({
     getters: {
         isLoggedIn(state): boolean {
             validateSession();
-            return !!state.token;
+            return !!state.accessToken;
         },
         isAdmin(state): boolean {
             validateSession();
             return (
-                !!state.token &&
+                !!state.accessToken &&
                 state.user !== null &&
                 (state.user.admin || state.user.role == 'ADMIN')
             );
         },
-        getToken(state): string {
+        getAccessToken(state): string {
             validateSession();
-            return state.token;
+            return state.accessToken;
+        },
+        getTokenType(state): string {
+            validateSession();
+            return state.tokenType;
         },
         getUser(state): AuthUser | null {
             validateSession();
@@ -233,10 +245,12 @@ function validateSession() {
 }
 
 function clearSession() {
-    state.token = '';
     state.user = null;
+    state.accessToken = '';
+    state.tokenType = '';
     state.expiry = null;
-    localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('tokenType');
     localStorage.removeItem('expiry');
 }
