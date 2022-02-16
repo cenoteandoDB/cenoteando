@@ -207,7 +207,11 @@ sudo apt --fix-broken install
 sudo reboot
 ```
 
-### 6. Run project
+### 6. Setup google cloud credentials (optional)
+
+Add your `credentials.json` file to `backend/secrets/`. This file is only required to be able to see photos, maps and references on your local instance.
+
+### 7. Run project
 
 ```bash
 make start
