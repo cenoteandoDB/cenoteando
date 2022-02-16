@@ -97,7 +97,7 @@ dev_backend:
 	$(error target not implemented)
 
 # Start frontend hot development mode (code changes reflect on save)
-dev_frontend: install_frontend
+dev_frontend: install
 	npm run serve --prefix frontend
 
 # Upgrade all services with local code
