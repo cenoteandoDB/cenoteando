@@ -1,1 +1,3 @@
 target/
+secrets/*
+!secrets/README.md

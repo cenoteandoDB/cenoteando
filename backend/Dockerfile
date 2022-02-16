@@ -17,5 +17,7 @@ RUN mvn -P$PROFILE -Dmaven.test.skip=true package
 
 FROM azul/zulu-openjdk-alpine:17 as backend
 EXPOSE 8080
+COPY ./secrets/credentials.json /credentials.json
 COPY --from=run target/backend-0.0.1-SNAPSHOT.jar ./
+ENV GOOGLE_APPLICATION_CREDENTIALS /credentials.json
 CMD ["java","-Djava.security.egd=file:/dev/./urandom","-jar", "./backend-0.0.1-SNAPSHOT.jar"]
