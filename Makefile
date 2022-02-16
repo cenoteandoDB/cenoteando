@@ -131,7 +131,8 @@ clean:
 	# Cleanup frontend dependencies and dist
 	rm -rf frontend/node_modules/ frontend/dist
 
-	# TODO: Cleanup backend artifacts and dependencies
+	# TODO: Cleanup backend dependencies
+	rm -rf backend/target/
 
 	# remove created images
 	COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose -p $(PROJECT_NAME) down --remove-orphans --rmi all 2>/dev/null \
