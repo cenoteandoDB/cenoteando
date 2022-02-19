@@ -8,19 +8,15 @@ import org.json.JSONArray;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 
 @Document("Users")
 public class User {
-    public enum Role {CENOTERO, OWNER, REGIONAL_MANAGER, THEMATIC_MANAGER, ADMIN};
+    //TODO remove cenotero
+    public enum Role {ADMIN, RESEARCHER, CENOTERO_ADVANCED, CENOTERO_BASIC, CENOTERO};
 
     @Id // db document field: _key
     private String id;
@@ -36,7 +32,10 @@ public class User {
 
     private Role role;
 
-    //groups
+    private List<String> cenoteBlackList;
+    private List<String> cenoteWhiteList;
+    private List<String> themesBlackList;
+    private List<String> themesWhiteList;
 
     @CreatedDate
     @PersistentIndexed
@@ -45,10 +44,11 @@ public class User {
     @LastModifiedDate
     private Date updatedAt;
 
-    public User(String email, String password, Role role){
+    public User(String email, String name, String password, Role role){
         this.email = email;
         this.password = password;
         this.role = role;
+        this.name = name;
     }
 
     public String getId() {
@@ -91,6 +91,42 @@ public class User {
         this.role = role;
     }
 
+    @JsonIgnore
+    public List<String> getCenoteBlackList() {
+        return cenoteBlackList;
+    }
+
+    public void setCenoteBlackList(List<String> cenoteBlackList) {
+        this.cenoteBlackList = cenoteBlackList;
+    }
+
+    @JsonIgnore
+    public List<String> getCenoteWhiteList() {
+        return cenoteWhiteList;
+    }
+
+    public void setCenoteWhiteList(List<String> cenoteWhiteList) {
+        this.cenoteWhiteList = cenoteWhiteList;
+    }
+
+    @JsonIgnore
+    public List<String> getThemesBlackList() {
+        return themesBlackList;
+    }
+
+    public void setThemesBlackList(List<String> themesBlackList) {
+        this.themesBlackList = themesBlackList;
+    }
+
+    @JsonIgnore
+    public List<String> getThemesWhiteList() {
+        return themesWhiteList;
+    }
+
+    public void setThemesWhiteList(List<String> themesWhiteList) {
+        this.themesWhiteList = themesWhiteList;
+    }
+
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -101,6 +137,14 @@ public class User {
 
     public boolean isAdmin(){
         return this.role == Role.ADMIN;
+    }
+
+    public void merge(User user){
+        role = user.getRole();
+        cenoteBlackList = user.getCenoteBlackList();
+        cenoteWhiteList = user.getCenoteWhiteList();
+        themesBlackList = user.getThemesBlackList();
+        themesWhiteList = user.getThemesWhiteList();
     }
 
     public static JSONArray getHeaders(){

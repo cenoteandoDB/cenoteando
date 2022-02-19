@@ -9,6 +9,7 @@ import org.cenoteando.utils.CsvImportExport;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.supercsv.cellprocessor.Collector;
@@ -80,6 +81,10 @@ public class Cenote {
 
     @Ref
     private Gadm gadm;
+
+    @Ref
+    @CreatedBy
+    private User creator;
 
     @CreatedDate
     @PersistentIndexed
@@ -189,19 +194,6 @@ public class Cenote {
         this.geojson = geojson;
     }
 
-    /*public void setGeojson(String geojson){
-        JSONObject obj = new JSONObject(geojson);
-        JSONObject geometry = (JSONObject) obj.get("geometry");
-
-        Double x = geometry.getDouble("x");
-        Double y = geometry.getDouble("y");
-        GeoJsonPoint point = new GeoJsonPoint(x, y);
-        String geojsonType = obj.getString("type");
-        String type = geometry.getString("type");
-
-        this.geojson = new CenoteGeoJSON(point, geojsonType);
-    }*/
-
     @JsonIgnore
     public List<Double> getCoordinates(){
         return this.geojson.getGeometry().getCoordinates();
@@ -218,6 +210,17 @@ public class Cenote {
 
     public void setGadm(Gadm gadm) {
         this.gadm = gadm;
+    }
+
+    @JsonIgnore
+    public String getCreator(){
+        if(creator != null)
+            return creator.getName();
+        return null;
+    }
+
+    public void setCreator(User user){
+        this.creator = user;
     }
 
     public Date getCreatedAt() {
@@ -240,6 +243,12 @@ public class Cenote {
 
     public boolean validate(){
         return type != null && name != null && !name.isEmpty() && geojson != null;
+    }
+
+    public boolean isCreator(User user){
+        if(creator==null)
+            return false;
+        return user.getEmail().equals(creator.getEmail());
     }
 
     public static JSONArray getHeaders(){

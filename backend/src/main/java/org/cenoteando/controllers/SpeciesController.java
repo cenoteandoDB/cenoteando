@@ -56,6 +56,7 @@ public class SpeciesController {
 
 
     @GetMapping( "/csv")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String toCsv(HttpServletResponse response) throws IOException, IllegalAccessException {
         response.setContentType("text/csv");
         response.setHeader("Content-Disposition", "attachment; filename=species.csv");
@@ -64,6 +65,7 @@ public class SpeciesController {
     }
 
     @PostMapping("/csv")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<String> fromCsv(@RequestParam("file") MultipartFile multipartfile) throws Exception {
         return speciesService.fromCsv(multipartfile);
     }

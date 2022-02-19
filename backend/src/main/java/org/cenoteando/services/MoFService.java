@@ -20,13 +20,14 @@ public class MoFService {
     private MeasurementsOrFactsRepository measurementsOrFactsRepository;
 
     @Autowired
-    private VariablesRepository variableRepository;
+    private VariableService variableService;
 
-    public <T> HashMap<String, List<MeasurementOrFact>> getData(String id, String theme){
+    public <T> HashMap<String, List<MeasurementOrFact>> getData(String id, String theme) throws Exception {
         String cenoteId = "Cenotes/" + id;
-        Iterable<Variable> variables = variableRepository.findByTheme(theme);
+        Iterable<Variable> variables = variableService.getVariablesForMoF(theme);
+
         List<String> variablesIds = new ArrayList<>();
-        HashMap<String, List<MeasurementOrFact>> variablesMap = new HashMap<String, List<MeasurementOrFact>>();
+        HashMap<String, List<MeasurementOrFact>> variablesMap = new HashMap<>();
 
         for(Variable var : variables) {
             variablesIds.add(var.getArangoId());

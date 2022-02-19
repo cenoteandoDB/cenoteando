@@ -22,6 +22,7 @@ public class UsersController {
     }
 
     @GetMapping()
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Page<User> getUsers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "30") int size){
         Pageable pageable = PageRequest.of(page, size);
         return usersService.getUsers(pageable);
@@ -32,12 +33,8 @@ public class UsersController {
         return usersService.getUser(id);
     }
 
-    @PostMapping()
-    public User createUser(@RequestBody User user) throws Exception{
-        return usersService.createUser(user);
-    }
-
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public User updateUser(@PathVariable String id, @RequestBody User user){
         return usersService.updateUser(id,user);
     }
@@ -51,6 +48,7 @@ public class UsersController {
 
 
     @GetMapping("/csv")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String toCsv(HttpServletResponse response) throws IOException, IllegalAccessException {
         response.setContentType("text/csv");
         response.setHeader("Content-Disposition", "attachment; filename=users.csv");

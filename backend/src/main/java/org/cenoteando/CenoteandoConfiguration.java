@@ -4,11 +4,14 @@ import com.arangodb.ArangoDB;
 import com.arangodb.springframework.annotation.EnableArangoAuditing;
 import com.arangodb.springframework.annotation.EnableArangoRepositories;
 import com.arangodb.springframework.config.ArangoConfiguration;
+import org.cenoteando.models.User;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.AuditorAware;
 
 @Configuration
-@EnableArangoAuditing
+@EnableArangoAuditing(auditorAwareRef = "auditorProvider")
 @EnableArangoRepositories(basePackages = {"org.cenoteando.repository"})
 public class CenoteandoConfiguration implements ArangoConfiguration {
 
@@ -30,5 +33,10 @@ public class CenoteandoConfiguration implements ArangoConfiguration {
     @Override
     public String database() {
         return _db;
+    }
+
+    @Bean
+    public AuditorAware<User> auditorProvider() {
+        return new AuditorProvider();
     }
 }

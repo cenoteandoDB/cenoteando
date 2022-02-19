@@ -48,8 +48,8 @@ public class UsersService implements UserDetailsService {
     }
 
     public User updateUser(String id, User user){
-        User oldUser = this.getUser(id);
-        oldUser = user;
+        User oldUser = getUser(id);
+        oldUser.merge(user);
         return this.usersRepository.save(oldUser);
     }
 

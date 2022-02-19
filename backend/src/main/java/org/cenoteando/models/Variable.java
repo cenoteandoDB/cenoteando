@@ -7,6 +7,9 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import org.cenoteando.utils.CsvImportExport;
 import org.json.JSONArray;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.CreatedBy;
+import com.arangodb.springframework.annotation.Ref;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.supercsv.cellprocessor.Collector;
@@ -77,6 +80,10 @@ public class Variable {
     private Theme theme;
     private VariableOrigin origin;
     private String methodology;
+
+    @Ref
+    @CreatedBy
+    private User creator;
 
     @CreatedDate
     @PersistentIndexed
@@ -226,6 +233,17 @@ public class Variable {
         return methodology;
     }
 
+    @JsonIgnore
+    public String getCreator(){
+        if(creator != null)
+            return creator.getName();
+        return null;
+    }
+
+    public void setCreator(User user){
+        this.creator = user;
+    }
+
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -263,6 +281,12 @@ public class Variable {
                 return true;
         }
         return false;
+    }
+
+    public boolean isCreator(User user){
+        if(creator==null)
+            return false;
+        return user.getEmail().equals(creator.getEmail());
     }
 
     public static JSONArray getHeaders(){

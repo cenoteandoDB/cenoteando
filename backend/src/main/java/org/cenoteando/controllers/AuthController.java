@@ -6,6 +6,7 @@ import org.cenoteando.models.AuthDetails;
 import org.cenoteando.models.User;
 import org.cenoteando.services.UsersService;
 import org.cenoteando.utils.AuthenticationRequest;
+import org.cenoteando.utils.RegisterRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -51,16 +52,16 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public AuthDto Register(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+    public AuthDto Register(@RequestBody RegisterRequest registerRequest) throws Exception {
 
-        authenticationRequest.validatePassword();
+        registerRequest.validatePassword();
 
-        User user = new User(authenticationRequest.getEmail(), authenticationRequest.getPassword(), User.Role.CENOTERO);
+        User user = new User(registerRequest.getEmail(), registerRequest.getName(), registerRequest.getPassword(), User.Role.CENOTERO);
         usersService.createUser(user);
 
         try {
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword())
+                    new UsernamePasswordAuthenticationToken(registerRequest.getEmail(), registerRequest.getPassword())
             );
         }
         catch (BadCredentialsException e) {
@@ -68,7 +69,7 @@ public class AuthController {
         }
 
         final AuthDetails auth = this.usersService
-                .loadUserByUsername(authenticationRequest.getEmail());
+                .loadUserByUsername(registerRequest.getEmail());
 
         final String jwt = jwtTokenUtil.generateToken(auth);
 
