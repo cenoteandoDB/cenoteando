@@ -158,11 +158,11 @@ public class CenoteService {
         Cenote cenote, oldCenote;
         while( (cenote = reader.read(Cenote.class, header, processors)) != null ) {
             if(!cenote.validate()){
-                if(!hasUpdateAccess(user, cenote.getId()))
-                    throw new Exception("User doesn't have permission to update cenote " + cenote.getId());
                 throw new Exception("Validation failed for " + cenote.getId());
             }
             if((oldCenote = getCenote(cenote.getId())) != null) {
+                if(!hasUpdateAccess(user, cenote.getId()))
+                    throw new Exception("User doesn't have permission to update cenote " + cenote.getId());
                 oldCenote.merge(cenote);
                 cenoteRepository.save(oldCenote);
             }

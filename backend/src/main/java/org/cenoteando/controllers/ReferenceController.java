@@ -1,5 +1,8 @@
 package org.cenoteando.controllers;
 
+import com.google.cloud.storage.Blob;
+import org.cenoteando.services.CloudStorageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +19,9 @@ import java.util.List;
 @RestController()
 @RequestMapping("/api/references")
 public class ReferenceController {
+
+    @Autowired
+    private CloudStorageService cloudStorageService;
 
     private final ReferenceService referenceService;
 
@@ -56,6 +62,7 @@ public class ReferenceController {
 
 
     @GetMapping("/csv")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String toCsv(HttpServletResponse response) throws IOException, IllegalAccessException {
         response.setContentType("text/csv");
         response.setHeader("Content-Disposition", "attachment; filename=references.csv");
@@ -64,8 +71,21 @@ public class ReferenceController {
     }
 
     @PostMapping("/csv")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<String> fromCsv(@RequestParam("file") MultipartFile multipartfile) throws Exception {
         return referenceService.fromCsv(multipartfile);
+    }
+
+    @GetMapping("/{id}/download")
+    public void downloadReference(HttpServletResponse response, @PathVariable String id) throws Exception {
+
+        Blob reference = cloudStorageService.downloadReference(id);
+
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + reference.getName() + "\"");
+        response.setContentType("application/pdf");
+
+        response.getOutputStream().write(reference.getContent());
+        response.flushBuffer();
     }
 
 

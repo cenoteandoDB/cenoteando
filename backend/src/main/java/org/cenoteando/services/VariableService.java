@@ -54,14 +54,10 @@ public class VariableService {
                         filteredVariables.add(variable);
                 return filteredVariables;
             case CENOTERO_ADVANCED:
-                if(user.getThemesBlackList() == null)
-                    user.setThemesBlackList(new ArrayList<>());
                 if(!user.getThemesBlackList().contains(theme))
                     return variablesRepository.findByTheme(theme);
                 throw new Exception("User forbidden to get variable with theme " + theme);
             case CENOTERO_BASIC:
-                if(user.getThemesWhiteList() == null)
-                    user.setThemesWhiteList(new ArrayList<>());
                 if(user.getThemesWhiteList().contains(theme))
                     return variablesRepository.findByTheme(theme);
                 throw new Exception("User forbidden to get variable with theme " + theme);

@@ -9,6 +9,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -93,6 +94,8 @@ public class User {
 
     @JsonIgnore
     public List<String> getCenoteBlackList() {
+        if(cenoteBlackList == null)
+            return new ArrayList<>();
         return cenoteBlackList;
     }
 
@@ -102,6 +105,8 @@ public class User {
 
     @JsonIgnore
     public List<String> getCenoteWhiteList() {
+        if(cenoteWhiteList == null)
+            return new ArrayList<>();
         return cenoteWhiteList;
     }
 
@@ -111,6 +116,8 @@ public class User {
 
     @JsonIgnore
     public List<String> getThemesBlackList() {
+        if(themesBlackList == null)
+            return new ArrayList<>();
         return themesBlackList;
     }
 
@@ -120,6 +127,8 @@ public class User {
 
     @JsonIgnore
     public List<String> getThemesWhiteList() {
+        if(themesWhiteList == null)
+            return new ArrayList<>();
         return themesWhiteList;
     }
 
