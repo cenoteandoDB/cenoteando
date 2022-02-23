@@ -29,10 +29,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
 import CenoteDTO from '@/models/CenoteDTO';
-import RemoteServices from '@/services/RemoteServices';
 import VariableWithValuesDTO from '@/models/VariableWithValuesDTO';
+import RemoteServices from '@/services/RemoteServices';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component
 export default class GeneralTab extends Vue {
@@ -74,9 +74,8 @@ export default class GeneralTab extends Vue {
                 this.$route.params.key,
                 'TOURISM',
             );
-            // TODO: Make this more robust after updating variable data types in DB
             this.variables = this.variables.filter(
-                (variable) => typeof variable.values[0].value === 'boolean',
+                (variable) => variable.variable.id in Object.keys(this.icons)
             );
         } catch (error) {
             await this.$store.dispatch('error', error);
