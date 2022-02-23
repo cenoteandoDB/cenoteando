@@ -1,23 +1,23 @@
 package org.cenoteando.models;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import com.arangodb.springframework.annotation.ArangoId;
 import com.arangodb.springframework.annotation.Document;
 import com.arangodb.springframework.annotation.PersistentIndexed;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import org.json.JSONArray;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 
 @Document("Users")
 public class User {
-    //TODO remove cenotero
-    public enum Role {ADMIN, RESEARCHER, CENOTERO_ADVANCED, CENOTERO_BASIC, CENOTERO};
+    public enum Role {ADMIN, RESEARCHER, CENOTERO_ADVANCED, CENOTERO_BASIC};
 
     @Id // db document field: _key
     private String id;

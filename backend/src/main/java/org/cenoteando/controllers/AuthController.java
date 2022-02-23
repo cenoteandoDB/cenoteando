@@ -56,7 +56,7 @@ public class AuthController {
 
         registerRequest.validatePassword();
 
-        User user = new User(registerRequest.getEmail(), registerRequest.getName(), registerRequest.getPassword(), User.Role.CENOTERO);
+        User user = new User(registerRequest.getEmail(), registerRequest.getName(), registerRequest.getPassword(), User.Role.CENOTERO_BASIC);
         usersService.createUser(user);
 
         try {
