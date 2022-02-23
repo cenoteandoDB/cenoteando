@@ -1,5 +1,7 @@
 package org.cenoteando.models;
 
+import java.util.ArrayList;
+
 import com.arangodb.springframework.annotation.ArangoId;
 import com.arangodb.springframework.annotation.Document;
 import com.arangodb.springframework.annotation.GeoIndexed;
@@ -17,7 +19,7 @@ public class Gadm {
     private String _id;
 
     @GeoIndexed(geoJson = true)
-    private GeoJson geometry;
+    private GeoJson<ArrayList<Double>> geometry;
 
     private String type;
 
@@ -31,11 +33,11 @@ public class Gadm {
         return _id;
     }
 
-    public GeoJson getGeometry() {
+    public GeoJson<ArrayList<Double>> getGeometry() {
         return geometry;
     }
 
-    public void setGeometry(GeoJson geometry) {
+    public void setGeometry(GeoJson<ArrayList<Double>> geometry) {
         this.geometry = geometry;
     }
 

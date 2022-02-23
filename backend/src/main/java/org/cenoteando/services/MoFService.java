@@ -1,10 +1,11 @@
 package org.cenoteando.services;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
-import org.cenoteando.models.MeasurementOrFact;
+import org.cenoteando.dtos.VariableWithValuesDTO;
 import org.cenoteando.models.MeasurementOrFactBucket;
 import org.cenoteando.models.Variable;
 import org.cenoteando.repository.MeasurementsOrFactsRepository;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-@SuppressWarnings("rawtypes")
 public class MoFService {
 
     @Autowired
@@ -21,25 +21,28 @@ public class MoFService {
     @Autowired
     private VariableService variableService;
 
-    public <T> HashMap<String, List<MeasurementOrFact>> getData(String id, String theme) throws Exception {
+    public HashMap<String, VariableWithValuesDTO<Object>> getData(String id, String theme) throws Exception {
         String cenoteId = "Cenotes/" + id;
         Iterable<Variable> variables = variableService.getVariablesForMoF(theme);
 
-        List<String> variablesIds = new ArrayList<>();
-        HashMap<String, List<MeasurementOrFact>> variablesMap = new HashMap<>();
+        Stream<Variable> variablesStream = StreamSupport.stream(variables.spliterator(), false);
 
-        for(Variable var : variables) {
-            variablesIds.add(var.getArangoId());
-            variablesMap.put(var.getArangoId(), null);
+        List<String> variablesIds = variablesStream.map(Variable::getArangoId).toList();
+        HashMap<String, VariableWithValuesDTO<Object>> variablesMap = new HashMap<>();
+
+        variablesStream.forEach((variable) -> {
+            variablesMap.put(variable.getId(), new VariableWithValuesDTO<Object>(variable, null));
+        });
+
+        Iterable<MeasurementOrFactBucket<Object>> mofs = measurementsOrFactsRepository.findMeasurementsOrFacts(cenoteId, variablesIds);
+
+        for(MeasurementOrFactBucket<Object> mof : mofs){
+            // Key is just the identifier of the variable, without the collection name
+            VariableWithValuesDTO<Object> varWithValues = variablesMap.get(mof.get_from().split("/")[1]);
+            varWithValues.setValues(mof.getMeasurements());
         }
 
-        Iterable<MeasurementOrFactBucket> mofs = measurementsOrFactsRepository.findMeasurementsOrFacts(cenoteId, variablesIds);
-
-        for(MeasurementOrFactBucket mof : mofs){
-            variablesMap.put(mof.get_from(),mof.getMeasurements());
-        }
-
-        variablesMap.entrySet().removeIf(entry -> entry.getValue() == null);
+        variablesMap.entrySet().removeIf(entry -> entry.getValue().getValues() == null);
 
         return variablesMap;
     }

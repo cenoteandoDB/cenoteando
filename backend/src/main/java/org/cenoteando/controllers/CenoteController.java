@@ -6,9 +6,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.cenoteando.dtos.VariableWithValuesDTO;
 import org.cenoteando.models.Cenote;
 import org.cenoteando.models.CommentBucket;
-import org.cenoteando.models.MeasurementOrFact;
 import org.cenoteando.services.CenoteService;
 import org.cenoteando.services.CloudStorageService;
 import org.cenoteando.services.MoFService;
@@ -81,7 +81,7 @@ public class CenoteController {
     }
 
     @GetMapping("/{id}/data/{theme}")
-    public HashMap<String, List<MeasurementOrFact>> getData(@PathVariable String id, @PathVariable String theme) throws Exception {
+    public HashMap<String, VariableWithValuesDTO<Object>> getData(@PathVariable String id, @PathVariable String theme) throws Exception {
         return moFService.getData(id, theme);
     }
 

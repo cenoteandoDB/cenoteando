@@ -10,11 +10,11 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface MeasurementsOrFactsRepository extends ArangoRepository<MeasurementOrFactBucket, String> {
+public interface MeasurementsOrFactsRepository extends ArangoRepository<MeasurementOrFactBucket<Object>, String> {
 
-    MeasurementOrFactBucket findByArangoId(String id);
+    MeasurementOrFactBucket<Object> findByArangoId(String id);
 
     @Query("FOR c IN #collection FILTER c._to == @cenoteid and c._from in @variables RETURN c")
-    Iterable<MeasurementOrFactBucket> findMeasurementsOrFacts(String cenoteid, List<String> variables);
+    Iterable<MeasurementOrFactBucket<Object>> findMeasurementsOrFacts(String cenoteid, List<String> variables);
 
 }
