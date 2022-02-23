@@ -19,14 +19,14 @@ public class CloudStorageService {
 
     private Storage storage = StorageOptions.getDefaultInstance().getService();
 
-    @Value("${bucketName}")
+    @Value("${gcs.bucketName}")
     private String BUCKET_NAME;
 
     public List<String> getPhotos(String id){
         Page<Blob> blobs =
                 storage.list(
                         BUCKET_NAME,
-                        Storage.BlobListOption.prefix("photos/" + id + "_"),
+                        Storage.BlobListOption.prefix("photos/" + id + "/"),
                         Storage.BlobListOption.currentDirectory());
         return signedURL(blobs);
     }

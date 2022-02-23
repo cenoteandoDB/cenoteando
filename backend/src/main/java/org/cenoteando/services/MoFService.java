@@ -2,6 +2,7 @@ package org.cenoteando.services;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -25,12 +26,12 @@ public class MoFService {
         String cenoteId = "Cenotes/" + id;
         Iterable<Variable> variables = variableService.getVariablesForMoF(theme);
 
-        Stream<Variable> variablesStream = StreamSupport.stream(variables.spliterator(), false);
+        Supplier<Stream<Variable>> variablesStreamSupplier = () -> StreamSupport.stream(variables.spliterator(), false);
 
-        List<String> variablesIds = variablesStream.map(Variable::getArangoId).toList();
+        List<String> variablesIds = variablesStreamSupplier.get().map(Variable::getArangoId).toList();
         HashMap<String, VariableWithValuesDTO<Object>> variablesMap = new HashMap<>();
 
-        variablesStream.forEach((variable) -> {
+        variablesStreamSupplier.get().forEach((variable) -> {
             variablesMap.put(variable.getId(), new VariableWithValuesDTO<Object>(variable, null));
         });
 

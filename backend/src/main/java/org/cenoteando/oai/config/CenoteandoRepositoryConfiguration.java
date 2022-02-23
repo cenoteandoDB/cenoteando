@@ -27,6 +27,7 @@ public class CenoteandoRepositoryConfiguration implements RepositoryConfiguratio
     @Value("${oai.baseUrl}")
     private String _baseUrl;
 
+    // TODO: Get from database
     @Value("#{new java.text.SimpleDateFormat(\"yyyy-MM-DD\").parse(\"${oai.earliestDate}\")}")
     private Date _earliestDate;
 
