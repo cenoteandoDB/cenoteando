@@ -1,17 +1,17 @@
-import axios, { AxiosError } from 'axios';
-import Store from '@/store';
-import router from '@/router';
-import IdentifyDTO from '@/models/oai/IdentifyDTO';
-import { ElementCompact, xml2js } from 'xml-js';
 import CenoteDTO from '@/models/CenoteDTO';
-import L from 'leaflet';
 import CommentBucketDTO from '@/models/CommentBucketDTO';
-import AuthDto from '@/models/user/AuthDto';
-import VariableWithValuesDTO from '@/models/VariableWithValuesDTO';
-import VariableDTO from '@/models/VariableDTO';
-import UserDTO from '@/models/UserDTO';
+import IdentifyDTO from '@/models/oai/IdentifyDTO';
 import ReferenceDTO from '@/models/ReferenceDTO';
 import SpeciesDTO from '@/models/SpeciesDTO';
+import AuthDto from '@/models/user/AuthDto';
+import UserDTO from '@/models/UserDTO';
+import VariableDTO from '@/models/VariableDTO';
+import VariableWithValuesDTO from '@/models/VariableWithValuesDTO';
+import router from '@/router';
+import Store from '@/store';
+import axios, { AxiosError } from 'axios';
+import L from 'leaflet';
+import { ElementCompact, xml2js } from 'xml-js';
 
 const httpClient = axios.create();
 httpClient.defaults.timeout = 100000;

@@ -232,8 +232,8 @@
     </v-dialog>
 </template>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
 import CenoteDTO, { CenoteIssue, CenoteType } from '@/models/CenoteDTO';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component({
     props: {

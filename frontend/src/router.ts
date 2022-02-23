@@ -1,13 +1,13 @@
-import Vue from 'vue';
-import VueRouter, { RouteConfig } from 'vue-router';
 import Store from '@/store';
-
-import Home from '@/views/Home.vue';
-import NotFound from '@/views/NotFound.vue';
-import Map from '@/views/Map.vue';
-import Cenote from '@/views/Cenote.vue';
 import Login from '@/views/auth/Login.vue';
 import Signup from '@/views/auth/Signup.vue';
+import Cenote from '@/views/Cenote.vue';
+import Home from '@/views/Home.vue';
+import Map from '@/views/Map.vue';
+import NotFound from '@/views/NotFound.vue';
+import Vue from 'vue';
+import VueRouter, { RouteConfig } from 'vue-router';
+
 
 Vue.use(VueRouter);
 

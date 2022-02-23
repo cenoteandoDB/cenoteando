@@ -38,11 +38,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import RemoteServices from '@/services/RemoteServices';
-import { ElementCompact, js2xml } from 'xml-js';
-import { parseISOString } from '@/services/ConvertDateService';
 import Record from '@/components/oai/Record.vue';
+import { parseISOString } from '@/services/ConvertDateService';
+import RemoteServices from '@/services/RemoteServices';
+import { Component, Vue } from 'vue-property-decorator';
+import { ElementCompact, js2xml } from 'xml-js';
 
 @Component({ components: { Record } })
 export default class OaiListRecords extends Vue {

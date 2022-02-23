@@ -138,12 +138,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import RemoteServices from '@/services/RemoteServices';
+import DeleteDialog from '@/components/admin/DeleteDialog.vue';
+import EditReferenceDialog from '@/components/admin/EditReferenceDialog.vue';
 import ReferenceDTO from '@/models/ReferenceDTO';
 import FileService from '@/services/FileService';
-import EditReferenceDialog from '@/components/admin/EditReferenceDialog.vue';
-import DeleteDialog from '@/components/admin/DeleteDialog.vue';
+import RemoteServices from '@/services/RemoteServices';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component({
     components: {

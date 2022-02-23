@@ -1,5 +1,5 @@
-import { xml2js } from 'xml-js';
 import { parseISOString } from '@/services/ConvertDateService';
+import { xml2js } from 'xml-js';
 
 export default class IdentifyDTO {
     response_date: Date;

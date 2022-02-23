@@ -26,9 +26,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import RemoteServices from '@/services/RemoteServices';
 import Record from '@/components/oai/Record.vue';
+import RemoteServices from '@/services/RemoteServices';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component({ components: { Record } })
 export default class OaiListRecords extends Vue {

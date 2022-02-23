@@ -1,10 +1,10 @@
+import AuthDto from '@/models/user/AuthDto';
+import AuthUser from '@/models/user/AuthUser';
+import RemoteServices from '@/services/RemoteServices';
+import * as localforage from 'localforage';
 import Vue from 'vue';
 import Vuex from 'vuex';
-import AuthDto from '@/models/user/AuthDto';
-import RemoteServices from '@/services/RemoteServices';
-import AuthUser from '@/models/user/AuthUser';
 import CenoteDTO from './models/CenoteDTO';
-import * as localforage from 'localforage';
 
 // TODO: Get cenote updates from server (using HATEOAS?)
 

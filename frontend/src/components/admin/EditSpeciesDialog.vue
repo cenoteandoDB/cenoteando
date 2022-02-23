@@ -46,8 +46,8 @@
     </v-dialog>
 </template>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
 import SpeciesDTO from '@/models/SpeciesDTO';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component({
     props: {

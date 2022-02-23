@@ -9,8 +9,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
 import LoginCard from '@/components/auth/LoginCard.vue';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component({
     components: { LoginCard },

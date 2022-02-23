@@ -35,9 +35,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
 import IdentifyDTO from '@/models/oai/IdentifyDTO';
 import RemoteServices from '@/services/RemoteServices';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component
 export default class OaiIdentify extends Vue {

@@ -3,8 +3,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
 import LeafletMap from '@/components/map/LeafletMap.vue';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component({
     components: { LeafletMap },

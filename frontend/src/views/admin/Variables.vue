@@ -163,12 +163,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import VariableDTO from '@/models/VariableDTO';
-import RemoteServices from '@/services/RemoteServices';
-import EditVariableDialog from '@/components/admin/EditVariableDialog.vue';
 import DeleteDialog from '@/components/admin/DeleteDialog.vue';
+import EditVariableDialog from '@/components/admin/EditVariableDialog.vue';
+import VariableDTO from '@/models/VariableDTO';
 import FileService from '@/services/FileService';
+import RemoteServices from '@/services/RemoteServices';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component({
     components: {

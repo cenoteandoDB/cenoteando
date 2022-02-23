@@ -141,13 +141,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import CenoteDTO, { CenoteIssue, CenoteType } from '@/models/CenoteDTO';
-import RemoteServices from '@/services/RemoteServices';
-import EditCenoteDialog from '@/components/admin/EditCenoteDialog.vue';
 import DeleteDialog from '@/components/admin/DeleteDialog.vue';
+import EditCenoteDialog from '@/components/admin/EditCenoteDialog.vue';
+import CenoteDTO, { CenoteIssue, CenoteType } from '@/models/CenoteDTO';
 import FileService from '@/services/FileService';
+import RemoteServices from '@/services/RemoteServices';
 import { Feature, Point } from 'geojson';
+import { Component, Vue } from 'vue-property-decorator';
 
 interface CenoteData {
     id: string;

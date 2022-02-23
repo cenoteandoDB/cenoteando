@@ -34,9 +34,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { LPopup, LCircleMarker } from 'vue2-leaflet';
 import CenoteDTO from '@/models/CenoteDTO';
+import { Component, Vue } from 'vue-property-decorator';
+import { LCircleMarker, LPopup } from 'vue2-leaflet';
 
 @Component({
     components: {

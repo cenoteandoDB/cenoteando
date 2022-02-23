@@ -11,12 +11,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import NavBar from '@/components/NavBar.vue';
-import Footer from '@/components/Footer.vue';
 import ErrorMessage from '@/components/ErrorMessage.vue';
+import Footer from '@/components/Footer.vue';
 import Loading from '@/components/Loading.vue';
+import NavBar from '@/components/NavBar.vue';
 import axios from 'axios';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component({
     components: { NavBar, ErrorMessage, Loading, Footer },

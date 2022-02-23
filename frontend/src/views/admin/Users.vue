@@ -59,11 +59,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import DeleteDialog from '@/components/admin/DeleteDialog.vue';
+import EditUserDialog from '@/components/admin/EditUserDialog.vue';
 import UserDTO from '@/models/UserDTO';
 import RemoteServices from '@/services/RemoteServices';
-import EditUserDialog from '@/components/admin/EditUserDialog.vue';
-import DeleteDialog from '@/components/admin/DeleteDialog.vue';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component({
     components: {

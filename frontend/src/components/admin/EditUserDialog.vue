@@ -56,8 +56,8 @@
     </v-dialog>
 </template>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
 import UserDTO, { UserRole } from '@/models/UserDTO';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component({
     props: {

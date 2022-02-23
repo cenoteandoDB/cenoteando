@@ -94,14 +94,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import L from 'leaflet';
-import { LMap, LTileLayer, LCircleMarker } from 'vue2-leaflet';
-
-import RemoteServices from '@/services/RemoteServices';
-import CenoteDTO from '@/models/CenoteDTO';
-import MapMarker from '@/components/map/MapMarker.vue';
 import CenoteDetails from '@/components/cenote/CenoteDetails.vue';
+import MapMarker from '@/components/map/MapMarker.vue';
+import CenoteDTO from '@/models/CenoteDTO';
+import RemoteServices from '@/services/RemoteServices';
+import L from 'leaflet';
+import { Component, Vue } from 'vue-property-decorator';
+import { LCircleMarker, LMap, LTileLayer } from 'vue2-leaflet';
+
 
 @Component({
     components: {

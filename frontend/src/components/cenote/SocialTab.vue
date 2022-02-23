@@ -66,9 +66,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
 import CommentBucketDTO from '@/models/CommentBucketDTO';
 import RemoteServices from '@/services/RemoteServices';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component
 export default class SocialTab extends Vue {

@@ -15,13 +15,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import GeneralTab from '@/components/cenote/GeneralTab.vue';
 import CalculatedVariables from '@/components/cenote/CalculatedVariables.vue';
+import GeneralTab from '@/components/cenote/GeneralTab.vue';
 import SocialTab from '@/components/cenote/SocialTab.vue';
-import ThematicData from '@/components/cenote/ThematicData.vue';
 import Sources from '@/components/cenote/Sources.vue';
+import ThematicData from '@/components/cenote/ThematicData.vue';
 import CenoteDTO from '@/models/CenoteDTO';
+import { Component, Vue } from 'vue-property-decorator';
 
 const CenoteProps = Vue.extend({
     props: {

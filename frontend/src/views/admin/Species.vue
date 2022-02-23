@@ -113,12 +113,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import RemoteServices from '@/services/RemoteServices';
-import SpeciesDTO from '@/models/SpeciesDTO';
-import FileService from '@/services/FileService';
 import DeleteDialog from '@/components/admin/DeleteDialog.vue';
 import EditSpeciesDialog from '@/components/admin/EditSpeciesDialog.vue';
+import SpeciesDTO from '@/models/SpeciesDTO';
+import FileService from '@/services/FileService';
+import RemoteServices from '@/services/RemoteServices';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component({
     components: {

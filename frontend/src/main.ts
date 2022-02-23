@@ -1,10 +1,10 @@
+import CompositionApi from '@vue/composition-api';
 import Vue from 'vue';
 import App from './App.vue';
+import vuetify from './plugins/vuetify';
 import './registerServiceWorker';
 import router from './router';
 import store from './store';
-import vuetify from './plugins/vuetify';
-import CompositionApi from '@vue/composition-api';
 
 Vue.config.productionTip = false;
 

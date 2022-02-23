@@ -62,12 +62,12 @@
 </template>
 
 <script lang="ts">
+import FileService from '@/services/FileService';
+import RemoteServices from '@/services/RemoteServices';
+import { parseAsync, transforms } from 'json2csv';
 import { Component, Vue } from 'vue-property-decorator';
 import XmlViewer from 'vue-xml-viewer';
-import { parseAsync, transforms } from 'json2csv';
 
-import RemoteServices from '@/services/RemoteServices';
-import FileService from '@/services/FileService';
 
 @Component({ components: { XmlViewer } })
 export default class Record extends Vue {

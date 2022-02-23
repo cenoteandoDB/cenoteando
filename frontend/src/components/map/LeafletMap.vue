@@ -40,22 +40,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import MapMarker from '@/components/map/MapMarker.vue';
+import CenoteDTO from '@/models/CenoteDTO';
+import RemoteServices from '@/services/RemoteServices';
+import { GeoJSON } from 'geojson';
 import L from 'leaflet';
+import { Component, Vue } from 'vue-property-decorator';
 import {
-    LCircleMarker,
-    LMap,
-    LTileLayer,
-    LIcon,
-    LControlLayers,
-    LGeoJson,
-    LLayerGroup,
+  LCircleMarker, LControlLayers,
+  LGeoJson, LIcon, LLayerGroup, LMap,
+  LTileLayer
 } from 'vue2-leaflet';
 import Vue2LeafletMarkerCluster from 'vue2-leaflet-markercluster';
-import { GeoJSON } from 'geojson';
-import RemoteServices from '@/services/RemoteServices';
-import CenoteDTO from '@/models/CenoteDTO';
-import MapMarker from '@/components/map/MapMarker.vue';
 type Overlay = {
     geojson: GeoJSON;
     visible?: boolean;

@@ -38,9 +38,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import RemoteServices from '@/services/RemoteServices';
 import VariableWithValuesDTO from '@/models/VariableWithValuesDTO';
+import RemoteServices from '@/services/RemoteServices';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component({})
 export default class ThematicData extends Vue {

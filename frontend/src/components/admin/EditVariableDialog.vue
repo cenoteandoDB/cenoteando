@@ -170,8 +170,8 @@
     </v-dialog>
 </template>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
 import VariableDTO, { Origin } from '@/models/VariableDTO';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component({
     props: {

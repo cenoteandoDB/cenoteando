@@ -62,8 +62,8 @@
     </v-dialog>
 </template>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
 import ReferenceDTO from '@/models/ReferenceDTO';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component({
     props: {
