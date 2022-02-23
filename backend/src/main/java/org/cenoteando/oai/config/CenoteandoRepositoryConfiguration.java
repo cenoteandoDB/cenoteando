@@ -1,15 +1,19 @@
 package org.cenoteando.oai.config;
 
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
 import com.lyncode.xoai.dataprovider.core.DeleteMethod;
 import com.lyncode.xoai.dataprovider.core.Granularity;
 import com.lyncode.xoai.dataprovider.services.api.RepositoryConfiguration;
+
 import org.cenoteando.repository.CenotesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import java.util.*;
 
 @Component
 public class CenoteandoRepositoryConfiguration implements RepositoryConfiguration {

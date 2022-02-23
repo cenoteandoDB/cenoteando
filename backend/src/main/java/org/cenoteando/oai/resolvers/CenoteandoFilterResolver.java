@@ -1,9 +1,16 @@
 package org.cenoteando.oai.resolvers;
 
+import java.lang.reflect.InvocationTargetException;
+
 import com.lyncode.xoai.dataprovider.data.Filter;
-import com.lyncode.xoai.dataprovider.filter.conditions.*;
+import com.lyncode.xoai.dataprovider.filter.conditions.AndCondition;
+import com.lyncode.xoai.dataprovider.filter.conditions.Condition;
+import com.lyncode.xoai.dataprovider.filter.conditions.CustomCondition;
+import com.lyncode.xoai.dataprovider.filter.conditions.NotCondition;
+import com.lyncode.xoai.dataprovider.filter.conditions.OrCondition;
 import com.lyncode.xoai.dataprovider.services.api.FilterResolver;
 import com.lyncode.xoai.dataprovider.xml.xoaiconfig.parameters.ParameterMap;
+
 import org.cenoteando.oai.filters.AndFilter;
 import org.cenoteando.oai.filters.CenoteandoFilter;
 import org.cenoteando.oai.filters.NotFilter;
@@ -28,15 +35,15 @@ public class CenoteandoFilterResolver implements FilterResolver {
     public Filter getFilter(Class<? extends Filter> filterClass, ParameterMap configuration) {
         Filter result = null;
         try {
-            result = filterClass.newInstance();
+            result = filterClass.getDeclaredConstructor().newInstance();
 
             if (result instanceof CenoteandoFilter)
             {
                 ((CenoteandoFilter) result).setConfiguration(configuration);
             }
 
-        } catch (InstantiationException | IllegalAccessException e) {
-            // TODO: Maybe return null?
+        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException | NoSuchMethodException e) {
+            // TODO: Deal with exceptions
             throw new RuntimeException(e);
         }
         return result;

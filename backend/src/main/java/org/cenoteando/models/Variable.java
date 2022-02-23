@@ -1,25 +1,25 @@
 package org.cenoteando.models;
 
+import java.util.Date;
+import java.util.List;
+
 import com.arangodb.springframework.annotation.ArangoId;
 import com.arangodb.springframework.annotation.Document;
 import com.arangodb.springframework.annotation.PersistentIndexed;
-import com.fasterxml.jackson.annotation.JsonSetter;
-import org.cenoteando.utils.CsvImportExport;
-import org.json.JSONArray;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.CreatedBy;
 import com.arangodb.springframework.annotation.Ref;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
+import org.cenoteando.utils.CsvImportExport;
+import org.json.JSONArray;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.supercsv.cellprocessor.Collector;
 import org.supercsv.cellprocessor.Optional;
 import org.supercsv.cellprocessor.ParseBool;
-import org.supercsv.cellprocessor.ParseEnum;
 import org.supercsv.cellprocessor.constraint.NotNull;
 import org.supercsv.cellprocessor.ift.CellProcessor;
-
-import java.util.*;
 
 
 @Document("Variables")
@@ -295,7 +295,6 @@ public class Variable {
     }
 
     public static CellProcessor[] getProcessors(){
-        CellProcessor string = null;
         return new CellProcessor[]{
                 new NotNull(), // id
                 new NotNull(), // name

@@ -4,10 +4,8 @@ import com.arangodb.springframework.annotation.ArangoId;
 import com.arangodb.springframework.annotation.Document;
 import com.arangodb.springframework.annotation.GeoIndexed;
 import com.arangodb.springframework.core.geo.GeoJson;
-import com.arangodb.springframework.core.geo.GeoJsonPolygon;
-import org.springframework.data.annotation.Id;
 
-import java.util.HashMap;
+import org.springframework.data.annotation.Id;
 
 @Document("Gadm")
 public class Gadm {

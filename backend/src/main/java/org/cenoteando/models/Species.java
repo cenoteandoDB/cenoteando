@@ -1,9 +1,12 @@
 package org.cenoteando.models;
 
+import java.util.Date;
+
 import com.arangodb.springframework.annotation.ArangoId;
 import com.arangodb.springframework.annotation.Document;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
+
 import org.json.JSONArray;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -11,8 +14,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.supercsv.cellprocessor.Optional;
 import org.supercsv.cellprocessor.constraint.NotNull;
 import org.supercsv.cellprocessor.ift.CellProcessor;
-
-import java.util.*;
 
 
 @Document("Species")

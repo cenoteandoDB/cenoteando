@@ -1,11 +1,13 @@
 package org.cenoteando.models;
 
-import com.arangodb.springframework.annotation.*;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Persistent;
-
-import java.util.Date;
 import java.util.List;
+
+import com.arangodb.springframework.annotation.ArangoId;
+import com.arangodb.springframework.annotation.Edge;
+import com.arangodb.springframework.annotation.From;
+import com.arangodb.springframework.annotation.To;
+
+import org.springframework.data.annotation.Id;
 
 
 

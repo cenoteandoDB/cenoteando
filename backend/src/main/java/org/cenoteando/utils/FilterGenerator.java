@@ -1,9 +1,9 @@
-package test.cenoteando.utils;
-
-import org.springframework.stereotype.Component;
+package org.cenoteando.utils;
 
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Component;
 
 @Component("filterGenerator")
 public class FilterGenerator {

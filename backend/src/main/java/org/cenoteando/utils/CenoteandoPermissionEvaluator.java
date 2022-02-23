@@ -1,6 +1,12 @@
 package org.cenoteando.utils;
 
 
+import static org.cenoteando.models.User.Role.CENOTERO_ADVANCED;
+import static org.cenoteando.models.User.Role.RESEARCHER;
+import static org.cenoteando.models.Variable.AccessLevel.SENSITIVE;
+
+import java.io.Serializable;
+
 import org.cenoteando.models.Cenote;
 import org.cenoteando.models.User;
 import org.cenoteando.models.Variable;
@@ -10,11 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-
-import java.io.Serializable;
-
-import static org.cenoteando.models.User.Role.*;
-import static org.cenoteando.models.Variable.AccessLevel.SENSITIVE;
 
 @Component
 public class CenoteandoPermissionEvaluator implements PermissionEvaluator {

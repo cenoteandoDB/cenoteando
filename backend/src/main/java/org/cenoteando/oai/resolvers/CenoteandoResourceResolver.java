@@ -1,14 +1,17 @@
 package org.cenoteando.oai.resolvers;
 
-import com.lyncode.xoai.dataprovider.services.api.ResourceResolver;
-import org.springframework.core.io.ClassPathResource;
-
-import javax.xml.transform.*;
-import javax.xml.transform.stream.StreamSource;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Objects;
-import java.util.Properties;
+
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamSource;
+
+import com.lyncode.xoai.dataprovider.services.api.ResourceResolver;
+
+import org.springframework.core.io.ClassPathResource;
 
 public class CenoteandoResourceResolver implements ResourceResolver {
     private static final TransformerFactory transformerFactory = TransformerFactory.newInstance();

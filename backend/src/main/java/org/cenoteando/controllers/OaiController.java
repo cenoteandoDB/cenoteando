@@ -1,5 +1,14 @@
 package org.cenoteando.controllers;
 
+import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+// FIXME The package javax.xml.stream is accessible from more than one module
+import javax.xml.stream.XMLStreamException;
+
 import com.lyncode.xoai.dataprovider.OAIDataProvider;
 import com.lyncode.xoai.dataprovider.OAIRequestParameters;
 import com.lyncode.xoai.dataprovider.core.XOAIManager;
@@ -12,6 +21,7 @@ import com.lyncode.xoai.dataprovider.services.api.ResourceResolver;
 import com.lyncode.xoai.dataprovider.xml.xoaiconfig.Configuration;
 import com.lyncode.xoai.dataprovider.xml.xoaiconfig.ContextConfiguration;
 import com.lyncode.xoai.dataprovider.xml.xoaiconfig.FormatConfiguration;
+
 import org.cenoteando.oai.config.CenoteandoRepositoryConfiguration;
 import org.cenoteando.oai.repository.CenoteandoItemRepository;
 import org.cenoteando.oai.repository.CenoteandoSetRepository;
@@ -22,15 +32,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
-
-import javax.xml.stream.XMLStreamException;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @RestController()
 @RequestMapping("oai")

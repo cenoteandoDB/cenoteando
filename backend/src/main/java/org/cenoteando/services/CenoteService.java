@@ -1,30 +1,35 @@
 package org.cenoteando.services;
 
+import static org.cenoteando.models.User.Role.ADMIN;
+import static org.cenoteando.models.User.Role.RESEARCHER;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.cenoteando.models.Cenote;
+import org.cenoteando.models.CommentBucket;
+import org.cenoteando.models.Gadm;
+import org.cenoteando.models.User;
+import org.cenoteando.repository.CenotesRepository;
+import org.cenoteando.repository.CommentBucketRepository;
 import org.json.CDL;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.io.CsvBeanReader;
-import org.cenoteando.models.*;
-import org.cenoteando.repository.CenotesRepository;
-import org.cenoteando.repository.CommentBucketRepository;
 import org.supercsv.io.ICsvBeanReader;
 import org.supercsv.prefs.CsvPreference;
-
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.cenoteando.models.User.Role.ADMIN;
-import static org.cenoteando.models.User.Role.RESEARCHER;
 
 
 @Service
@@ -150,26 +155,26 @@ public class CenoteService {
 
         ArrayList<String> values = new ArrayList<>();
 
-        ICsvBeanReader reader = new CsvBeanReader(file_reader, CsvPreference.STANDARD_PREFERENCE);
+        try (ICsvBeanReader reader = new CsvBeanReader(file_reader, CsvPreference.STANDARD_PREFERENCE)) {
+            final String[] header = reader.getHeader(true);
+            final CellProcessor[] processors = Cenote.getProcessors();
 
-        final String[] header = reader.getHeader(true);
-        final CellProcessor[] processors = Cenote.getProcessors();
-
-        Cenote cenote, oldCenote;
-        while( (cenote = reader.read(Cenote.class, header, processors)) != null ) {
-            if(!cenote.validate()){
-                throw new Exception("Validation failed for " + cenote.getId());
-            }
-            if((oldCenote = getCenote(cenote.getId())) != null) {
-                if(!hasUpdateAccess(user, cenote.getId()))
-                    throw new Exception("User doesn't have permission to update cenote " + cenote.getId());
-                oldCenote.merge(cenote);
-                cenoteRepository.save(oldCenote);
-            }
-            else{
-                if(!hasCreateAccess(user, cenote.getId()))
-                    throw new Exception("User doesn't have permission to create cenote " + cenote.getId());
-                cenoteRepository.save(cenote);
+            Cenote cenote, oldCenote;
+            while( (cenote = reader.read(Cenote.class, header, processors)) != null ) {
+                if(!cenote.validate()){
+                    throw new Exception("Validation failed for " + cenote.getId());
+                }
+                if((oldCenote = getCenote(cenote.getId())) != null) {
+                    if(!hasUpdateAccess(user, cenote.getId()))
+                        throw new Exception("User doesn't have permission to update cenote " + cenote.getId());
+                    oldCenote.merge(cenote);
+                    cenoteRepository.save(oldCenote);
+                }
+                else{
+                    if(!hasCreateAccess(user, cenote.getId()))
+                        throw new Exception("User doesn't have permission to create cenote " + cenote.getId());
+                    cenoteRepository.save(cenote);
+                }
             }
         }
 

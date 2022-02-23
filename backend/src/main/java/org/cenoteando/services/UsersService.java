@@ -1,6 +1,10 @@
 package org.cenoteando.services;
 
+import java.io.IOException;
+
 import org.cenoteando.models.AuthDetails;
+import org.cenoteando.models.User;
+import org.cenoteando.repository.UsersRepository;
 import org.json.CDL;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -11,10 +15,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.cenoteando.repository.UsersRepository;
-import org.cenoteando.models.User;
-
-import java.io.IOException;
 
 @Service
 public class UsersService implements UserDetailsService {

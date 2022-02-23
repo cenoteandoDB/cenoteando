@@ -1,16 +1,17 @@
 package org.cenoteando.utils;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import com.arangodb.springframework.core.geo.GeoJsonPoint;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
-import org.cenoteando.models.CenoteGeoJSON;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import org.cenoteando.models.CenoteGeoJSON;
 
 public class CsvImportExport {
 

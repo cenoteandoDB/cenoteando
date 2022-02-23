@@ -1,9 +1,9 @@
 package org.cenoteando.oai.filters;
 
-import org.cenoteando.oai.model.CenoteandoItem;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.cenoteando.oai.model.CenoteandoItem;
 
 public class CenoteandoAtLeastOneMetadataFilter extends CenoteandoFilter {
 

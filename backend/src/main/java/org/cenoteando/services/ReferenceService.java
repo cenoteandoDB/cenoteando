@@ -1,5 +1,13 @@
 package org.cenoteando.services;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.cenoteando.models.Reference;
+import org.cenoteando.repository.ReferenceRepository;
 import org.json.CDL;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -10,14 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.io.CsvBeanReader;
-import org.cenoteando.models.Reference;
-import org.cenoteando.repository.ReferenceRepository;
 import org.supercsv.io.ICsvBeanReader;
 import org.supercsv.prefs.CsvPreference;
-
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class ReferenceService {
@@ -75,22 +77,22 @@ public class ReferenceService {
 
         ArrayList<String> values = new ArrayList<>();
 
-        ICsvBeanReader reader = new CsvBeanReader(file_reader, CsvPreference.STANDARD_PREFERENCE);
+        try (ICsvBeanReader reader = new CsvBeanReader(file_reader, CsvPreference.STANDARD_PREFERENCE)) {
+            final String[] header = reader.getHeader(true);
+            final CellProcessor[] processors = Reference.getProcessors();
 
-        final String[] header = reader.getHeader(true);
-        final CellProcessor[] processors = Reference.getProcessors();
-
-        Reference ref, oldRef;
-        while( (ref = reader.read(Reference.class, header, processors)) != null ) {
-            if(!ref.validate()){
-                throw new Exception("Validation failed for " + ref.getId());
-            }
-            if((oldRef = getReference(ref.getId())) != null) {
-                oldRef.merge(ref);
-                referenceRepository.save(oldRef);
-            }
-            else{
-                referenceRepository.save(ref);
+            Reference ref, oldRef;
+            while( (ref = reader.read(Reference.class, header, processors)) != null ) {
+                if(!ref.validate()){
+                    throw new Exception("Validation failed for " + ref.getId());
+                }
+                if((oldRef = getReference(ref.getId())) != null) {
+                    oldRef.merge(ref);
+                    referenceRepository.save(oldRef);
+                }
+                else{
+                    referenceRepository.save(ref);
+                }
             }
         }
 

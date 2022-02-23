@@ -1,12 +1,12 @@
 package org.cenoteando.repository;
 
-import com.arangodb.springframework.annotation.Query;
-import org.springframework.stereotype.Repository;
-import com.arangodb.springframework.repository.ArangoRepository;
-import org.cenoteando.models.MeasurementOrFact;
-import org.cenoteando.models.MeasurementOrFactBucket;
-
 import java.util.List;
+
+import com.arangodb.springframework.annotation.Query;
+import com.arangodb.springframework.repository.ArangoRepository;
+
+import org.cenoteando.models.MeasurementOrFactBucket;
+import org.springframework.stereotype.Repository;
 
 
 @Repository

@@ -1,25 +1,24 @@
 package org.cenoteando.models;
 
-import com.arangodb.springframework.annotation.*;
-import com.arangodb.springframework.core.geo.GeoJsonPoint;
+import java.util.Date;
+import java.util.List;
+
+import com.arangodb.springframework.annotation.ArangoId;
+import com.arangodb.springframework.annotation.Document;
+import com.arangodb.springframework.annotation.PersistentIndexed;
+import com.arangodb.springframework.annotation.Ref;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+
 import org.cenoteando.utils.CsvImportExport;
 import org.json.JSONArray;
-import org.json.JSONObject;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.supercsv.cellprocessor.Collector;
-import org.supercsv.cellprocessor.Optional;
 import org.supercsv.cellprocessor.ParseBool;
 import org.supercsv.cellprocessor.constraint.NotNull;
 import org.supercsv.cellprocessor.ift.CellProcessor;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 class Social {
 

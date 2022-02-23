@@ -1,11 +1,12 @@
 package org.cenoteando.oai.filters;
 
-import com.lyncode.xoai.dataprovider.xml.xoaiconfig.parameters.ParameterValue;
-import com.lyncode.xoai.dataprovider.xml.xoaiconfig.parameters.SimpleType;
-import org.cenoteando.oai.model.CenoteandoItem;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.lyncode.xoai.dataprovider.xml.xoaiconfig.parameters.ParameterValue;
+import com.lyncode.xoai.dataprovider.xml.xoaiconfig.parameters.SimpleType;
+
+import org.cenoteando.oai.model.CenoteandoItem;
 
 public class CenoteandoMetadataExistsFilter extends CenoteandoFilter {
 

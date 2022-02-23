@@ -1,10 +1,10 @@
 package org.cenoteando.oai.filters;
 
-import org.cenoteando.oai.model.CenoteandoItem;
-
 import com.lyncode.xoai.dataprovider.data.Filter;
 import com.lyncode.xoai.dataprovider.data.ItemIdentifier;
 import com.lyncode.xoai.dataprovider.xml.xoaiconfig.parameters.ParameterMap;
+
+import org.cenoteando.oai.model.CenoteandoItem;
 
 /**
  * @author Lyncode Development Team <dspace@lyncode.com>

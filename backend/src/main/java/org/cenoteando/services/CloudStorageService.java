@@ -1,15 +1,18 @@
 package org.cenoteando.services;
 
-import com.google.api.gax.paging.Page;
-import com.google.cloud.storage.*;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import com.google.api.gax.paging.Page;
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 @Service
 public class CloudStorageService {
@@ -23,7 +26,7 @@ public class CloudStorageService {
         Page<Blob> blobs =
                 storage.list(
                         BUCKET_NAME,
-                        Storage.BlobListOption.prefix("photos/" + id + "/"),
+                        Storage.BlobListOption.prefix("photos/" + id + "_"),
                         Storage.BlobListOption.currentDirectory());
         return signedURL(blobs);
     }

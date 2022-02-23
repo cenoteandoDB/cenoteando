@@ -1,11 +1,12 @@
 package org.cenoteando.oai.repository;
 
+import java.util.ArrayList;
+
 import com.lyncode.xoai.dataprovider.core.ListSetsResult;
 import com.lyncode.xoai.dataprovider.core.Set;
 import com.lyncode.xoai.dataprovider.services.api.SetRepository;
-import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
+import org.springframework.stereotype.Component;
 
 @Component
 public class CenoteandoSetRepository implements SetRepository {

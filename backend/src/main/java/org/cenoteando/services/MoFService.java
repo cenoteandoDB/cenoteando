@@ -1,16 +1,15 @@
 package org.cenoteando.services;
 
-import org.cenoteando.models.MeasurementOrFact;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.cenoteando.models.MeasurementOrFactBucket;
-import org.cenoteando.models.Variable;
-import org.cenoteando.repository.MeasurementsOrFactsRepository;
-import org.cenoteando.repository.VariablesRepository;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import org.cenoteando.models.MeasurementOrFact;
+import org.cenoteando.models.MeasurementOrFactBucket;
+import org.cenoteando.models.Variable;
+import org.cenoteando.repository.MeasurementsOrFactsRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 @SuppressWarnings("rawtypes")

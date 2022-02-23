@@ -4,6 +4,7 @@ import com.arangodb.ArangoDB;
 import com.arangodb.springframework.annotation.EnableArangoAuditing;
 import com.arangodb.springframework.annotation.EnableArangoRepositories;
 import com.arangodb.springframework.config.ArangoConfiguration;
+
 import org.cenoteando.models.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
