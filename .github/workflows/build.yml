@@ -22,7 +22,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          distribution: ''zulu'
+          distribution: 'zulu'
           java-version: '17'
           cache: 'maven'
       # Analyze project with SonarCloud
@@ -45,7 +45,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          distribution: ''zulu'
+          distribution: 'zulu'
           java-version: '17'
           cache: 'maven'
       #Build the application using Maven
