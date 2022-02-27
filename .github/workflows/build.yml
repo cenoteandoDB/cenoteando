@@ -30,7 +30,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify sonar:sonar -Dsonar.projectKey=cenoteandoDB_cenoteando -Dsonar.organization=cenoteandodb -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
+        run: mvn -f backend/pom.xml -B verify sonar:sonar -Dsonar.projectKey=cenoteandoDB_cenoteando -Dsonar.organization=cenoteandodb -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
   #Build's job
   build:
     #Depends on sonar's job
@@ -50,7 +50,7 @@ jobs:
           cache: 'maven'
       #Build the application using Maven
       - name: Build with Maven
-        run: mvn -B package -DskipTests --file pom.xml
+        run: mvn -f backend/pom.xml -B package -DskipTests --file pom.xml
       #Build the application using Maven
       - name: Upload JAR
         #This uploads artifacts from your workflow allowing you to share data between jobs and store data once a workflow is complete.
@@ -59,7 +59,7 @@ jobs:
           #Set artifact name
           name: backend
           #From this path
-          path: target/backend-0.0.1-SNAPSHOT.jar
+          path: backend/target/backend-0.0.1-SNAPSHOT.jar
   #Deploy's job
   deploy:
     #Depends on build's job
