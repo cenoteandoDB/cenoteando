@@ -80,7 +80,7 @@ jobs:
         run: npm install --prefix frontend
       #Build the application using NPM
       - name: Build
-        run: npm build --prefix frontend
+        run: npm run build --prefix frontend
       - name: Upload Frontend
         #This uploads artifacts from your workflow allowing you to share data between jobs and store data once a workflow is complete.
         uses: actions/upload-artifact@v2
