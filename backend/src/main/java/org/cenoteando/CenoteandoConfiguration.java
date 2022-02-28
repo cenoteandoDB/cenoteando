@@ -24,9 +24,18 @@ public class CenoteandoConfiguration implements ArangoConfiguration {
     @Value("${arango.db:_system}")
     private String db;
 
+    @Value("${arango.user:root}")
+    private String user;
+
+    @Value("${arango.password:#{null}}")
+    private String password;
+
     @Override
     public ArangoDB.Builder arango() {
-        return new ArangoDB.Builder().host(hostname, Integer.parseInt(port));
+        return new ArangoDB.Builder()
+            .host(hostname, Integer.parseInt(port))
+            .user(user)
+            .password(password);
     }
 
     @Override
