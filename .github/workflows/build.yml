@@ -59,7 +59,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -f backend/pom.xml -B verify sonar:sonar -Dsonar.projectKey=cenoteandodb_backend -Dsonar.organization=cenoteandodb
+        run: mvn -f backend/pom.xml -B verify sonar:sonar -Dsonar.projectKey=cenoteandodb_backend -Dsonar.organization=cenoteandodb -Dsonar.host.url=https://sonarcloud.io
   #Build Frontend's job
   build_frontend:
     #Depends on sonar's job
