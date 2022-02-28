@@ -99,7 +99,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: backend
-          path: "source"
+          path: "dist/backend.jar"
       - name: Upload to server
         uses: appleboy/scp-action@master
         with:
@@ -107,8 +107,8 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}      
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
-          source: "source/*"
-          target: "~/source/"
+          source: "dist/backend.jar"
+          target: "~/dist/backend"
       - name: Restart Service
         uses: appleboy/ssh-action@master
         with:
