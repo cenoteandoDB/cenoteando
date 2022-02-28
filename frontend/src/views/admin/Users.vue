@@ -56,6 +56,7 @@
                 <edit-permissions-dialog :user="item" :cenote="item" :variable="item" >
                     <template v-slot:activator="{ on, attrs }">
                         <v-icon
+                            v-if="item.role === 'ADMIN' || item.role === 'RESEARCHER'"
                             class="mr-2 action-button"
                             v-on="on"
                             v-bind="attrs"
