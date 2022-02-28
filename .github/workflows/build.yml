@@ -135,7 +135,19 @@ jobs:
         with:
           path: './backend/src/main/resources/application.properties'
           property: arango.host
-          value: localhost
+          value: ${{ secrets.DATABASE_HOST }}
+      - name: Write Properties
+        uses: christian-draeger/write-properties@1.1.0
+        with:
+          path: './backend/src/main/resources/application.properties'
+          property: arangodb.user
+          value: ${{ secrets.DATABASE_USERNAME }}
+      - name: Write Properties
+        uses: christian-draeger/write-properties@1.1.0
+        with:
+          path: './backend/src/main/resources/application.properties'
+          property: arangodb.password
+          value: ${{ secrets.DATABASE_PASSWORD }}
       - name: Write Properties
         uses: christian-draeger/write-properties@1.1.0
         with:
@@ -144,8 +156,7 @@ jobs:
           value: ${{ secrets.JTW_SECRET_KEY }}
       #Build the application using Maven
       - name: Build with Maven
-        run: |
-          mvn -f backend/pom.xml -B package -DskipTests
+        run: mvn -f backend/pom.xml -B package -DskipTests
       #Build the application using Maven
       - name: Upload JAR
         #This uploads artifacts from your workflow allowing you to share data between jobs and store data once a workflow is complete.
