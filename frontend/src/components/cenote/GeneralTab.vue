@@ -74,8 +74,8 @@ export default class GeneralTab extends Vue {
                 this.$route.params.key,
                 'TOURISM',
             );
-            this.variables = this.variables.filter(
-                (variable) => Object.keys(this.icons).includes(variable.variable.id)
+            this.variables = this.variables.filter((variable) =>
+                Object.keys(this.icons).includes(variable.variable.id),
             );
         } catch (error) {
             await this.$store.dispatch('error', error);

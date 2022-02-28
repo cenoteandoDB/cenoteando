@@ -80,12 +80,7 @@ export default class Users extends Vue {
         { text: 'Actions', value: 'action' },
     ];
 
-    roles = [
-        'ADMIN',
-        'RESEARCHER',
-        'CENOTERO_ADVANCED',
-        'CENOTERO_BASIC'
-    ];
+    roles = ['ADMIN', 'RESEARCHER', 'CENOTERO_ADVANCED', 'CENOTERO_BASIC'];
 
     search = '';
     filterRole: string[] = [];

@@ -25,7 +25,7 @@ httpClient.interceptors.request.use(
             const tokenType = Store.getters.getTokenType;
 
             if (accessToken && tokenType) {
-                config.headers['Authorization'] =  tokenType + " " + accessToken;
+                config.headers['Authorization'] = tokenType + ' ' + accessToken;
             }
         }
         return config;
@@ -402,9 +402,7 @@ export default class RemoteServices {
     }
 
     // Cenotes
-    static async *cenotesGenerator(
-        size?: number,
-    ): AsyncGenerator<CenoteDTO[]> {
+    static async *cenotesGenerator(size?: number): AsyncGenerator<CenoteDTO[]> {
         let page = 0;
         let hasMore = true;
         try {

@@ -228,9 +228,7 @@ export default class References extends Vue {
 
     async deleteReference(reference: ReferenceDTO): Promise<void> {
         await RemoteServices.deleteReference(reference.id);
-        this.references = this.references.filter(
-            (r) => r.id != reference.id,
-        );
+        this.references = this.references.filter((r) => r.id != reference.id);
     }
 
     async download(): Promise<void> {

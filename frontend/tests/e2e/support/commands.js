@@ -25,19 +25,17 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 Cypress.Commands.add('clickDataCy', (label) => {
-    cy.get(`[data-cy='${label}']`).click()
-  })
+    cy.get(`[data-cy='${label}']`).click();
+});
 
-  Cypress.Commands.add('clickDataCy', (label) => {
-    cy.get(`[data-cy='${label}']`).click( {force:true} )
-  })
+Cypress.Commands.add('clickDataCy', (label) => {
+    cy.get(`[data-cy='${label}']`).click({ force: true });
+});
 
 Cypress.Commands.add('clickDataFirst', (label) => {
-    cy.get(`[data-cy='${label}']`).first().click({force: true});
-  })
-  
-Cypress.Commands.add('clickLink', (label) => {
-		cy.get('span').contains(label).click()
-	})
+    cy.get(`[data-cy='${label}']`).first().click({ force: true });
+});
 
- 
+Cypress.Commands.add('clickLink', (label) => {
+    cy.get('span').contains(label).click();
+});

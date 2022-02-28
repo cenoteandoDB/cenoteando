@@ -2,9 +2,7 @@ package org.cenoteando.controllers;
 
 import java.io.IOException;
 import java.util.List;
-
 import javax.servlet.http.HttpServletResponse;
-
 import org.cenoteando.models.Species;
 import org.cenoteando.services.SpeciesService;
 import org.springframework.data.domain.Page;
@@ -22,64 +20,64 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-@RestController()
+@RestController
 @RequestMapping("/api/species")
 public class SpeciesController {
 
-    private final SpeciesService speciesService;
+  private final SpeciesService speciesService;
 
-    public SpeciesController(SpeciesService speciesService) {
-        this.speciesService = speciesService;
-    }
+  public SpeciesController(SpeciesService speciesService) {
+    this.speciesService = speciesService;
+  }
 
+  @GetMapping
+  public Page<Species> getSpecies(
+    @RequestParam(defaultValue = "0") int page,
+    @RequestParam(defaultValue = "30") int size
+  ) {
+    Pageable pageable = PageRequest.of(page, size);
+    return speciesService.getSpecies(pageable);
+  }
 
-    @GetMapping()
-    public Page<Species> getSpecies(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "30") int size){
-        Pageable pageable = PageRequest.of(page, size);
-        return speciesService.getSpecies(pageable);
-    }
+  @GetMapping("/{id}")
+  public Species getSpecie(@PathVariable String id) {
+    return speciesService.getSpecies(id);
+  }
 
-    @GetMapping("/{id}")
-    public Species getSpecie(@PathVariable String id){
-        return speciesService.getSpecies(id);
-    }
+  @PostMapping
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  public Species createSpecie(@RequestBody Species specie) throws Exception {
+    return speciesService.createSpecies(specie);
+  }
 
-    @PostMapping()
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Species createSpecie(@RequestBody Species specie) throws Exception {
-        return speciesService.createSpecies(specie);
-    }
+  @PutMapping("/{id}")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  public Species updateSpecie(@PathVariable String id, @RequestBody Species specie)
+    throws Exception {
+    return speciesService.updateSpecies(id, specie);
+  }
 
-    @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Species updateSpecie(@PathVariable String id, @RequestBody Species specie) throws Exception {
-        return speciesService.updateSpecies(id,specie);
-    }
+  @DeleteMapping("/{id}")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  public String deleteSpecie(@PathVariable String id) throws Exception {
+    speciesService.deleteSpecies(id);
+    return "no content";
+  }
 
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String deleteSpecie(@PathVariable String id) throws Exception {
-        speciesService.deleteSpecies(id);
-        return "no content";
-    }
+  @GetMapping("/csv")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  public String toCsv(HttpServletResponse response)
+    throws IOException, IllegalAccessException {
+    response.setContentType("text/csv");
+    response.setHeader("Content-Disposition", "attachment; filename=species.csv");
 
+    return speciesService.toCsv();
+  }
 
-    @GetMapping( "/csv")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String toCsv(HttpServletResponse response) throws IOException, IllegalAccessException {
-        response.setContentType("text/csv");
-        response.setHeader("Content-Disposition", "attachment; filename=species.csv");
-
-        return speciesService.toCsv();
-    }
-
-    @PostMapping("/csv")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public List<String> fromCsv(@RequestParam("file") MultipartFile multipartfile) throws Exception {
-        return speciesService.fromCsv(multipartfile);
-    }
-
-
-
-
+  @PostMapping("/csv")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  public List<String> fromCsv(@RequestParam("file") MultipartFile multipartfile)
+    throws Exception {
+    return speciesService.fromCsv(multipartfile);
+  }
 }

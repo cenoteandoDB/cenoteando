@@ -2,26 +2,26 @@ package org.cenoteando.oai.model;
 
 public class CenoteandoContributor {
 
-    // TODO: Convert type to enum?
-    private String _type;
-    private String _name;
-    private String _id;
+  // TODO: Convert type to enum?
+  private String type;
+  private String name;
+  private String id;
 
-    public CenoteandoContributor(String type, String name, String id) {
-        _type = type;
-        _name = name;
-        _id = id;
-    }
+  public CenoteandoContributor(String type, String name, String id) {
+    this.type = type;
+    this.name = name;
+    this.id = id;
+  }
 
-    public String getType() {
-        return _type;
-    }
+  public String getType() {
+    return type;
+  }
 
-    public String getName() {
-        return _name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public String getId() {
-        return _id;
-    }
+  public String getId() {
+    return id;
+  }
 }

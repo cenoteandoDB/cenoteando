@@ -107,7 +107,11 @@
                         clearable
                         multiple
                         solo
-                        :rules="[(v) => (!!v && !!v.length) || 'Enum Values are required for type ENUM']"
+                        :rules="[
+                            (v) =>
+                                (!!v && !!v.length) ||
+                                'Enum Values are required for type ENUM',
+                        ]"
                         required
                     >
                         <template
@@ -131,7 +135,11 @@
                         v-model="variable.units"
                         data-cy="units"
                         label="Units"
-                        :rules="[(v) => !!v || 'Units are required for type NUMBER_WITH_UNITS']"
+                        :rules="[
+                            (v) =>
+                                !!v ||
+                                'Units are required for type NUMBER_WITH_UNITS',
+                        ]"
                         required
                     ></v-text-field>
 
@@ -186,17 +194,17 @@ export default class EditVariableDialog extends Vue {
     origin = Object.values(Origin);
 
     themes = [
-        'LOCATION', 
-        'GEOREFERENCE', 
-        'CULTURAL', 
-        'GEOMORPHOLOGY', 
-        'BIODIVERSITY', 
-        'DISTURBANCE', 
-        'TOURISM', 
-        'DIVING', 
-        'ORGANIZATION', 
-        'REGULATION', 
-        'WATER'
+        'LOCATION',
+        'GEOREFERENCE',
+        'CULTURAL',
+        'GEOMORPHOLOGY',
+        'BIODIVERSITY',
+        'DISTURBANCE',
+        'TOURISM',
+        'DIVING',
+        'ORGANIZATION',
+        'REGULATION',
+        'WATER',
     ];
     dataTypes = [
         'TEXT',
@@ -207,13 +215,9 @@ export default class EditVariableDialog extends Vue {
         'NUMBER_WITH_UNITS',
         'DATETIME',
         'DATE',
-        'TIME'
+        'TIME',
     ];
-    accessLevels = [
-        'PUBLIC', 
-        'PRIVATE', 
-        'SENSITIVE'
-    ];
+    accessLevels = ['PUBLIC', 'PRIVATE', 'SENSITIVE'];
 
     remove(item: string): void {
         this.$props.variable.enumValues.splice(

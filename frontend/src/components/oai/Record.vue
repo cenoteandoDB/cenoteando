@@ -68,7 +68,6 @@ import { parseAsync, transforms } from 'json2csv';
 import { Component, Vue } from 'vue-property-decorator';
 import XmlViewer from 'vue-xml-viewer';
 
-
 @Component({ components: { XmlViewer } })
 export default class Record extends Vue {
     id(): string {

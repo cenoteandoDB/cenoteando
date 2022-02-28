@@ -1,15 +1,13 @@
 package org.cenoteando.models;
 
-import java.util.Date;
-import java.util.List;
-
 import com.arangodb.springframework.annotation.ArangoId;
 import com.arangodb.springframework.annotation.Document;
 import com.arangodb.springframework.annotation.PersistentIndexed;
 import com.arangodb.springframework.annotation.Ref;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
-
+import java.util.Date;
+import java.util.List;
 import org.cenoteando.utils.CsvImportExport;
 import org.json.JSONArray;
 import org.springframework.data.annotation.CreatedBy;
@@ -22,247 +20,251 @@ import org.supercsv.cellprocessor.ift.CellProcessor;
 
 class Social {
 
-    private int totalComments;
-    private float rating;
+  private int totalComments;
+  private float rating;
 
-    public Social(){
-        totalComments = 0;
-        rating = 0;
-    }
+  public Social() {
+    totalComments = 0;
+    rating = 0;
+  }
 
-    public Social(int totalComments, float rating){
-        this.totalComments = totalComments;
-        this.rating = rating;
-    }
+  public Social(int totalComments, float rating) {
+    this.totalComments = totalComments;
+    this.rating = rating;
+  }
 
-    public int getTotalComments() {
-        return totalComments;
-    }
+  public int getTotalComments() {
+    return totalComments;
+  }
 
-    public void setTotalComments(int totalComments) {
-        this.totalComments = totalComments;
-    }
+  public void setTotalComments(int totalComments) {
+    this.totalComments = totalComments;
+  }
 
-    public float getRating() {
-        return rating;
-    }
+  public float getRating() {
+    return rating;
+  }
 
-    public void setRating(float rating) {
-        this.rating = rating;
-    }
+  public void setRating(float rating) {
+    this.rating = rating;
+  }
 
-    @Override
-    public String toString(){
-        return "{ " + totalComments + ", " + rating + " }";
-    }
+  @Override
+  public String toString() {
+    return "{ " + totalComments + ", " + rating + " }";
+  }
 }
 
 @Document("Cenotes")
 public class Cenote {
 
-    public enum Type {NO_TYPE, CENOTE, DRY_CAVE, WATER_WELL, WATERY,}
+  public enum Type {
+    NO_TYPE,
+    CENOTE,
+    DRY_CAVE,
+    WATER_WELL,
+    WATERY,
+  }
 
-    public enum Issue {GEOTAG_NOT_VERIFIED}
+  public enum Issue {
+    GEOTAG_NOT_VERIFIED,
+  }
 
-    @Id
-    private String id;
+  @Id
+  private String id;
 
-    @ArangoId
-    private String arangoId;
+  @ArangoId
+  private String arangoId;
 
-    private Type type;
-    private String name;
-    private boolean touristic;
-    private List<Issue> issues;
-    private List<String> alternativeNames;
-    private Social social;
-    private CenoteGeoJSON geojson;
+  private Type type;
+  private String name;
+  private boolean touristic;
+  private List<Issue> issues;
+  private List<String> alternativeNames;
+  private Social social;
+  private CenoteGeoJSON geojson;
 
-    @Ref
-    private Gadm gadm;
+  @Ref
+  private Gadm gadm;
 
-    @Ref
-    @CreatedBy
-    private User creator;
+  @Ref
+  @CreatedBy
+  private User creator;
 
-    @CreatedDate
-    @PersistentIndexed
-    private Date createdAt;
+  @CreatedDate
+  @PersistentIndexed
+  private Date createdAt;
 
-    @LastModifiedDate
-    private Date updatedAt;
+  @LastModifiedDate
+  private Date updatedAt;
 
+  public void setId(String id) {
+    this.id = id;
+  }
 
-    public Cenote(){}
+  public void setArangoId(String arangoId) {
+    this.arangoId = arangoId;
+  }
 
+  public String getId() {
+    return id;
+  }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+  public String getArangoId() {
+    return arangoId;
+  }
 
-    public void setArangoId(String arangoId) {
-        this.arangoId = arangoId;
-    }
+  public Type getType() {
+    return type;
+  }
 
-    public String getId() {
-        return id;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public String getArangoId() {
-        return arangoId;
-    }
+  public boolean isTouristic() {
+    return getTouristic();
+  }
 
-    public Type getType() {
-        return type;
-    }
+  public boolean getTouristic() {
+    return touristic;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public List<Issue> getIssues() {
+    return issues;
+  }
 
-    public boolean isTouristic() {
-        return touristic;
-    }
+  public List<String> getAlternativeNames() {
+    return alternativeNames;
+  }
 
-    public boolean getTouristic(){return touristic;}
+  public Social getSocial() {
+    return social;
+  }
 
-    public List<Issue> getIssues() {
-        return issues;
-    }
+  public CenoteGeoJSON getGeojson() {
+    return geojson;
+  }
 
-    public List<String> getAlternativeNames() {
-        return alternativeNames;
-    }
+  public GadmProperties getGadm() {
+    return gadm.getGadmProperties();
+  }
 
-    public Social getSocial() {
-        return social;
-    }
+  @JsonSetter("type")
+  public void setType(Type type) {
+    this.type = type;
+  }
 
-    public CenoteGeoJSON getGeojson() {
-        return geojson;
-    }
+  public void setType(String type) {
+    this.type = Type.valueOf(type);
+  }
 
-    public GadmProperties getGadm() {
-        return gadm.getGadmProperties();
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    @JsonSetter("type")
-    public void setType(Type type) {
-        this.type = type;
-    }
+  public void setTouristic(boolean touristic) {
+    this.touristic = touristic;
+  }
 
-    public void setType(String type){
-        this.type = Type.valueOf(type);
-    }
+  @JsonSetter("issues")
+  public void setIssues(List<Issue> issues) {
+    this.issues = issues;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setIssues(String issues) {
+    List<String> string_list = CsvImportExport.stringToList(issues);
+    this.issues = string_list.stream().map(Issue::valueOf).toList();
+  }
 
-    public void setTouristic(boolean touristic) {
-        this.touristic = touristic;
-    }
+  @JsonSetter("social")
+  public void setSocial(Social social) {
+    this.social = social;
+  }
 
-    @JsonSetter("issues")
-    public void setIssues(List<Issue> issues) {
-        this.issues = issues;
-    }
+  @JsonSetter("alternativeNames")
+  public void setAlternativeNames(List<String> alternativeNames) {
+    this.alternativeNames = alternativeNames;
+  }
 
-    public void setIssues(String issues){
-        List<String> string_list =  CsvImportExport.stringToList(issues);
-        this.issues = string_list.stream().map(Issue::valueOf).toList();
+  public void setAlternativeNames(String alternativeNames) {
+    this.alternativeNames = CsvImportExport.stringToList(alternativeNames);
+  }
 
-    }
+  @JsonSetter("geojson")
+  public void setGeojson(CenoteGeoJSON geojson) {
+    this.geojson = geojson;
+  }
 
-    @JsonSetter("social")
-    public void setSocial(Social social){
-        this.social = social;
-    }
+  @JsonIgnore
+  public List<Double> getCoordinates() {
+    return this.geojson.getGeometry().getCoordinates();
+  }
 
-    @JsonSetter("alternativeNames")
-    public void setAlternativeNames(List<String> alternativeNames) {
-        this.alternativeNames = alternativeNames;
-    }
+  public void setCoordinates(String coordinates) {
+    if (coordinates == null || coordinates.equals("[]")) return;
+    coordinates = coordinates.substring(1, coordinates.length() - 1);
+    String[] values = coordinates.split(",");
 
-    public void setAlternativeNames(String alternativeNames) {
-        this.alternativeNames = CsvImportExport.stringToList(alternativeNames);
-    }
+    this.geojson =
+      new CenoteGeoJSON(Double.parseDouble(values[0]), Double.parseDouble(values[1]));
+  }
 
-    @JsonSetter("geojson")
-    public void setGeojson(CenoteGeoJSON geojson) {
-        this.geojson = geojson;
-    }
+  public void setGadm(Gadm gadm) {
+    this.gadm = gadm;
+  }
 
-    @JsonIgnore
-    public List<Double> getCoordinates(){
-        return this.geojson.getGeometry().getCoordinates();
-    }
+  @JsonIgnore
+  public String getCreator() {
+    if (creator != null) return creator.getName();
+    return null;
+  }
 
-    public void setCoordinates(String coordinates){
-        if(coordinates == null || coordinates.equals("[]"))
-            return;
-        coordinates = coordinates.substring(1, coordinates.length() - 1);
-        String[] values = coordinates.split(",");
+  public void setCreator(User user) {
+    this.creator = user;
+  }
 
-        this.geojson = new CenoteGeoJSON(Double.parseDouble(values[0]), Double.parseDouble(values[1]));
-    }
+  public Date getCreatedAt() {
+    return createdAt;
+  }
 
-    public void setGadm(Gadm gadm) {
-        this.gadm = gadm;
-    }
+  public Date getUpdatedAt() {
+    return updatedAt;
+  }
 
-    @JsonIgnore
-    public String getCreator(){
-        if(creator != null)
-            return creator.getName();
-        return null;
-    }
+  public void merge(Cenote cenote) {
+    this.type = cenote.getType();
+    this.name = cenote.getName();
+    this.touristic = cenote.getTouristic();
+    this.issues = cenote.getIssues();
+    this.alternativeNames = cenote.getAlternativeNames();
+    this.geojson = cenote.getGeojson();
+  }
 
-    public void setCreator(User user){
-        this.creator = user;
-    }
+  public boolean validate() {
+    return type != null && name != null && !name.isEmpty() && geojson != null;
+  }
 
-    public Date getCreatedAt() {
-        return createdAt;
-    }
+  public boolean isCreator(User user) {
+    if (creator == null) return false;
+    return user.getEmail().equals(creator.getEmail());
+  }
 
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
+  public static JSONArray getHeaders() {
+    return new JSONArray(
+      "['id', 'type', 'name', 'touristic', 'issues', 'alternativeNames', 'coordinates']"
+    );
+  }
 
-
-    public void merge(Cenote cenote){
-        this.type = cenote.getType();
-        this.name = cenote.getName();
-        this.touristic = cenote.getTouristic();
-        this.issues = cenote.getIssues();
-        this.alternativeNames = cenote.getAlternativeNames();
-        this.geojson = cenote.getGeojson();
-    }
-
-    public boolean validate(){
-        return type != null && name != null && !name.isEmpty() && geojson != null;
-    }
-
-    public boolean isCreator(User user){
-        if(creator==null)
-            return false;
-        return user.getEmail().equals(creator.getEmail());
-    }
-
-    public static JSONArray getHeaders(){
-        return new JSONArray("['id', 'type', 'name', 'touristic', 'issues', 'alternativeNames', 'coordinates']");
-    }
-
-    public static CellProcessor[] getProcessors(){
-        return new CellProcessor[]{
-                new NotNull(), // id
-                new NotNull(), // type
-                new NotNull(), // name
-                new NotNull(new ParseBool()), // touristic
-                new NotNull(), // issues
-                new NotNull(), // alternativeNames
-                new NotNull(), // coordinates
-        };
-    }
+  public static CellProcessor[] getProcessors() {
+    return new CellProcessor[] {
+      new NotNull(), // id
+      new NotNull(), // type
+      new NotNull(), // name
+      new NotNull(new ParseBool()), // touristic
+      new NotNull(), // issues
+      new NotNull(), // alternativeNames
+      new NotNull(), // coordinates
+    };
+  }
 }

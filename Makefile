@@ -120,8 +120,7 @@ upgrade_frontend:
 lint:
 	npm run lint --prefix frontend
 	npm run prettier --prefix frontend
-
-	# TODO: Lint backend
+	mvn -f backend/pom.xml prettier:write
 
 test:
 	# Run Cypress E2E tests
@@ -131,7 +130,7 @@ clean:
 	# Cleanup frontend dependencies and dist
 	rm -rf frontend/node_modules/ frontend/dist
 
-	# TODO: Cleanup backend dependencies
+	# Cleanup backend dependencies
 	rm -rf backend/target/
 
 	# remove created images

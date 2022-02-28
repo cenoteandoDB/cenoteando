@@ -47,9 +47,13 @@ import { GeoJSON } from 'geojson';
 import L from 'leaflet';
 import { Component, Vue } from 'vue-property-decorator';
 import {
-  LCircleMarker, LControlLayers,
-  LGeoJson, LIcon, LLayerGroup, LMap,
-  LTileLayer
+    LCircleMarker,
+    LControlLayers,
+    LGeoJson,
+    LIcon,
+    LLayerGroup,
+    LMap,
+    LTileLayer,
 } from 'vue2-leaflet';
 import Vue2LeafletMarkerCluster from 'vue2-leaflet-markercluster';
 type Overlay = {

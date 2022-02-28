@@ -20,59 +20,67 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+  @Autowired
+  private AuthenticationManager authenticationManager;
 
-    @Autowired
-    private JwtUtil jwtTokenUtil;
+  @Autowired
+  private JwtUtil jwtTokenUtil;
 
-    @Autowired
-    private UsersService usersService;
+  @Autowired
+  private UsersService usersService;
 
-    private static String tokenType = "Bearer";
+  private static String tokenType = "Bearer";
 
-    @PostMapping("/login")
-    public AuthDto Login(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
-
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword())
-            );
-        }
-        catch (BadCredentialsException e) {
-            throw new Exception("Incorrect username or password", e);
-        }
-
-        final AuthDetails auth = this.usersService
-                .loadUserByUsername(authenticationRequest.getEmail());
-
-        final String jwt = jwtTokenUtil.generateToken(auth);
-
-        return new AuthDto(auth.getUser(), jwt, tokenType, jwtTokenUtil.getTTL());
+  @PostMapping("/login")
+  public AuthDto Login(@RequestBody AuthenticationRequest authenticationRequest)
+    throws Exception {
+    try {
+      authenticationManager.authenticate(
+        new UsernamePasswordAuthenticationToken(
+          authenticationRequest.getEmail(),
+          authenticationRequest.getPassword()
+        )
+      );
+    } catch (BadCredentialsException e) {
+      throw new Exception("Incorrect username or password", e);
     }
 
-    @PostMapping("/register")
-    public AuthDto Register(@RequestBody RegisterRequest registerRequest) throws Exception {
+    final AuthDetails auth =
+      this.usersService.loadUserByUsername(authenticationRequest.getEmail());
 
-        registerRequest.validatePassword();
+    final String jwt = jwtTokenUtil.generateToken(auth);
 
-        User user = new User(registerRequest.getEmail(), registerRequest.getName(), registerRequest.getPassword(), User.Role.CENOTERO_BASIC);
-        usersService.createUser(user);
+    return new AuthDto(auth.getUser(), jwt, tokenType, jwtTokenUtil.getTTL());
+  }
 
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(registerRequest.getEmail(), registerRequest.getPassword())
-            );
-        }
-        catch (BadCredentialsException e) {
-            throw new Exception("Incorrect username or password", e);
-        }
+  @PostMapping("/register")
+  public AuthDto Register(@RequestBody RegisterRequest registerRequest) throws Exception {
+    registerRequest.validatePassword();
 
-        final AuthDetails auth = this.usersService
-                .loadUserByUsername(registerRequest.getEmail());
+    User user = new User(
+      registerRequest.getEmail(),
+      registerRequest.getName(),
+      registerRequest.getPassword(),
+      User.Role.CENOTERO_BASIC
+    );
+    usersService.createUser(user);
 
-        final String jwt = jwtTokenUtil.generateToken(auth);
-
-        return new AuthDto(auth.getUser(), jwt, tokenType, jwtTokenUtil.getTTL());
+    try {
+      authenticationManager.authenticate(
+        new UsernamePasswordAuthenticationToken(
+          registerRequest.getEmail(),
+          registerRequest.getPassword()
+        )
+      );
+    } catch (BadCredentialsException e) {
+      throw new Exception("Incorrect username or password", e);
     }
+
+    final AuthDetails auth =
+      this.usersService.loadUserByUsername(registerRequest.getEmail());
+
+    final String jwt = jwtTokenUtil.generateToken(auth);
+
+    return new AuthDto(auth.getUser(), jwt, tokenType, jwtTokenUtil.getTTL());
+  }
 }

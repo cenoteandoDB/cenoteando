@@ -195,17 +195,17 @@ export default class Variables extends Vue {
     ];
 
     themes = [
-        'LOCATION', 
-        'GEOREFERENCE', 
-        'CULTURAL', 
-        'GEOMORPHOLOGY', 
-        'BIODIVERSITY', 
-        'DISTURBANCE', 
-        'TOURISM', 
-        'DIVING', 
-        'ORGANIZATION', 
-        'REGULATION', 
-        'WATER'
+        'LOCATION',
+        'GEOREFERENCE',
+        'CULTURAL',
+        'GEOMORPHOLOGY',
+        'BIODIVERSITY',
+        'DISTURBANCE',
+        'TOURISM',
+        'DIVING',
+        'ORGANIZATION',
+        'REGULATION',
+        'WATER',
     ];
     dataTypes = [
         'TEXT',
@@ -216,13 +216,9 @@ export default class Variables extends Vue {
         'NUMBER_WITH_UNITS',
         'DATETIME',
         'DATE',
-        'TIME'
+        'TIME',
     ];
-    accessLevels = [
-        'PUBLIC', 
-        'PRIVATE', 
-        'SENSITIVE'
-    ];
+    accessLevels = ['PUBLIC', 'PRIVATE', 'SENSITIVE'];
     timeseries = [true, false];
     multiple = [true, false];
 

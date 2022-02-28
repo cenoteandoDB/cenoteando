@@ -1,99 +1,94 @@
 package org.cenoteando.models;
 
-import java.util.List;
-
 import com.arangodb.springframework.annotation.ArangoId;
 import com.arangodb.springframework.annotation.Edge;
 import com.arangodb.springframework.annotation.From;
 import com.arangodb.springframework.annotation.To;
-
+import java.util.List;
 import org.springframework.data.annotation.Id;
-
-
 
 @Edge("MeasurementsOrFacts")
 public class MeasurementOrFactBucket<T> {
 
-    @Id // db document field: _key
-    private String id;
+  @Id // db document field: _key
+  private String id;
 
-    @ArangoId // db document field: _id
-    private String arangoId;
+  @ArangoId // db document field: _id
+  private String arangoId;
 
-    @From
-    private Variable _from;
+  @From
+  private Variable _from;
 
-    @To
-    private Cenote _to;
+  @To
+  private Cenote _to;
 
-    //TODO Date parse error
-    private String firstTimestamp;
-    private String lastTimestamp;
-    private int count;
-    private List<MeasurementOrFact<T>> measurements;
+  //TODO Date parse error
+  private String firstTimestamp;
+  private String lastTimestamp;
+  private int count;
+  private List<MeasurementOrFact<T>> measurements;
 
-    public String getId() {
-        return id;
-    }
+  public String getId() {
+    return id;
+  }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+  public void setId(String id) {
+    this.id = id;
+  }
 
-    public String getArangoId() {
-        return arangoId;
-    }
+  public String getArangoId() {
+    return arangoId;
+  }
 
-    public void setArangoId(String arangoId) {
-        this.arangoId = arangoId;
-    }
+  public void setArangoId(String arangoId) {
+    this.arangoId = arangoId;
+  }
 
-    public String getFirstTimestamp() {
-        return firstTimestamp;
-    }
+  public String getFirstTimestamp() {
+    return firstTimestamp;
+  }
 
-    public void setFirstTimestamp(String firstTimestamp) {
-        this.firstTimestamp = firstTimestamp;
-    }
+  public void setFirstTimestamp(String firstTimestamp) {
+    this.firstTimestamp = firstTimestamp;
+  }
 
-    public String getLastTimestamp() {
-        return lastTimestamp;
-    }
+  public String getLastTimestamp() {
+    return lastTimestamp;
+  }
 
-    public void setLastTimestamp(String lastTimestamp) {
-        this.lastTimestamp = lastTimestamp;
-    }
+  public void setLastTimestamp(String lastTimestamp) {
+    this.lastTimestamp = lastTimestamp;
+  }
 
-    public int getCount() {
-        return count;
-    }
+  public int getCount() {
+    return count;
+  }
 
-    public void setCount(int count) {
-        this.count = count;
-    }
+  public void setCount(int count) {
+    this.count = count;
+  }
 
-    public List<MeasurementOrFact<T>> getMeasurements() {
-        return measurements;
-    }
+  public List<MeasurementOrFact<T>> getMeasurements() {
+    return measurements;
+  }
 
-    public void setMeasurements(List<MeasurementOrFact<T>> measurements) {
-        this.measurements = measurements;
-    }
+  public void setMeasurements(List<MeasurementOrFact<T>> measurements) {
+    this.measurements = measurements;
+  }
 
+  public String get_from() {
+    return _from.getArangoId();
+  }
 
-    public String get_from() {
-        return _from.getArangoId();
-    }
+  public void setVariable(Variable variable) {
+    this._from = variable;
+  }
 
-    public void setVariable(Variable variable) {
-        this._from = variable;
-    }
+  public String get_to() {
+    return _to.getArangoId();
+  }
 
-    public String get_to() {
-        return _to.getArangoId();
-    }
-
-    public void set_to(Cenote cenote) {
-        this._to = cenote;
-    }
+  public void set_to(Cenote cenote) {
+    this._to = cenote;
+  }
 }

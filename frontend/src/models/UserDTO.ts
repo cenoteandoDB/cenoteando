@@ -2,7 +2,7 @@ export enum UserRole {
     ADMIN = 'ADMIN',
     RESEARCHER = 'RESEARCHER',
     CENOTERO_ADVANCED = 'CENOTERO_ADVANCED',
-    CENOTERO_BASIC = 'CENOTERO_BASIC'
+    CENOTERO_BASIC = 'CENOTERO_BASIC',
 }
 
 export default class UserDTO {

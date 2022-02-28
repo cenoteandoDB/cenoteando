@@ -20,35 +20,39 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private UsersService usersService;
+  @Autowired
+  private UsersService usersService;
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+  @Autowired
+  private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Autowired
-    private JwtRequestFilter jwtRequestFilter;
+  @Autowired
+  private JwtRequestFilter jwtRequestFilter;
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(usersService).passwordEncoder(bCryptPasswordEncoder);
-    }
+  @Override
+  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    auth.userDetailsService(usersService).passwordEncoder(bCryptPasswordEncoder);
+  }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .authorizeRequests().anyRequest().permitAll()
-                .and().
-                exceptionHandling().and().sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http
+      .csrf()
+      .disable()
+      .authorizeRequests()
+      .anyRequest()
+      .permitAll()
+      .and()
+      .exceptionHandling()
+      .and()
+      .sessionManagement()
+      .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+  }
 
-    }
-
-
-    @Override
-    @Bean
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+  @Override
+  @Bean
+  public AuthenticationManager authenticationManagerBean() throws Exception {
+    return super.authenticationManagerBean();
+  }
 }

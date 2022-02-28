@@ -102,7 +102,6 @@ import L from 'leaflet';
 import { Component, Vue } from 'vue-property-decorator';
 import { LCircleMarker, LMap, LTileLayer } from 'vue2-leaflet';
 
-
 @Component({
     components: {
         LMap,
@@ -125,7 +124,6 @@ export default class Cenote extends Vue {
     mapOptions = {
         zoomSnap: 0.5,
     };
-
 
     async created(): Promise<void> {
         await this.$store.dispatch('loading');

@@ -8,7 +8,6 @@ import NotFound from '@/views/NotFound.vue';
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 
-
 Vue.use(VueRouter);
 
 const APP_NAME = process.env.VUE_APP_NAME || 'Cenoteando';
