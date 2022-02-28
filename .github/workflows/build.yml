@@ -135,7 +135,7 @@ jobs:
           #Set artifact name
           name: backend
           #From this path
-          path: backend/target/backend-0.0.1-SNAPSHOT.jar
+          path: backend/target/backend.jar
   #Deploy's job
   deploy:
     #Depends on build's job
@@ -156,10 +156,6 @@ jobs:
         with:
           name: frontend
           path: "dist/frontend"
-      # TODO: REMOVE THIS!
-      - run: ls dist
-      - run: ls dist/frontend
-      - run: ls dist/backend
       - name: Upload to server
         uses: appleboy/scp-action@master
         with:
@@ -168,7 +164,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
           source: "dist"
-          target: "~/dist"
+          target: "~"
       - name: Run deployment script
         uses: appleboy/ssh-action@master
         with:
