@@ -107,23 +107,23 @@ jobs:
           java-version: '17'
           cache: 'maven'
       - name: Write Properties
-        uses:   @1.1.0
+        uses: christian-draeger/write-properties@1.1.0
         with:
           path: './backend/src/main/resources/application.properties'
           property: |
-            'logging.level.root'\
-            'server.error.include-binding-errors'\
-            'server.error.include-stacktrace'\
-            'server.error.include-exception'\
-            'arango.host'\
-            'jwtSecretKey'
+            logging.level.root \
+            server.error.include-binding-errors \
+            server.error.include-stacktrace \
+            server.error.include-exception \
+            arango.host \
+            jwtSecretKey
           value: |
-            'INFO'\
-            'never'\
-            'never'\
-            'false'\
-            'localhost'\
-            '${{ secrets.JTW_SECRET_KEY }}'
+            INFO \
+            never \
+            never \
+            false \
+            localhost \
+            ${{ secrets.JTW_SECRET_KEY }}
       # TODO: Remove this
       - run: cat ./backend/src/main/resources/application.properties
       #Build the application using Maven
