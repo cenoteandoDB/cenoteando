@@ -9,9 +9,92 @@ on:
       - main
 
 jobs:
-  #Build's job
-  build:
-    name: Build
+  #Sonar Frontend's Job
+  sonar_frontend:
+    name: SonarCloud analysis (frontend)
+    #Run on Ubuntu using the latest version
+    runs-on: ubuntu-latest
+    #Job's steps
+    steps:
+      # Check-out your repository under $GITHUB_WORKSPACE, so your workflow can access it
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Analyze with SonarCloud
+        uses: SonarSource/sonarcloud-github-action@master
+        with:
+          projectBaseDir: frontend
+          args: >
+            -Dsonar.organization=cenoteandodb
+            -Dsonar.projectKey=cenoteandoDB_frontend
+            -Dsonar.host.url=https://sonarcloud.io
+            -Dsonar.login=$SONAR_TOKEN
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  #Sonar Backend's Job
+  sonar_backend:
+    name: SonarCloud analysis (backend)
+    #Run on Ubuntu using the latest version
+    runs-on: ubuntu-latest
+    #Job's steps
+    steps:
+      # Check-out your repository under $GITHUB_WORKSPACE, so your workflow can access it
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      # Set up JDK 17
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+          cache: 'maven'
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      # Analyze project with SonarCloud
+      - name: Analyze with SonarCloud
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: mvn -f backend/pom.xml -B verify sonar:sonar -Dsonar.projectKey=cenoteandoDB_backend -Dsonar.organization=cenoteandodb -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
+  #Build Frontend's job
+  build_frontend:
+    #Depends on sonar's job
+    needs: sonar_frontend
+    name: Build (frontend)
+    #Run on Ubuntu using the latest version
+    runs-on: ubuntu-latest
+    steps:
+      #Check-out your repository under $GITHUB_WORKSPACE, so your workflow can access it
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          cache: 'npm'
+      #Install frontend dependencies
+      - name: Install dependencies
+        run: npm install --prefix frontend
+      #Build the application using NPM
+      - name: Build
+        run: npm build --prefix frontend
+      - name: Upload Frontend
+        #This uploads artifacts from your workflow allowing you to share data between jobs and store data once a workflow is complete.
+        uses: actions/upload-artifact@v2
+        with:
+          #Set artifact name
+          name: frontend
+          #From this path
+          path: frontend/dist
+  #Build Backend's job
+  build_backend:
+    #Depends on sonar's job
+    needs: sonar_backend
+    name: Build (backend)
     #Run on Ubuntu using the latest version
     runs-on: ubuntu-latest
     steps:
@@ -57,17 +140,27 @@ jobs:
   #Deploy's job
   deploy:
     #Depends on build's job
-    needs: build
+    needs: [build_backend, build_frontend]
     name: Deploy
     #Run on Ubuntu using the latest version
     runs-on: ubuntu-latest
     steps:
-      - name: Download JAR
+      - name: Download backend
         #Download the artifact which was uploaded in the build's job
         uses: actions/download-artifact@v2
         with:
           name: backend
-          path: "dist/backend.jar"
+          path: "dist/backend"
+      - name: Download frontend
+        #Download the artifact which was uploaded in the build's job
+        uses: actions/download-artifact@v2
+        with:
+          name: frontend
+          path: "dist/frontend"
+      # TODO: REMOVE THIS!
+      - run: ls dist
+      - run: ls dist/frontend
+      - run: ls dist/backend
       - name: Upload to server
         uses: appleboy/scp-action@master
         with:
@@ -75,20 +168,13 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}      
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
-          source: "dist/backend.jar"
-          target: "~/dist/backend.jar"
-      - name: Restart Service
+          source: "dist"
+          target: "~/dist"
+      - name: Run deployment script
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_IP_ADDRESS }}        
           username: ${{ secrets.SERVER_USERNAME }}      
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
-          script: |
-            sudo /etc/init.d/backend stop
-            mv ~/dist/backend.jar ~/dist/backend-old.jar
-            mv ~/dist/backend-latest.jar ~/dist/backend.jar
-            sudo rm -rf /etc/init.d/backend
-            sudo ln -s -f ~/dist/backend.jar /etc/init.d/backend
-            sudo /etc/init.d/backend start
-            update-rc.d backend defaults
+          script: ~/deploy.sh
