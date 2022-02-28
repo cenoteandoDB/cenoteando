@@ -118,9 +118,9 @@ jobs:
           port: 22
           script: |
             sudo /etc/init.d/backend stop
-            mv ~/source/backend.jar ~/source/backend-old.jar
-            mv ~/source/backend-latest.jar ~/source/backend.jar
+            mv ~/dist/backend.jar ~/dist/backend-old.jar
+            mv ~/dist/backend-latest.jar ~/dist/backend.jar
             sudo rm -rf /etc/init.d/backend
-            sudo ln -s -f ~/source/backend.jar /etc/init.d/backend
+            sudo ln -s -f ~/dist/backend.jar /etc/init.d/backend
             sudo /etc/init.d/backend start
             update-rc.d backend defaults
