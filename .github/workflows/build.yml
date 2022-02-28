@@ -100,6 +100,8 @@ jobs:
         with:
           name: backend
           path: "~/source"
+      - name: "TEST"
+        run: "ls ~/source"
       - name: Upload to server
         uses: appleboy/scp-action@master
         with:
