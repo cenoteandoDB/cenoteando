@@ -110,10 +110,38 @@ jobs:
         uses: christian-draeger/write-properties@1.1.0
         with:
           path: './backend/src/main/resources/application.properties'
-          property: logging.level.root server.error.include-binding-errors server.error.include-stacktrace server.error.include-exception arango.host jwtSecretKey
-          value: INFO never never false localhost ${{ secrets.JTW_SECRET_KEY }}
-      # TODO: Remove this
-      - run: cat ./backend/src/main/resources/application.properties
+          property: logging.level.root
+          value: INFO
+      - name: Write Properties
+        uses: christian-draeger/write-properties@1.1.0
+        with:
+          path: './backend/src/main/resources/application.properties'
+          property: server.error.include-binding-errors
+          value: never
+      - name: Write Properties
+        uses: christian-draeger/write-properties@1.1.0
+        with:
+          path: './backend/src/main/resources/application.properties'
+          property: server.error.include-stacktrace
+          value: never
+      - name: Write Properties
+        uses: christian-draeger/write-properties@1.1.0
+        with:
+          path: './backend/src/main/resources/application.properties'
+          property: server.error.include-exception
+          value: false
+      - name: Write Properties
+        uses: christian-draeger/write-properties@1.1.0
+        with:
+          path: './backend/src/main/resources/application.properties'
+          property: arango.host
+          value: localhost
+      - name: Write Properties
+        uses: christian-draeger/write-properties@1.1.0
+        with:
+          path: './backend/src/main/resources/application.properties'
+          property: jwtSecretKey
+          value: ${{ secrets.JTW_SECRET_KEY }}
       #Build the application using Maven
       - name: Build with Maven
         run: |
