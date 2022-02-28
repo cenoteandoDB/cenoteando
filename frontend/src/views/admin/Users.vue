@@ -53,6 +53,18 @@
                 </edit-user-dialog>
 
                 <delete-dialog @onConfirm="deleteUser(item)" />
+                <edit-permissions-dialog :user="item" :cenote="item" :variable="item" >
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-icon
+                            class="mr-2 action-button"
+                            v-on="on"
+                            v-bind="attrs"
+                            color="blue"
+                            data-cy="editPermissions"
+                            >mdi-account-cog</v-icon
+                        >
+                    </template>
+                </edit-permissions-dialog>
             </template>
         </v-data-table>
     </v-card>
@@ -64,11 +76,15 @@ import EditUserDialog from '@/components/admin/EditUserDialog.vue';
 import UserDTO from '@/models/UserDTO';
 import RemoteServices from '@/services/RemoteServices';
 import { Component, Vue } from 'vue-property-decorator';
+import EditPermissionsDialog from '@/components/admin/EditPermissionsDialog.vue';
+import CenoteDTO from '@/models/CenoteDTO';
+import VariableDTO from '@/models/VariableDTO';
 
 @Component({
     components: {
         EditUserDialog,
         DeleteDialog,
+        EditPermissionsDialog,
     },
 })
 export default class Users extends Vue {
@@ -86,6 +102,8 @@ export default class Users extends Vue {
     filterRole: string[] = [];
 
     users: UserDTO[] = [];
+    variables: VariableDTO[] = [];
+    cenotes: CenoteDTO[] = []; 
 
     get filteredUsers(): UserDTO[] {
         return this.users.filter(
