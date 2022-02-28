@@ -106,16 +106,30 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
           cache: 'maven'
+      - name: Write Properties
+        uses: christian-draeger/write-properties@1.1.0
+        with:
+          path: './backend/src/main/resources/application.properties'
+          property: |
+            'logging.level.root'
+            'server.error.include-binding-errors'
+            'server.error.include-stacktrace'
+            'server.error.include-exception'
+            'arango.host'
+            'jwtSecretKey'
+          value: |
+            'INFO'
+            'never'
+            'never'
+            'false'
+            'localhost'
+            '${{ secrets.JTW_SECRET_KEY }}'
+      # TODO: Remove this
+      - run: cat ./backend/src/main/resources/application.properties
       #Build the application using Maven
       - name: Build with Maven
         run: |
-          mvn -f backend/pom.xml -B package -DskipTests \
-          -Dlogging.level.root=INFO \
-          -Dserver.error.include-binding-errors=never \
-          -Dserver.error.include-stacktrace=never \
-          -Dserver.error.include-exception=false \
-          -Darango.host=localhost \
-          -DjwtSecretKey='${{ secrets.JTW_SECRET_KEY }}'
+          mvn -f backend/pom.xml -B package -DskipTests
       #Build the application using Maven
       - name: Upload JAR
         #This uploads artifacts from your workflow allowing you to share data between jobs and store data once a workflow is complete.
