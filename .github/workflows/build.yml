@@ -108,7 +108,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
           source: "dist/backend.jar"
-          target: "~/dist/backend"
+          target: "~/dist/backend.jar"
       - name: Restart Service
         uses: appleboy/ssh-action@master
         with:
