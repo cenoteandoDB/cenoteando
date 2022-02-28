@@ -23,19 +23,11 @@
     <img src="https://img.shields.io/librariesio/github/CenoteandoDB/cenoteando" alt="Frontend Dependencies">
   </a>
 </p>
-<!-- TODO: Setup CI/CD
 <p align="center">
-  <a href="">
-    <img src="https://img.shields.io/circleci/build/github/cenoteandoDB/cenoteando/main" alt="Build">
-  </a>
-  <a href="https://hub.docker.com/repository/docker/cenoteandomx/cenoteando">
-    <img alt="Docker Build Status" src="https://img.shields.io/docker/cloud/build/cenoteandomx/cenoteando">
-  </a>
-  <a href="https://codecov.io/gh/cenoteandoDB/cenoteando">
-    <img src="https://codecov.io/gh/cenoteandoDB/cenoteando/branch/main/graph/badge.svg?token=YV5CZCAHWT" alt="Code Coverage"/>
+  <a href="https://actions-badge.atrox.dev/cenoteandoDB/cenoteando/goto?ref=main">
+    <img alt="Build Status" src="https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2FcenoteandoDB%2Fcenoteando%2Fbadge%3Fref%3Dmain&style=flat" />
   </a>
 </p>
--->
 
 <div align="center">
   <img align="center" src="https://cenoteando.org/img/icons/android-chrome-192x192.png" alt="Cenoteando" width="192">
@@ -55,9 +47,11 @@
 
 # About
 
-<div align="center">
-  <img align="center" src="https://cenoteando.org/img/screenshots/frontpage.png" alt="Cenoteando Frontpage" width="400">
-</div>
+<p align="center">
+  <a href="https://cenoteando.org">
+    <img src="https://cenoteando.org/img/screenshots/frontpage.png" alt="Cenoteando Frontpage" width="600">
+  </a>
+</p>
 
 Cenoteando.org is a non-profit organization that focus on the shared development of a repository and database of all available data and information on the innundated caves or sinkholes of Yucatán, also known in spanish as "cenotes".
 
