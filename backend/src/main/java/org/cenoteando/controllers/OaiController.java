@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-// FIXME The package javax.xml.stream is accessible from more than one module
 import javax.xml.stream.XMLStreamException;
 
 import com.lyncode.xoai.dataprovider.OAIDataProvider;
