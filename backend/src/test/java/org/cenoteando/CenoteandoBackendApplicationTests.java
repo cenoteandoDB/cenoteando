@@ -17,32 +17,32 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 @SpringBootTest
 class CenoteandoBackendApplicationTests {
 
-  @MockBean
-  CenotesRepository mockCenotesRepository;
+    @MockBean
+    CenotesRepository mockCenotesRepository;
 
-  @MockBean
-  CommentBucketRepository mockCommentBucketRepository;
+    @MockBean
+    CommentBucketRepository mockCommentBucketRepository;
 
-  @MockBean
-  GadmRepository mockGadmRepository;
+    @MockBean
+    GadmRepository mockGadmRepository;
 
-  @MockBean
-  MeasurementsOrFactsRepository mockMeasurementsOrFactsRepository;
+    @MockBean
+    MeasurementsOrFactsRepository mockMeasurementsOrFactsRepository;
 
-  @MockBean
-  ReferenceRepository mockReferenceRepository;
+    @MockBean
+    ReferenceRepository mockReferenceRepository;
 
-  @MockBean
-  SpeciesRepository mockSpeciesRepository;
+    @MockBean
+    SpeciesRepository mockSpeciesRepository;
 
-  @MockBean
-  UsersRepository mockUsersRepository;
+    @MockBean
+    UsersRepository mockUsersRepository;
 
-  @MockBean
-  VariablesRepository mockVariablesRepository;
+    @MockBean
+    VariablesRepository mockVariablesRepository;
 
-  @Test
-  void contextLoads() {
-    assertNull(null);
-  }
+    @Test
+    void contextLoads() {
+        assertNull(null);
+    }
 }

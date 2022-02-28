@@ -15,27 +15,27 @@ import org.springframework.data.domain.AuditorAware;
 @EnableArangoRepositories(basePackages = { "org.cenoteando.repository" })
 public class CenoteandoConfiguration implements ArangoConfiguration {
 
-  @Value("${arango.host:localhost}")
-  private String hostname;
+    @Value("${arango.host:localhost}")
+    private String hostname;
 
-  @Value("${arango.port:8529}")
-  private String port;
+    @Value("${arango.port:8529}")
+    private String port;
 
-  @Value("${arango.db:_system}")
-  private String db;
+    @Value("${arango.db:_system}")
+    private String db;
 
-  @Override
-  public ArangoDB.Builder arango() {
-    return new ArangoDB.Builder().host(hostname, Integer.parseInt(port));
-  }
+    @Override
+    public ArangoDB.Builder arango() {
+        return new ArangoDB.Builder().host(hostname, Integer.parseInt(port));
+    }
 
-  @Override
-  public String database() {
-    return db;
-  }
+    @Override
+    public String database() {
+        return db;
+    }
 
-  @Bean
-  public AuditorAware<User> auditorProvider() {
-    return new AuditorProvider();
-  }
+    @Bean
+    public AuditorAware<User> auditorProvider() {
+        return new AuditorProvider();
+    }
 }

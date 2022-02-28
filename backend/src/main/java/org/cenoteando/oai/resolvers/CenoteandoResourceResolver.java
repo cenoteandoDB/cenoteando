@@ -12,18 +12,18 @@ import org.springframework.core.io.ClassPathResource;
 
 public class CenoteandoResourceResolver implements ResourceResolver {
 
-  private static final TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private static final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
-  @Override
-  public InputStream getResource(String path) throws IOException {
-    return new ClassPathResource(path).getInputStream();
-  }
+    @Override
+    public InputStream getResource(String path) throws IOException {
+        return new ClassPathResource(path).getInputStream();
+    }
 
-  @Override
-  public Transformer getTransformer(String path)
-    throws IOException, TransformerConfigurationException {
-    Source mySrc = new StreamSource(getResource(path));
-    mySrc.setSystemId(path);
-    return transformerFactory.newTransformer(mySrc);
-  }
+    @Override
+    public Transformer getTransformer(String path)
+        throws IOException, TransformerConfigurationException {
+        Source mySrc = new StreamSource(getResource(path));
+        mySrc.setSystemId(path);
+        return transformerFactory.newTransformer(mySrc);
+    }
 }

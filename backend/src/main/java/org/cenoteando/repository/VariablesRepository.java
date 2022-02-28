@@ -10,12 +10,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface VariablesRepository extends ArangoRepository<Variable, String> {
-  Variable findByArangoId(String id);
-  Page<Variable> findAll(Pageable page);
-  List<Variable> findByTheme(String theme);
+    Variable findByArangoId(String id);
+    Page<Variable> findAll(Pageable page);
+    List<Variable> findByTheme(String theme);
 
-  @Query(
-    "FOR c IN #collection FILTER c.theme == @theme AND c.accessLevel == 'PUBLIC' RETURN c"
-  )
-  Iterable<Variable> findByThemeAndPublicVariables(String theme);
+    @Query(
+        "FOR c IN #collection FILTER c.theme == @theme AND c.accessLevel == 'PUBLIC' RETURN c"
+    )
+    Iterable<Variable> findByThemeAndPublicVariables(String theme);
 }

@@ -10,33 +10,33 @@ import org.cenoteando.oai.model.CenoteandoItem;
  */
 public abstract class CenoteandoFilter implements Filter {
 
-  /** The configuration from xoai.xml file */
-  protected ParameterMap configuration;
+    /** The configuration from xoai.xml file */
+    protected ParameterMap configuration;
 
-  public abstract boolean isShown(CenoteandoItem item);
+    public abstract boolean isShown(CenoteandoItem item);
 
-  public abstract String getQuery();
+    public abstract String getQuery();
 
-  @Override
-  public boolean isItemShown(ItemIdentifier item) {
-    if (item instanceof CenoteandoItem) {
-      return isShown((CenoteandoItem) item);
+    @Override
+    public boolean isItemShown(ItemIdentifier item) {
+        if (item instanceof CenoteandoItem) {
+            return isShown((CenoteandoItem) item);
+        }
+        return false;
     }
-    return false;
-  }
 
-  /**
-   * @return the configuration map if defined in xoai.xml, otherwise null.
-   */
-  public ParameterMap getConfiguration() {
-    return configuration;
-  }
+    /**
+     * @return the configuration map if defined in xoai.xml, otherwise null.
+     */
+    public ParameterMap getConfiguration() {
+        return configuration;
+    }
 
-  /**
-   * @param configuration
-   *            the configuration map to set
-   */
-  public void setConfiguration(ParameterMap configuration) {
-    this.configuration = configuration;
-  }
+    /**
+     * @param configuration
+     *            the configuration map to set
+     */
+    public void setConfiguration(ParameterMap configuration) {
+        this.configuration = configuration;
+    }
 }

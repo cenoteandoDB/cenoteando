@@ -15,145 +15,148 @@ import org.supercsv.cellprocessor.ift.CellProcessor;
 @Document("References")
 public class Reference {
 
-  public enum Type {
-    BOOK,
-    BOOK_CHAPTER,
-    JOURNAL,
-    OTHER,
-    REPORT,
-    THESIS,
-    WEBPAGE,
-  }
+    public enum Type {
+        BOOK,
+        BOOK_CHAPTER,
+        JOURNAL,
+        OTHER,
+        REPORT,
+        THESIS,
+        WEBPAGE,
+    }
 
-  @Id // db document field: _key
-  private String id;
+    @Id // db document field: _key
+    private String id;
 
-  @ArangoId // db document field: _id
-  private String arangoId;
+    @ArangoId // db document field: _id
+    private String arangoId;
 
-  private String authors;
-  private String fileName;
-  private String reference;
+    private String authors;
+    private String fileName;
+    private String reference;
 
-  private Type type;
-  private String year;
+    private Type type;
+    private String year;
 
-  @CreatedDate
-  @PersistentIndexed
-  private Date createdAt;
+    @CreatedDate
+    @PersistentIndexed
+    private Date createdAt;
 
-  @LastModifiedDate
-  private Date updatedAt;
+    @LastModifiedDate
+    private Date updatedAt;
 
-  public Reference() {}
+    public Reference() {}
 
-  public Reference(
-    String authors,
-    String fileName,
-    String reference,
-    Type type,
-    String year
-  ) {
-    this.authors = authors;
-    this.fileName = fileName;
-    this.type = type;
-    this.reference = reference;
-    this.year = year;
-  }
+    public Reference(
+        String authors,
+        String fileName,
+        String reference,
+        Type type,
+        String year
+    ) {
+        this.authors = authors;
+        this.fileName = fileName;
+        this.type = type;
+        this.reference = reference;
+        this.year = year;
+    }
 
-  public void setId(String id) {
-    this.id = id;
-  }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-  public void setArangoId(String arangoId) {
-    this.arangoId = arangoId;
-  }
+    public void setArangoId(String arangoId) {
+        this.arangoId = arangoId;
+    }
 
-  public String getId() {
-    return id;
-  }
+    public String getId() {
+        return id;
+    }
 
-  public String getArangoId() {
-    return arangoId;
-  }
+    public String getArangoId() {
+        return arangoId;
+    }
 
-  public String getAuthors() {
-    return authors;
-  }
+    public String getAuthors() {
+        return authors;
+    }
 
-  public void setAuthors(String authors) {
-    this.authors = authors;
-  }
+    public void setAuthors(String authors) {
+        this.authors = authors;
+    }
 
-  public String getFileName() {
-    return fileName;
-  }
+    public String getFileName() {
+        return fileName;
+    }
 
-  public void setFileName(String fileName) {
-    this.fileName = fileName;
-  }
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 
-  public String getReference() {
-    return reference;
-  }
+    public String getReference() {
+        return reference;
+    }
 
-  public void setReference(String reference) {
-    this.reference = reference;
-  }
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
 
-  public Type getType() {
-    return type;
-  }
+    public Type getType() {
+        return type;
+    }
 
-  public void setType(Type type) {
-    this.type = type;
-  }
+    public void setType(Type type) {
+        this.type = type;
+    }
 
-  public void setType(String type) {
-    this.type = Type.valueOf(type);
-  }
+    public void setType(String type) {
+        this.type = Type.valueOf(type);
+    }
 
-  public String getYear() {
-    return year;
-  }
+    public String getYear() {
+        return year;
+    }
 
-  public void setYear(String year) {
-    this.year = year;
-  }
+    public void setYear(String year) {
+        this.year = year;
+    }
 
-  public Date getCreatedAt() {
-    return createdAt;
-  }
+    public Date getCreatedAt() {
+        return createdAt;
+    }
 
-  public Date getUpdatedAt() {
-    return updatedAt;
-  }
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
 
-  public void merge(Reference ref) {
-    authors = ref.getAuthors();
-    fileName = ref.getFileName();
-    reference = ref.getReference();
-    year = ref.getYear();
-    type = ref.getType();
-  }
+    public void merge(Reference ref) {
+        authors = ref.getAuthors();
+        fileName = ref.getFileName();
+        reference = ref.getReference();
+        year = ref.getYear();
+        type = ref.getType();
+    }
 
-  public boolean validate() {
-    return (
-      authors != null && !authors.isEmpty() && reference != null && !reference.isEmpty()
-    );
-  }
+    public boolean validate() {
+        return (
+            authors != null &&
+            !authors.isEmpty() &&
+            reference != null &&
+            !reference.isEmpty()
+        );
+    }
 
-  public static JSONArray getHeaders() {
-    return new JSONArray("['id', 'authors', 'fileName', 'reference', 'year']");
-  }
+    public static JSONArray getHeaders() {
+        return new JSONArray("['id', 'authors', 'fileName', 'reference', 'year']");
+    }
 
-  public static CellProcessor[] getProcessors() {
-    return new CellProcessor[] {
-      new NotNull(), // id
-      new NotNull(), // authors
-      new Optional(), // fileName
-      new NotNull(), // reference
-      new Optional(), // year
-    };
-  }
+    public static CellProcessor[] getProcessors() {
+        return new CellProcessor[] {
+            new NotNull(), // id
+            new NotNull(), // authors
+            new Optional(), // fileName
+            new NotNull(), // reference
+            new Optional(), // year
+        };
+    }
 }

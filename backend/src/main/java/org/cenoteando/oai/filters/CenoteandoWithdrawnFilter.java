@@ -4,14 +4,14 @@ import org.cenoteando.oai.model.CenoteandoItem;
 
 public class CenoteandoWithdrawnFilter extends CenoteandoFilter {
 
-  @Override
-  public boolean isShown(CenoteandoItem item) {
-    return item.isDeleted();
-  }
+    @Override
+    public boolean isShown(CenoteandoItem item) {
+        return item.isDeleted();
+    }
 
-  @Override
-  public String getQuery() {
-    // TODO: Implement this?
-    return null;
-  }
+    @Override
+    public String getQuery() {
+        // TODO: Implement this?
+        return null;
+    }
 }

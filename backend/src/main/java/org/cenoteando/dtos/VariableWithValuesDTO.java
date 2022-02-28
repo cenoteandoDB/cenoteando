@@ -5,27 +5,30 @@ import org.cenoteando.models.Variable;
 
 public class VariableWithValuesDTO<T> {
 
-  private Variable variable;
-  private Iterable<MeasurementOrFact<T>> values;
+    private Variable variable;
+    private Iterable<MeasurementOrFact<T>> values;
 
-  public VariableWithValuesDTO(Variable variable, Iterable<MeasurementOrFact<T>> values) {
-    this.variable = variable;
-    this.values = values;
-  }
+    public VariableWithValuesDTO(
+        Variable variable,
+        Iterable<MeasurementOrFact<T>> values
+    ) {
+        this.variable = variable;
+        this.values = values;
+    }
 
-  public Variable getVariable() {
-    return variable;
-  }
+    public Variable getVariable() {
+        return variable;
+    }
 
-  public void setVariable(Variable variable) {
-    this.variable = variable;
-  }
+    public void setVariable(Variable variable) {
+        this.variable = variable;
+    }
 
-  public Iterable<MeasurementOrFact<T>> getValues() {
-    return values;
-  }
+    public Iterable<MeasurementOrFact<T>> getValues() {
+        return values;
+    }
 
-  public void setValues(Iterable<MeasurementOrFact<T>> values) {
-    this.values = values;
-  }
+    public void setValues(Iterable<MeasurementOrFact<T>> values) {
+        this.values = values;
+    }
 }

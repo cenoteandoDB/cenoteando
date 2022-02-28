@@ -30,100 +30,100 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/cenotes")
 public class CenoteController {
 
-  @Autowired
-  private CloudStorageService cloudStorageService;
+    @Autowired
+    private CloudStorageService cloudStorageService;
 
-  @Autowired
-  private MoFService moFService;
+    @Autowired
+    private MoFService moFService;
 
-  private final CenoteService cenoteService;
+    private final CenoteService cenoteService;
 
-  public CenoteController(CenoteService cenoteService) {
-    this.cenoteService = cenoteService;
-  }
+    public CenoteController(CenoteService cenoteService) {
+        this.cenoteService = cenoteService;
+    }
 
-  @GetMapping
-  public Page<Cenote> getCenotes(
-    @RequestParam(defaultValue = "0") int page,
-    @RequestParam(defaultValue = "30") int size
-  ) {
-    Pageable pageable = PageRequest.of(page, size);
-    return cenoteService.getCenotes(pageable);
-  }
+    @GetMapping
+    public Page<Cenote> getCenotes(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "30") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        return cenoteService.getCenotes(pageable);
+    }
 
-  @GetMapping("/{id}")
-  public Cenote getCenote(@PathVariable String id) throws Exception {
-    return cenoteService.getCenote(id);
-  }
+    @GetMapping("/{id}")
+    public Cenote getCenote(@PathVariable String id) throws Exception {
+        return cenoteService.getCenote(id);
+    }
 
-  @PostMapping
-  @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER')")
-  public Cenote createCenote(@RequestBody Cenote cenote) throws Exception {
-    return cenoteService.createCenote(cenote);
-  }
+    @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER')")
+    public Cenote createCenote(@RequestBody Cenote cenote) throws Exception {
+        return cenoteService.createCenote(cenote);
+    }
 
-  @PutMapping("/{id}")
-  @PreAuthorize(
-    "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasPermission('CENOTE.UPDATE')"
-  )
-  public Cenote updateCenote(@PathVariable String id, @RequestBody Cenote cenote)
-    throws Exception {
-    return cenoteService.updateCenote(id, cenote);
-  }
+    @PutMapping("/{id}")
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasPermission('CENOTE.UPDATE')"
+    )
+    public Cenote updateCenote(@PathVariable String id, @RequestBody Cenote cenote)
+        throws Exception {
+        return cenoteService.updateCenote(id, cenote);
+    }
 
-  @DeleteMapping("/{id}")
-  @PreAuthorize("hasRole('ROLE_ADMIN') or hasPermission(#id, 'CENOTE.DELETE')")
-  public String deleteCenote(@PathVariable String id) throws Exception {
-    cenoteService.deleteCenote(id);
-    return "no content";
-  }
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasPermission(#id, 'CENOTE.DELETE')")
+    public String deleteCenote(@PathVariable String id) throws Exception {
+        cenoteService.deleteCenote(id);
+        return "no content";
+    }
 
-  @GetMapping("/{id}/comments")
-  public CommentBucket listComments(@PathVariable String id) throws Exception {
-    return cenoteService.listComments(id);
-  }
+    @GetMapping("/{id}/comments")
+    public CommentBucket listComments(@PathVariable String id) throws Exception {
+        return cenoteService.listComments(id);
+    }
 
-  @GetMapping("/{id}/data/{theme}")
-  public HashMap<String, VariableWithValuesDTO<Object>> getData(
-    @PathVariable String id,
-    @PathVariable String theme
-  ) throws Exception {
-    return moFService.getData(id, theme);
-  }
+    @GetMapping("/{id}/data/{theme}")
+    public HashMap<String, VariableWithValuesDTO<Object>> getData(
+        @PathVariable String id,
+        @PathVariable String theme
+    ) throws Exception {
+        return moFService.getData(id, theme);
+    }
 
-  @GetMapping("/bounds")
-  public Object getBounds() {
-    return cenoteService.getBounds();
-  }
+    @GetMapping("/bounds")
+    public Object getBounds() {
+        return cenoteService.getBounds();
+    }
 
-  @GetMapping("/csv")
-  @PreAuthorize(
-    "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasRole('ROLE_CENOTERO_ADVANCED')"
-  )
-  public String toCsv(HttpServletResponse response)
-    throws IOException, IllegalAccessException {
-    response.setContentType("text/csv");
-    response.setHeader("Content-Disposition", "attachment; filename=cenotes.csv");
+    @GetMapping("/csv")
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasRole('ROLE_CENOTERO_ADVANCED')"
+    )
+    public String toCsv(HttpServletResponse response)
+        throws IOException, IllegalAccessException {
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; filename=cenotes.csv");
 
-    return cenoteService.toCsv();
-  }
+        return cenoteService.toCsv();
+    }
 
-  @PostMapping("/csv")
-  @PreAuthorize(
-    "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasRole('ROLE_CENOTERO_ADVANCED')"
-  )
-  public List<String> fromCsv(@RequestParam("file") MultipartFile multipartfile)
-    throws Exception {
-    return cenoteService.fromCsv(multipartfile);
-  }
+    @PostMapping("/csv")
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasRole('ROLE_CENOTERO_ADVANCED')"
+    )
+    public List<String> fromCsv(@RequestParam("file") MultipartFile multipartfile)
+        throws Exception {
+        return cenoteService.fromCsv(multipartfile);
+    }
 
-  @GetMapping("/{id}/photos")
-  public List<String> getPhotos(@PathVariable String id) {
-    return cloudStorageService.getPhotos(id);
-  }
+    @GetMapping("/{id}/photos")
+    public List<String> getPhotos(@PathVariable String id) {
+        return cloudStorageService.getPhotos(id);
+    }
 
-  @GetMapping("/{id}/maps")
-  public List<String> getMaps(@PathVariable String id) {
-    return cloudStorageService.getMaps(id);
-  }
+    @GetMapping("/{id}/maps")
+    public List<String> getMaps(@PathVariable String id) {
+        return cloudStorageService.getMaps(id);
+    }
 }

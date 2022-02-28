@@ -15,147 +15,147 @@ import org.springframework.data.annotation.LastModifiedDate;
 @Document("Users")
 public class User {
 
-  public enum Role {
-    ADMIN,
-    RESEARCHER,
-    CENOTERO_ADVANCED,
-    CENOTERO_BASIC,
-  }
+    public enum Role {
+        ADMIN,
+        RESEARCHER,
+        CENOTERO_ADVANCED,
+        CENOTERO_BASIC,
+    }
 
-  @Id // db document field: _key
-  private String id;
+    @Id // db document field: _key
+    private String id;
 
-  @ArangoId // db document field: _id
-  private String arangoId;
+    @ArangoId // db document field: _id
+    private String arangoId;
 
-  private String name;
-  private String email;
+    private String name;
+    private String email;
 
-  @JsonIgnore
-  private String password;
+    @JsonIgnore
+    private String password;
 
-  private Role role;
+    private Role role;
 
-  private List<String> cenoteBlackList;
-  private List<String> cenoteWhiteList;
-  private List<String> themesBlackList;
-  private List<String> themesWhiteList;
+    private List<String> cenoteBlackList;
+    private List<String> cenoteWhiteList;
+    private List<String> themesBlackList;
+    private List<String> themesWhiteList;
 
-  @CreatedDate
-  @PersistentIndexed
-  private Date createdAt;
+    @CreatedDate
+    @PersistentIndexed
+    private Date createdAt;
 
-  @LastModifiedDate
-  private Date updatedAt;
+    @LastModifiedDate
+    private Date updatedAt;
 
-  public User(String email, String name, String password, Role role) {
-    this.email = email;
-    this.password = password;
-    this.role = role;
-    this.name = name;
-  }
+    public User(String email, String name, String password, Role role) {
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.name = name;
+    }
 
-  public String getId() {
-    return id;
-  }
+    public String getId() {
+        return id;
+    }
 
-  public String getArangoId() {
-    return arangoId;
-  }
+    public String getArangoId() {
+        return arangoId;
+    }
 
-  public String getEmail() {
-    return email;
-  }
+    public String getEmail() {
+        return email;
+    }
 
-  public String getName() {
-    return name;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public void setEmail(String email) {
-    this.email = email;
-  }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  public String getPassword() {
-    return password;
-  }
+    public String getPassword() {
+        return password;
+    }
 
-  public void setPassword(String password) {
-    this.password = password;
-  }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-  public Role getRole() {
-    return role;
-  }
+    public Role getRole() {
+        return role;
+    }
 
-  public void setRole(Role role) {
-    this.role = role;
-  }
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
-  @JsonIgnore
-  public List<String> getCenoteBlackList() {
-    if (cenoteBlackList == null) return new ArrayList<>();
-    return cenoteBlackList;
-  }
+    @JsonIgnore
+    public List<String> getCenoteBlackList() {
+        if (cenoteBlackList == null) return new ArrayList<>();
+        return cenoteBlackList;
+    }
 
-  public void setCenoteBlackList(List<String> cenoteBlackList) {
-    this.cenoteBlackList = cenoteBlackList;
-  }
+    public void setCenoteBlackList(List<String> cenoteBlackList) {
+        this.cenoteBlackList = cenoteBlackList;
+    }
 
-  @JsonIgnore
-  public List<String> getCenoteWhiteList() {
-    if (cenoteWhiteList == null) return new ArrayList<>();
-    return cenoteWhiteList;
-  }
+    @JsonIgnore
+    public List<String> getCenoteWhiteList() {
+        if (cenoteWhiteList == null) return new ArrayList<>();
+        return cenoteWhiteList;
+    }
 
-  public void setCenoteWhiteList(List<String> cenoteWhiteList) {
-    this.cenoteWhiteList = cenoteWhiteList;
-  }
+    public void setCenoteWhiteList(List<String> cenoteWhiteList) {
+        this.cenoteWhiteList = cenoteWhiteList;
+    }
 
-  @JsonIgnore
-  public List<String> getThemesBlackList() {
-    if (themesBlackList == null) return new ArrayList<>();
-    return themesBlackList;
-  }
+    @JsonIgnore
+    public List<String> getThemesBlackList() {
+        if (themesBlackList == null) return new ArrayList<>();
+        return themesBlackList;
+    }
 
-  public void setThemesBlackList(List<String> themesBlackList) {
-    this.themesBlackList = themesBlackList;
-  }
+    public void setThemesBlackList(List<String> themesBlackList) {
+        this.themesBlackList = themesBlackList;
+    }
 
-  @JsonIgnore
-  public List<String> getThemesWhiteList() {
-    if (themesWhiteList == null) return new ArrayList<>();
-    return themesWhiteList;
-  }
+    @JsonIgnore
+    public List<String> getThemesWhiteList() {
+        if (themesWhiteList == null) return new ArrayList<>();
+        return themesWhiteList;
+    }
 
-  public void setThemesWhiteList(List<String> themesWhiteList) {
-    this.themesWhiteList = themesWhiteList;
-  }
+    public void setThemesWhiteList(List<String> themesWhiteList) {
+        this.themesWhiteList = themesWhiteList;
+    }
 
-  public Date getCreatedAt() {
-    return createdAt;
-  }
+    public Date getCreatedAt() {
+        return createdAt;
+    }
 
-  public Date getUpdatedAt() {
-    return updatedAt;
-  }
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
 
-  public boolean isAdmin() {
-    return this.role == Role.ADMIN;
-  }
+    public boolean isAdmin() {
+        return this.role == Role.ADMIN;
+    }
 
-  public void merge(User user) {
-    role = user.getRole();
-    cenoteBlackList = user.getCenoteBlackList();
-    cenoteWhiteList = user.getCenoteWhiteList();
-    themesBlackList = user.getThemesBlackList();
-    themesWhiteList = user.getThemesWhiteList();
-  }
+    public void merge(User user) {
+        role = user.getRole();
+        cenoteBlackList = user.getCenoteBlackList();
+        cenoteWhiteList = user.getCenoteWhiteList();
+        themesBlackList = user.getThemesBlackList();
+        themesWhiteList = user.getThemesWhiteList();
+    }
 
-  public static JSONArray getHeaders() {
-    return new JSONArray("['id', 'name','email', 'role', 'createdAt', 'updatedAt']");
-  }
+    public static JSONArray getHeaders() {
+        return new JSONArray("['id', 'name','email', 'role', 'createdAt', 'updatedAt']");
+    }
 }

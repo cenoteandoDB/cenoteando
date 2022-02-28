@@ -10,48 +10,48 @@ import org.springframework.data.annotation.Id;
 @Document("Gadm")
 public class Gadm {
 
-  @Id
-  private String _key;
+    @Id
+    private String _key;
 
-  @ArangoId
-  private String _id;
+    @ArangoId
+    private String _id;
 
-  @GeoIndexed(geoJson = true)
-  private GeoJson<ArrayList<Double>> geometry;
+    @GeoIndexed(geoJson = true)
+    private GeoJson<ArrayList<Double>> geometry;
 
-  private String type;
+    private String type;
 
-  private GadmProperties properties;
+    private GadmProperties properties;
 
-  public String get_key() {
-    return _key;
-  }
+    public String get_key() {
+        return _key;
+    }
 
-  public String get_id() {
-    return _id;
-  }
+    public String get_id() {
+        return _id;
+    }
 
-  public GeoJson<ArrayList<Double>> getGeometry() {
-    return geometry;
-  }
+    public GeoJson<ArrayList<Double>> getGeometry() {
+        return geometry;
+    }
 
-  public void setGeometry(GeoJson<ArrayList<Double>> geometry) {
-    this.geometry = geometry;
-  }
+    public void setGeometry(GeoJson<ArrayList<Double>> geometry) {
+        this.geometry = geometry;
+    }
 
-  public String getType() {
-    return type;
-  }
+    public String getType() {
+        return type;
+    }
 
-  public void setType(String type) {
-    this.type = type;
-  }
+    public void setType(String type) {
+        this.type = type;
+    }
 
-  public GadmProperties getGadmProperties() {
-    return properties;
-  }
+    public GadmProperties getGadmProperties() {
+        return properties;
+    }
 
-  public void setGadmProperties(GadmProperties gadmProperties) {
-    this.properties = gadmProperties;
-  }
+    public void setGadmProperties(GadmProperties gadmProperties) {
+        this.properties = gadmProperties;
+    }
 }

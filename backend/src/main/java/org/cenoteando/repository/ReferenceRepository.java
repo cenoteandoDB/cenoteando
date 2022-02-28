@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ReferenceRepository extends ArangoRepository<Reference, String> {
-  Reference findByArangoId(String id);
+    Reference findByArangoId(String id);
 }

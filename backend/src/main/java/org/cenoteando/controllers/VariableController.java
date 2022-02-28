@@ -24,67 +24,69 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/variables")
 public class VariableController {
 
-  private final VariableService variableService;
+    private final VariableService variableService;
 
-  public VariableController(VariableService variableService) {
-    this.variableService = variableService;
-  }
+    public VariableController(VariableService variableService) {
+        this.variableService = variableService;
+    }
 
-  @GetMapping
-  public Page<Variable> getVariables(
-    @RequestParam(defaultValue = "0") int page,
-    @RequestParam(defaultValue = "30") int size
-  ) {
-    Pageable pageable = PageRequest.of(page, size);
-    return variableService.getVariables(pageable);
-  }
+    @GetMapping
+    public Page<Variable> getVariables(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "30") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        return variableService.getVariables(pageable);
+    }
 
-  @GetMapping("/{id}")
-  public Variable getVariable(@PathVariable String id) {
-    return variableService.getVariable(id);
-  }
+    @GetMapping("/{id}")
+    public Variable getVariable(@PathVariable String id) {
+        return variableService.getVariable(id);
+    }
 
-  @PostMapping
-  @PreAuthorize(
-    "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasPermission(#id, 'VARIABLE.CREATE')"
-  )
-  public Variable createVariable(@RequestBody Variable variable) throws Exception {
-    return variableService.createVariable(variable);
-  }
+    @PostMapping
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasPermission(#id, 'VARIABLE.CREATE')"
+    )
+    public Variable createVariable(@RequestBody Variable variable) throws Exception {
+        return variableService.createVariable(variable);
+    }
 
-  @PutMapping("/{id}")
-  @PreAuthorize(
-    "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasPermission(#id, 'VARIABLE.UPDATE')"
-  )
-  public Variable updateVariable(@PathVariable String id, @RequestBody Variable variable)
-    throws Exception {
-    return variableService.updateVariable(id, variable);
-  }
+    @PutMapping("/{id}")
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasPermission(#id, 'VARIABLE.UPDATE')"
+    )
+    public Variable updateVariable(
+        @PathVariable String id,
+        @RequestBody Variable variable
+    ) throws Exception {
+        return variableService.updateVariable(id, variable);
+    }
 
-  @DeleteMapping("/{id}")
-  @PreAuthorize("hasRole('ROLE_ADMIN') or hasPermission(#id, 'VARIABLE.DELETE')")
-  public String deleteVariable(@PathVariable String id) throws Exception {
-    variableService.deleteVariable(id);
-    return "no content";
-  }
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasPermission(#id, 'VARIABLE.DELETE')")
+    public String deleteVariable(@PathVariable String id) throws Exception {
+        variableService.deleteVariable(id);
+        return "no content";
+    }
 
-  @GetMapping("/csv")
-  @PreAuthorize(
-    "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasRole('ROLE_CENOTERO_ADVANCED')"
-  )
-  public String toCsv(HttpServletResponse response)
-    throws IOException, IllegalAccessException {
-    response.setContentType("text/csv");
-    response.setHeader("Content-Disposition", "attachment; filename=variables.csv");
-    return variableService.toCsv();
-  }
+    @GetMapping("/csv")
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasRole('ROLE_CENOTERO_ADVANCED')"
+    )
+    public String toCsv(HttpServletResponse response)
+        throws IOException, IllegalAccessException {
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; filename=variables.csv");
+        return variableService.toCsv();
+    }
 
-  @PostMapping("/csv")
-  @PreAuthorize(
-    "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasRole('ROLE_CENOTERO_ADVANCED')"
-  )
-  public List<String> fromCsv(@RequestParam("file") MultipartFile multipartfile)
-    throws Exception {
-    return variableService.fromCsv(multipartfile);
-  }
+    @PostMapping("/csv")
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasRole('ROLE_CENOTERO_ADVANCED')"
+    )
+    public List<String> fromCsv(@RequestParam("file") MultipartFile multipartfile)
+        throws Exception {
+        return variableService.fromCsv(multipartfile);
+    }
 }

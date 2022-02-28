@@ -27,80 +27,80 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/references")
 public class ReferenceController {
 
-  @Autowired
-  private CloudStorageService cloudStorageService;
+    @Autowired
+    private CloudStorageService cloudStorageService;
 
-  private final ReferenceService referenceService;
+    private final ReferenceService referenceService;
 
-  public ReferenceController(ReferenceService referenceService) {
-    this.referenceService = referenceService;
-  }
+    public ReferenceController(ReferenceService referenceService) {
+        this.referenceService = referenceService;
+    }
 
-  @GetMapping
-  public Page<Reference> getReferences(
-    @RequestParam(defaultValue = "0") int page,
-    @RequestParam(defaultValue = "30") int size
-  ) {
-    Pageable pageable = PageRequest.of(page, size);
-    return referenceService.getReferences(pageable);
-  }
+    @GetMapping
+    public Page<Reference> getReferences(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "30") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        return referenceService.getReferences(pageable);
+    }
 
-  @GetMapping("/{id}")
-  public Reference getReference(@PathVariable String id) {
-    return referenceService.getReference(id);
-  }
+    @GetMapping("/{id}")
+    public Reference getReference(@PathVariable String id) {
+        return referenceService.getReference(id);
+    }
 
-  @PostMapping
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public Reference createReference(@RequestBody Reference reference) throws Exception {
-    return referenceService.createReference(reference);
-  }
+    @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Reference createReference(@RequestBody Reference reference) throws Exception {
+        return referenceService.createReference(reference);
+    }
 
-  @PutMapping("/{id}")
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public Reference updateReference(
-    @PathVariable String id,
-    @RequestBody Reference reference
-  ) throws Exception {
-    return referenceService.updateReference(id, reference);
-  }
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Reference updateReference(
+        @PathVariable String id,
+        @RequestBody Reference reference
+    ) throws Exception {
+        return referenceService.updateReference(id, reference);
+    }
 
-  @DeleteMapping("/{id}")
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public String deleteReference(@PathVariable String id) throws Exception {
-    referenceService.deleteReference(id);
-    return "no content";
-  }
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String deleteReference(@PathVariable String id) throws Exception {
+        referenceService.deleteReference(id);
+        return "no content";
+    }
 
-  @GetMapping("/csv")
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public String toCsv(HttpServletResponse response)
-    throws IOException, IllegalAccessException {
-    response.setContentType("text/csv");
-    response.setHeader("Content-Disposition", "attachment; filename=references.csv");
+    @GetMapping("/csv")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String toCsv(HttpServletResponse response)
+        throws IOException, IllegalAccessException {
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; filename=references.csv");
 
-    return referenceService.toCsv();
-  }
+        return referenceService.toCsv();
+    }
 
-  @PostMapping("/csv")
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public List<String> fromCsv(@RequestParam("file") MultipartFile multipartfile)
-    throws Exception {
-    return referenceService.fromCsv(multipartfile);
-  }
+    @PostMapping("/csv")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public List<String> fromCsv(@RequestParam("file") MultipartFile multipartfile)
+        throws Exception {
+        return referenceService.fromCsv(multipartfile);
+    }
 
-  @GetMapping("/{id}/download")
-  public void downloadReference(HttpServletResponse response, @PathVariable String id)
-    throws Exception {
-    Blob reference = cloudStorageService.downloadReference(id);
+    @GetMapping("/{id}/download")
+    public void downloadReference(HttpServletResponse response, @PathVariable String id)
+        throws Exception {
+        Blob reference = cloudStorageService.downloadReference(id);
 
-    response.setHeader(
-      "Content-Disposition",
-      "attachment; filename=\"" + reference.getName() + "\""
-    );
-    response.setContentType("application/pdf");
+        response.setHeader(
+            "Content-Disposition",
+            "attachment; filename=\"" + reference.getName() + "\""
+        );
+        response.setContentType("application/pdf");
 
-    response.getOutputStream().write(reference.getContent());
-    response.flushBuffer();
-  }
+        response.getOutputStream().write(reference.getContent());
+        response.flushBuffer();
+    }
 }

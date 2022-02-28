@@ -9,37 +9,37 @@ import org.springframework.stereotype.Component;
 @Component
 public class CenoteandoSetRepository implements SetRepository {
 
-  /**
-   * Checks if the actual data source supports sets.
-   *
-   * @return Supports sets?
-   */
-  @Override
-  public boolean supportSets() {
-    return false;
-  }
+    /**
+     * Checks if the actual data source supports sets.
+     *
+     * @return Supports sets?
+     */
+    @Override
+    public boolean supportSets() {
+        return false;
+    }
 
-  /**
-   * Returns a paged list of sets.
-   * It is common to use a partial result of 100 sets however, in XOAI this is a configured parameter.
-   *
-   * @param offset Starting offset
-   * @param length Max size of the returned list
-   * @return List of Sets
-   */
-  @Override
-  public ListSetsResult retrieveSets(int offset, int length) {
-    return new ListSetsResult(false, new ArrayList<Set>());
-  }
+    /**
+     * Returns a paged list of sets.
+     * It is common to use a partial result of 100 sets however, in XOAI this is a configured parameter.
+     *
+     * @param offset Starting offset
+     * @param length Max size of the returned list
+     * @return List of Sets
+     */
+    @Override
+    public ListSetsResult retrieveSets(int offset, int length) {
+        return new ListSetsResult(false, new ArrayList<Set>());
+    }
 
-  /**
-   * Checks if a specific set exists in the data source.
-   *
-   * @param setSpec Set spec
-   * @return Set exists
-   */
-  @Override
-  public boolean exists(String setSpec) {
-    return false;
-  }
+    /**
+     * Checks if a specific set exists in the data source.
+     *
+     * @param setSpec Set spec
+     * @return Set exists
+     */
+    @Override
+    public boolean exists(String setSpec) {
+        return false;
+    }
 }

@@ -10,12 +10,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @SpringBootApplication
 public class CenoteandoApplication {
 
-  public static void main(String[] args) {
-    SpringApplication.run(CenoteandoApplication.class, args);
-  }
+    public static void main(String[] args) {
+        SpringApplication.run(CenoteandoApplication.class, args);
+    }
 
-  @Bean
-  public BCryptPasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder(10);
-  }
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(10);
+    }
 }

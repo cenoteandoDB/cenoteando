@@ -16,92 +16,92 @@ import org.supercsv.cellprocessor.ift.CellProcessor;
 @Document("Species")
 public class Species {
 
-  @Id // db document field: _key
-  private String id;
+    @Id // db document field: _key
+    private String id;
 
-  @ArangoId // db document field: _id
-  private String arangoId;
+    @ArangoId // db document field: _id
+    private String arangoId;
 
-  private String aphiaId;
+    private String aphiaId;
 
-  private String iNaturalistId;
+    private String iNaturalistId;
 
-  @CreatedDate
-  private Date createdAt;
+    @CreatedDate
+    private Date createdAt;
 
-  @LastModifiedDate
-  private Date updatedAt;
+    @LastModifiedDate
+    private Date updatedAt;
 
-  public Species() {}
+    public Species() {}
 
-  public Species(String aphiaId, String iNaturalistId) {
-    this.aphiaId = aphiaId;
-    this.iNaturalistId = iNaturalistId;
-  }
+    public Species(String aphiaId, String iNaturalistId) {
+        this.aphiaId = aphiaId;
+        this.iNaturalistId = iNaturalistId;
+    }
 
-  public String getId() {
-    return this.id;
-  }
+    public String getId() {
+        return this.id;
+    }
 
-  public String getArangoId() {
-    return this.arangoId;
-  }
+    public String getArangoId() {
+        return this.arangoId;
+    }
 
-  public String getAphiaId() {
-    return this.aphiaId;
-  }
+    public String getAphiaId() {
+        return this.aphiaId;
+    }
 
-  @JsonGetter("iNaturalistId")
-  public String getInaturalistId() {
-    return this.iNaturalistId;
-  }
+    @JsonGetter("iNaturalistId")
+    public String getInaturalistId() {
+        return this.iNaturalistId;
+    }
 
-  public Date getCreatedAt() {
-    return this.createdAt;
-  }
+    public Date getCreatedAt() {
+        return this.createdAt;
+    }
 
-  public Date getUpdatedAt() {
-    return this.updatedAt;
-  }
+    public Date getUpdatedAt() {
+        return this.updatedAt;
+    }
 
-  public void setId(String id) {
-    this.id = id;
-  }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-  public void setArangoId(String arangoId) {
-    this.arangoId = arangoId;
-  }
+    public void setArangoId(String arangoId) {
+        this.arangoId = arangoId;
+    }
 
-  public void setAphiaId(String aphiaId) {
-    this.aphiaId = aphiaId;
-  }
+    public void setAphiaId(String aphiaId) {
+        this.aphiaId = aphiaId;
+    }
 
-  @JsonSetter("iNaturalistId")
-  public void setInaturalistId(String inaturalistId) {
-    this.iNaturalistId = inaturalistId;
-  }
+    @JsonSetter("iNaturalistId")
+    public void setInaturalistId(String inaturalistId) {
+        this.iNaturalistId = inaturalistId;
+    }
 
-  public void merge(Species species) {
-    this.aphiaId = species.getAphiaId();
-    this.iNaturalistId = species.getInaturalistId();
-  }
+    public void merge(Species species) {
+        this.aphiaId = species.getAphiaId();
+        this.iNaturalistId = species.getInaturalistId();
+    }
 
-  public boolean validate() {
-    return !(
-      (aphiaId == null || aphiaId.isEmpty()) &&
-      (iNaturalistId == null || iNaturalistId.isEmpty())
-    );
-  }
+    public boolean validate() {
+        return !(
+            (aphiaId == null || aphiaId.isEmpty()) &&
+            (iNaturalistId == null || iNaturalistId.isEmpty())
+        );
+    }
 
-  public static JSONArray getHeaders() {
-    return new JSONArray("['id', 'aphiaId', 'inaturalistId']");
-  }
+    public static JSONArray getHeaders() {
+        return new JSONArray("['id', 'aphiaId', 'inaturalistId']");
+    }
 
-  public static CellProcessor[] getProcessors() {
-    return new CellProcessor[] {
-      new NotNull(), // id
-      new Optional(), // aphiaId
-      new Optional(), // iNaturalistId
-    };
-  }
+    public static CellProcessor[] getProcessors() {
+        return new CellProcessor[] {
+            new NotNull(), // id
+            new Optional(), // aphiaId
+            new Optional(), // iNaturalistId
+        };
+    }
 }
