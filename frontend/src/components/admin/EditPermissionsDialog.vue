@@ -33,7 +33,7 @@
                         dense
                         label="Variable Blacklist"
                     ></v-select>
-                    <v-select
+                    <v-autocomplete
                         v-model="newCenoteData"
                         :items="cenote.name"
                         dense
@@ -43,8 +43,8 @@
                         menu-props="auto"
                         label="Cenote Whitelist"
                         multiple
-                    ></v-select>
-                    <v-select
+                    ></v-autocomplete>
+                    <v-autocomplete
                         v-if="user.role === 'CENOTERO_ADVANCED'"
                         v-model="newCenoteData"
                         :items="cenote.name"
@@ -55,7 +55,7 @@
                         menu-props="auto"
                         label="Cenote Blacklist"
                         multiple
-                    ></v-select>
+                    ></v-autocomplete>
                 </v-form>
             </v-card-text>
             <v-card-actions>
@@ -89,8 +89,6 @@ import VariableDTO from '@/models/VariableDTO';
     },
 })
 export default class EditPermissionsDialog extends Vue {
-    cenoteNames = ['cenote1', 'cenote2', 'cenote3'];
-    variableThemes = ['variable1', 'variable2', 'variable3'];
     newCenoteData = [];
     newVariableData = [];
     themes = [
