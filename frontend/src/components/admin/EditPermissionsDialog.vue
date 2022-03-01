@@ -10,26 +10,48 @@
             </v-card-title>
             <v-card-text>
                 <v-form v-model="valid">
-                    <v-autocomplete
-                        v-model="cenoteNames"
-                        :items="items"
+                     <v-select
+                        v-model="newVariableData"
+                        :items="variableNames"
+                        multiple
+                        chips
+                        outlined
+                        small-chips
+                        dense
+                        label="Cenotes Whitelist"
+                    ></v-select>
+                    <v-select
+                        v-if="user.role === 'CENOTERO_ADVANCED'"
+                        v-model="newVariableData"
+                        :items="variableNames"
+                        multiple
+                        chips
+                        outlined
+                        small-chips
+                        dense
+                        label="Cenote Blacklist"
+                    ></v-select>
+                    <v-select
+                        v-model="newCenoteData"
+                        :items="cenoteNames"
                         dense
                         chips
                         outlined
                         small-chips
-                        label="Cenotes"
+                        label="Variable Whitelist"
                         multiple
-                    ></v-autocomplete>
-                    <v-autocomplete
-                        v-model="variableNames"
-                        :items="items"
+                    ></v-select>
+                    <v-select
+                        v-if="user.role === 'CENOTERO_ADVANCED'"
+                        v-model="newCenoteData"
+                        :items="cenoteNames"
                         dense
                         chips
                         outlined
                         small-chips
-                        label="Variables"
+                        label="Variable Blacklist"
                         multiple
-                    ></v-autocomplete>
+                    ></v-select>
                 </v-form>
             </v-card-text>
             <v-card-actions>
@@ -63,10 +85,13 @@ import VariableDTO from '@/models/VariableDTO';
     },
 })
 export default class EditPermissionsDialog extends Vue {
-    cenoteNames = Object.values(CenoteDTO.name);
-    variableNames = Object.values(VariableDTO.name);
+    cenoteNames = ['cenote1', 'cenote2', 'cenote3'];
+    variableThemes = ['variable1', 'variable2', 'variable3'];
+    newCenoteData = [];
+    newVariableData = [];
     dialog = false;
     valid = false;
+    roles = Object.values(UserRole);
     save(): void {
         this.$emit('onSave');
         this.dialog = false;

@@ -56,7 +56,7 @@
                 <edit-permissions-dialog :user="item" :cenote="item" :variable="item" >
                     <template v-slot:activator="{ on, attrs }">
                         <v-icon
-                            v-if="item.role === 'ADMIN' || item.role === 'RESEARCHER'"
+                            v-if="item.role === 'CENOTERO_BASIC' || item.role === 'CENOTERO_ADVANCED'"
                             class="mr-2 action-button"
                             v-on="on"
                             v-bind="attrs"
