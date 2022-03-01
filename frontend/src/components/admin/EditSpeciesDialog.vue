@@ -23,6 +23,7 @@
                         <v-text-field
                             v-model="species.iNaturalistId"
                             label="Naturalist ID"
+                            required
                         ></v-text-field>
                     </v-container>
                 </v-form>

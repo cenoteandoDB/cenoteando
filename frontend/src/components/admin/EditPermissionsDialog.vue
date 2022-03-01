@@ -12,44 +12,48 @@
                 <v-form v-model="valid">
                      <v-select
                         v-model="newVariableData"
-                        :items="variableNames"
+                        :items="themes"
                         multiple
                         chips
                         outlined
                         small-chips
+                        menu-props="auto"
                         dense
-                        label="Cenotes Whitelist"
+                        label="Variable Whitelist"
                     ></v-select>
                     <v-select
                         v-if="user.role === 'CENOTERO_ADVANCED'"
                         v-model="newVariableData"
-                        :items="variableNames"
+                        :items="themes"
                         multiple
                         chips
                         outlined
                         small-chips
+                        menu-props="auto"
                         dense
-                        label="Cenote Blacklist"
+                        label="Variable Blacklist"
                     ></v-select>
                     <v-select
                         v-model="newCenoteData"
-                        :items="cenoteNames"
+                        :items="cenote.name"
                         dense
                         chips
                         outlined
                         small-chips
-                        label="Variable Whitelist"
+                        menu-props="auto"
+                        label="Cenote Whitelist"
                         multiple
                     ></v-select>
                     <v-select
                         v-if="user.role === 'CENOTERO_ADVANCED'"
                         v-model="newCenoteData"
-                        :items="cenoteNames"
+                        :items="cenote.name"
                         dense
                         chips
                         outlined
                         small-chips
-                        label="Variable Blacklist"
+                        menu-props="auto"
+                        label="Cenote Blacklist"
                         multiple
                     ></v-select>
                 </v-form>
@@ -89,6 +93,19 @@ export default class EditPermissionsDialog extends Vue {
     variableThemes = ['variable1', 'variable2', 'variable3'];
     newCenoteData = [];
     newVariableData = [];
+    themes = [
+        'LOCATION', 
+        'GEOREFERENCE', 
+        'CULTURAL', 
+        'GEOMORPHOLOGY', 
+        'BIODIVERSITY', 
+        'DISTURBANCE', 
+        'TOURISM', 
+        'DIVING', 
+        'ORGANIZATION', 
+        'REGULATION', 
+        'WATER'
+    ];
     dialog = false;
     valid = false;
     roles = Object.values(UserRole);
