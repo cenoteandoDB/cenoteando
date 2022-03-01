@@ -39,7 +39,12 @@
             </template>
 
             <template v-slot:[`item.action`]="{ item }">
-                <edit-user-dialog :user="item" @onSave="updateUser(item)">
+                <edit-user-dialog
+                    v-on="on"
+                    v-bind="attrs"
+                    :user="item"
+                    @onSave="updateUser(item)"
+                >
                     <template v-slot:activator="{ on, attrs }">
                         <v-icon
                             class="mr-2 action-button"
@@ -53,10 +58,17 @@
                 </edit-user-dialog>
 
                 <delete-dialog @onConfirm="deleteUser(item)" />
-                <edit-permissions-dialog :user="item" :cenote="item" :variable="item" >
+                <edit-permissions-dialog
+                    :user="item"
+                    :cenote="item"
+                    :variable="item"
+                >
                     <template v-slot:activator="{ on, attrs }">
                         <v-icon
-                            v-if="item.role === 'CENOTERO_BASIC' || item.role === 'CENOTERO_ADVANCED'"
+                            v-if="
+                                item.role === 'CENOTERO_BASIC' ||
+                                item.role === 'CENOTERO_ADVANCED'
+                            "
                             class="mr-2 action-button"
                             v-on="on"
                             v-bind="attrs"
@@ -104,7 +116,7 @@ export default class Users extends Vue {
 
     users: UserDTO[] = [];
     variables: VariableDTO[] = [];
-    cenotes: CenoteDTO[] = []; 
+    cenotes: CenoteDTO[] = [];
 
     get filteredUsers(): UserDTO[] {
         return this.users.filter(

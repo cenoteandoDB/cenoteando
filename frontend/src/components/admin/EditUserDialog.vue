@@ -28,14 +28,32 @@
                         ]"
                         required
                     ></v-text-field>
-
-                    <v-select
-                        v-model="user.role"
-                        :items="roles"
-                        label="Role"
-                        :rules="[(v) => !!v || 'Role is required']"
-                        required
-                    ></v-select>
+                    <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                            <div>
+                                <v-select
+                                    v-model="user.role"
+                                    :items="roles"
+                                    label="Role"
+                                    v-bind="attrs"
+                                    v-on="on"
+                                    :rules="[(v) => !!v || 'Role is required']"
+                                    required
+                                    >Test</v-select
+                                >
+                            </div>
+                        </template>
+                        <span v-if="user.role === 'CENOTERO_BASIC'"
+                            >Cenotero Basic info</span
+                        >
+                        <span v-if="user.role === 'CENOTERO_ADVANCED'"
+                            >Cenotero Advanced info</span
+                        >
+                        <span v-if="user.role === 'RESEARCHER'"
+                            >Research info</span
+                        >
+                        <span v-if="user.role === 'ADMIN'">Admin info</span>
+                    </v-tooltip>
                 </v-form>
             </v-card-text>
             <v-card-actions>
