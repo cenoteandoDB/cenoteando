@@ -10,8 +10,8 @@
             </v-card-title>
             <v-card-text>
                 <v-form v-model="valid">
-                     <v-select
-                        v-model="newVariableData"
+                    <v-select
+                        v-model="variableWhiteList"
                         :items="themes"
                         multiple
                         chips
@@ -23,7 +23,7 @@
                     ></v-select>
                     <v-select
                         v-if="user.role === 'CENOTERO_ADVANCED'"
-                        v-model="newVariableData"
+                        v-model="variableBlackList"
                         :items="themes"
                         multiple
                         chips
@@ -34,8 +34,10 @@
                         label="Variable Blacklist"
                     ></v-select>
                     <v-autocomplete
-                        v-model="newCenoteData"
-                        :items="cenote.name"
+                        v-model="cenoteWhiteList"
+                        :items="cenoteNames.map(((c) => {
+                            return c.id + '-' +c.name 
+                        }))"
                         dense
                         chips
                         outlined
@@ -46,8 +48,10 @@
                     ></v-autocomplete>
                     <v-autocomplete
                         v-if="user.role === 'CENOTERO_ADVANCED'"
-                        v-model="newCenoteData"
-                        :items="cenote.name"
+                        v-model="cenoteBlackList"
+                        :items="cenoteNames.map(((c) => {
+                            return c.id + '-' + c.name 
+                        }))"
                         dense
                         chips
                         outlined
@@ -80,34 +84,73 @@ import UserDTO, { UserRole } from '@/models/UserDTO';
 import { Component, Vue } from 'vue-property-decorator';
 import CenoteDTO from '@/models/CenoteDTO';
 import VariableDTO from '@/models/VariableDTO';
+import RemoteServices from '@/services/RemoteServices';
+
+interface CenoteData {
+    id: string;
+    name: string;
+    cenote: CenoteDTO;
+}
 
 @Component({
     props: {
         user: UserDTO,
-        cenote: CenoteDTO,
-        variable: VariableDTO,
     },
 })
 export default class EditPermissionsDialog extends Vue {
-    newCenoteData = [];
-    newVariableData = [];
+    cenoteWhiteList = [];
+    cenoteBlackList = [];
+    variableWhiteList = [];
+    variableBlackList = [];
+
     themes = [
-        'LOCATION', 
-        'GEOREFERENCE', 
-        'CULTURAL', 
-        'GEOMORPHOLOGY', 
-        'BIODIVERSITY', 
-        'DISTURBANCE', 
-        'TOURISM', 
-        'DIVING', 
-        'ORGANIZATION', 
-        'REGULATION', 
-        'WATER'
+        'LOCATION',
+        'GEOREFERENCE',
+        'CULTURAL',
+        'GEOMORPHOLOGY',
+        'BIODIVERSITY',
+        'DISTURBANCE',
+        'TOURISM',
+        'DIVING',
+        'ORGANIZATION',
+        'REGULATION',
+        'WATER',
     ];
     dialog = false;
     valid = false;
     roles = Object.values(UserRole);
+
+    cenotes: CenoteDTO[] = [];
+
+    get cenoteNames(): CenoteData[] {
+        return this.cenotes.map((c) => {
+            return {
+                id: c.id.toString(),
+                name: c.name,
+                cenote: c,
+            };
+        });
+    }
+
+    async created(): Promise<void> {
+        await this.$store.dispatch('loading');
+
+        (async () => {
+            let generator = RemoteServices.cenotesGenerator(30);
+            for await (let batch of generator) {
+                if (!this.cenotes.length)
+                    await this.$store.dispatch('clearLoading');
+                this.cenotes.push(...batch);
+            }
+        })().catch(async (error) => {
+            await this.$store.dispatch('error', error);
+        });
+    }
+
     save(): void {
+        this.cenoteNames.map((c)=>{
+            return c.id;
+        })
         this.$emit('onSave');
         this.dialog = false;
     }
