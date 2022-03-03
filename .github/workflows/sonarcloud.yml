@@ -1,0 +1,62 @@
+#Workflow name
+name: SonarCloud Analysis
+on:
+  #Manually trigger workflow runs
+  workflow_dispatch:
+  #Trigger the workflow on push to any branch
+  push:
+  #Trigger the workflow on pull request
+  pull_request:
+
+jobs:
+  #Sonar Frontend's Job
+  sonar_frontend:
+    name: SonarCloud analysis (frontend)
+    #Run on Ubuntu using the latest version
+    runs-on: ubuntu-latest
+    #Job's steps
+    steps:
+      # Check-out your repository under $GITHUB_WORKSPACE, so your workflow can access it
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Analyze with SonarCloud
+        uses: SonarSource/sonarcloud-github-action@master
+        with:
+          projectBaseDir: frontend
+          args: >
+            -Dsonar.organization=cenoteandodb
+            -Dsonar.projectKey=cenoteandodb_frontend
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  #Sonar Backend's Job
+  sonar_backend:
+    name: SonarCloud analysis (backend)
+    #Run on Ubuntu using the latest version
+    runs-on: ubuntu-latest
+    #Job's steps
+    steps:
+      # Check-out your repository under $GITHUB_WORKSPACE, so your workflow can access it
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      # Set up JDK 17
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+          cache: 'maven'
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      # Analyze project with SonarCloud
+      - name: Analyze with SonarCloud
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: mvn -f backend/pom.xml -B verify sonar:sonar -Dsonar.projectKey=cenoteandodb_backend -Dsonar.organization=cenoteandodb -Dsonar.host.url=https://sonarcloud.io

@@ -16,7 +16,7 @@ import { ElementCompact, xml2js } from 'xml-js';
 const httpClient = axios.create();
 httpClient.defaults.timeout = 100000;
 httpClient.defaults.baseURL =
-    process.env.VUE_APP_ROOT_API || 'http://localhost';
+    process.env.VUE_APP_ROOT_API || window.location.origin;
 httpClient.defaults.headers.post['Content-Type'] = 'application/json';
 httpClient.interceptors.request.use(
     (config) => {

@@ -14,14 +14,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class JwtUtil {
 
-    @Value("${jwtSecretKey}")
-    private String SECRET_KEY;
+    @Value("${jwt.secret}")
+    private String secret;
 
-    @Value("${jwtTTL}")
-    private long TTL;
+    @Value("${jwt.ttl}")
+    private long ttl;
 
     public long getTTL() {
-        return this.TTL;
+        return this.ttl;
     }
 
     public String extractUsername(String token) {
@@ -38,7 +38,7 @@ public class JwtUtil {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
     }
 
     private Boolean isTokenExpired(String token) {
@@ -56,8 +56,8 @@ public class JwtUtil {
             .setClaims(claims)
             .setSubject(subject)
             .setIssuedAt(new Date(System.currentTimeMillis()))
-            .setExpiration(new Date(System.currentTimeMillis() + TTL * 1000))
-            .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+            .setExpiration(new Date(System.currentTimeMillis() + ttl * 1000))
+            .signWith(SignatureAlgorithm.HS256, secret)
             .compact();
     }
 

@@ -115,7 +115,7 @@ upgrade_frontend:
 
 	# FIXME
 	npm run build:dev --prefix frontend
-	docker cp frontend/dist frontend:/var/www/dist
+	docker cp frontend/dist frontend:/var/www/frontend
 
 lint:
 	npm run lint --prefix frontend
@@ -131,7 +131,7 @@ clean:
 	rm -rf frontend/node_modules/ frontend/dist
 
 	# Cleanup backend dependencies
-	rm -rf backend/target/
+	mvn -f backend/pom.xml clean
 
 	# remove created images
 	COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose -p $(PROJECT_NAME) down --remove-orphans --rmi all 2>/dev/null \

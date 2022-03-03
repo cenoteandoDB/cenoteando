@@ -12,6 +12,6 @@ RUN if [ "$NODE_ENV" = "development" ] ; then npm run build:dev ; else npm run b
 
 ## Production stage
 FROM nginx:stable-alpine as production-stage
-RUN mkdir -p /var/www/dist
+RUN mkdir -p /var/www/frontend
 COPY /nginx/nginx.conf /etc/nginx/nginx.conf
-COPY --from=build-stage /app/dist /var/www/dist
+COPY --from=build-stage /app/dist /var/www/frontend

@@ -1,6 +1,17 @@
 module.exports = {
-    devServer: {
-        proxy: 'http://localhost/',
+    configureWebpack: {        
+        devServer: {
+            proxy: {
+                '/api': {
+                    target: 'http://localhost:8080',
+                    changeOrigin: true,
+                },
+                '/oai': {
+                    target: 'http://localhost:8080',
+                    changeOrigin: true,
+                },
+            },
+        },
     },
     transpileDependencies: ['vuetify'],
     pwa: {

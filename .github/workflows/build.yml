@@ -9,61 +9,8 @@ on:
       - main
 
 jobs:
-  #Sonar Frontend's Job
-  sonar_frontend:
-    name: SonarCloud analysis (frontend)
-    #Run on Ubuntu using the latest version
-    runs-on: ubuntu-latest
-    #Job's steps
-    steps:
-      # Check-out your repository under $GITHUB_WORKSPACE, so your workflow can access it
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: Analyze with SonarCloud
-        uses: SonarSource/sonarcloud-github-action@master
-        with:
-          projectBaseDir: frontend
-          args: >
-            -Dsonar.organization=cenoteandodb
-            -Dsonar.projectKey=cenoteandodb_frontend
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-  #Sonar Backend's Job
-  sonar_backend:
-    name: SonarCloud analysis (backend)
-    #Run on Ubuntu using the latest version
-    runs-on: ubuntu-latest
-    #Job's steps
-    steps:
-      # Check-out your repository under $GITHUB_WORKSPACE, so your workflow can access it
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      # Set up JDK 17
-      - name: Set up JDK
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'zulu'
-          java-version: '17'
-          cache: 'maven'
-      - name: Cache SonarCloud packages
-        uses: actions/cache@v2
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-      # Analyze project with SonarCloud
-      - name: Analyze with SonarCloud
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -f backend/pom.xml -B verify sonar:sonar -Dsonar.projectKey=cenoteandodb_backend -Dsonar.organization=cenoteandodb -Dsonar.host.url=https://sonarcloud.io
   #Build Frontend's job
   build_frontend:
-    #Depends on sonar's job
-    needs: sonar_frontend
     name: Build (frontend)
     #Run on Ubuntu using the latest version
     runs-on: ubuntu-latest
@@ -91,8 +38,6 @@ jobs:
           path: frontend/dist
   #Build Backend's job
   build_backend:
-    #Depends on sonar's job
-    needs: sonar_backend
     name: Build (backend)
     #Run on Ubuntu using the latest version
     runs-on: ubuntu-latest
@@ -106,57 +51,9 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
           cache: 'maven'
-      - name: Write Properties
-        uses: christian-draeger/write-properties@1.1.0
-        with:
-          path: './backend/src/main/resources/application.properties'
-          property: logging.level.root
-          value: INFO
-      - name: Write Properties
-        uses: christian-draeger/write-properties@1.1.0
-        with:
-          path: './backend/src/main/resources/application.properties'
-          property: server.error.include-binding-errors
-          value: never
-      - name: Write Properties
-        uses: christian-draeger/write-properties@1.1.0
-        with:
-          path: './backend/src/main/resources/application.properties'
-          property: server.error.include-stacktrace
-          value: never
-      - name: Write Properties
-        uses: christian-draeger/write-properties@1.1.0
-        with:
-          path: './backend/src/main/resources/application.properties'
-          property: server.error.include-exception
-          value: false
-      - name: Write Properties
-        uses: christian-draeger/write-properties@1.1.0
-        with:
-          path: './backend/src/main/resources/application.properties'
-          property: arango.host
-          value: ${{ secrets.DATABASE_HOST }}
-      - name: Write Properties
-        uses: christian-draeger/write-properties@1.1.0
-        with:
-          path: './backend/src/main/resources/application.properties'
-          property: arangodb.user
-          value: ${{ secrets.DATABASE_USERNAME }}
-      - name: Write Properties
-        uses: christian-draeger/write-properties@1.1.0
-        with:
-          path: './backend/src/main/resources/application.properties'
-          property: arangodb.password
-          value: ${{ secrets.DATABASE_PASSWORD }}
-      - name: Write Properties
-        uses: christian-draeger/write-properties@1.1.0
-        with:
-          path: './backend/src/main/resources/application.properties'
-          property: jwtSecretKey
-          value: ${{ secrets.JTW_SECRET_KEY }}
       #Build the application using Maven
       - name: Build with Maven
-        run: mvn -f backend/pom.xml -B package -DskipTests
+        run: mvn -f backend/pom.xml -B package -DskipTests -Pprod
       #Build the application using Maven
       - name: Upload JAR
         #This uploads artifacts from your workflow allowing you to share data between jobs and store data once a workflow is complete.

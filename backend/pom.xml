@@ -234,7 +234,7 @@
 			</exclusions>
         </dependency>
  	</dependencies>
-
+	 
 	<build>
 		<finalName>${project.artifactId}</finalName>
 		<plugins>
@@ -251,7 +251,7 @@
 				<version>0.16</version>
 				<configuration>
 					<prettierJavaVersion>1.5.0</prettierJavaVersion>
-					<printWidth>90</printWidth>
+					<printWidth>80</printWidth>
 					<tabWidth>4</tabWidth>
 					<useTabs>false</useTabs>
 					<ignoreConfigFile>true</ignoreConfigFile>

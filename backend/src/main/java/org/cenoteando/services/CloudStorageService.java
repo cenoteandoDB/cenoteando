@@ -17,7 +17,7 @@ public class CloudStorageService {
 
     private Storage storage = StorageOptions.getDefaultInstance().getService();
 
-    @Value("${gcs.bucketName}")
+    @Value("${gcs.bucket-name}")
     private String BUCKET_NAME;
 
     public List<String> getPhotos(String id) {
