@@ -80,7 +80,9 @@ public class SpeciesService {
 
     public List<String> fromCsv(MultipartFile multipartfile)
         throws Exception, IOException {
-        Reader file_reader = new InputStreamReader(multipartfile.getInputStream());
+        Reader file_reader = new InputStreamReader(
+            multipartfile.getInputStream()
+        );
 
         ArrayList<String> values = new ArrayList<>();
 
@@ -94,9 +96,14 @@ public class SpeciesService {
             final CellProcessor[] processors = Species.getProcessors();
 
             Species species, oldSpecies;
-            while ((species = reader.read(Species.class, header, processors)) != null) {
+            while (
+                (species = reader.read(Species.class, header, processors)) !=
+                null
+            ) {
                 if (!species.validate()) {
-                    throw new Exception("Validation failed for " + species.getId());
+                    throw new Exception(
+                        "Validation failed for " + species.getId()
+                    );
                 }
                 if ((oldSpecies = getSpecies(species.getId())) != null) {
                     oldSpecies.merge(species);

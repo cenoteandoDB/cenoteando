@@ -75,7 +75,9 @@ public class CenoteandoItem implements Item {
                             .build(),
                         new ElementBuilder()
                             .withName("contributor")
-                            .withSubElements(contributors.toArray(new Element[0]))
+                            .withSubElements(
+                                contributors.toArray(new Element[0])
+                            )
                             .build(),
                         new ElementBuilder()
                             .withName("date")
@@ -86,7 +88,9 @@ public class CenoteandoItem implements Item {
                                         new ElementBuilder()
                                             .withField(
                                                 "value",
-                                                formatter.format(cenote.getCreatedAt())
+                                                formatter.format(
+                                                    cenote.getCreatedAt()
+                                                )
                                             )
                                             .build()
                                     )
@@ -97,7 +101,9 @@ public class CenoteandoItem implements Item {
                                         new ElementBuilder()
                                             .withField(
                                                 "value",
-                                                formatter.format(cenote.getUpdatedAt())
+                                                formatter.format(
+                                                    cenote.getUpdatedAt()
+                                                )
                                             )
                                             .build()
                                     )
@@ -158,9 +164,15 @@ public class CenoteandoItem implements Item {
                             .withName("subject")
                             .withSubElements(
                                 // TODO: Create enum with subjects and use that instead
-                                new ElementBuilder().withField("value", "1").build(),
-                                new ElementBuilder().withField("value", "2").build(),
-                                new ElementBuilder().withField("value", "5").build()
+                                new ElementBuilder()
+                                    .withField("value", "1")
+                                    .build(),
+                                new ElementBuilder()
+                                    .withField("value", "2")
+                                    .build(),
+                                new ElementBuilder()
+                                    .withField("value", "5")
+                                    .build()
                             )
                             .build(),
                         new ElementBuilder()

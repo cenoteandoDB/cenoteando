@@ -48,7 +48,8 @@ public class VariableController {
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasPermission(#id, 'VARIABLE.CREATE')"
     )
-    public Variable createVariable(@RequestBody Variable variable) throws Exception {
+    public Variable createVariable(@RequestBody Variable variable)
+        throws Exception {
         return variableService.createVariable(variable);
     }
 
@@ -64,7 +65,9 @@ public class VariableController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasPermission(#id, 'VARIABLE.DELETE')")
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') or hasPermission(#id, 'VARIABLE.DELETE')"
+    )
     public String deleteVariable(@PathVariable String id) throws Exception {
         variableService.deleteVariable(id);
         return "no content";
@@ -77,7 +80,10 @@ public class VariableController {
     public String toCsv(HttpServletResponse response)
         throws IOException, IllegalAccessException {
         response.setContentType("text/csv");
-        response.setHeader("Content-Disposition", "attachment; filename=variables.csv");
+        response.setHeader(
+            "Content-Disposition",
+            "attachment; filename=variables.csv"
+        );
         return variableService.toCsv();
     }
 
@@ -85,8 +91,9 @@ public class VariableController {
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasRole('ROLE_CENOTERO_ADVANCED')"
     )
-    public List<String> fromCsv(@RequestParam("file") MultipartFile multipartfile)
-        throws Exception {
+    public List<String> fromCsv(
+        @RequestParam("file") MultipartFile multipartfile
+    ) throws Exception {
         return variableService.fromCsv(multipartfile);
     }
 }

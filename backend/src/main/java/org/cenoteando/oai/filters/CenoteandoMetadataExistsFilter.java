@@ -22,7 +22,9 @@ public class CenoteandoMetadataExistsFilter extends CenoteandoFilter {
                 this.fields = new ArrayList<>();
                 for (ParameterValue<?> val : fields
                     .asParameterList()
-                    .getValues()) this.fields.add(val.asSimpleType().asString());
+                    .getValues()) this.fields.add(
+                        val.asSimpleType().asString()
+                    );
             }
         }
         return fields;

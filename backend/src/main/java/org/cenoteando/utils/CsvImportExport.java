@@ -22,7 +22,8 @@ public class CsvImportExport {
         return list;
     }
 
-    public static class CenoteGeoJsonDeserialize extends JsonDeserializer<CenoteGeoJSON> {
+    public static class CenoteGeoJsonDeserialize
+        extends JsonDeserializer<CenoteGeoJSON> {
 
         @Override
         public CenoteGeoJSON deserialize(

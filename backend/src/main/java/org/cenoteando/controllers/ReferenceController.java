@@ -52,7 +52,8 @@ public class ReferenceController {
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Reference createReference(@RequestBody Reference reference) throws Exception {
+    public Reference createReference(@RequestBody Reference reference)
+        throws Exception {
         return referenceService.createReference(reference);
     }
 
@@ -77,21 +78,27 @@ public class ReferenceController {
     public String toCsv(HttpServletResponse response)
         throws IOException, IllegalAccessException {
         response.setContentType("text/csv");
-        response.setHeader("Content-Disposition", "attachment; filename=references.csv");
+        response.setHeader(
+            "Content-Disposition",
+            "attachment; filename=references.csv"
+        );
 
         return referenceService.toCsv();
     }
 
     @PostMapping("/csv")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public List<String> fromCsv(@RequestParam("file") MultipartFile multipartfile)
-        throws Exception {
+    public List<String> fromCsv(
+        @RequestParam("file") MultipartFile multipartfile
+    ) throws Exception {
         return referenceService.fromCsv(multipartfile);
     }
 
     @GetMapping("/{id}/download")
-    public void downloadReference(HttpServletResponse response, @PathVariable String id)
-        throws Exception {
+    public void downloadReference(
+        HttpServletResponse response,
+        @PathVariable String id
+    ) throws Exception {
         Blob reference = cloudStorageService.downloadReference(id);
 
         response.setHeader(

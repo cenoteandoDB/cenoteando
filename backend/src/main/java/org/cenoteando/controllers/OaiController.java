@@ -51,8 +51,11 @@ public class OaiController {
 
     private OAIDataProvider _dataProvider;
 
-    void configure() throws ConfigurationException, InvalidContextException, IOException {
-        FormatConfiguration formatConfiguration = new FormatConfiguration("oai_datacite")
+    void configure()
+        throws ConfigurationException, InvalidContextException, IOException {
+        FormatConfiguration formatConfiguration = new FormatConfiguration(
+            "oai_datacite"
+        )
             .withNamespace("http://schema.datacite.org/oai/oai-1.1/")
             .withPrefix("oai_datacite")
             .withXslt("static/oai/metadataFormats/oai_openaire_CONACyT.xsl")
@@ -74,7 +77,11 @@ public class OaiController {
         ResourceResolver resourceResolver = new CenoteandoResourceResolver();
         // TODO: Get configuration from file (check if it works)
         // Configuration config = Configuration.readConfiguration(resourceResolver.getResource("xoai.xml"));
-        XOAIManager manager = new XOAIManager(filterResolver, resourceResolver, config);
+        XOAIManager manager = new XOAIManager(
+            filterResolver,
+            resourceResolver,
+            config
+        );
 
         _dataProvider =
             new OAIDataProvider(
@@ -108,14 +115,19 @@ public class OaiController {
         params.put("verb", Collections.singletonList(verb));
         params.put("metadataPrefix", Collections.singletonList(metadataPrefix));
         params.put("identifier", Collections.singletonList(identifier));
-        params.put("resumptionToken", Collections.singletonList(resumptionToken));
+        params.put(
+            "resumptionToken",
+            Collections.singletonList(resumptionToken)
+        );
 
         OAIRequestParameters parameters = new OAIRequestParameters(params);
 
         return out -> {
             try {
                 _dataProvider.handle(parameters, out);
-            } catch (OAIException | XMLStreamException | WritingXmlException e) {
+            } catch (
+                OAIException | XMLStreamException | WritingXmlException e
+            ) {
                 // TODO: check errors are being correctly handled (maybe should return OAI-PMH specific errors)
                 log.error(e.getMessage(), e);
                 throw new IOException(e);

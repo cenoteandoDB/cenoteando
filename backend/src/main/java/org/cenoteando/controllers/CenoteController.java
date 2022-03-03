@@ -66,20 +66,25 @@ public class CenoteController {
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasPermission('CENOTE.UPDATE')"
     )
-    public Cenote updateCenote(@PathVariable String id, @RequestBody Cenote cenote)
-        throws Exception {
+    public Cenote updateCenote(
+        @PathVariable String id,
+        @RequestBody Cenote cenote
+    ) throws Exception {
         return cenoteService.updateCenote(id, cenote);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasPermission(#id, 'CENOTE.DELETE')")
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') or hasPermission(#id, 'CENOTE.DELETE')"
+    )
     public String deleteCenote(@PathVariable String id) throws Exception {
         cenoteService.deleteCenote(id);
         return "no content";
     }
 
     @GetMapping("/{id}/comments")
-    public CommentBucket listComments(@PathVariable String id) throws Exception {
+    public CommentBucket listComments(@PathVariable String id)
+        throws Exception {
         return cenoteService.listComments(id);
     }
 
@@ -103,7 +108,10 @@ public class CenoteController {
     public String toCsv(HttpServletResponse response)
         throws IOException, IllegalAccessException {
         response.setContentType("text/csv");
-        response.setHeader("Content-Disposition", "attachment; filename=cenotes.csv");
+        response.setHeader(
+            "Content-Disposition",
+            "attachment; filename=cenotes.csv"
+        );
 
         return cenoteService.toCsv();
     }
@@ -112,8 +120,9 @@ public class CenoteController {
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasRole('ROLE_CENOTERO_ADVANCED')"
     )
-    public List<String> fromCsv(@RequestParam("file") MultipartFile multipartfile)
-        throws Exception {
+    public List<String> fromCsv(
+        @RequestParam("file") MultipartFile multipartfile
+    ) throws Exception {
         return cenoteService.fromCsv(multipartfile);
     }
 

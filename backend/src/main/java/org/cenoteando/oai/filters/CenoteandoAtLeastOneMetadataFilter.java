@@ -19,7 +19,10 @@ public class CenoteandoAtLeastOneMetadataFilter extends CenoteandoFilter {
     }
 
     public String getSchema() {
-        if (getConfiguration() != null && getConfiguration().get("schema") != null) {
+        if (
+            getConfiguration() != null &&
+            getConfiguration().get("schema") != null
+        ) {
             return getConfiguration().get("schema").asSimpleType().asString();
         }
         return "metadata";
@@ -53,7 +56,11 @@ public class CenoteandoAtLeastOneMetadataFilter extends CenoteandoFilter {
     private CenoteandoMetadataFilterOperator getOperator() {
         if (operator == CenoteandoMetadataFilterOperator.UNDEF) operator =
             CenoteandoMetadataFilterOperator.valueOf(
-                getConfiguration().get("operator").asSimpleType().asString().toUpperCase()
+                getConfiguration()
+                    .get("operator")
+                    .asSimpleType()
+                    .asString()
+                    .toUpperCase()
             );
         return operator;
     }
@@ -117,13 +124,21 @@ public class CenoteandoAtLeastOneMetadataFilter extends CenoteandoFilter {
 
     private void buildQuery(String field, String value, List<String> parts) {
         switch (this.getOperator()) {
-            case ENDS_WITH -> parts.add("LIKE(" + field + ", '%" + value + "')");
-            case STARTS_WITH -> parts.add("STARTS_WITH(" + field + ", '" + value + "')");
+            case ENDS_WITH -> parts.add(
+                "LIKE(" + field + ", '%" + value + "')"
+            );
+            case STARTS_WITH -> parts.add(
+                "STARTS_WITH(" + field + ", '" + value + "')"
+            );
             case EQUAL -> parts.add("(" + field + " == " + value + ")");
             case GREATER -> parts.add("(" + field + " > " + value + ")");
             case LOWER -> parts.add("(" + field + " < " + value + ")");
-            case LOWER_OR_EQUAL -> parts.add("(" + field + " <= " + value + ")");
-            case GREATER_OR_EQUAL -> parts.add("(" + field + " >= " + value + ")");
+            case LOWER_OR_EQUAL -> parts.add(
+                "(" + field + " <= " + value + ")"
+            );
+            case GREATER_OR_EQUAL -> parts.add(
+                "(" + field + " >= " + value + ")"
+            );
             default -> parts.add("CONTAINS(" + field + ", '" + value + "')");
         }
     }

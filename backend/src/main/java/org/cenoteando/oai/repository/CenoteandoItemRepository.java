@@ -36,7 +36,8 @@ public class CenoteandoItemRepository implements ItemRepository {
      * @return ItemHelper
      */
     @Override
-    public Item getItem(String identifier) throws IdDoesNotExistException, OAIException {
+    public Item getItem(String identifier)
+        throws IdDoesNotExistException, OAIException {
         String id = CenoteandoItem.parseHandle(identifier);
         Cenote cenote = cenotesRepository.findByArangoId(id);
         if (cenote == null) throw new IdDoesNotExistException(identifier);
@@ -173,12 +174,22 @@ public class CenoteandoItemRepository implements ItemRepository {
         String setSpec,
         Date until
     ) throws OAIException {
-        return getItemIdentifiers(filters, offset, length, setSpec, null, until);
+        return getItemIdentifiers(
+            filters,
+            offset,
+            length,
+            setSpec,
+            null,
+            until
+        );
     }
 
     @Override
-    public ListItemsResults getItems(List<ScopedFilter> filters, int offset, int length)
-        throws OAIException {
+    public ListItemsResults getItems(
+        List<ScopedFilter> filters,
+        int offset,
+        int length
+    ) throws OAIException {
         return getItems(filters, offset, length, null, null, null);
     }
 

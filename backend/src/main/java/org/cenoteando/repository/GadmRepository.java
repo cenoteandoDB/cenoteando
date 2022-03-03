@@ -11,7 +11,9 @@ public interface GadmRepository extends ArangoRepository<Gadm, String> {
     @Query("FOR g IN Gadm FILTER g.properties.NAME_1 == @state RETURN g")
     Iterable<Gadm> findByState(String state);
 
-    @Query("FOR g IN Gadm FILTER g.properties.ENGTYPE_2 == @municipality RETURN g")
+    @Query(
+        "FOR g IN Gadm FILTER g.properties.ENGTYPE_2 == @municipality RETURN g"
+    )
     Iterable<Gadm> findByMunicipality(String municipality);
 
     @Query(

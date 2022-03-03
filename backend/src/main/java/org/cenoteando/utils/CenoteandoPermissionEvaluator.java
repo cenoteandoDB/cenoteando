@@ -87,7 +87,9 @@ public class CenoteandoPermissionEvaluator implements PermissionEvaluator {
 
         if (targetDomainObject instanceof Variable variable) {
             if ("VARIABLE.CREATE".equals(permission)) {
-                return user.getThemesWhiteList().contains(variable.getTheme().name());
+                return user
+                    .getThemesWhiteList()
+                    .contains(variable.getTheme().name());
             }
             return false;
         }

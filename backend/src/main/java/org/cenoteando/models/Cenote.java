@@ -245,7 +245,9 @@ public class Cenote {
     }
 
     public boolean validate() {
-        return type != null && name != null && !name.isEmpty() && geojson != null;
+        return (
+            type != null && name != null && !name.isEmpty() && geojson != null
+        );
     }
 
     public boolean isCreator(User user) {

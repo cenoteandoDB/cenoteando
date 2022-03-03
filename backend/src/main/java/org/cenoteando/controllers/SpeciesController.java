@@ -52,8 +52,10 @@ public class SpeciesController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Species updateSpecie(@PathVariable String id, @RequestBody Species specie)
-        throws Exception {
+    public Species updateSpecie(
+        @PathVariable String id,
+        @RequestBody Species specie
+    ) throws Exception {
         return speciesService.updateSpecies(id, specie);
     }
 
@@ -69,15 +71,19 @@ public class SpeciesController {
     public String toCsv(HttpServletResponse response)
         throws IOException, IllegalAccessException {
         response.setContentType("text/csv");
-        response.setHeader("Content-Disposition", "attachment; filename=species.csv");
+        response.setHeader(
+            "Content-Disposition",
+            "attachment; filename=species.csv"
+        );
 
         return speciesService.toCsv();
     }
 
     @PostMapping("/csv")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public List<String> fromCsv(@RequestParam("file") MultipartFile multipartfile)
-        throws Exception {
+    public List<String> fromCsv(
+        @RequestParam("file") MultipartFile multipartfile
+    ) throws Exception {
         return speciesService.fromCsv(multipartfile);
     }
 }

@@ -74,7 +74,8 @@ public class CenoteGeoJSON {
         if (o == null || getClass() != o.getClass()) return false;
         CenoteGeoJSON that = (CenoteGeoJSON) o;
         return (
-            this.geometry.equals(that.getGeometry()) && this.type.equals(that.getType())
+            this.geometry.equals(that.getGeometry()) &&
+            this.type.equals(that.getType())
         );
     }
 }

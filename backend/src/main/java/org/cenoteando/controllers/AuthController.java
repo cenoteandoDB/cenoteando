@@ -32,8 +32,9 @@ public class AuthController {
     private static String tokenType = "Bearer";
 
     @PostMapping("/login")
-    public AuthDto Login(@RequestBody AuthenticationRequest authenticationRequest)
-        throws Exception {
+    public AuthDto Login(
+        @RequestBody AuthenticationRequest authenticationRequest
+    ) throws Exception {
         try {
             authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -46,11 +47,18 @@ public class AuthController {
         }
 
         final AuthDetails auth =
-            this.usersService.loadUserByUsername(authenticationRequest.getEmail());
+            this.usersService.loadUserByUsername(
+                    authenticationRequest.getEmail()
+                );
 
         final String jwt = jwtTokenUtil.generateToken(auth);
 
-        return new AuthDto(auth.getUser(), jwt, tokenType, jwtTokenUtil.getTTL());
+        return new AuthDto(
+            auth.getUser(),
+            jwt,
+            tokenType,
+            jwtTokenUtil.getTTL()
+        );
     }
 
     @PostMapping("/register")
@@ -82,6 +90,11 @@ public class AuthController {
 
         final String jwt = jwtTokenUtil.generateToken(auth);
 
-        return new AuthDto(auth.getUser(), jwt, tokenType, jwtTokenUtil.getTTL());
+        return new AuthDto(
+            auth.getUser(),
+            jwt,
+            tokenType,
+            jwtTokenUtil.getTTL()
+        );
     }
 }

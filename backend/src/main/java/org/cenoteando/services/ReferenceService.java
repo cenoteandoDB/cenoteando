@@ -41,7 +41,8 @@ public class ReferenceService {
         return this.referenceRepository.save(reference);
     }
 
-    public Reference updateReference(String id, Reference reference) throws Exception {
+    public Reference updateReference(String id, Reference reference)
+        throws Exception {
         if (!reference.validate()) throw new Exception(
             "Validation failed for Reference update."
         );
@@ -71,7 +72,9 @@ public class ReferenceService {
     }
 
     public List<String> fromCsv(MultipartFile multipartfile) throws Exception {
-        Reader file_reader = new InputStreamReader(multipartfile.getInputStream());
+        Reader file_reader = new InputStreamReader(
+            multipartfile.getInputStream()
+        );
 
         ArrayList<String> values = new ArrayList<>();
 
@@ -85,7 +88,9 @@ public class ReferenceService {
             final CellProcessor[] processors = Reference.getProcessors();
 
             Reference ref, oldRef;
-            while ((ref = reader.read(Reference.class, header, processors)) != null) {
+            while (
+                (ref = reader.read(Reference.class, header, processors)) != null
+            ) {
                 if (!ref.validate()) {
                     throw new Exception("Validation failed for " + ref.getId());
                 }

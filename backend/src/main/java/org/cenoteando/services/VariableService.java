@@ -36,8 +36,11 @@ public class VariableService {
         return variablesRepository.findAll(page);
     }
 
-    public Iterable<Variable> getVariablesForMoF(String theme) throws Exception {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    public Iterable<Variable> getVariablesForMoF(String theme)
+        throws Exception {
+        Authentication auth = SecurityContextHolder
+            .getContext()
+            .getAuthentication();
 
         if (
             auth instanceof AnonymousAuthenticationToken
@@ -49,21 +52,28 @@ public class VariableService {
             case ADMIN:
             case RESEARCHER:
                 List<Variable> filteredVariables = new ArrayList<>();
-                List<Variable> variables = variablesRepository.findByTheme(theme);
+                List<Variable> variables = variablesRepository.findByTheme(
+                    theme
+                );
                 for (Variable variable : variables) if (
-                    variable.getAccessLevel() != SENSITIVE || variable.isCreator(user)
+                    variable.getAccessLevel() != SENSITIVE ||
+                    variable.isCreator(user)
                 ) filteredVariables.add(variable);
                 return filteredVariables;
             case CENOTERO_ADVANCED:
                 if (
                     !user.getThemesBlackList().contains(theme)
                 ) return variablesRepository.findByTheme(theme);
-                throw new Exception("User forbidden to get variable with theme " + theme);
+                throw new Exception(
+                    "User forbidden to get variable with theme " + theme
+                );
             case CENOTERO_BASIC:
                 if (
                     user.getThemesWhiteList().contains(theme)
                 ) return variablesRepository.findByTheme(theme);
-                throw new Exception("User forbidden to get variable with theme " + theme);
+                throw new Exception(
+                    "User forbidden to get variable with theme " + theme
+                );
             default:
                 throw new Exception("Role not available.");
         }
@@ -80,7 +90,8 @@ public class VariableService {
         return variablesRepository.save(variable);
     }
 
-    public Variable updateVariable(String id, Variable variable) throws Exception {
+    public Variable updateVariable(String id, Variable variable)
+        throws Exception {
         if (!variable.validate()) throw new Exception(
             "Validation failed for Variable update."
         );
@@ -109,10 +120,14 @@ public class VariableService {
     }
 
     public List<String> fromCsv(MultipartFile multipartfile) throws Exception {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Authentication auth = SecurityContextHolder
+            .getContext()
+            .getAuthentication();
         User user = (User) auth.getPrincipal();
 
-        Reader file_reader = new InputStreamReader(multipartfile.getInputStream());
+        Reader file_reader = new InputStreamReader(
+            multipartfile.getInputStream()
+        );
 
         ArrayList<String> values = new ArrayList<>();
 
@@ -126,13 +141,21 @@ public class VariableService {
             final CellProcessor[] processors = Variable.getProcessors();
 
             Variable variable, oldVariable;
-            while ((variable = reader.read(Variable.class, header, processors)) != null) {
+            while (
+                (variable = reader.read(Variable.class, header, processors)) !=
+                null
+            ) {
                 if (!variable.validate()) {
-                    throw new Exception("Validation failed for " + variable.getId());
+                    throw new Exception(
+                        "Validation failed for " + variable.getId()
+                    );
                 }
                 if ((oldVariable = getVariable(variable.getId())) != null) {
                     if (
-                        !hasCreateUpdateAccess(user, variable.getTheme().toString())
+                        !hasCreateUpdateAccess(
+                            user,
+                            variable.getTheme().toString()
+                        )
                     ) throw new Exception(
                         "User doesn't have permission to update variable " +
                         variable.getId()
@@ -141,7 +164,10 @@ public class VariableService {
                     variablesRepository.save(oldVariable);
                 } else {
                     if (
-                        !hasCreateUpdateAccess(user, variable.getTheme().toString())
+                        !hasCreateUpdateAccess(
+                            user,
+                            variable.getTheme().toString()
+                        )
                     ) throw new Exception(
                         "User doesn't have permission to create variable " +
                         variable.getId()

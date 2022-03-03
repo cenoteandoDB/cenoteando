@@ -31,7 +31,9 @@ public class GadmService {
 
     public Gadm findGadm(GeoJsonPoint geojson) throws Exception {
         Gadm gadm = gadmRepository.findGadm(geojson);
-        if (gadm == null) throw new Exception("Gadm not found. Check cenote geometry.");
+        if (gadm == null) throw new Exception(
+            "Gadm not found. Check cenote geometry."
+        );
 
         return gadm;
     }

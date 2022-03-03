@@ -9,7 +9,12 @@ public class AuthDto {
     private String tokenType;
     private long expiresIn;
 
-    public AuthDto(User user, String accessToken, String tokenType, long expiresIn) {
+    public AuthDto(
+        User user,
+        String accessToken,
+        String tokenType,
+        long expiresIn
+    ) {
         this.user = user;
         this.accessToken = accessToken;
         this.tokenType = tokenType;

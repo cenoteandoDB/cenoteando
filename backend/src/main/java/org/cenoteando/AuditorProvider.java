@@ -11,8 +11,12 @@ public class AuditorProvider implements AuditorAware<User> {
 
     @Override
     public Optional<User> getCurrentAuditor() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth instanceof AnonymousAuthenticationToken) return Optional.empty();
+        Authentication auth = SecurityContextHolder
+            .getContext()
+            .getAuthentication();
+        if (
+            auth instanceof AnonymousAuthenticationToken
+        ) return Optional.empty();
         User user = (User) auth.getPrincipal();
         return Optional.of(user);
     }

@@ -43,7 +43,9 @@ public class CenoteService {
     private CommentBucketRepository commentBucketRepository;
 
     public Page<Cenote> getCenotes(Pageable page) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Authentication auth = SecurityContextHolder
+            .getContext()
+            .getAuthentication();
 
         if (
             auth instanceof AnonymousAuthenticationToken
@@ -75,7 +77,9 @@ public class CenoteService {
     }
 
     public Iterable<Cenote> getCenotesCsv() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Authentication auth = SecurityContextHolder
+            .getContext()
+            .getAuthentication();
 
         if (
             auth instanceof AnonymousAuthenticationToken
@@ -99,7 +103,9 @@ public class CenoteService {
 
     public Cenote getCenote(String id) throws Exception {
         Cenote cenote = cenoteRepository.findByArangoId("Cenotes/" + id);
-        if (!hasReadAccess(id)) throw new Exception("User forbidden to get cenote " + id);
+        if (!hasReadAccess(id)) throw new Exception(
+            "User forbidden to get cenote " + id
+        );
         return cenote;
     }
 
@@ -124,7 +130,9 @@ public class CenoteService {
         );
         Cenote oldCenote = this.getCenote(id);
 
-        if (!cenote.getGeojson().equals(oldCenote.getGeojson())) oldCenote.setGadm(
+        if (
+            !cenote.getGeojson().equals(oldCenote.getGeojson())
+        ) oldCenote.setGadm(
             gadmService.findGadm(cenote.getGeojson().getGeometry())
         );
 
@@ -156,10 +164,14 @@ public class CenoteService {
     }
 
     public List<String> fromCsv(MultipartFile multipartfile) throws Exception {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Authentication auth = SecurityContextHolder
+            .getContext()
+            .getAuthentication();
         User user = (User) auth.getPrincipal();
 
-        Reader fileReader = new InputStreamReader(multipartfile.getInputStream());
+        Reader fileReader = new InputStreamReader(
+            multipartfile.getInputStream()
+        );
 
         ArrayList<String> values = new ArrayList<>();
 
@@ -174,19 +186,29 @@ public class CenoteService {
 
             Cenote cenote;
             Cenote oldCenote;
-            while ((cenote = reader.read(Cenote.class, header, processors)) != null) {
+            while (
+                (cenote = reader.read(Cenote.class, header, processors)) != null
+            ) {
                 if (!cenote.validate()) {
-                    throw new Exception("Validation failed for " + cenote.getId());
+                    throw new Exception(
+                        "Validation failed for " + cenote.getId()
+                    );
                 }
                 if ((oldCenote = getCenote(cenote.getId())) != null) {
-                    if (!hasUpdateAccess(user, cenote.getId())) throw new Exception(
-                        "User doesn't have permission to update cenote " + cenote.getId()
+                    if (
+                        !hasUpdateAccess(user, cenote.getId())
+                    ) throw new Exception(
+                        "User doesn't have permission to update cenote " +
+                        cenote.getId()
                     );
                     oldCenote.merge(cenote);
                     cenoteRepository.save(oldCenote);
                 } else {
-                    if (!hasCreateAccess(user, cenote.getId())) throw new Exception(
-                        "User doesn't have permission to create cenote " + cenote.getId()
+                    if (
+                        !hasCreateAccess(user, cenote.getId())
+                    ) throw new Exception(
+                        "User doesn't have permission to create cenote " +
+                        cenote.getId()
                     );
                     cenoteRepository.save(cenote);
                 }
@@ -197,7 +219,9 @@ public class CenoteService {
     }
 
     public boolean hasReadAccess(String id) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Authentication auth = SecurityContextHolder
+            .getContext()
+            .getAuthentication();
 
         if (auth instanceof AnonymousAuthenticationToken) {
             Cenote cenote = cenoteRepository.findByArangoId("Cenotes/" + id);
@@ -236,7 +260,9 @@ public class CenoteService {
     }
 
     public CommentBucket listComments(String id) throws Exception {
-        if (!hasReadAccess(id)) throw new Exception("User forbidden to get cenote " + id);
+        if (!hasReadAccess(id)) throw new Exception(
+            "User forbidden to get cenote " + id
+        );
         return this.commentBucketRepository.findByCenoteId("Cenotes/" + id);
     }
 

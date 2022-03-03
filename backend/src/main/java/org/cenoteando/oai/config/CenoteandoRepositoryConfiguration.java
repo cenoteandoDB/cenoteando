@@ -13,7 +13,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CenoteandoRepositoryConfiguration implements RepositoryConfiguration {
+public class CenoteandoRepositoryConfiguration
+    implements RepositoryConfiguration {
 
     @Value("${oai.repositoryName}")
     private String _repositoryName;

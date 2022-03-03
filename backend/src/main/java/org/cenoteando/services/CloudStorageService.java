@@ -60,7 +60,9 @@ public class CloudStorageService {
             Storage.BlobListOption.currentDirectory()
         );
         Iterator<Blob> blob = blobs.iterateAll().iterator();
-        if (!blob.hasNext()) throw new Exception("Unable to get reference " + id);
+        if (!blob.hasNext()) throw new Exception(
+            "Unable to get reference " + id
+        );
 
         return blob.next();
     }

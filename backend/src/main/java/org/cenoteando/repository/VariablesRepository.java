@@ -9,7 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface VariablesRepository extends ArangoRepository<Variable, String> {
+public interface VariablesRepository
+    extends ArangoRepository<Variable, String> {
     Variable findByArangoId(String id);
     Page<Variable> findAll(Pageable page);
     List<Variable> findByTheme(String theme);

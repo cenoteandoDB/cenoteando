@@ -26,7 +26,9 @@ public class MoFService {
         String theme
     ) throws Exception {
         String cenoteId = "Cenotes/" + id;
-        Iterable<Variable> variables = variableService.getVariablesForMoF(theme);
+        Iterable<Variable> variables = variableService.getVariablesForMoF(
+            theme
+        );
 
         Supplier<Stream<Variable>> variablesStreamSupplier = () ->
             StreamSupport.stream(variables.spliterator(), false);
@@ -59,7 +61,9 @@ public class MoFService {
             varWithValues.setValues(mof.getMeasurements());
         }
 
-        variablesMap.entrySet().removeIf(entry -> entry.getValue().getValues() == null);
+        variablesMap
+            .entrySet()
+            .removeIf(entry -> entry.getValue().getValues() == null);
 
         return variablesMap;
     }

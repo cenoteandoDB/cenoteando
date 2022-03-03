@@ -13,8 +13,11 @@ public class FilterGenerator {
             .stream()
             .map(it -> {
                 if (
-                    it.getValue().equals("true") || it.getValue().equals("false")
-                ) return (col + "." + it.getKey() + " == " + it.getValue()); else return (
+                    it.getValue().equals("true") ||
+                    it.getValue().equals("false")
+                ) return (
+                    col + "." + it.getKey() + " == " + it.getValue()
+                ); else return (
                     col + "." + it.getKey() + " == '" + it.getValue() + "'"
                 );
             })

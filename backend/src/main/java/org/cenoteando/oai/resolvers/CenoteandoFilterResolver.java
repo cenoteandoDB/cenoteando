@@ -17,13 +17,19 @@ import org.cenoteando.oai.filters.OrFilter;
 public class CenoteandoFilterResolver implements FilterResolver {
 
     public CenoteandoFilter getFilter(Condition condition) {
-        if (condition instanceof AndCondition) return (CenoteandoFilter) getFilter(
+        if (
+            condition instanceof AndCondition
+        ) return (CenoteandoFilter) getFilter(
             (AndCondition) condition
-        ); else if (condition instanceof OrCondition) return (CenoteandoFilter) getFilter(
+        ); else if (
+            condition instanceof OrCondition
+        ) return (CenoteandoFilter) getFilter(
             (OrCondition) condition
         ); else if (
             condition instanceof NotCondition
-        ) return (CenoteandoFilter) getFilter((NotCondition) condition); else if (
+        ) return (CenoteandoFilter) getFilter(
+            (NotCondition) condition
+        ); else if (
             condition instanceof CustomCondition customCondition
         ) return (CenoteandoFilter) customCondition.getFilter(); else return (CenoteandoFilter) condition.getFilter();
     }

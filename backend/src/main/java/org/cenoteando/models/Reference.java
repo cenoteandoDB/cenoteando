@@ -147,7 +147,9 @@ public class Reference {
     }
 
     public static JSONArray getHeaders() {
-        return new JSONArray("['id', 'authors', 'fileName', 'reference', 'year']");
+        return new JSONArray(
+            "['id', 'authors', 'fileName', 'reference', 'year']"
+        );
     }
 
     public static CellProcessor[] getProcessors() {

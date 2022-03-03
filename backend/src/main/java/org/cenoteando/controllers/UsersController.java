@@ -60,7 +60,10 @@ public class UsersController {
     public String toCsv(HttpServletResponse response)
         throws IOException, IllegalAccessException {
         response.setContentType("text/csv");
-        response.setHeader("Content-Disposition", "attachment; filename=users.csv");
+        response.setHeader(
+            "Content-Disposition",
+            "attachment; filename=users.csv"
+        );
 
         return usersService.toCsv();
     }

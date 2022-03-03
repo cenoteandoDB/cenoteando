@@ -13,7 +13,9 @@ import org.springframework.stereotype.Repository;
 public interface CenotesRepository extends ArangoRepository<Cenote, String> {
     Cenote findByArangoId(String id);
 
-    @Query("FOR c IN #collection COLLECT AGGREGATE m = MIN(c.createdAt) RETURN m")
+    @Query(
+        "FOR c IN #collection COLLECT AGGREGATE m = MIN(c.createdAt) RETURN m"
+    )
     Date getEarliestCreationDate();
 
     @Query(
@@ -25,7 +27,9 @@ public interface CenotesRepository extends ArangoRepository<Cenote, String> {
 
     Page<Cenote> findCenotesByTouristicIsTrue(Pageable page);
 
-    @Query("FOR c IN #collection FILTER c.id NOT IN @blackList #pageable RETURN c")
+    @Query(
+        "FOR c IN #collection FILTER c.id NOT IN @blackList #pageable RETURN c"
+    )
     Page<Cenote> findByBlackListFilter(Pageable page, List<String> blackList);
 
     @Query(
