@@ -83,13 +83,11 @@
 
 <script lang="ts">
 import DeleteDialog from '@/components/admin/DeleteDialog.vue';
+import EditPermissionsDialog from '@/components/admin/EditPermissionsDialog.vue';
 import EditUserDialog from '@/components/admin/EditUserDialog.vue';
 import UserDTO from '@/models/UserDTO';
 import RemoteServices from '@/services/RemoteServices';
 import { Component, Vue } from 'vue-property-decorator';
-import EditPermissionsDialog from '@/components/admin/EditPermissionsDialog.vue';
-import CenoteDTO from '@/models/CenoteDTO';
-import VariableDTO from '@/models/VariableDTO';
 @Component({
     components: {
         EditUserDialog,

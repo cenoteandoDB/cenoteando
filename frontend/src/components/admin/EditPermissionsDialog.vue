@@ -80,11 +80,10 @@
     </v-dialog>
 </template>
 <script lang="ts">
-import UserDTO, { UserRole } from '@/models/UserDTO';
-import { Component, Vue } from 'vue-property-decorator';
 import CenoteDTO from '@/models/CenoteDTO';
-import VariableDTO from '@/models/VariableDTO';
+import UserDTO, { UserRole } from '@/models/UserDTO';
 import RemoteServices from '@/services/RemoteServices';
+import { Component, Vue } from 'vue-property-decorator';
 
 interface CenoteData {
     id: string;
