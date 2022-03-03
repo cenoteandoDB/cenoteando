@@ -28,32 +28,34 @@
                         ]"
                         required
                     ></v-text-field>
-                    <v-tooltip bottom>
-                        <template v-slot:activator="{ on, attrs }">
-                            <div>
-                                <v-select
-                                    v-model="user.role"
-                                    :items="roles"
-                                    label="Role"
+                    <v-container class="d-flex d-row justify-center">
+                        <v-select
+                            v-model="user.role"
+                            :items="roles"
+                            label="Role"
+                            v-bind="attrs"
+                            v-on="on"
+                            :rules="[(v) => !!v || 'Role is required']"
+                            required
+                        ></v-select>
+                        <v-tooltip bottom>
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-icon
+                                    class
+                                    color="grey"
+                                    dark
                                     v-bind="attrs"
                                     v-on="on"
-                                    :rules="[(v) => !!v || 'Role is required']"
-                                    required
-                                    >Test</v-select
                                 >
-                            </div>
-                        </template>
-                        <span v-if="user.role === 'CENOTERO_BASIC'"
-                            >Cenotero Basic info</span
-                        >
-                        <span v-if="user.role === 'CENOTERO_ADVANCED'"
-                            >Cenotero Advanced info</span
-                        >
-                        <span v-if="user.role === 'RESEARCHER'"
-                            >Research info</span
-                        >
-                        <span v-if="user.role === 'ADMIN'">Admin info</span>
-                    </v-tooltip>
+                                    mdi-help
+                                </v-icon>
+                            </template>
+                            <span v-if="user.role === 'CENOTERO_BASIC'">Cenotero Basic Descriptions</span>
+                            <span v-if="user.role === 'CENOTERO_ADVANCED'">Cenotero Advanced Descriptions</span>
+                            <span v-if="user.role === 'RESEARCHER'">Researcher Descriptions</span>
+                            <span v-if="user.role === 'ADMIN'">Admin Descriptions</span>
+                        </v-tooltip>
+                    </v-container>
                 </v-form>
             </v-card-text>
             <v-card-actions>

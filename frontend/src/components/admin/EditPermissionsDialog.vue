@@ -12,7 +12,7 @@
                 <v-form v-model="valid">
                     <v-select
                         v-model="variableWhiteList"
-                        :items="themes"
+                        :items="filteredWhitelistVariable()"
                         multiple
                         chips
                         outlined
@@ -24,7 +24,7 @@
                     <v-select
                         v-if="user.role === 'CENOTERO_ADVANCED'"
                         v-model="variableBlackList"
-                        :items="themes"
+                        :items="filteredBlacklistVariable()"
                         multiple
                         chips
                         outlined
@@ -35,9 +35,11 @@
                     ></v-select>
                     <v-autocomplete
                         v-model="cenoteWhiteList"
-                        :items="cenoteNames.map(((c) => {
-                            return c.id + '-' +c.name 
-                        }))"
+                        :items="
+                            cenoteNames.map((c) => {
+                                return c.id + '-' + c.name;
+                            })
+                        "
                         dense
                         chips
                         outlined
@@ -49,9 +51,11 @@
                     <v-autocomplete
                         v-if="user.role === 'CENOTERO_ADVANCED'"
                         v-model="cenoteBlackList"
-                        :items="cenoteNames.map(((c) => {
-                            return c.id + '-' + c.name 
-                        }))"
+                        :items="
+                            cenoteNames.map((c) => {
+                                return c.id + '-' + c.name;
+                            })
+                        "
                         dense
                         chips
                         outlined
@@ -97,10 +101,10 @@ interface CenoteData {
     },
 })
 export default class EditPermissionsDialog extends Vue {
-    cenoteWhiteList = [];
-    cenoteBlackList = [];
-    variableWhiteList = [];
-    variableBlackList = [];
+    cenoteWhiteList = [] as  any;
+    cenoteBlackList = [] as  any;
+    variableWhiteList = [] as  any;
+    variableBlackList = [] as  any;
 
     themes = [
         'LOCATION',
@@ -120,6 +124,30 @@ export default class EditPermissionsDialog extends Vue {
     roles = Object.values(UserRole);
 
     cenotes: CenoteDTO[] = [];
+
+    filteredBlacklistCenote() {
+        return this.themes.filter((c) => {
+            !this.cenoteWhiteList;
+        });
+    }
+
+    filteredWhitelistCenote() {
+        return this.themes.filter((c) => {
+            !this.cenoteBlackList;
+        });
+    }
+
+    filteredWhitelistVariable() {
+        return this.themes.filter((t) => {
+           return !t.includes(this.variableBlackList);
+        });
+    }
+
+    filteredBlacklistVariable() {
+        return this.themes.filter((t) => {
+            return t;
+        });
+    }
 
     get cenoteNames(): CenoteData[] {
         return this.cenotes.map((c) => {
@@ -147,9 +175,12 @@ export default class EditPermissionsDialog extends Vue {
     }
 
     save(): void {
-        this.cenoteNames.map((c)=>{
+        this.cenoteNames.map((c) => {
             return c.id;
-        })
+        });
+        this.themes.map((t) => {
+            return t;
+        });
         this.$emit('onSave');
         this.dialog = false;
     }
