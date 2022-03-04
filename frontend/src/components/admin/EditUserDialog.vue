@@ -28,7 +28,7 @@
                         ]"
                         required
                     ></v-text-field>
-                    <v-container class="d-flex d-row justify-center">
+                    <v-container class="d-flex d-row">
                         <v-select
                             v-model="user.role"
                             :items="roles"

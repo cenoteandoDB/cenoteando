@@ -12,50 +12,39 @@
                 <v-form v-model="valid">
                     <v-select
                         v-model="variableWhiteList"
-                        :items="filteredWhitelistVariable()"
+                        :items="filteredVariableWhiteList()"
                         multiple
                         chips
                         outlined
                         small-chips
-                        menu-props="auto"
                         dense
                         label="Variable Whitelist"
                     ></v-select>
                     <v-select
                         v-if="user.role === 'CENOTERO_ADVANCED'"
                         v-model="variableBlackList"
-                        :items="filteredBlacklistVariable()"
+                        :items="filteredVariableBlackList()"
                         multiple
                         chips
                         outlined
                         small-chips
-                        menu-props="auto"
                         dense
                         label="Variable Blacklist"
                     ></v-select>
                     <v-autocomplete
                         v-model="cenoteWhiteList"
-                        :items="
-                            cenoteNames.map((c) => {
-                                return c.id + '-' + c.name;
-                            })
-                        "
+                        :items="filteredCenoteWhiteList()"
                         dense
                         chips
                         outlined
                         small-chips
-                        menu-props="auto"
                         label="Cenote Whitelist"
                         multiple
                     ></v-autocomplete>
                     <v-autocomplete
                         v-if="user.role === 'CENOTERO_ADVANCED'"
                         v-model="cenoteBlackList"
-                        :items="
-                            cenoteNames.map((c) => {
-                                return c.id + '-' + c.name;
-                            })
-                        "
+                        :items="filteredCenoteBlackList()"
                         dense
                         chips
                         outlined
@@ -101,10 +90,10 @@ interface CenoteData {
     },
 })
 export default class EditPermissionsDialog extends Vue {
-    cenoteWhiteList = [] as  any;
-    cenoteBlackList = [] as  any;
-    variableWhiteList = [] as  any;
-    variableBlackList = [] as  any;
+    cenoteWhiteList: string[] = [];
+    cenoteBlackList: string[] = [];
+    variableWhiteList: string[] = [];
+    variableBlackList: string[] = [];
 
     themes = [
         'LOCATION',
@@ -125,28 +114,52 @@ export default class EditPermissionsDialog extends Vue {
 
     cenotes: CenoteDTO[] = [];
 
-    filteredBlacklistCenote() {
-        return this.themes.filter((c) => {
-            !this.cenoteWhiteList;
-        });
-    }
-
-    filteredWhitelistCenote() {
-        return this.themes.filter((c) => {
-            !this.cenoteBlackList;
-        });
-    }
-
-    filteredWhitelistVariable() {
+    filteredVariableBlackList() {
         return this.themes.filter((t) => {
-           return !t.includes(this.variableBlackList);
+            if (this.variableBlackList.length > 0)
+                return !this.variableWhiteList.includes(t);
+            else {
+                return t;
+            }
         });
     }
 
-    filteredBlacklistVariable() {
+    filteredVariableWhiteList() {
         return this.themes.filter((t) => {
-            return t;
+            if (this.variableWhiteList.length > 0)
+                return !this.variableBlackList.includes(t);
+            else {
+                return t;
+            }
         });
+    }
+
+    filteredCenoteBlackList() {
+        var cenoteNameId = this.cenoteNames.map((c) => {
+            return c.id + '-' + c.name;
+        });
+
+        return cenoteNameId.filter((c)=>{
+             if (this.cenoteBlackList.length > 0) {
+                return !this.cenoteWhiteList.includes(c);
+            } else {
+                return c;
+            }
+        })
+    }
+
+    filteredCenoteWhiteList() {
+        var cenoteNameId = this.cenoteNames.map((c) => {
+            return c.id + '-' + c.name;
+        });
+
+        return cenoteNameId.filter((c)=>{
+             if (this.cenoteWhiteList.length > 0) {
+                return !this.cenoteBlackList.includes(c);
+            } else {
+                return c;
+            }
+        })
     }
 
     get cenoteNames(): CenoteData[] {

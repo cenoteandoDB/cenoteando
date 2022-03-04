@@ -326,7 +326,6 @@ export default class Cenotes extends Vue {
             for await (let batch of generator) {
                 if (!this.cenotes.length)
                     await this.$store.dispatch('clearLoading');
-
                 this.cenotes.push(...batch);
             }
         })().catch(async (error) => {
