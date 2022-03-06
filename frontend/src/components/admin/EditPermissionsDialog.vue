@@ -116,7 +116,7 @@ export default class EditPermissionsDialog extends Vue {
 
     filteredVariableBlackList() {
         return this.themes.filter((t) => {
-            if (this.variableBlackList.length > 0)
+            if (this.variableBlackList.length >= 0)
                 return !this.variableWhiteList.includes(t);
             else {
                 return t;
@@ -126,7 +126,7 @@ export default class EditPermissionsDialog extends Vue {
 
     filteredVariableWhiteList() {
         return this.themes.filter((t) => {
-            if (this.variableWhiteList.length > 0)
+            if (this.variableWhiteList.length >= 0)
                 return !this.variableBlackList.includes(t);
             else {
                 return t;
@@ -140,7 +140,7 @@ export default class EditPermissionsDialog extends Vue {
         });
 
         return cenoteNameId.filter((c)=>{
-             if (this.cenoteBlackList.length > 0) {
+             if (this.cenoteBlackList.length >= 0) {
                 return !this.cenoteWhiteList.includes(c);
             } else {
                 return c;
@@ -154,7 +154,7 @@ export default class EditPermissionsDialog extends Vue {
         });
 
         return cenoteNameId.filter((c)=>{
-             if (this.cenoteWhiteList.length > 0) {
+             if (this.cenoteWhiteList.length >= 0) {
                 return !this.cenoteBlackList.includes(c);
             } else {
                 return c;
