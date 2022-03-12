@@ -11,7 +11,7 @@
             <v-card-text>
                 <v-form v-model="valid">
                     <v-select
-                        v-model="variableWhiteList"
+                        v-model="themeWhiteList"
                         :items="filteredVariableWhiteList()"
                         multiple
                         chips
@@ -22,7 +22,7 @@
                     ></v-select>
                     <v-select
                         v-if="user.role === 'CENOTERO_ADVANCED'"
-                        v-model="variableBlackList"
+                        v-model="themeBlackList"
                         :items="filteredVariableBlackList()"
                         multiple
                         chips
@@ -81,7 +81,6 @@ import { Component, Vue } from 'vue-property-decorator';
 interface CenoteData {
     id: string;
     name: string;
-    cenote: CenoteDTO;
 }
 
 @Component({
@@ -92,8 +91,8 @@ interface CenoteData {
 export default class EditPermissionsDialog extends Vue {
     cenoteWhiteList: string[] = [];
     cenoteBlackList: string[] = [];
-    variableWhiteList: string[] = [];
-    variableBlackList: string[] = [];
+    themeWhiteList: string[] = [];
+    themeBlackList: string[] = [];
 
     themes = [
         'LOCATION',
@@ -116,8 +115,8 @@ export default class EditPermissionsDialog extends Vue {
 
     filteredVariableBlackList() {
         return this.themes.filter((t) => {
-            if (this.variableBlackList.length >= 0)
-                return !this.variableWhiteList.includes(t);
+            if (this.themeBlackList.length >= 0)
+                return !this.themeWhiteList.includes(t);
             else {
                 return t;
             }
@@ -126,8 +125,8 @@ export default class EditPermissionsDialog extends Vue {
 
     filteredVariableWhiteList() {
         return this.themes.filter((t) => {
-            if (this.variableWhiteList.length >= 0)
-                return !this.variableBlackList.includes(t);
+            if (this.themeWhiteList.length >= 0)
+                return !this.themeBlackList.includes(t);
             else {
                 return t;
             }
@@ -136,30 +135,30 @@ export default class EditPermissionsDialog extends Vue {
 
     filteredCenoteBlackList() {
         var cenoteNameId = this.cenoteNames.map((c) => {
-            return c.id + '-' + c.name;
+            return c.id + ' - ' + c.name;
         });
 
-        return cenoteNameId.filter((c)=>{
-             if (this.cenoteBlackList.length >= 0) {
+        return cenoteNameId.filter((c) => {
+            if (this.cenoteBlackList.length >= 0) {
                 return !this.cenoteWhiteList.includes(c);
             } else {
                 return c;
             }
-        })
+        });
     }
 
     filteredCenoteWhiteList() {
         var cenoteNameId = this.cenoteNames.map((c) => {
-            return c.id + '-' + c.name;
+            return c.id + ' - ' + c.name;
         });
 
-        return cenoteNameId.filter((c)=>{
-             if (this.cenoteWhiteList.length >= 0) {
+        return cenoteNameId.filter((c) => {
+            if (this.cenoteWhiteList.length >= 0) {
                 return !this.cenoteBlackList.includes(c);
             } else {
                 return c;
             }
-        })
+        });
     }
 
     get cenoteNames(): CenoteData[] {
@@ -167,7 +166,6 @@ export default class EditPermissionsDialog extends Vue {
             return {
                 id: c.id.toString(),
                 name: c.name,
-                cenote: c,
             };
         });
     }
@@ -182,18 +180,36 @@ export default class EditPermissionsDialog extends Vue {
                     await this.$store.dispatch('clearLoading');
                 this.cenotes.push(...batch);
             }
+            
+             if(this.$props.user.themesWhiteList){
+                    this.themeWhiteList = this.$props.user.themesWhiteList;
+                }
+                if(this.$props.user.themesBlackList){
+                    this.themeBlackList = this.$props.user.themesBlackList;
+                }
+                if(this.$props.user.cenotesWhiteList){
+                    this.cenoteWhiteList = this.$props.user.cenotesWhiteList;
+                }
+                if(this.$props.user.cenotesBlackList){
+                    this.cenoteBlackList = this.$props.user.cenotesBlackList;
+                }
         })().catch(async (error) => {
             await this.$store.dispatch('error', error);
         });
     }
 
     save(): void {
-        this.cenoteNames.map((c) => {
-            return c.id;
-        });
-        this.themes.map((t) => {
-            return t;
-        });
+        this.$props.user.themesWhiteList = this.themeWhiteList;
+        this.$props.user.themesBlackList = this.themeBlackList;
+
+        this.$props.user.cenotesBlackList = this.cenoteBlackList.map((c) => {
+            return c.split(' ')[0];
+        })
+        
+        this.$props.user.cenotesWhiteList = this.cenoteWhiteList.map((c) => {
+            return c.split(' ')[0];
+        })
+        
         this.$emit('onSave');
         this.dialog = false;
     }

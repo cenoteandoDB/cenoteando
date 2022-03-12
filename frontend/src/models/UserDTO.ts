@@ -10,6 +10,10 @@ export default class UserDTO {
     name!: string;
     email!: string;
     role!: UserRole;
+    themesWhiteList!: Array<string>;
+    themesBlackList!: Array<string>;
+    cenotesWhiteList!: Array<string>;
+    cenotesBlackList!: Array<string>;
 
     constructor(jsonObj?: UserDTO) {
         if (jsonObj) {
@@ -17,6 +21,11 @@ export default class UserDTO {
             this.name = jsonObj.name;
             this.email = jsonObj.email;
             this.role = jsonObj.role;
+            this.themesWhiteList = jsonObj.themesWhiteList;
+            this.themesBlackList = jsonObj.themesBlackList;
+            this.cenotesWhiteList = jsonObj.cenotesWhiteList;
+            this.cenotesBlackList = jsonObj.cenotesBlackList;
         }
     }
+
 }

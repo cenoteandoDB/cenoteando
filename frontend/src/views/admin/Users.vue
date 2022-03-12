@@ -59,7 +59,10 @@
 
                 <delete-dialog @onConfirm="deleteUser(item)" />
                 <edit-permissions-dialog
+                    v-on="on"
+                    v-bind="attrs"
                     :user="item"
+                    @onSave="updateUser(item)"
                 >
                     <template v-slot:activator="{ on, attrs }">
                         <v-icon
