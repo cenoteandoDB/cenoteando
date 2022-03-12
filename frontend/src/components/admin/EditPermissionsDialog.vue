@@ -3,7 +3,6 @@
         <template v-slot:activator="{ on, attrs }">
             <slot name="activator" v-bind:on="on" v-bind:attrs="attrs"> </slot>
         </template>
-
         <v-card class="pt-5 mt-5 justify-center">
             <v-card-title>
                 <span class="text-h5">Permissions</span>
@@ -180,19 +179,19 @@ export default class EditPermissionsDialog extends Vue {
                     await this.$store.dispatch('clearLoading');
                 this.cenotes.push(...batch);
             }
-            
-             if(this.$props.user.themesWhiteList){
-                    this.themeWhiteList = this.$props.user.themesWhiteList;
-                }
-                if(this.$props.user.themesBlackList){
-                    this.themeBlackList = this.$props.user.themesBlackList;
-                }
-                if(this.$props.user.cenotesWhiteList){
-                    this.cenoteWhiteList = this.$props.user.cenotesWhiteList;
-                }
-                if(this.$props.user.cenotesBlackList){
-                    this.cenoteBlackList = this.$props.user.cenotesBlackList;
-                }
+
+            if (this.$props.user.themesWhiteList) {
+                this.themeWhiteList = this.$props.user.themesWhiteList;
+            }
+            if (this.$props.user.themesBlackList) {
+                this.themeBlackList = this.$props.user.themesBlackList;
+            }
+            if (this.$props.user.cenotesWhiteList) {
+                this.cenoteWhiteList = this.$props.user.cenotesWhiteList;
+            }
+            if (this.$props.user.cenotesBlackList) {
+                this.cenoteBlackList = this.$props.user.cenotesBlackList;
+            }
         })().catch(async (error) => {
             await this.$store.dispatch('error', error);
         });
@@ -204,12 +203,13 @@ export default class EditPermissionsDialog extends Vue {
 
         this.$props.user.cenotesBlackList = this.cenoteBlackList.map((c) => {
             return c.split(' ')[0];
-        })
-        
+        });
+
         this.$props.user.cenotesWhiteList = this.cenoteWhiteList.map((c) => {
             return c.split(' ')[0];
-        })
-        
+        });
+
+        console.log(this.$props.user);
         this.$emit('onSave');
         this.dialog = false;
     }
