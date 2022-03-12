@@ -33,8 +33,6 @@
                             v-model="user.role"
                             :items="roles"
                             label="Role"
-                            v-bind="attrs"
-                            v-on="on"
                             :rules="[(v) => !!v || 'Role is required']"
                             required
                         ></v-select>

@@ -40,8 +40,6 @@
 
             <template v-slot:[`item.action`]="{ item }">
                 <edit-user-dialog
-                    v-on="on"
-                    v-bind="attrs"
                     :user="item"
                     @onSave="updateUser(item)"
                 >
@@ -56,11 +54,10 @@
                         >
                     </template>
                 </edit-user-dialog>
-
-                <delete-dialog @onConfirm="deleteUser(item)" />
+                <delete-dialog
+                    @onConfirm="deleteUser(item)"
+                />
                 <edit-permissions-dialog
-                    v-on="on"
-                    v-bind="attrs"
                     :user="item"
                     @onSave="updateUser(item)"
                 >
