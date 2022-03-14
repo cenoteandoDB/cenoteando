@@ -12,8 +12,8 @@ export default class UserDTO {
     role!: UserRole;
     themesWhiteList!: Array<string>;
     themesBlackList!: Array<string>;
-    cenotesWhiteList!: Array<string>;
-    cenotesBlackList!: Array<string>;
+    cenoteWhiteList!: Array<string>;
+    cenoteBlackList!: Array<string>;
 
     constructor(jsonObj?: UserDTO) {
         if (jsonObj) {
@@ -23,8 +23,8 @@ export default class UserDTO {
             this.role = jsonObj.role;
             this.themesWhiteList = jsonObj.themesWhiteList;
             this.themesBlackList = jsonObj.themesBlackList;
-            this.cenotesWhiteList = jsonObj.cenotesWhiteList;
-            this.cenotesBlackList = jsonObj.cenotesBlackList;
+            this.cenoteWhiteList = jsonObj.cenoteWhiteList;
+            this.cenoteBlackList = jsonObj.cenoteBlackList;
         }
     }
 

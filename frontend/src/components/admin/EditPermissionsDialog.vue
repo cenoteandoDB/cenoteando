@@ -186,30 +186,37 @@ export default class EditPermissionsDialog extends Vue {
             if (this.$props.user.themesBlackList) {
                 this.themeBlackList = this.$props.user.themesBlackList;
             }
-            if (this.$props.user.cenotesWhiteList) {
-                this.cenoteWhiteList = this.$props.user.cenotesWhiteList;
+            if (this.$props.user.cenoteWhiteList) {
+                this.cenoteWhiteList = this.$props.user.cenoteWhiteList;
             }
-            if (this.$props.user.cenotesBlackList) {
-                this.cenoteBlackList = this.$props.user.cenotesBlackList;
+            if (this.$props.user.cenoteBlackList) {
+                this.cenoteBlackList = this.$props.user.cenoteBlackList;
             }
+
         })().catch(async (error) => {
             await this.$store.dispatch('error', error);
         });
+       
     }
 
     save(): void {
-        this.$props.user.themesWhiteList = this.themeWhiteList;
-        this.$props.user.themesBlackList = this.themeBlackList;
+        
+            this.$props.user.themesWhiteList = this.themeWhiteList;
+        
+            this.$props.user.themesBlackList = this.themeBlackList;
+       
+            this.$props.user.cenoteBlackList = this.cenoteBlackList.map(
+                (c) => {
+                    return c.split(' ')[0];
+                },
+            );
+        
+            this.$props.user.cenoteWhiteList = this.cenoteWhiteList.map(
+                (c) => {
+                    return c.split(' ')[0];
+                },
+            );
 
-        this.$props.user.cenotesBlackList = this.cenoteBlackList.map((c) => {
-            return c.split(' ')[0];
-        });
-
-        this.$props.user.cenotesWhiteList = this.cenoteWhiteList.map((c) => {
-            return c.split(' ')[0];
-        });
-
-        console.log(this.$props.user);
         this.$emit('onSave');
         this.dialog = false;
     }
