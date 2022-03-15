@@ -85,6 +85,7 @@ interface CenoteData {
 @Component({
     props: {
         user: UserDTO,
+        cenote: CenoteDTO,
     },
 })
 export default class EditPermissionsDialog extends Vue {
@@ -169,7 +170,7 @@ export default class EditPermissionsDialog extends Vue {
         });
     }
 
-    async created(): Promise<void> {
+    async getCenotes(): Promise<void> {
         await this.$store.dispatch('loading');
 
         (async () => {
@@ -179,43 +180,43 @@ export default class EditPermissionsDialog extends Vue {
                     await this.$store.dispatch('clearLoading');
                 this.cenotes.push(...batch);
             }
-
-            if (this.$props.user.themesWhiteList) {
-                this.themeWhiteList = this.$props.user.themesWhiteList;
-            }
-            if (this.$props.user.themesBlackList) {
-                this.themeBlackList = this.$props.user.themesBlackList;
-            }
-            if (this.$props.user.cenoteWhiteList) {
-                this.cenoteWhiteList = this.$props.user.cenoteWhiteList;
-            }
-            if (this.$props.user.cenoteBlackList) {
-                this.cenoteBlackList = this.$props.user.cenoteBlackList;
-            }
-
         })().catch(async (error) => {
             await this.$store.dispatch('error', error);
         });
-       
+    }
+
+    created(): void {
+        this.getCenotes();
+        if (this.$props.user.themesWhiteList) {
+            this.themeWhiteList = this.$props.user.themesWhiteList;
+        }
+        if (this.$props.user.themesBlackList) {
+            this.themeBlackList = this.$props.user.themesBlackList;
+        }
+        if (this.$props.user.cenoteWhiteList) {
+            this.cenoteWhiteList = this.$props.user.cenoteWhiteList;
+        }
+        if (this.$props.user.cenoteBlackList) {
+            this.cenoteBlackList = this.$props.user.cenoteBlackList;
+        }
     }
 
     save(): void {
-        
-            this.$props.user.themesWhiteList = this.themeWhiteList;
-        
-            this.$props.user.themesBlackList = this.themeBlackList;
-       
-            this.$props.user.cenoteBlackList = this.cenoteBlackList.map(
-                (c) => {
-                    return c.split(' ')[0];
-                },
-            );
-        
-            this.$props.user.cenoteWhiteList = this.cenoteWhiteList.map(
-                (c) => {
-                    return c.split(' ')[0];
-                },
-            );
+        this.$props.user.themesWhiteList = this.themeWhiteList;
+
+        this.$props.user.themesBlackList = this.themeBlackList;
+
+        this.$props.user.cenoteBlackList = this.cenoteBlackList;
+
+        this.$props.user.cenoteWhiteList = this.cenoteWhiteList;
+
+        // this.$props.user.cenoteBlackList = this.cenoteBlackList.map((c) => {
+        //     return c.split(' ')[0];
+        // });
+
+        // this.$props.user.cenoteWhiteList = this.cenoteWhiteList.map((c) => {
+        //     return c.split(' ')[0];
+        // });
 
         this.$emit('onSave');
         this.dialog = false;

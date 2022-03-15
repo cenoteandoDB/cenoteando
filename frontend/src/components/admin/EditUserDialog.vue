@@ -48,10 +48,29 @@
                                     mdi-help
                                 </v-icon>
                             </template>
-                            <span v-if="user.role === 'CENOTERO_BASIC'">A Cenotero (basic) is the most restrictive access role, has the same access as  non-registered user, but can be given explicit permission to certain themes and/or cenotes</span>
-                            <span v-if="user.role === 'CENOTERO_ADVANCED'">A Cenotero (advanced) can see all cenotes (except when explicitly forbidden), but can't make any changes on the underlying data</span>
-                            <span v-if="user.role === 'RESEARCHER'">A Researcher has full access to everything in the platform an administrator has access to, but can't delete any data not created by himself</span>
-                            <span v-if="user.role === 'ADMIN'">An Administrator has full access to every non-sensitive datapoint in the platform with no restrictions</span>
+                            <span v-if="user.role === 'CENOTERO_BASIC'"
+                                >A Cenotero (basic) is the most restrictive
+                                access role, has the same access as
+                                non-registered user, but can be given explicit
+                                permission to certain themes and/or
+                                cenotes</span
+                            >
+                            <span v-if="user.role === 'CENOTERO_ADVANCED'"
+                                >A Cenotero (advanced) can see all cenotes
+                                (except when explicitly forbidden), but can't
+                                make any changes on the underlying data</span
+                            >
+                            <span v-if="user.role === 'RESEARCHER'"
+                                >A Researcher has full access to everything in
+                                the platform an administrator has access to, but
+                                can't delete any data not created by
+                                himself</span
+                            >
+                            <span v-if="user.role === 'ADMIN'"
+                                >An Administrator has full access to every
+                                non-sensitive datapoint in the platform with no
+                                restrictions</span
+                            >
                         </v-tooltip>
                     </v-container>
                 </v-form>

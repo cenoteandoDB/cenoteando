@@ -39,10 +39,7 @@
             </template>
 
             <template v-slot:[`item.action`]="{ item }">
-                <edit-user-dialog
-                    :user="item"
-                    @onSave="updateUser(item)"
-                >
+                <edit-user-dialog :user="item" @onSave="updateUser(item)">
                     <template v-slot:activator="{ on, attrs }">
                         <v-icon
                             class="mr-2 action-button"
@@ -54,9 +51,7 @@
                         >
                     </template>
                 </edit-user-dialog>
-                <delete-dialog
-                    @onConfirm="deleteUser(item)"
-                />
+                <delete-dialog @onConfirm="deleteUser(item)" />
                 <edit-permissions-dialog
                     :user="item"
                     @onSave="updateUser(item)"
@@ -86,6 +81,7 @@ import DeleteDialog from '@/components/admin/DeleteDialog.vue';
 import EditPermissionsDialog from '@/components/admin/EditPermissionsDialog.vue';
 import EditUserDialog from '@/components/admin/EditUserDialog.vue';
 import UserDTO from '@/models/UserDTO';
+import CenoteDTO from '@/models/CenoteDTO';
 import RemoteServices from '@/services/RemoteServices';
 import { Component, Vue } from 'vue-property-decorator';
 @Component({
@@ -107,6 +103,7 @@ export default class Users extends Vue {
     search = '';
     filterRole: string[] = [];
     users: UserDTO[] = [];
+    cenotes: CenoteDTO[] = [];
     get filteredUsers(): UserDTO[] {
         return this.users.filter(
             (u) => !this.filterRole.length || this.filterRole.includes(u.role),
@@ -125,6 +122,7 @@ export default class Users extends Vue {
             await this.$store.dispatch('error', error);
         });
     }
+
     async updateUser(user: UserDTO): Promise<void> {
         await this.$store.dispatch('loading');
         try {
