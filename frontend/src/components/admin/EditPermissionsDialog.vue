@@ -48,7 +48,6 @@
                         chips
                         outlined
                         small-chips
-                        menu-props="auto"
                         label="Cenote Blacklist"
                         multiple
                     ></v-autocomplete>
@@ -63,7 +62,7 @@
                     color="blue darken-1"
                     text
                     :disabled="!this.valid"
-                    @click="save()"
+                    @click="save(), saveLists()"
                 >
                     Save
                 </v-btn>
@@ -85,7 +84,6 @@ interface CenoteData {
 @Component({
     props: {
         user: UserDTO,
-        cenote: CenoteDTO,
     },
 })
 export default class EditPermissionsDialog extends Vue {
@@ -93,6 +91,9 @@ export default class EditPermissionsDialog extends Vue {
     cenoteBlackList: string[] = [];
     themeWhiteList: string[] = [];
     themeBlackList: string[] = [];
+
+    cenoteWhiteListCopy: string[] = [];
+    cenoteBlackListCopy: string[] = [];
 
     themes = [
         'LOCATION',
@@ -109,10 +110,11 @@ export default class EditPermissionsDialog extends Vue {
     ];
     dialog = false;
     valid = false;
+    saved = false;
     roles = Object.values(UserRole);
+    newUser = new UserDTO(this.$props.user);
 
     cenotes: CenoteDTO[] = [];
-
     filteredVariableBlackList() {
         return this.themes.filter((t) => {
             if (this.themeBlackList.length >= 0)
@@ -187,6 +189,7 @@ export default class EditPermissionsDialog extends Vue {
 
     created(): void {
         this.getCenotes();
+        
         if (this.$props.user.themesWhiteList) {
             this.themeWhiteList = this.$props.user.themesWhiteList;
         }
@@ -203,23 +206,27 @@ export default class EditPermissionsDialog extends Vue {
 
     save(): void {
         this.$props.user.themesWhiteList = this.themeWhiteList;
-
         this.$props.user.themesBlackList = this.themeBlackList;
+        this.cenoteWhiteListCopy = this.cenoteWhiteList;
+        this.cenoteBlackListCopy = this.cenoteBlackList;
+        this.$props.user.cenoteBlackList = this.cenoteBlackList.map((c) => {
+            return c.split(' ')[0];
+        });
 
-        this.$props.user.cenoteBlackList = this.cenoteBlackList;
-
-        this.$props.user.cenoteWhiteList = this.cenoteWhiteList;
-
-        // this.$props.user.cenoteBlackList = this.cenoteBlackList.map((c) => {
-        //     return c.split(' ')[0];
-        // });
-
-        // this.$props.user.cenoteWhiteList = this.cenoteWhiteList.map((c) => {
-        //     return c.split(' ')[0];
-        // });
+        this.$props.user.cenoteWhiteList = this.cenoteWhiteList.map((c) => {
+            return c.split(' ')[0];
+        });
 
         this.$emit('onSave');
+        this.saved = true;
         this.dialog = false;
+    }
+
+    saveLists(): void {
+        if (this.saved === true) {
+            this.$props.user.cenoteBlackList = this.cenoteBlackListCopy;
+            this.$props.user.cenoteWhiteList = this.cenoteWhiteListCopy;
+        }
     }
 }
 </script>

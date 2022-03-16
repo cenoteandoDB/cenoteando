@@ -109,6 +109,7 @@ export default class Users extends Vue {
             (u) => !this.filterRole.length || this.filterRole.includes(u.role),
         );
     }
+
     async created(): Promise<void> {
         await this.$store.dispatch('loading');
         (async () => {
@@ -133,6 +134,7 @@ export default class Users extends Vue {
         }
         await this.$store.dispatch('clearLoading');
     }
+
     async deleteUser(user: UserDTO): Promise<void> {
         await RemoteServices.deleteUser(user.id);
         this.users = this.users.filter((u) => u.id != user.id);
