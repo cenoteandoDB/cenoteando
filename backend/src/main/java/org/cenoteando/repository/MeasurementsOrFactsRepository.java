@@ -1,8 +1,10 @@
 package org.cenoteando.repository;
 
+import java.util.List;
+
 import com.arangodb.springframework.annotation.Query;
 import com.arangodb.springframework.repository.ArangoRepository;
-import java.util.List;
+
 import org.cenoteando.models.MeasurementOrFactBucket;
 import org.springframework.stereotype.Repository;
 

@@ -1,9 +1,11 @@
 package org.cenoteando.repository;
 
-import com.arangodb.springframework.annotation.Query;
-import com.arangodb.springframework.repository.ArangoRepository;
 import java.util.Date;
 import java.util.List;
+
+import com.arangodb.springframework.annotation.Query;
+import com.arangodb.springframework.repository.ArangoRepository;
+
 import org.cenoteando.models.Cenote;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +14,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CenotesRepository extends ArangoRepository<Cenote, String> {
     Cenote findByArangoId(String id);
+
+    @Query("FOR c IN #collection FILTER c._key == @key RETURN c")
+    Cenote findByKey(String key);
 
     @Query(
         "FOR c IN #collection COLLECT AGGREGATE m = MIN(c.createdAt) RETURN m"

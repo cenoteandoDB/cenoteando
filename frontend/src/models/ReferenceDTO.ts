@@ -1,7 +1,7 @@
 export default class ReferenceDTO {
     id!: string;
     authors!: string;
-    fileName!: string;
+    hasFile!: boolean;
     reference!: string;
     shortName!: string;
     type!: string;
@@ -11,7 +11,7 @@ export default class ReferenceDTO {
         if (jsonObj) {
             this.id = jsonObj.id;
             this.authors = jsonObj.authors;
-            this.fileName = jsonObj.fileName;
+            this.hasFile = jsonObj.hasFile;
             this.reference = jsonObj.reference;
             this.shortName = jsonObj.shortName;
             this.type = jsonObj.type;

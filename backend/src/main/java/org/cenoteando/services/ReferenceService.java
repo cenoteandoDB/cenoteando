@@ -1,10 +1,10 @@
 package org.cenoteando.services;
 
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.cenoteando.models.Reference;
 import org.cenoteando.repository.ReferenceRepository;
 import org.json.CDL;
@@ -31,7 +31,7 @@ public class ReferenceService {
     }
 
     public Reference getReference(String id) {
-        return this.referenceRepository.findByArangoId("References/" + id);
+        return this.referenceRepository.findByKey(id);
     }
 
     public Reference createReference(Reference reference) throws Exception {
@@ -59,7 +59,7 @@ public class ReferenceService {
         }
     }
 
-    public String toCsv() throws IOException {
+    public String toCsv() {
         Iterable<Reference> data = referenceRepository.findAll();
 
         JSONArray objs = new JSONArray();
@@ -72,7 +72,7 @@ public class ReferenceService {
     }
 
     public List<String> fromCsv(MultipartFile multipartfile) throws Exception {
-        Reader file_reader = new InputStreamReader(
+        Reader fileReader = new InputStreamReader(
             multipartfile.getInputStream()
         );
 
@@ -80,14 +80,15 @@ public class ReferenceService {
 
         try (
             ICsvBeanReader reader = new CsvBeanReader(
-                file_reader,
+                fileReader,
                 CsvPreference.STANDARD_PREFERENCE
             )
         ) {
             final String[] header = reader.getHeader(true);
             final CellProcessor[] processors = Reference.getProcessors();
 
-            Reference ref, oldRef;
+            Reference ref;
+            Reference oldRef;
             while (
                 (ref = reader.read(Reference.class, header, processors)) != null
             ) {
@@ -104,5 +105,9 @@ public class ReferenceService {
         }
 
         return values;
+    }
+
+    public void unsetAllHasFile() {
+        referenceRepository.unsetAllHasFile();
     }
 }

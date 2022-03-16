@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.cenoteando.models.Cenote;
 import org.cenoteando.models.CommentBucket;
 import org.cenoteando.models.Gadm;
@@ -102,7 +103,7 @@ public class CenoteService {
     }
 
     public Cenote getCenote(String id) throws Exception {
-        Cenote cenote = cenoteRepository.findByArangoId("Cenotes/" + id);
+        Cenote cenote = cenoteRepository.findByKey(id);
         if (!hasReadAccess(id)) throw new Exception(
             "User forbidden to get cenote " + id
         );
@@ -224,7 +225,7 @@ public class CenoteService {
             .getAuthentication();
 
         if (auth instanceof AnonymousAuthenticationToken) {
-            Cenote cenote = cenoteRepository.findByArangoId("Cenotes/" + id);
+            Cenote cenote = cenoteRepository.findByKey(id);
             return cenote.getTouristic();
         }
 

@@ -93,6 +93,16 @@
                                 hint="Reference Type"
                                 persistent-hint
                             ></v-select>
+
+                            <v-select
+                                v-model="filterHasFile"
+                                :items="hasFile"
+                                label="Has File"
+                                multiple
+                                chips
+                                hint="Reference has file available for download"
+                                persistent-hint
+                            ></v-select>
                         </v-expansion-panel-content>
                     </v-expansion-panel>
                 </v-expansion-panels>
@@ -124,11 +134,7 @@
                         rel="noreferrer noopener"
                     >
                         <v-icon
-                            v-if="
-                                item.filename !== '' ||
-                                item.filename !== undefined ||
-                                item.filename !== null
-                            "
+                            v-if="item.hasFile == true"
                             v-model="item.id"
                             @click="downloadReference(item)"
                             data-cy="downloadButton"
@@ -169,7 +175,6 @@ export default class References extends Vue {
         { text: 'Actions', value: 'action' },
     ];
     types = [
-        '',
         'BOOK',
         'BOOK_CHAPTER',
         'JOURNAL',
@@ -178,15 +183,22 @@ export default class References extends Vue {
         'THESIS',
         'WEBPAGE',
     ];
+    hasFile = [true, false];
     item = [];
     search = '';
     newReference = new ReferenceDTO();
     references: ReferenceDTO[] = [];
     filterType: string[] = [];
+    filterHasFile: boolean[] = [];
 
     get filteredReferences(): ReferenceDTO[] {
         return this.references.filter(
             (r) => !this.filterType.length || this.filterType.includes(r.type),
+        )
+        .filter(
+            (r) =>
+                !this.filterHasFile.length ||
+                this.filterHasFile.includes(r.hasFile),
         );
     }
 
