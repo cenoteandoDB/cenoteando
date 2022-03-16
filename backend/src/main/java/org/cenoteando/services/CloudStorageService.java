@@ -1,16 +1,14 @@
 package org.cenoteando.services;
 
+import com.google.api.gax.paging.Page;
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import com.google.api.gax.paging.Page;
-import com.google.cloud.storage.Blob;
-import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.StorageOptions;
-
 import org.cenoteando.models.Reference;
 import org.cenoteando.repository.ReferenceRepository;
 import org.slf4j.Logger;
@@ -28,7 +26,9 @@ public class CloudStorageService {
 
     private Storage storage = StorageOptions.getDefaultInstance().getService();
 
-    private final Logger log = LoggerFactory.getLogger(CloudStorageService.class);
+    private final Logger log = LoggerFactory.getLogger(
+        CloudStorageService.class
+    );
 
     @Value("${gcs.bucket-name}")
     private String bucketName;
@@ -80,9 +80,8 @@ public class CloudStorageService {
         return blob.next();
     }
 
-    @Scheduled(cron="0 0 0 * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     public void batchUpdateReferenceMetadata() throws Exception {
-        
         Page<Blob> blobs = storage.list(
             bucketName,
             Storage.BlobListOption.prefix("references/"),
@@ -92,20 +91,20 @@ public class CloudStorageService {
         referenceRepository.unsetAllHasFile();
 
         for (Blob blob : blobs.iterateAll()) {
-        
             // Get reference id from blob
-            String id = blob.getBlobId().getName().split("/")[1].split("[.]")[0];
+            String id = blob
+                .getBlobId()
+                .getName()
+                .split("/")[1].split("[.]")[0];
 
             // Update reference to indicate file availability
             Reference ref = referenceRepository.findByKey(id);
-            if(ref != null) {
+            if (ref != null) {
                 ref.setHasFile(true);
                 referenceRepository.save(ref);
             } else {
                 log.error("Reference {} not found", id);
             }
-        
         }
-
     }
 }

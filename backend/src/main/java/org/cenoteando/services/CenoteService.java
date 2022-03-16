@@ -8,7 +8,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.cenoteando.models.Cenote;
 import org.cenoteando.models.CommentBucket;
 import org.cenoteando.models.Gadm;

@@ -192,14 +192,16 @@ export default class References extends Vue {
     filterHasFile: boolean[] = [];
 
     get filteredReferences(): ReferenceDTO[] {
-        return this.references.filter(
-            (r) => !this.filterType.length || this.filterType.includes(r.type),
-        )
-        .filter(
-            (r) =>
-                !this.filterHasFile.length ||
-                this.filterHasFile.includes(r.hasFile),
-        );
+        return this.references
+            .filter(
+                (r) =>
+                    !this.filterType.length || this.filterType.includes(r.type),
+            )
+            .filter(
+                (r) =>
+                    !this.filterHasFile.length ||
+                    this.filterHasFile.includes(r.hasFile),
+            );
     }
 
     async created(): Promise<void> {

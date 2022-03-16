@@ -1,7 +1,6 @@
 package org.cenoteando;
 
 import java.util.Optional;
-
 import org.cenoteando.models.User;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -16,8 +15,7 @@ public class AuditorProvider implements AuditorAware<User> {
             .getContext()
             .getAuthentication();
         if (
-            auth == null ||
-            auth instanceof AnonymousAuthenticationToken
+            auth == null || auth instanceof AnonymousAuthenticationToken
         ) return Optional.empty();
         User user = (User) auth.getPrincipal();
         return Optional.of(user);

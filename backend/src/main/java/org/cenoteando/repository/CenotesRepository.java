@@ -1,11 +1,9 @@
 package org.cenoteando.repository;
 
-import java.util.Date;
-import java.util.List;
-
 import com.arangodb.springframework.annotation.Query;
 import com.arangodb.springframework.repository.ArangoRepository;
-
+import java.util.Date;
+import java.util.List;
 import org.cenoteando.models.Cenote;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

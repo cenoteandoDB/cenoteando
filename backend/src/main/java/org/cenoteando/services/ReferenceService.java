@@ -4,7 +4,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.cenoteando.models.Reference;
 import org.cenoteando.repository.ReferenceRepository;
 import org.json.CDL;
