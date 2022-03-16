@@ -1,9 +1,11 @@
 package org.cenoteando.controllers;
 
-import com.google.cloud.storage.Blob;
-import java.io.IOException;
 import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
+
+import com.google.cloud.storage.Blob;
+
 import org.cenoteando.models.Reference;
 import org.cenoteando.services.CloudStorageService;
 import org.cenoteando.services.ReferenceService;
@@ -75,8 +77,7 @@ public class ReferenceController {
 
     @GetMapping("/csv")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String toCsv(HttpServletResponse response)
-        throws IOException, IllegalAccessException {
+    public String toCsv(HttpServletResponse response) {
         response.setContentType("text/csv");
         response.setHeader(
             "Content-Disposition",

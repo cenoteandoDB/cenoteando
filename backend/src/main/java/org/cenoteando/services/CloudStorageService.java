@@ -1,14 +1,16 @@
 package org.cenoteando.services;
 
-import com.google.api.gax.paging.Page;
-import com.google.cloud.storage.Blob;
-import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.StorageOptions;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import com.google.api.gax.paging.Page;
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
+
 import org.cenoteando.models.Reference;
 import org.cenoteando.repository.ReferenceRepository;
 import org.slf4j.Logger;
@@ -81,7 +83,7 @@ public class CloudStorageService {
     }
 
     @Scheduled(cron = "0 0 0 * * *")
-    public void batchUpdateReferenceMetadata() throws Exception {
+    public void batchUpdateReferenceMetadata() {
         Page<Blob> blobs = storage.list(
             bucketName,
             Storage.BlobListOption.prefix("references/"),
