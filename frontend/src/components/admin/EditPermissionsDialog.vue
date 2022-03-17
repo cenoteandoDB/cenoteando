@@ -79,6 +79,7 @@ import { Component, Vue } from 'vue-property-decorator';
 @Component({
     props: {
         user: UserDTO,
+        cenote: [],
     },
 })
 export default class EditPermissionsDialog extends Vue {
@@ -103,7 +104,6 @@ export default class EditPermissionsDialog extends Vue {
     dialog = false;
     valid = false;
     roles = Object.values(UserRole);
-    cenotes: CenoteDTO[] = [];
 
     cenoteToDisplay(cenote: CenoteDTO): string {
         return cenote.id + ' - ' + cenote.name;
@@ -126,19 +126,19 @@ export default class EditPermissionsDialog extends Vue {
     }
 
     filteredCenoteBlackList(): string[] {
-        return this.cenotes.map(this.cenoteToDisplay).filter((c: string) => {
+        return this.$props.cenote.map(this.cenoteToDisplay).filter((c: string) => {
             return !this.cenoteWhiteList.includes(c);
         });
     }
 
     filteredCenoteWhiteList(): string[] {
-        return this.cenotes.map(this.cenoteToDisplay).filter((c: string) => {
+        return this.$props.cenote.map(this.cenoteToDisplay).filter((c: string) => {
             return !this.cenoteBlackList.includes(c);
         });
     }
 
     cenoteIdToDisplay(id: string): string {
-        for (var cenote of this.cenotes) {
+        for (var cenote of this.$props.cenote) {
             if (cenote.id == id) return this.cenoteToDisplay(cenote);
         }
         return id + ' - Not Found';
@@ -149,7 +149,7 @@ export default class EditPermissionsDialog extends Vue {
         try {
             let generator = RemoteServices.cenotesGenerator(30);
             for await (let batch of generator) {
-                this.cenotes.push(...batch);
+                this.$props.cenote.push(...batch);
             }
         } catch (error) {
             await this.$store.dispatch('error', error);
@@ -158,7 +158,6 @@ export default class EditPermissionsDialog extends Vue {
     }
 
     async created(): Promise<void> {
-        await this.getCenotes();
 
         if (this.$props.user.themesWhiteList) {
             this.themeWhiteList = this.$props.user.themesWhiteList;
@@ -184,7 +183,7 @@ export default class EditPermissionsDialog extends Vue {
         this.$props.user.cenoteWhiteList = this.cenoteWhiteList.map(
             this.cenoteDisplayToId,
         );
-        this.$props.user.cenoteWhiteList = this.cenoteWhiteList.map(
+        this.$props.user.cenoteBlackList = this.cenoteBlackList.map(
             this.cenoteDisplayToId,
         );
 

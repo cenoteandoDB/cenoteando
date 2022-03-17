@@ -54,6 +54,7 @@
                 <delete-dialog @onConfirm="deleteUser(item)" />
                 <edit-permissions-dialog
                     :user="item"
+                    :cenote="cenotes"
                     @onSave="updateUser(item)"
                 >
                     <template v-slot:activator="{ on, attrs }">
@@ -81,6 +82,7 @@ import DeleteDialog from '@/components/admin/DeleteDialog.vue';
 import EditPermissionsDialog from '@/components/admin/EditPermissionsDialog.vue';
 import EditUserDialog from '@/components/admin/EditUserDialog.vue';
 import UserDTO from '@/models/UserDTO';
+import CenoteDTO from '@/models/CenoteDTO';
 import RemoteServices from '@/services/RemoteServices';
 import { Component, Vue } from 'vue-property-decorator';
 
@@ -103,6 +105,7 @@ export default class Users extends Vue {
     search = '';
     filterRole: string[] = [];
     users: UserDTO[] = [];
+    cenotes: CenoteDTO[] = [];
 
     get filteredUsers(): UserDTO[] {
         return this.users.filter(
@@ -117,8 +120,22 @@ export default class Users extends Vue {
         }
     }
 
+    async getCenotes(): Promise<void> {
+        await this.$store.dispatch('loading');
+        try {
+            let generator = RemoteServices.cenotesGenerator(30);
+            for await (let batch of generator) {
+                this.cenotes.push(...batch);
+            }
+        } catch (error) {
+            await this.$store.dispatch('error', error);
+        }
+        await this.$store.dispatch('clearLoading');
+    }
+
     async created(): Promise<void> {
         await this.$store.dispatch('loading');
+        await this.getCenotes();
         await this.getUsers().catch(async (error) => {
             await this.$store.dispatch('error', error);
         });
