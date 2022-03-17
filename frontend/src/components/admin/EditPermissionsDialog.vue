@@ -62,7 +62,7 @@
                     color="blue darken-1"
                     text
                     :disabled="!this.valid"
-                    @click="save(), saveLists()"
+                    @click="save()"
                 >
                     Save
                 </v-btn>
@@ -76,11 +76,6 @@ import UserDTO, { UserRole } from '@/models/UserDTO';
 import RemoteServices from '@/services/RemoteServices';
 import { Component, Vue } from 'vue-property-decorator';
 
-interface CenoteData {
-    id: string;
-    name: string;
-}
-
 @Component({
     props: {
         user: UserDTO,
@@ -91,9 +86,6 @@ export default class EditPermissionsDialog extends Vue {
     cenoteBlackList: string[] = [];
     themeWhiteList: string[] = [];
     themeBlackList: string[] = [];
-
-    cenoteWhiteListCopy: string[] = [];
-    cenoteBlackListCopy: string[] = [];
 
     themes = [
         'LOCATION',
@@ -110,86 +102,64 @@ export default class EditPermissionsDialog extends Vue {
     ];
     dialog = false;
     valid = false;
-    saved = false;
     roles = Object.values(UserRole);
-    newUser = new UserDTO(this.$props.user);
-
     cenotes: CenoteDTO[] = [];
-    filteredVariableBlackList() {
+
+    cenoteToDisplay(cenote: CenoteDTO): string {
+        return cenote.id + ' - ' + cenote.name;
+    }
+
+    cenoteDisplayToId(display: string): string {
+        return display.split(' - ')[0];
+    }
+
+    filteredVariableBlackList(): string[] {
         return this.themes.filter((t) => {
-            if (this.themeBlackList.length >= 0)
-                return !this.themeWhiteList.includes(t);
-            else {
-                return t;
-            }
+            return !this.themeWhiteList.includes(t);
         });
     }
 
-    filteredVariableWhiteList() {
+    filteredVariableWhiteList(): string[] {
         return this.themes.filter((t) => {
-            if (this.themeWhiteList.length >= 0)
-                return !this.themeBlackList.includes(t);
-            else {
-                return t;
-            }
+            return !this.themeBlackList.includes(t);
         });
     }
 
-    filteredCenoteBlackList() {
-        var cenoteNameId = this.cenoteNames.map((c) => {
-            return c.id + ' - ' + c.name;
-        });
-
-        return cenoteNameId.filter((c) => {
-            if (this.cenoteBlackList.length >= 0) {
-                return !this.cenoteWhiteList.includes(c);
-            } else {
-                return c;
-            }
+    filteredCenoteBlackList(): string[] {
+        return this.cenotes.map(this.cenoteToDisplay).filter((c: string) => {
+            return !this.cenoteWhiteList.includes(c);
         });
     }
 
-    filteredCenoteWhiteList() {
-        var cenoteNameId = this.cenoteNames.map((c) => {
-            return c.id + ' - ' + c.name;
-        });
-
-        return cenoteNameId.filter((c) => {
-            if (this.cenoteWhiteList.length >= 0) {
-                return !this.cenoteBlackList.includes(c);
-            } else {
-                return c;
-            }
+    filteredCenoteWhiteList(): string[] {
+        return this.cenotes.map(this.cenoteToDisplay).filter((c: string) => {
+            return !this.cenoteBlackList.includes(c);
         });
     }
 
-    get cenoteNames(): CenoteData[] {
-        return this.cenotes.map((c) => {
-            return {
-                id: c.id.toString(),
-                name: c.name,
-            };
-        });
+    cenoteIdToDisplay(id: string): string {
+        for (var cenote of this.cenotes) {
+            if (cenote.id == id) return this.cenoteToDisplay(cenote);
+        }
+        return id + ' - Not Found';
     }
 
     async getCenotes(): Promise<void> {
         await this.$store.dispatch('loading');
-
-        (async () => {
+        try {
             let generator = RemoteServices.cenotesGenerator(30);
             for await (let batch of generator) {
-                if (!this.cenotes.length)
-                    await this.$store.dispatch('clearLoading');
                 this.cenotes.push(...batch);
             }
-        })().catch(async (error) => {
+        } catch (error) {
             await this.$store.dispatch('error', error);
-        });
+        }
+        await this.$store.dispatch('clearLoading');
     }
 
-    created(): void {
-        this.getCenotes();
-        
+    async created(): Promise<void> {
+        await this.getCenotes();
+
         if (this.$props.user.themesWhiteList) {
             this.themeWhiteList = this.$props.user.themesWhiteList;
         }
@@ -197,36 +167,29 @@ export default class EditPermissionsDialog extends Vue {
             this.themeBlackList = this.$props.user.themesBlackList;
         }
         if (this.$props.user.cenoteWhiteList) {
-            this.cenoteWhiteList = this.$props.user.cenoteWhiteList;
+            this.cenoteWhiteList = this.$props.user.cenoteWhiteList.map(
+                this.cenoteIdToDisplay,
+            );
         }
         if (this.$props.user.cenoteBlackList) {
-            this.cenoteBlackList = this.$props.user.cenoteBlackList;
+            this.cenoteBlackList = this.$props.user.cenoteBlackList.map(
+                this.cenoteIdToDisplay,
+            );
         }
     }
 
     save(): void {
         this.$props.user.themesWhiteList = this.themeWhiteList;
         this.$props.user.themesBlackList = this.themeBlackList;
-        this.cenoteWhiteListCopy = this.cenoteWhiteList;
-        this.cenoteBlackListCopy = this.cenoteBlackList;
-        this.$props.user.cenoteBlackList = this.cenoteBlackList.map((c) => {
-            return c.split(' ')[0];
-        });
-
-        this.$props.user.cenoteWhiteList = this.cenoteWhiteList.map((c) => {
-            return c.split(' ')[0];
-        });
+        this.$props.user.cenoteWhiteList = this.cenoteWhiteList.map(
+            this.cenoteDisplayToId,
+        );
+        this.$props.user.cenoteWhiteList = this.cenoteWhiteList.map(
+            this.cenoteDisplayToId,
+        );
 
         this.$emit('onSave');
-        this.saved = true;
         this.dialog = false;
-    }
-
-    saveLists(): void {
-        if (this.saved === true) {
-            this.$props.user.cenoteBlackList = this.cenoteBlackListCopy;
-            this.$props.user.cenoteWhiteList = this.cenoteWhiteListCopy;
-        }
     }
 }
 </script>

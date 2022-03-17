@@ -81,9 +81,9 @@ import DeleteDialog from '@/components/admin/DeleteDialog.vue';
 import EditPermissionsDialog from '@/components/admin/EditPermissionsDialog.vue';
 import EditUserDialog from '@/components/admin/EditUserDialog.vue';
 import UserDTO from '@/models/UserDTO';
-import CenoteDTO from '@/models/CenoteDTO';
 import RemoteServices from '@/services/RemoteServices';
 import { Component, Vue } from 'vue-property-decorator';
+
 @Component({
     components: {
         EditUserDialog,
@@ -103,25 +103,26 @@ export default class Users extends Vue {
     search = '';
     filterRole: string[] = [];
     users: UserDTO[] = [];
-    cenotes: CenoteDTO[] = [];
+
     get filteredUsers(): UserDTO[] {
         return this.users.filter(
             (u) => !this.filterRole.length || this.filterRole.includes(u.role),
         );
     }
 
+    async getUsers(): Promise<void> {
+        let generator = RemoteServices.usersGenerator(15);
+        for await (let batch of generator) {
+            this.users.push(...batch);
+        }
+    }
+
     async created(): Promise<void> {
         await this.$store.dispatch('loading');
-        (async () => {
-            let generator = RemoteServices.usersGenerator(15);
-            for await (let batch of generator) {
-                if (!this.users.length)
-                    await this.$store.dispatch('clearLoading');
-                this.users.push(...batch);
-            }
-        })().catch(async (error) => {
+        await this.getUsers().catch(async (error) => {
             await this.$store.dispatch('error', error);
         });
+        await this.$store.dispatch('clearLoading');
     }
 
     async updateUser(user: UserDTO): Promise<void> {

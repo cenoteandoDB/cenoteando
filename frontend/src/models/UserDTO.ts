@@ -27,5 +27,4 @@ export default class UserDTO {
             this.cenoteBlackList = jsonObj.cenoteBlackList;
         }
     }
-
 }
