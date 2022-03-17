@@ -49,7 +49,7 @@ public class CenoteandoPermissionEvaluator implements PermissionEvaluator {
                         .contains(id);
                     return false;
                 case "CENOTE.DELETE":
-                    cenote = cenotesRepository.findByArangoId("Cenotes/" + id);
+                    cenote = cenotesRepository.findByKey(id);
                     if (
                         user.getRole() == RESEARCHER ||
                         user.getRole() == CENOTERO_ADVANCED

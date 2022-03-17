@@ -32,11 +32,13 @@ public class Reference {
     private String arangoId;
 
     private String authors;
-    private String fileName;
+    private String shortName;
     private String reference;
 
     private Type type;
     private String year;
+
+    private boolean hasFile;
 
     @CreatedDate
     @PersistentIndexed
@@ -49,16 +51,17 @@ public class Reference {
 
     public Reference(
         String authors,
-        String fileName,
+        String shortName,
         String reference,
         Type type,
         String year
     ) {
         this.authors = authors;
-        this.fileName = fileName;
-        this.type = type;
+        this.shortName = shortName;
         this.reference = reference;
+        this.type = type;
         this.year = year;
+        this.hasFile = false;
     }
 
     public void setId(String id) {
@@ -85,12 +88,12 @@ public class Reference {
         this.authors = authors;
     }
 
-    public String getFileName() {
-        return fileName;
+    public String getShortName() {
+        return shortName;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 
     public String getReference() {
@@ -121,6 +124,14 @@ public class Reference {
         this.year = year;
     }
 
+    public boolean getHasFile() {
+        return hasFile;
+    }
+
+    public void setHasFile(boolean hasFile) {
+        this.hasFile = hasFile;
+    }
+
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -131,10 +142,11 @@ public class Reference {
 
     public void merge(Reference ref) {
         authors = ref.getAuthors();
-        fileName = ref.getFileName();
+        shortName = ref.getShortName();
         reference = ref.getReference();
         year = ref.getYear();
         type = ref.getType();
+        hasFile = ref.getHasFile();
     }
 
     public boolean validate() {
@@ -148,7 +160,7 @@ public class Reference {
 
     public static JSONArray getHeaders() {
         return new JSONArray(
-            "['id', 'authors', 'fileName', 'reference', 'year']"
+            "['id', 'authors', 'shortName', 'reference', 'year', 'hasFile']"
         );
     }
 
@@ -156,9 +168,10 @@ public class Reference {
         return new CellProcessor[] {
             new NotNull(), // id
             new NotNull(), // authors
-            new Optional(), // fileName
+            new Optional(), // shortName
             new NotNull(), // reference
             new Optional(), // year
+            new Optional(), // hasFile
         };
     }
 }

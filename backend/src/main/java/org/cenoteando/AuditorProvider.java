@@ -15,7 +15,7 @@ public class AuditorProvider implements AuditorAware<User> {
             .getContext()
             .getAuthentication();
         if (
-            auth instanceof AnonymousAuthenticationToken
+            auth == null || auth instanceof AnonymousAuthenticationToken
         ) return Optional.empty();
         User user = (User) auth.getPrincipal();
         return Optional.of(user);

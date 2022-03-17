@@ -27,7 +27,7 @@ public interface GadmRepository extends ArangoRepository<Gadm, String> {
     Iterable<Gadm> getMunicipalities();
 
     @Query(
-        "FOR g IN Gadm FILTER g.properties.TYPE_2 GEO_CONTAINS(g.geometry, @geometry) RETURN g"
+        "FOR g IN Gadm FILTER g.properties.TYPE_2 AND GEO_CONTAINS(g.geometry, @geometry) RETURN g"
     )
     Gadm findGadm(GeoJsonPoint geometry);
 }

@@ -13,13 +13,14 @@ import org.cenoteando.models.CenoteGeoJSON;
 
 public class CsvImportExport {
 
+    private CsvImportExport() {}
+
     public static List<String> stringToList(String value) {
         if (value == null || value.equals("[]")) return new ArrayList<>();
         value = value.substring(1, value.length() - 1);
         String[] values = value.split(",");
 
-        List<String> list = new ArrayList<>(Arrays.asList(values));
-        return list;
+        return new ArrayList<>(Arrays.asList(values));
     }
 
     public static class CenoteGeoJsonDeserialize
@@ -34,9 +35,9 @@ public class CsvImportExport {
             JsonNode type = rootNode.get("type");
             JsonNode geometry = rootNode.get("geometry");
             JsonNode coordinates = geometry.get("coordinates");
-            String gson_type = geometry.get("type").asText();
+            String gsonType = geometry.get("type").asText();
 
-            if (gson_type.equals("Point")) {
+            if (gsonType.equals("Point")) {
                 GeoJsonPoint point = new GeoJsonPoint(
                     coordinates.get(0).asDouble(),
                     coordinates.get(1).asDouble()

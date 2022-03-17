@@ -93,6 +93,16 @@
                                 hint="Reference Type"
                                 persistent-hint
                             ></v-select>
+
+                            <v-select
+                                v-model="filterHasFile"
+                                :items="hasFile"
+                                label="Has File"
+                                multiple
+                                chips
+                                hint="Reference has file available for download"
+                                persistent-hint
+                            ></v-select>
                         </v-expansion-panel-content>
                     </v-expansion-panel>
                 </v-expansion-panels>
@@ -118,19 +128,21 @@
 
                     <delete-dialog @onConfirm="deleteReference(item)" />
 
-                    <v-icon
-                        v-if="
-                            item.filename !== '' ||
-                            item.filename !== undefined ||
-                            item.filename !== null
-                        "
-                        v-model="item.id"
-                        @click="downloadReference(item)"
-                        data-cy="downloadButton"
-                        fab
-                        color="primary"
-                        >mdi-download</v-icon
+                    <a
+                        :href="`/api/references/${item.id}/download`"
+                        target="_blank"
+                        rel="noreferrer noopener"
                     >
+                        <v-icon
+                            v-if="item.hasFile == true"
+                            v-model="item.id"
+                            @click="downloadReference(item)"
+                            data-cy="downloadButton"
+                            fab
+                            color="primary"
+                            >mdi-download</v-icon
+                        >
+                    </a>
                 </v-container>
             </template>
         </v-data-table>
@@ -163,7 +175,6 @@ export default class References extends Vue {
         { text: 'Actions', value: 'action' },
     ];
     types = [
-        '',
         'BOOK',
         'BOOK_CHAPTER',
         'JOURNAL',
@@ -172,16 +183,25 @@ export default class References extends Vue {
         'THESIS',
         'WEBPAGE',
     ];
+    hasFile = [true, false];
     item = [];
     search = '';
     newReference = new ReferenceDTO();
     references: ReferenceDTO[] = [];
     filterType: string[] = [];
+    filterHasFile: boolean[] = [];
 
     get filteredReferences(): ReferenceDTO[] {
-        return this.references.filter(
-            (r) => !this.filterType.length || this.filterType.includes(r.type),
-        );
+        return this.references
+            .filter(
+                (r) =>
+                    !this.filterType.length || this.filterType.includes(r.type),
+            )
+            .filter(
+                (r) =>
+                    !this.filterHasFile.length ||
+                    this.filterHasFile.includes(r.hasFile),
+            );
     }
 
     async created(): Promise<void> {
@@ -244,21 +264,6 @@ export default class References extends Vue {
         await this.$store.dispatch('clearLoading');
     }
 
-    async downloadReference(reference: ReferenceDTO): Promise<void> {
-        await this.$store.dispatch('loading');
-
-        try {
-            const csv = await RemoteServices.referencesToCsvSingle(
-                reference.id,
-            );
-
-            FileService.download(csv, 'references.csv', 'text/csv');
-        } catch (error) {
-            await this.$store.dispatch('error', error);
-        }
-
-        await this.$store.dispatch('clearLoading');
-    }
     selectFiles(files: File[]): void {
         this.uploadProgress = 0;
         this.files = files;

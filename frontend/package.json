@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --fix",
-    "build": "VUE_APP_ROOT_API=https://cenoteando.org NODE_ENV=production vue-cli-service build --mode production",
+    "build": "NODE_ENV=production vue-cli-service build --mode production",
     "build:dev": "NODE_ENV=development vue-cli-service build --mode development",
     "lint": "vue-cli-service lint",
     "prettier": "prettier --config .prettierrc --write \"**/**/*.{ts,js,css,scss,vue}\"",

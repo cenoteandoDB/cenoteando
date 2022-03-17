@@ -23,11 +23,10 @@
     <img src="https://img.shields.io/librariesio/github/CenoteandoDB/cenoteando" alt="Frontend Dependencies">
   </a>
 </p>
-<p align="center">
-  <a href="https://actions-badge.atrox.dev/cenoteandoDB/cenoteando/goto?ref=main">
-    <img alt="Build Status" src="https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2FcenoteandoDB%2Fcenoteando%2Fbadge%3Fref%3Dmain&style=flat" />
-  </a>
-</p>
+
+Backend: [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cenoteandodb_backend&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cenoteandodb_backend)
+
+Frontend: [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cenoteandodb_frontend&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cenoteandodb_frontend)
 
 <div align="center">
   <img align="center" src="https://cenoteando.org/img/icons/android-chrome-192x192.png" alt="Cenoteando" width="192">

@@ -13,6 +13,9 @@ import org.springframework.stereotype.Repository;
 public interface CenotesRepository extends ArangoRepository<Cenote, String> {
     Cenote findByArangoId(String id);
 
+    @Query("FOR c IN #collection FILTER c._key == @key RETURN c")
+    Cenote findByKey(String key);
+
     @Query(
         "FOR c IN #collection COLLECT AGGREGATE m = MIN(c.createdAt) RETURN m"
     )
