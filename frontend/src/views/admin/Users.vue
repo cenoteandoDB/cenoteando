@@ -103,6 +103,7 @@ export default class Users extends Vue {
     ];
     roles = ['ADMIN', 'RESEARCHER', 'CENOTERO_ADVANCED', 'CENOTERO_BASIC'];
     search = '';
+    flag = false; //This flag will be used to get the User and Cenote data and only load the editPermissions dialog after the view gets all the data
     filterRole: string[] = [];
     users: UserDTO[] = [];
     cenotes: CenoteDTO[] = [];
@@ -135,11 +136,14 @@ export default class Users extends Vue {
 
     async created(): Promise<void> {
         await this.$store.dispatch('loading');
+        
         await this.getCenotes();
+        
         await this.getUsers().catch(async (error) => {
             await this.$store.dispatch('error', error);
         });
         await this.$store.dispatch('clearLoading');
+
     }
 
     async updateUser(user: UserDTO): Promise<void> {

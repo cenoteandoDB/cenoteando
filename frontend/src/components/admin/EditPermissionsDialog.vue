@@ -14,9 +14,8 @@
                         :items="filteredVariableWhiteList()"
                         multiple
                         chips
-                        outlined
                         small-chips
-                        dense
+                        outlined
                         label="Variable Whitelist"
                     ></v-select>
                     <v-select
@@ -25,18 +24,16 @@
                         :items="filteredVariableBlackList()"
                         multiple
                         chips
-                        outlined
                         small-chips
-                        dense
+                        outlined
                         label="Variable Blacklist"
                     ></v-select>
                     <v-autocomplete
                         v-model="cenoteWhiteList"
                         :items="filteredCenoteWhiteList()"
-                        dense
                         chips
-                        outlined
                         small-chips
+                        outlined
                         label="Cenote Whitelist"
                         multiple
                     ></v-autocomplete>
@@ -44,10 +41,9 @@
                         v-if="user.role === 'CENOTERO_ADVANCED'"
                         v-model="cenoteBlackList"
                         :items="filteredCenoteBlackList()"
-                        dense
                         chips
-                        outlined
                         small-chips
+                        outlined
                         label="Cenote Blacklist"
                         multiple
                     ></v-autocomplete>
@@ -126,15 +122,19 @@ export default class EditPermissionsDialog extends Vue {
     }
 
     filteredCenoteBlackList(): string[] {
-        return this.$props.cenote.map(this.cenoteToDisplay).filter((c: string) => {
-            return !this.cenoteWhiteList.includes(c);
-        });
+        return this.$props.cenote
+            .map(this.cenoteToDisplay)
+            .filter((c: string) => {
+                return !this.cenoteWhiteList.includes(c);
+            });
     }
 
     filteredCenoteWhiteList(): string[] {
-        return this.$props.cenote.map(this.cenoteToDisplay).filter((c: string) => {
-            return !this.cenoteBlackList.includes(c);
-        });
+        return this.$props.cenote
+            .map(this.cenoteToDisplay)
+            .filter((c: string) => {
+                return !this.cenoteBlackList.includes(c);
+            });
     }
 
     cenoteIdToDisplay(id: string): string {
@@ -158,7 +158,6 @@ export default class EditPermissionsDialog extends Vue {
     }
 
     async created(): Promise<void> {
-
         if (this.$props.user.themesWhiteList) {
             this.themeWhiteList = this.$props.user.themesWhiteList;
         }
