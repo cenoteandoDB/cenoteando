@@ -1,11 +1,15 @@
 package org.cenoteando.models;
 
+import java.time.Instant;
+
 public class MeasurementOrFact<T> {
 
-    private String timestamp;
+    private Instant timestamp;
     private T value;
 
-    public MeasurementOrFact(String timestamp, T value) {
+    public MeasurementOrFact(){}
+
+    public MeasurementOrFact(Instant timestamp, T value) {
         this.timestamp = timestamp;
         this.value = value;
     }
@@ -14,7 +18,7 @@ public class MeasurementOrFact<T> {
         return value;
     }
 
-    public String getTimestamp() {
+    public Instant getTimestamp() {
         return timestamp;
     }
 }

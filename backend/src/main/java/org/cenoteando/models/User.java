@@ -95,7 +95,6 @@ public class User {
         this.role = role;
     }
 
-    @JsonIgnore
     public List<String> getCenoteBlackList() {
         if (cenoteBlackList == null) return new ArrayList<>();
         return cenoteBlackList;
@@ -105,7 +104,6 @@ public class User {
         this.cenoteBlackList = cenoteBlackList;
     }
 
-    @JsonIgnore
     public List<String> getCenoteWhiteList() {
         if (cenoteWhiteList == null) return new ArrayList<>();
         return cenoteWhiteList;
@@ -115,7 +113,6 @@ public class User {
         this.cenoteWhiteList = cenoteWhiteList;
     }
 
-    @JsonIgnore
     public List<String> getThemesBlackList() {
         if (themesBlackList == null) return new ArrayList<>();
         return themesBlackList;
@@ -125,7 +122,6 @@ public class User {
         this.themesBlackList = themesBlackList;
     }
 
-    @JsonIgnore
     public List<String> getThemesWhiteList() {
         if (themesWhiteList == null) return new ArrayList<>();
         return themesWhiteList;

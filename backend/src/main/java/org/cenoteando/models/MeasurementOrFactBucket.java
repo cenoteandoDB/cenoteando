@@ -4,7 +4,12 @@ import com.arangodb.springframework.annotation.ArangoId;
 import com.arangodb.springframework.annotation.Edge;
 import com.arangodb.springframework.annotation.From;
 import com.arangodb.springframework.annotation.To;
+
+import java.time.Instant;
+import java.util.ArrayList;
+
 import java.util.List;
+
 import org.springframework.data.annotation.Id;
 
 @Edge("MeasurementsOrFacts")
@@ -17,16 +22,27 @@ public class MeasurementOrFactBucket<T> {
     private String arangoId;
 
     @From
-    private Variable _from;
+    private Variable variable;
 
     @To
-    private Cenote _to;
+    private Cenote cenote;
 
-    //TODO Date parse error
-    private String firstTimestamp;
-    private String lastTimestamp;
+    private Instant firstTimestamp;
+    private Instant lastTimestamp;
+
     private int count;
     private List<MeasurementOrFact<T>> measurements;
+
+    public MeasurementOrFactBucket(){}
+
+
+    public <T> MeasurementOrFactBucket(Cenote cenote, Variable variable){
+        this.variable = variable;
+        this.cenote = cenote;
+        this.measurements = new ArrayList<>();
+        this.count = 0;
+    }
+
 
     public String getId() {
         return id;
@@ -44,28 +60,40 @@ public class MeasurementOrFactBucket<T> {
         this.arangoId = arangoId;
     }
 
-    public String getFirstTimestamp() {
+    public Instant getFirstTimestamp() {
         return firstTimestamp;
     }
 
-    public void setFirstTimestamp(String firstTimestamp) {
-        this.firstTimestamp = firstTimestamp;
+    public void setFirstTimestamp(Instant firstTimestamp) {
+        if(this.firstTimestamp == null){
+            this.firstTimestamp = firstTimestamp;
+            return;
+        }
+
+        if(this.firstTimestamp.isAfter(firstTimestamp))
+            this.firstTimestamp = firstTimestamp;
     }
 
-    public String getLastTimestamp() {
+    public Instant getLastTimestamp() {
         return lastTimestamp;
     }
 
-    public void setLastTimestamp(String lastTimestamp) {
-        this.lastTimestamp = lastTimestamp;
+    public void setLastTimestamp(Instant lastTimestamp) {
+        if(this.lastTimestamp == null){
+            this.lastTimestamp = lastTimestamp;
+            return;
+        }
+
+        if(this.lastTimestamp.isBefore(lastTimestamp))
+            this.lastTimestamp = lastTimestamp;
     }
 
     public int getCount() {
         return count;
     }
 
-    public void setCount(int count) {
-        this.count = count;
+    public void increaseCount() {
+        count++;
     }
 
     public List<MeasurementOrFact<T>> getMeasurements() {
@@ -76,19 +104,19 @@ public class MeasurementOrFactBucket<T> {
         this.measurements = measurements;
     }
 
-    public String get_from() {
-        return _from.getArangoId();
+    public String getVariable() {
+        return variable.getArangoId();
     }
 
     public void setVariable(Variable variable) {
-        this._from = variable;
+        this.variable = variable;
     }
 
-    public String get_to() {
-        return _to.getArangoId();
+    public String getCenote() {
+        return cenote.getArangoId();
     }
 
-    public void set_to(Cenote cenote) {
-        this._to = cenote;
+    public void setCenote(Cenote cenote) {
+        this.cenote = cenote;
     }
 }

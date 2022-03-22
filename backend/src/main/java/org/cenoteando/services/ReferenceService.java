@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.cenoteando.models.Reference;
 import org.cenoteando.repository.ReferenceRepository;
+import org.cenoteando.utils.CsvImportExport;
 import org.json.CDL;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -61,21 +62,22 @@ public class ReferenceService {
     public String toCsv() {
         Iterable<Reference> data = referenceRepository.findAll();
 
-        JSONArray objs = new JSONArray();
+        StringBuilder sb = new StringBuilder();
         JSONArray names = Reference.getHeaders();
 
         for (Reference ref : data) {
-            objs.put(new JSONObject(ref));
+            JSONObject object = new JSONObject(ref);
+            sb.append(CsvImportExport.rowToString(object.toJSONArray(names)));
         }
-        return CDL.rowToString(names) + CDL.toString(names, objs);
+        return CDL.rowToString(names) + sb;
     }
 
-    public List<String> fromCsv(MultipartFile multipartfile) throws Exception {
+    public List<Reference> fromCsv(MultipartFile multipartfile) throws Exception {
         Reader fileReader = new InputStreamReader(
             multipartfile.getInputStream()
         );
 
-        ArrayList<String> values = new ArrayList<>();
+        ArrayList<Reference> values = new ArrayList<>();
 
         try (
             ICsvBeanReader reader = new CsvBeanReader(
@@ -97,8 +99,10 @@ public class ReferenceService {
                 if ((oldRef = getReference(ref.getId())) != null) {
                     oldRef.merge(ref);
                     referenceRepository.save(oldRef);
+                    values.add(oldRef);
                 } else {
                     referenceRepository.save(ref);
+                    values.add(ref);
                 }
             }
         }

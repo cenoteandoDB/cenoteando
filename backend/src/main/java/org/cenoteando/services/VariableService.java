@@ -1,5 +1,6 @@
 package org.cenoteando.services;
 
+import static org.cenoteando.models.Variable.AccessLevel.PUBLIC;
 import static org.cenoteando.models.Variable.AccessLevel.SENSITIVE;
 
 import java.io.IOException;
@@ -10,6 +11,7 @@ import java.util.List;
 import org.cenoteando.models.User;
 import org.cenoteando.models.Variable;
 import org.cenoteando.repository.VariablesRepository;
+import org.cenoteando.utils.CsvImportExport;
 import org.json.CDL;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -63,6 +65,7 @@ public class VariableService {
             case CENOTERO_ADVANCED:
                 if (
                     !user.getThemesBlackList().contains(theme)
+                        //TODO what about sensitive variables?
                 ) return variablesRepository.findByTheme(theme);
                 throw new Exception(
                     "User forbidden to get variable with theme " + theme
@@ -79,8 +82,12 @@ public class VariableService {
         }
     }
 
-    public Variable getVariable(String id) {
-        return variablesRepository.findByArangoId("Variables/" + id);
+    public Variable getVariable(String id) throws Exception {
+        Variable variable = variablesRepository.findByArangoId("Variables/" + id);
+        if (!hasReadAccess(id)) throw new Exception(
+            "User forbidden to get variable " + id
+        );
+        return variable;
     }
 
     public Variable createVariable(Variable variable) throws Exception {
@@ -111,15 +118,16 @@ public class VariableService {
     public String toCsv() throws IOException {
         Iterable<Variable> data = variablesRepository.findAll();
 
-        JSONArray objs = new JSONArray();
+        StringBuilder sb = new StringBuilder();
         JSONArray names = Variable.getHeaders();
         for (Variable variable : data) {
-            objs.put(new JSONObject(variable));
+            JSONObject object = new JSONObject(variable);
+            sb.append(CsvImportExport.rowToString(object.toJSONArray(names)));
         }
-        return CDL.rowToString(names) + CDL.toString(names, objs);
+        return CDL.rowToString(names) + sb;
     }
 
-    public List<String> fromCsv(MultipartFile multipartfile) throws Exception {
+    public List<Variable> fromCsv(MultipartFile multipartfile) throws Exception {
         Authentication auth = SecurityContextHolder
             .getContext()
             .getAuthentication();
@@ -129,7 +137,7 @@ public class VariableService {
             multipartfile.getInputStream()
         );
 
-        ArrayList<String> values = new ArrayList<>();
+        ArrayList<Variable> values = new ArrayList<>();
 
         try (
             ICsvBeanReader reader = new CsvBeanReader(
@@ -162,6 +170,7 @@ public class VariableService {
                     );
                     oldVariable.merge(variable);
                     variablesRepository.save(oldVariable);
+                    values.add(oldVariable);
                 } else {
                     if (
                         !hasCreateUpdateAccess(
@@ -173,6 +182,7 @@ public class VariableService {
                         variable.getId()
                     );
                     variablesRepository.save(variable);
+                    values.add(variable);
                 }
             }
         }
@@ -187,6 +197,36 @@ public class VariableService {
                 return true;
             case CENOTERO_ADVANCED:
                 return user.getCenoteWhiteList().contains(theme);
+            default:
+                return false;
+        }
+    }
+
+    public boolean hasReadAccess(String id) throws Exception {
+        Variable variable = getVariable(id);
+        if(variable == null)
+            return false;
+
+        Authentication auth = SecurityContextHolder
+                .getContext()
+                .getAuthentication();
+
+        if (auth instanceof AnonymousAuthenticationToken) {
+            return variable.getAccessLevel() == PUBLIC;
+        }
+
+        User user = (User) auth.getPrincipal();
+
+        switch (user.getRole()) {
+            case ADMIN:
+            case RESEARCHER:
+                if(variable.getAccessLevel() != SENSITIVE ||
+                        variable.isCreator(user))
+                return true;
+            case CENOTERO_ADVANCED:
+                return !user.getCenoteBlackList().contains(id);
+            case CENOTERO_BASIC:
+                return user.getCenoteWhiteList().contains(id);
             default:
                 return false;
         }

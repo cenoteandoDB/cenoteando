@@ -89,7 +89,7 @@ public class ReferenceController {
 
     @PostMapping("/csv")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public List<String> fromCsv(
+    public List<Reference> fromCsv(
         @RequestParam("file") MultipartFile multipartfile
     ) throws Exception {
         return referenceService.fromCsv(multipartfile);

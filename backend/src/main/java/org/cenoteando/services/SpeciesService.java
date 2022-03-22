@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.cenoteando.models.Species;
 import org.cenoteando.repository.SpeciesRepository;
+import org.cenoteando.utils.CsvImportExport;
 import org.json.CDL;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -69,22 +70,22 @@ public class SpeciesService {
     public String toCsv() throws IOException {
         Iterable<Species> data = speciesRepository.findAll();
 
-        JSONArray objs = new JSONArray();
+        StringBuilder sb = new StringBuilder();
         JSONArray names = Species.getHeaders();
-        JSONArray header = new JSONArray("['id', 'aphiaId', 'iNaturalistId']");
         for (Species species : data) {
-            objs.put(new JSONObject(species));
+            JSONObject object = new JSONObject(species);
+            sb.append(CsvImportExport.rowToString(object.toJSONArray(names)));
         }
-        return CDL.rowToString(header) + CDL.toString(names, objs);
+        return CDL.rowToString(names) + sb;
     }
 
-    public List<String> fromCsv(MultipartFile multipartfile)
+    public List<Species> fromCsv(MultipartFile multipartfile)
         throws Exception, IOException {
         Reader file_reader = new InputStreamReader(
             multipartfile.getInputStream()
         );
 
-        ArrayList<String> values = new ArrayList<>();
+        ArrayList<Species> values = new ArrayList<>();
 
         try (
             ICsvBeanReader reader = new CsvBeanReader(
@@ -108,8 +109,10 @@ public class SpeciesService {
                 if ((oldSpecies = getSpecies(species.getId())) != null) {
                     oldSpecies.merge(species);
                     speciesRepository.save(oldSpecies);
+                    values.add(oldSpecies);
                 } else {
                     speciesRepository.save(species);
+                    values.add(species);
                 }
             }
         }
