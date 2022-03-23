@@ -65,7 +65,7 @@ public class VariableService {
             case CENOTERO_ADVANCED:
                 if (
                     !user.getThemesBlackList().contains(theme)
-                        //TODO what about sensitive variables?
+                    //TODO what about sensitive variables?
                 ) return variablesRepository.findByTheme(theme);
                 throw new Exception(
                     "User forbidden to get variable with theme " + theme
@@ -83,7 +83,9 @@ public class VariableService {
     }
 
     public Variable getVariable(String id) throws Exception {
-        Variable variable = variablesRepository.findByArangoId("Variables/" + id);
+        Variable variable = variablesRepository.findByArangoId(
+            "Variables/" + id
+        );
         if (!hasReadAccess(id)) throw new Exception(
             "User forbidden to get variable " + id
         );
@@ -127,7 +129,8 @@ public class VariableService {
         return CDL.rowToString(names) + sb;
     }
 
-    public List<Variable> fromCsv(MultipartFile multipartfile) throws Exception {
+    public List<Variable> fromCsv(MultipartFile multipartfile)
+        throws Exception {
         Authentication auth = SecurityContextHolder
             .getContext()
             .getAuthentication();
@@ -204,12 +207,11 @@ public class VariableService {
 
     public boolean hasReadAccess(String id) throws Exception {
         Variable variable = getVariable(id);
-        if(variable == null)
-            return false;
+        if (variable == null) return false;
 
         Authentication auth = SecurityContextHolder
-                .getContext()
-                .getAuthentication();
+            .getContext()
+            .getAuthentication();
 
         if (auth instanceof AnonymousAuthenticationToken) {
             return variable.getAccessLevel() == PUBLIC;
@@ -220,9 +222,10 @@ public class VariableService {
         switch (user.getRole()) {
             case ADMIN:
             case RESEARCHER:
-                if(variable.getAccessLevel() != SENSITIVE ||
-                        variable.isCreator(user))
-                return true;
+                if (
+                    variable.getAccessLevel() != SENSITIVE ||
+                    variable.isCreator(user)
+                ) return true;
             case CENOTERO_ADVANCED:
                 return !user.getCenoteBlackList().contains(id);
             case CENOTERO_BASIC:

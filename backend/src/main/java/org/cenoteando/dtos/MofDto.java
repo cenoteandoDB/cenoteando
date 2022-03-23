@@ -1,18 +1,17 @@
 package org.cenoteando.dtos;
 
+import java.time.Instant;
 import org.supercsv.cellprocessor.constraint.NotNull;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 
-import java.time.Instant;
-
-
 public class MofDto {
+
     private String cenoteId;
     private String variableId;
     private Instant timestamp;
     private String value;
 
-    public MofDto(){}
+    public MofDto() {}
 
     public String getCenoteId() {
         return cenoteId;
@@ -48,10 +47,10 @@ public class MofDto {
 
     public static CellProcessor[] getProcessors() {
         return new CellProcessor[] {
-                new NotNull(), // cenoteId
-                new NotNull(), // variableId
-                new NotNull(), // timestamp
-                new NotNull(), // value
+            new NotNull(), // cenoteId
+            new NotNull(), // variableId
+            new NotNull(), // timestamp
+            new NotNull(), // value
         };
     }
 }

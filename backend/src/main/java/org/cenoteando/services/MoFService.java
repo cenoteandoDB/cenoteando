@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
 import org.cenoteando.dtos.MofDto;
 import org.cenoteando.dtos.VariableWithValuesDTO;
 import org.cenoteando.models.*;
@@ -93,14 +92,31 @@ public class MoFService {
         StringBuilder sb = new StringBuilder();
         sb.append("cenoteId,variableId,timestamp,value");
 
-
-        while(mofs.hasNext()){
+        while (mofs.hasNext()) {
             List<Object> mof = (List<Object>) mofs.next();
             String variableId = ((String) mof.get(0)).split("/")[1];
             String cenoteId = ((String) mof.get(1)).split("/")[1];
 
-            if( (checkedVariables.contains(variableId) || variableService.hasReadAccess(variableId)) && (checkedCenotes.contains(cenoteId) || cenoteService.hasReadAccess(cenoteId))){
-                sb.append("\n" + cenoteId + "," + variableId + "," + mof.get(2) + "," + mof.get(3));
+            if (
+                (
+                    checkedVariables.contains(variableId) ||
+                    variableService.hasReadAccess(variableId)
+                ) &&
+                (
+                    checkedCenotes.contains(cenoteId) ||
+                    cenoteService.hasReadAccess(cenoteId)
+                )
+            ) {
+                sb.append(
+                    "\n" +
+                    cenoteId +
+                    "," +
+                    variableId +
+                    "," +
+                    mof.get(2) +
+                    "," +
+                    mof.get(3)
+                );
                 checkedCenotes.add(cenoteId);
                 checkedVariables.add(variableId);
             }
@@ -110,18 +126,17 @@ public class MoFService {
     }
 
     public List<String> fromCsv(MultipartFile multipartfile) throws Exception {
-
         Reader file_reader = new InputStreamReader(
-                multipartfile.getInputStream()
+            multipartfile.getInputStream()
         );
 
         ArrayList<String> values = new ArrayList<>();
 
         try (
-                ICsvBeanReader reader = new CsvBeanReader(
-                        file_reader,
-                        CsvPreference.STANDARD_PREFERENCE
-                )
+            ICsvBeanReader reader = new CsvBeanReader(
+                file_reader,
+                CsvPreference.STANDARD_PREFERENCE
+            )
         ) {
             final String[] header = reader.getHeader(true);
             final CellProcessor[] processors = MofDto.getProcessors();
@@ -129,17 +144,32 @@ public class MoFService {
             MofDto mof;
             MeasurementOrFactBucket mofBucket, oldMofBucket;
             while (
-                    (mof = reader.read(MofDto.class, header, processors)) !=
-                            null
+                (mof = reader.read(MofDto.class, header, processors)) != null
             ) {
                 Cenote cenote = cenoteService.getCenote(mof.getCenoteId());
-                Variable variable = variableService.getVariable(mof.getVariableId());
+                Variable variable = variableService.getVariable(
+                    mof.getVariableId()
+                );
 
-                if(!cenoteService.hasReadAccess(cenote.getId()) || !variableService.hasReadAccess(variable.getId())){
-                    throw new Exception("User doesn't have permission to update Measurement or Fact");
+                if (
+                    !cenoteService.hasReadAccess(cenote.getId()) ||
+                    !variableService.hasReadAccess(variable.getId())
+                ) {
+                    throw new Exception(
+                        "User doesn't have permission to update Measurement or Fact"
+                    );
                 }
 
-                if ((oldMofBucket = measurementsOrFactsRepository.findMof(cenote.getArangoId(), variable.getArangoId())) != null) {
+                if (
+                    (
+                        oldMofBucket =
+                            measurementsOrFactsRepository.findMof(
+                                cenote.getArangoId(),
+                                variable.getArangoId()
+                            )
+                    ) !=
+                    null
+                ) {
                     this.addMoF(oldMofBucket, mof);
                 } else {
                     mofBucket = new MeasurementOrFactBucket(cenote, variable);
@@ -152,15 +182,18 @@ public class MoFService {
         return values;
     }
 
-    private void addMoF(MeasurementOrFactBucket mofBucket, MofDto mof) throws Exception {
+    private void addMoF(MeasurementOrFactBucket mofBucket, MofDto mof)
+        throws Exception {
         Variable variable = variableService.getVariable(mof.getVariableId());
 
-        MeasurementOrFact new_mof = new MeasurementOrFact(mof.getTimestamp(), mof.getValue());
+        MeasurementOrFact new_mof = new MeasurementOrFact(
+            mof.getTimestamp(),
+            mof.getValue()
+        );
 
-        if(mofBucket.getMeasurements().contains(new_mof))
-            return;
+        if (mofBucket.getMeasurements().contains(new_mof)) return;
 
-        if(variable.getTimeseries() || mofBucket.getMeasurements().isEmpty()){
+        if (variable.getTimeseries() || mofBucket.getMeasurements().isEmpty()) {
             mofBucket.getMeasurements().add(new_mof);
             mofBucket.setFirstTimestamp(mof.getTimestamp());
             mofBucket.setLastTimestamp(mof.getTimestamp());
@@ -170,22 +203,34 @@ public class MoFService {
     }
 
     public String CenoteMofstoCsv(String id) throws Exception {
-        if(!cenoteService.hasReadAccess(id))
-            throw new Exception("User doesn't have permission to cenote's mofs");
+        if (!cenoteService.hasReadAccess(id)) throw new Exception(
+            "User doesn't have permission to cenote's mofs"
+        );
 
-        Iterable<Object> result = measurementsOrFactsRepository.findMofsByCenote("Cenotes/" + id);
+        Iterable<Object> result = measurementsOrFactsRepository.findMofsByCenote(
+            "Cenotes/" + id
+        );
         Iterator<Object> mofs = result.iterator();
 
         StringBuilder sb = new StringBuilder();
         sb.append("cenoteId,variableId,timestamp,value");
 
-        while(mofs.hasNext()){
+        while (mofs.hasNext()) {
             List<Object> mof = (List<Object>) mofs.next();
             String variableId = ((String) mof.get(0)).split("/")[1];
             String cenoteId = ((String) mof.get(1)).split("/")[1];
 
-            if( variableService.hasReadAccess(variableId)){
-                sb.append("\n" + cenoteId + "," + variableId + "," + mof.get(2) + "," + mof.get(3));
+            if (variableService.hasReadAccess(variableId)) {
+                sb.append(
+                    "\n" +
+                    cenoteId +
+                    "," +
+                    variableId +
+                    "," +
+                    mof.get(2) +
+                    "," +
+                    mof.get(3)
+                );
             }
         }
 

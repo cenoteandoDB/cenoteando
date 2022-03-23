@@ -72,7 +72,8 @@ public class ReferenceService {
         return CDL.rowToString(names) + sb;
     }
 
-    public List<Reference> fromCsv(MultipartFile multipartfile) throws Exception {
+    public List<Reference> fromCsv(MultipartFile multipartfile)
+        throws Exception {
         Reader fileReader = new InputStreamReader(
             multipartfile.getInputStream()
         );

@@ -207,9 +207,7 @@ public class CenoteService {
                     cenoteRepository.save(oldCenote);
                     values.add(oldCenote);
                 } else {
-                    if (
-                        !hasCreateAccess(user)
-                    ) throw new Exception(
+                    if (!hasCreateAccess(user)) throw new Exception(
                         "User doesn't have permission to create cenote " +
                         cenote.getId()
                     );

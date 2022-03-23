@@ -4,12 +4,9 @@ import com.arangodb.springframework.annotation.ArangoId;
 import com.arangodb.springframework.annotation.Edge;
 import com.arangodb.springframework.annotation.From;
 import com.arangodb.springframework.annotation.To;
-
 import java.time.Instant;
 import java.util.ArrayList;
-
 import java.util.List;
-
 import org.springframework.data.annotation.Id;
 
 @Edge("MeasurementsOrFacts")
@@ -33,16 +30,14 @@ public class MeasurementOrFactBucket<T> {
     private int count;
     private List<MeasurementOrFact<T>> measurements;
 
-    public MeasurementOrFactBucket(){}
+    public MeasurementOrFactBucket() {}
 
-
-    public <T> MeasurementOrFactBucket(Cenote cenote, Variable variable){
+    public <T> MeasurementOrFactBucket(Cenote cenote, Variable variable) {
         this.variable = variable;
         this.cenote = cenote;
         this.measurements = new ArrayList<>();
         this.count = 0;
     }
-
 
     public String getId() {
         return id;
@@ -65,13 +60,13 @@ public class MeasurementOrFactBucket<T> {
     }
 
     public void setFirstTimestamp(Instant firstTimestamp) {
-        if(this.firstTimestamp == null){
+        if (this.firstTimestamp == null) {
             this.firstTimestamp = firstTimestamp;
             return;
         }
 
-        if(this.firstTimestamp.isAfter(firstTimestamp))
-            this.firstTimestamp = firstTimestamp;
+        if (this.firstTimestamp.isAfter(firstTimestamp)) this.firstTimestamp =
+            firstTimestamp;
     }
 
     public Instant getLastTimestamp() {
@@ -79,13 +74,13 @@ public class MeasurementOrFactBucket<T> {
     }
 
     public void setLastTimestamp(Instant lastTimestamp) {
-        if(this.lastTimestamp == null){
+        if (this.lastTimestamp == null) {
             this.lastTimestamp = lastTimestamp;
             return;
         }
 
-        if(this.lastTimestamp.isBefore(lastTimestamp))
-            this.lastTimestamp = lastTimestamp;
+        if (this.lastTimestamp.isBefore(lastTimestamp)) this.lastTimestamp =
+            lastTimestamp;
     }
 
     public int getCount() {

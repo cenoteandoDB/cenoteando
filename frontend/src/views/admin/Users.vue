@@ -136,14 +136,13 @@ export default class Users extends Vue {
 
     async created(): Promise<void> {
         await this.$store.dispatch('loading');
-        
+
         await this.getCenotes();
-        
+
         await this.getUsers().catch(async (error) => {
             await this.$store.dispatch('error', error);
         });
         await this.$store.dispatch('clearLoading');
-
     }
 
     async updateUser(user: UserDTO): Promise<void> {

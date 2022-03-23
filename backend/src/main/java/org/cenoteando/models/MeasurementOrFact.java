@@ -7,7 +7,7 @@ public class MeasurementOrFact<T> {
     private Instant timestamp;
     private T value;
 
-    public MeasurementOrFact(){}
+    public MeasurementOrFact() {}
 
     public MeasurementOrFact(Instant timestamp, T value) {
         this.timestamp = timestamp;

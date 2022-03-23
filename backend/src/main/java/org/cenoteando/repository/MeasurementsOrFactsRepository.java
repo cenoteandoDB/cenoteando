@@ -20,22 +20,22 @@ public interface MeasurementsOrFactsRepository
     );
 
     @Query(
-            "FOR c IN #collection FILTER c._to == @cenoteId and c._from == @variableId RETURN c"
+        "FOR c IN #collection FILTER c._to == @cenoteId and c._from == @variableId RETURN c"
     )
     MeasurementOrFactBucket findMof(String cenoteId, String variableId);
 
     @Query(
-            "FOR mof IN #collection " +
-                    "FOR measure in mof.measurements " +
-                        "RETURN [mof._from, mof._to, measure.timestamp, measure.value]"
+        "FOR mof IN #collection " +
+        "FOR measure in mof.measurements " +
+        "RETURN [mof._from, mof._to, measure.timestamp, measure.value]"
     )
     Iterable<Object> findMofs();
 
     @Query(
-            "FOR mof IN #collection " +
-                    "FILTER mof._to == @cenoteId " +
-                    "FOR measure in mof.measurements " +
-                    "RETURN [mof._from, mof._to, measure.timestamp, measure.value]"
+        "FOR mof IN #collection " +
+        "FILTER mof._to == @cenoteId " +
+        "FOR measure in mof.measurements " +
+        "RETURN [mof._from, mof._to, measure.timestamp, measure.value]"
     )
     Iterable<Object> findMofsByCenote(String cenoteId);
 }
