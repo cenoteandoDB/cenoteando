@@ -58,13 +58,21 @@ public class CenoteandoPermissionEvaluator implements PermissionEvaluator {
                     }
                     return false;
                 case "VARIABLE.CREATE":
-                    variable = variableService.getVariable(id);
+                    try {
+                        variable = variableService.getVariable(id);
+                    } catch (Exception e) {
+                        return false;
+                    }
                     if (user.getRole() == CENOTERO_ADVANCED) return user
                         .getThemesWhiteList()
                         .contains(variable.getTheme().toString());
                     return false;
                 case "VARIABLE.UPDATE":
-                    variable = variableService.getVariable(id);
+                    try {
+                        variable = variableService.getVariable(id);
+                    } catch (Exception e) {
+                        return false;
+                    }
                     switch (user.getRole()) {
                         case ADMIN:
                         case RESEARCHER:
@@ -80,7 +88,11 @@ public class CenoteandoPermissionEvaluator implements PermissionEvaluator {
                             return false;
                     }
                 case "VARIABLE.DELETE":
-                    variable = variableService.getVariable(id);
+                    try {
+                        variable = variableService.getVariable(id);
+                    } catch (Exception e) {
+                        return false;
+                    }
                     return variable.isCreator(user);
             }
         }

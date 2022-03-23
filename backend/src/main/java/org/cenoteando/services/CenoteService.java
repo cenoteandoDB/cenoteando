@@ -14,6 +14,7 @@ import org.cenoteando.models.Gadm;
 import org.cenoteando.models.User;
 import org.cenoteando.repository.CenotesRepository;
 import org.cenoteando.repository.CommentBucketRepository;
+import org.cenoteando.utils.CsvImportExport;
 import org.json.CDL;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -151,19 +152,20 @@ public class CenoteService {
     public String toCsv() throws IOException {
         Iterable<Cenote> data = getCenotesCsv();
 
-        JSONArray objs = new JSONArray();
+        StringBuilder sb = new StringBuilder();
         JSONArray names = Cenote.getHeaders();
 
         for (Cenote cenote : data) {
             JSONObject obj = new JSONObject(cenote);
             obj.put("social", cenote.getSocial());
             obj.put("geojson", cenote.getGeojson());
-            objs.put(obj);
+            sb.append(CsvImportExport.rowToString(obj.toJSONArray(names)));
         }
-        return CDL.rowToString(names) + CDL.toString(names, objs);
+
+        return CDL.rowToString(names) + sb;
     }
 
-    public List<String> fromCsv(MultipartFile multipartfile) throws Exception {
+    public List<Cenote> fromCsv(MultipartFile multipartfile) throws Exception {
         Authentication auth = SecurityContextHolder
             .getContext()
             .getAuthentication();
@@ -173,7 +175,7 @@ public class CenoteService {
             multipartfile.getInputStream()
         );
 
-        ArrayList<String> values = new ArrayList<>();
+        ArrayList<Cenote> values = new ArrayList<>();
 
         try (
             ICsvBeanReader reader = new CsvBeanReader(
@@ -203,14 +205,16 @@ public class CenoteService {
                     );
                     oldCenote.merge(cenote);
                     cenoteRepository.save(oldCenote);
+                    values.add(oldCenote);
                 } else {
                     if (
-                        !hasCreateAccess(user, cenote.getId())
+                        !hasCreateAccess(user)
                     ) throw new Exception(
                         "User doesn't have permission to create cenote " +
                         cenote.getId()
                     );
                     cenoteRepository.save(cenote);
+                    values.add(cenote);
                 }
             }
         }
@@ -243,7 +247,7 @@ public class CenoteService {
         }
     }
 
-    public boolean hasCreateAccess(User user, String id) {
+    public boolean hasCreateAccess(User user) {
         return user.getRole() == ADMIN || user.getRole() == RESEARCHER;
     }
 

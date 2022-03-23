@@ -64,7 +64,7 @@ public class CenoteController {
 
     @PutMapping("/{id}")
     @PreAuthorize(
-        "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasPermission('CENOTE.UPDATE')"
+            "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasPermission('CENOTE.UPDATE')"
     )
     public Cenote updateCenote(
         @PathVariable String id,
@@ -103,7 +103,7 @@ public class CenoteController {
 
     @GetMapping("/csv")
     @PreAuthorize(
-        "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasRole('ROLE_CENOTERO_ADVANCED')"
+            "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasRole('ROLE_CENOTERO_ADVANCED')"
     )
     public String toCsv(HttpServletResponse response)
         throws IOException, IllegalAccessException {
@@ -120,7 +120,7 @@ public class CenoteController {
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasRole('ROLE_CENOTERO_ADVANCED')"
     )
-    public List<String> fromCsv(
+    public List<Cenote> fromCsv(
         @RequestParam("file") MultipartFile multipartfile
     ) throws Exception {
         return cenoteService.fromCsv(multipartfile);

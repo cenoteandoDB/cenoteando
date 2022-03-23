@@ -40,7 +40,7 @@ public class VariableController {
     }
 
     @GetMapping("/{id}")
-    public Variable getVariable(@PathVariable String id) {
+    public Variable getVariable(@PathVariable String id) throws Exception {
         return variableService.getVariable(id);
     }
 
@@ -91,7 +91,7 @@ public class VariableController {
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasRole('ROLE_CENOTERO_ADVANCED')"
     )
-    public List<String> fromCsv(
+    public List<Variable> fromCsv(
         @RequestParam("file") MultipartFile multipartfile
     ) throws Exception {
         return variableService.fromCsv(multipartfile);

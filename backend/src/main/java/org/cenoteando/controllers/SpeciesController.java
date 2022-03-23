@@ -81,7 +81,7 @@ public class SpeciesController {
 
     @PostMapping("/csv")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public List<String> fromCsv(
+    public List<Species> fromCsv(
         @RequestParam("file") MultipartFile multipartfile
     ) throws Exception {
         return speciesService.fromCsv(multipartfile);
