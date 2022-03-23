@@ -9,7 +9,10 @@
     >
         <v-container fluid class="pa-0">
             <v-row no-gutters align="center" justify="space-around">
-                <v-col cols="3" class="hidden-sm-and-down"></v-col>
+                <v-col cols="2">
+                    <span>DGAPA-PAPIIT-IN228319</span>
+                </v-col>
+                <v-col cols="1" class="hidden-sm-and-down"></v-col>
                 <v-col cols="1" v-for="(logo, i) in logos" v-bind:key="i">
                     <v-img
                         :src="logo.src"
