@@ -132,6 +132,10 @@ public class Reference {
         this.hasFile = hasFile;
     }
 
+    public void setHasFile(String hasFile) {
+        this.hasFile = Boolean.valueOf(hasFile);
+    }
+
     public Date getCreatedAt() {
         return createdAt;
     }
