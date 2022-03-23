@@ -209,7 +209,7 @@ export default class RemoteServices {
                 onUploadProgress,
             })
             .then((response) => {
-                return response.data.data.map((v) => new SpeciesDTO(v));
+                return response.data.map((v) => new SpeciesDTO(v));
             })
             .catch(async (error) => {
                 throw Error(await this.errorMessage(error));
@@ -309,7 +309,7 @@ export default class RemoteServices {
                 onUploadProgress,
             })
             .then((response) => {
-                return response.data.data.map((v) => new ReferenceDTO(v));
+                return response.data.map((v) => new ReferenceDTO(v));
             })
             .catch(async (error) => {
                 throw Error(await this.errorMessage(error));
@@ -394,7 +394,7 @@ export default class RemoteServices {
                 onUploadProgress,
             })
             .then((response) => {
-                return response.data.data.map((v) => new VariableDTO(v));
+                return response.data.map((v) => new VariableDTO(v));
             })
             .catch(async (error) => {
                 throw Error(await this.errorMessage(error));
@@ -488,7 +488,7 @@ export default class RemoteServices {
                 onUploadProgress,
             })
             .then((response) => {
-                return response.data.data.map((v) => new CenoteDTO(v));
+                return response.data.map((v) => new CenoteDTO(v));
             })
             .catch(async (error) => {
                 throw Error(await this.errorMessage(error));
