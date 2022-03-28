@@ -132,6 +132,15 @@ const routes: Array<RouteConfig> = [
                     requiredAuth: 'Admin',
                 },
             },
+            {
+                path: 'mofs',
+                name: 'Mofs',
+                component: () => import('@/views/admin/Mofs.vue'),
+                meta: {
+                    title: APP_NAME + ' - Manage Mofs',
+                    requiredAuth: 'Admin',
+                },
+            },
         ],
     },
     {

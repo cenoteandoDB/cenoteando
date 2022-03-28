@@ -258,6 +258,12 @@ export default class NavBar extends Vue {
                         text: 'REFERENCES',
                         to: '/admin/references',
                     },
+                     {
+                        icon: 'mdi-monitor-edit',
+                        dataCy: 'mofs',
+                        text: 'MOFS',
+                        to: '/admin/mofs',
+                    },
                 ],
             },
             {
