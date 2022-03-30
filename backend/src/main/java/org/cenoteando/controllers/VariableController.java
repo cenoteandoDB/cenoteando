@@ -1,6 +1,5 @@
 package org.cenoteando.controllers;
 
-import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.cenoteando.models.Variable;
@@ -40,7 +39,7 @@ public class VariableController {
     }
 
     @GetMapping("/{id}")
-    public Variable getVariable(@PathVariable String id) throws Exception {
+    public Variable getVariable(@PathVariable String id){
         return variableService.getVariable(id);
     }
 
@@ -48,8 +47,7 @@ public class VariableController {
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasPermission(#id, 'VARIABLE.CREATE')"
     )
-    public Variable createVariable(@RequestBody Variable variable)
-        throws Exception {
+    public Variable createVariable(@RequestBody Variable variable){
         return variableService.createVariable(variable);
     }
 
@@ -60,7 +58,7 @@ public class VariableController {
     public Variable updateVariable(
         @PathVariable String id,
         @RequestBody Variable variable
-    ) throws Exception {
+    ){
         return variableService.updateVariable(id, variable);
     }
 
@@ -68,7 +66,7 @@ public class VariableController {
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or hasPermission(#id, 'VARIABLE.DELETE')"
     )
-    public String deleteVariable(@PathVariable String id) throws Exception {
+    public String deleteVariable(@PathVariable String id){
         variableService.deleteVariable(id);
         return "no content";
     }
@@ -77,8 +75,7 @@ public class VariableController {
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasRole('ROLE_CENOTERO_ADVANCED')"
     )
-    public String toCsv(HttpServletResponse response)
-        throws IOException, IllegalAccessException {
+    public String toCsv(HttpServletResponse response){
         response.setContentType("text/csv");
         response.setHeader(
             "Content-Disposition",
@@ -93,7 +90,7 @@ public class VariableController {
     )
     public List<Variable> fromCsv(
         @RequestParam("file") MultipartFile multipartfile
-    ) throws Exception {
+    ){
         return variableService.fromCsv(multipartfile);
     }
 }

@@ -1,9 +1,14 @@
 package org.cenoteando.controllers;
 
 import com.google.cloud.storage.Blob;
+import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import org.cenoteando.models.Cenote;
+import org.cenoteando.models.CenoteReferences;
 import org.cenoteando.models.Reference;
+import org.cenoteando.models.Species;
 import org.cenoteando.services.CloudStorageService;
 import org.cenoteando.services.ReferenceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,8 +56,7 @@ public class ReferenceController {
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Reference createReference(@RequestBody Reference reference)
-        throws Exception {
+    public Reference createReference(@RequestBody Reference reference){
         return referenceService.createReference(reference);
     }
 
@@ -61,42 +65,22 @@ public class ReferenceController {
     public Reference updateReference(
         @PathVariable String id,
         @RequestBody Reference reference
-    ) throws Exception {
+    ){
         return referenceService.updateReference(id, reference);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String deleteReference(@PathVariable String id) throws Exception {
+    public String deleteReference(@PathVariable String id){
         referenceService.deleteReference(id);
         return "no content";
-    }
-
-    @GetMapping("/csv")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String toCsv(HttpServletResponse response) {
-        response.setContentType("text/csv");
-        response.setHeader(
-            "Content-Disposition",
-            "attachment; filename=references.csv"
-        );
-
-        return referenceService.toCsv();
-    }
-
-    @PostMapping("/csv")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public List<Reference> fromCsv(
-        @RequestParam("file") MultipartFile multipartfile
-    ) throws Exception {
-        return referenceService.fromCsv(multipartfile);
     }
 
     @GetMapping("/{id}/download")
     public void downloadReference(
         HttpServletResponse response,
         @PathVariable String id
-    ) throws Exception {
+    ) throws IOException {
         Blob reference = cloudStorageService.downloadReference(id);
 
         response.setHeader(
@@ -108,4 +92,36 @@ public class ReferenceController {
         response.getOutputStream().write(reference.getContent());
         response.flushBuffer();
     }
+
+    @GetMapping("{id}/cenotes")
+    public List<Cenote> getCenotesReferenced(@PathVariable String id){
+        return referenceService.getCenotesReferenced(id);
+    }
+
+    @GetMapping("{id}/species")
+    public List<Species> getSpeciesReferenced(@PathVariable String id){
+        return referenceService.getSpeciesReferenced(id);
+    }
+
+    @GetMapping("/csv")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String toCsv(HttpServletResponse response){
+        response.setContentType("text/csv");
+        response.setHeader(
+                "Content-Disposition",
+                "attachment; filename=references.csv"
+        );
+
+        return referenceService.toCsv();
+    }
+
+    @PostMapping("/csv")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public List<Reference> fromCsv(
+            @RequestParam("file") MultipartFile multipartfile
+    ){
+        return referenceService.fromCsv(multipartfile);
+    }
+
+
 }

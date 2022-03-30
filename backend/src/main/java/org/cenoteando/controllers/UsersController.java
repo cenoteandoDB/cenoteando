@@ -57,8 +57,7 @@ public class UsersController {
 
     @GetMapping("/csv")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String toCsv(HttpServletResponse response)
-        throws IOException, IllegalAccessException {
+    public String toCsv(HttpServletResponse response){
         response.setContentType("text/csv");
         response.setHeader(
             "Content-Disposition",

@@ -49,7 +49,7 @@ public class CenoteandoPermissionEvaluator implements PermissionEvaluator {
                         .contains(id);
                     return false;
                 case "CENOTE.DELETE":
-                    cenote = cenotesRepository.findByKey(id);
+                    cenote = cenotesRepository.findByArangoId("Cenotes/" + id);
                     if (
                         user.getRole() == RESEARCHER ||
                         user.getRole() == CENOTERO_ADVANCED
@@ -58,21 +58,14 @@ public class CenoteandoPermissionEvaluator implements PermissionEvaluator {
                     }
                     return false;
                 case "VARIABLE.CREATE":
-                    try {
-                        variable = variableService.getVariable(id);
-                    } catch (Exception e) {
-                        return false;
-                    }
-                    if (user.getRole() == CENOTERO_ADVANCED) return user
-                        .getThemesWhiteList()
-                        .contains(variable.getTheme().toString());
+                    variable = variableService.getVariable(id);
+                    if (user.getRole() == CENOTERO_ADVANCED)
+                        return user
+                            .getThemesWhiteList()
+                            .contains(variable.getTheme().toString());
                     return false;
                 case "VARIABLE.UPDATE":
-                    try {
-                        variable = variableService.getVariable(id);
-                    } catch (Exception e) {
-                        return false;
-                    }
+                    variable = variableService.getVariable(id);
                     switch (user.getRole()) {
                         case ADMIN:
                         case RESEARCHER:
@@ -88,11 +81,7 @@ public class CenoteandoPermissionEvaluator implements PermissionEvaluator {
                             return false;
                     }
                 case "VARIABLE.DELETE":
-                    try {
-                        variable = variableService.getVariable(id);
-                    } catch (Exception e) {
-                        return false;
-                    }
+                    variable = variableService.getVariable(id);
                     return variable.isCreator(user);
             }
         }

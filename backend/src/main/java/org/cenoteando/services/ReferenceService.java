@@ -1,11 +1,16 @@
 package org.cenoteando.services;
 
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
-import org.cenoteando.models.Reference;
+
+import org.cenoteando.exceptions.CenoteandoException;
+import org.cenoteando.models.*;
 import org.cenoteando.repository.ReferenceRepository;
+import org.cenoteando.repository.ReferencesCenoteRepository;
+import org.cenoteando.repository.ReferencesSpeciesRepository;
 import org.cenoteando.utils.CsvImportExport;
 import org.json.CDL;
 import org.json.JSONArray;
@@ -20,46 +25,60 @@ import org.supercsv.io.CsvBeanReader;
 import org.supercsv.io.ICsvBeanReader;
 import org.supercsv.prefs.CsvPreference;
 
+import static org.cenoteando.exceptions.ErrorMessage.*;
+
 @Service
 public class ReferenceService {
 
     @Autowired
     private ReferenceRepository referenceRepository;
 
+    @Autowired
+    private ReferencesCenoteRepository referencesCenoteRepository;
+
+    @Autowired
+    private ReferencesSpeciesRepository referencesSpeciesRepository;
+
     public Page<Reference> getReferences(Pageable pageable) {
         return this.referenceRepository.findAll(pageable);
     }
 
     public Reference getReference(String id) {
-        return this.referenceRepository.findByKey(id);
+        return this.referenceRepository.findByArangoId("References/" + id);
     }
 
-    public Reference createReference(Reference reference) throws Exception {
-        if (!reference.validate()) throw new Exception(
-            "Validation failed for Reference creation."
-        );
+    public Reference createReference(Reference reference){
+        if (!reference.validate()) throw new CenoteandoException(INVALID_FORMAT);
         return this.referenceRepository.save(reference);
     }
 
-    public Reference updateReference(String id, Reference reference)
-        throws Exception {
-        if (!reference.validate()) throw new Exception(
-            "Validation failed for Reference update."
-        );
+    public Reference updateReference(String id, Reference reference){
+        if (!reference.validate()) throw new CenoteandoException(INVALID_FORMAT);
         Reference oldReference = this.getReference(id);
         oldReference.merge(reference);
         return this.referenceRepository.save(oldReference);
     }
 
-    public void deleteReference(String id) throws Exception {
+    public void deleteReference(String id){
         try {
             referenceRepository.deleteById(id);
         } catch (Exception e) {
-            throw new Exception("Failed to delete reference.");
+            throw new CenoteandoException(DELETE_PERMISSION, "REFERENCE", id);
         }
     }
 
-    public String toCsv() {
+    public List<Cenote> getCenotesReferenced(String id){
+        List<CenoteReferences> result = referencesCenoteRepository.findByReference("References/" + id);
+        return result.stream().map(CenoteReferences::getCenote).toList();
+    }
+
+    public List<Species> getSpeciesReferenced(String id){
+        List<SpeciesReferences> result = referencesSpeciesRepository.findByReference("References/" + id);
+        return result.stream().map(SpeciesReferences::getSpecies).toList();
+    }
+
+
+    public String toCsv(){
         Iterable<Reference> data = referenceRepository.findAll();
 
         StringBuilder sb = new StringBuilder();
@@ -72,30 +91,28 @@ public class ReferenceService {
         return CDL.rowToString(names) + sb;
     }
 
-    public List<Reference> fromCsv(MultipartFile multipartfile)
-        throws Exception {
-        Reader fileReader = new InputStreamReader(
-            multipartfile.getInputStream()
-        );
-
+    public List<Reference> fromCsv(MultipartFile multipartfile){
         ArrayList<Reference> values = new ArrayList<>();
 
         try (
-            ICsvBeanReader reader = new CsvBeanReader(
-                fileReader,
-                CsvPreference.STANDARD_PREFERENCE
-            )
+                Reader file_reader = new InputStreamReader(
+                        multipartfile.getInputStream()
+                )
         ) {
+
+            ICsvBeanReader reader = new CsvBeanReader(
+                    file_reader,
+                    CsvPreference.STANDARD_PREFERENCE
+            );
             final String[] header = reader.getHeader(true);
             final CellProcessor[] processors = Reference.getProcessors();
 
-            Reference ref;
-            Reference oldRef;
+            Reference ref, oldRef;
             while (
                 (ref = reader.read(Reference.class, header, processors)) != null
             ) {
                 if (!ref.validate()) {
-                    throw new Exception("Validation failed for " + ref.getId());
+                    throw new CenoteandoException(INVALID_FORMAT);
                 }
                 if ((oldRef = getReference(ref.getId())) != null) {
                     oldRef.merge(ref);
@@ -107,11 +124,10 @@ public class ReferenceService {
                 }
             }
         }
+        catch (IOException e){
+            throw new CenoteandoException(READ_FILE);
+        }
 
         return values;
-    }
-
-    public void unsetAllHasFile() {
-        referenceRepository.unsetAllHasFile();
     }
 }

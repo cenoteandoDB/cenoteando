@@ -1,5 +1,9 @@
 package org.cenoteando.utils;
 
+import org.cenoteando.exceptions.CenoteandoException;
+
+import static org.cenoteando.exceptions.ErrorMessage.*;
+
 public class RegisterRequest {
 
     private String email;
@@ -26,11 +30,8 @@ public class RegisterRequest {
         return name;
     }
 
-    public void validatePassword() throws Exception {
-        if (password == null) throw new Exception("Password required");
-        if (password.isEmpty()) throw new Exception("Password cannot be empty");
-        if (password.length() < 6) throw new Exception(
-            "Password should have at least 6 characters"
-        );
+    public void validatePassword(){
+        if (password == null || password.isEmpty()) throw new CenoteandoException(PASSWORD_REQUIRED);
+        if (password.length() < 6) throw new CenoteandoException(PASSWORD_LENGTH);
     }
 }

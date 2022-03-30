@@ -1,6 +1,5 @@
 package org.cenoteando.controllers;
 
-import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.cenoteando.models.Species;
@@ -46,7 +45,7 @@ public class SpeciesController {
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Species createSpecie(@RequestBody Species specie) throws Exception {
+    public Species createSpecie(@RequestBody Species specie){
         return speciesService.createSpecies(specie);
     }
 
@@ -55,21 +54,20 @@ public class SpeciesController {
     public Species updateSpecie(
         @PathVariable String id,
         @RequestBody Species specie
-    ) throws Exception {
+    ){
         return speciesService.updateSpecies(id, specie);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String deleteSpecie(@PathVariable String id) throws Exception {
+    public String deleteSpecie(@PathVariable String id){
         speciesService.deleteSpecies(id);
         return "no content";
     }
 
     @GetMapping("/csv")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String toCsv(HttpServletResponse response)
-        throws IOException, IllegalAccessException {
+    public String toCsv(HttpServletResponse response){
         response.setContentType("text/csv");
         response.setHeader(
             "Content-Disposition",
@@ -83,7 +81,7 @@ public class SpeciesController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Species> fromCsv(
         @RequestParam("file") MultipartFile multipartfile
-    ) throws Exception {
+    ){
         return speciesService.fromCsv(multipartfile);
     }
 }
