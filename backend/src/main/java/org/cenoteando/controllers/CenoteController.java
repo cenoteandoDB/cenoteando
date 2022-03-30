@@ -135,7 +135,7 @@ public class CenoteController {
     }
 
     @GetMapping("/{id}/references")
-    public List<Reference> getReferences(@PathVariable String id){
+    public List<Reference> getCenoteReferences(@PathVariable String id){
         return cenoteService.getCenoteReferences(id);
     }
 }

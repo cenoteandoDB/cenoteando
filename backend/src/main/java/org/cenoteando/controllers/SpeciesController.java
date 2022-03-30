@@ -2,6 +2,8 @@ package org.cenoteando.controllers;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import org.cenoteando.models.Reference;
 import org.cenoteando.models.Species;
 import org.cenoteando.services.SpeciesService;
 import org.springframework.data.domain.Page;
@@ -63,6 +65,11 @@ public class SpeciesController {
     public String deleteSpecie(@PathVariable String id){
         speciesService.deleteSpecies(id);
         return "no content";
+    }
+
+    @GetMapping("/{id}/references")
+    public List<Reference> getSpeciesReferences(@PathVariable String id){
+        return speciesService.getSpeciesReferences(id);
     }
 
     @GetMapping("/csv")

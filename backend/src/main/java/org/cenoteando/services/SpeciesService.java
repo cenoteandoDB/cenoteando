@@ -7,7 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.cenoteando.exceptions.CenoteandoException;
+import org.cenoteando.models.Reference;
 import org.cenoteando.models.Species;
+import org.cenoteando.models.SpeciesReferences;
+import org.cenoteando.repository.ReferencesSpeciesRepository;
 import org.cenoteando.repository.SpeciesRepository;
 import org.cenoteando.utils.CsvImportExport;
 import org.json.CDL;
@@ -30,6 +33,9 @@ public class SpeciesService {
 
     @Autowired
     private SpeciesRepository speciesRepository;
+
+    @Autowired
+    private ReferencesSpeciesRepository referencesSpeciesRepository;
 
     public Page<Species> getSpecies(Pageable pageable) {
         return this.speciesRepository.findAll(pageable);
@@ -65,6 +71,11 @@ public class SpeciesService {
         } catch (Exception e) {
             throw new CenoteandoException(DELETE_PERMISSION, "SPECIES", id);
         }
+    }
+
+    public List<Reference> getSpeciesReferences(String id){
+        List<SpeciesReferences> result = referencesSpeciesRepository.findBySpecies("Species/" + id);
+        return result.stream().map(SpeciesReferences::getReference).toList();
     }
 
     public String toCsv(){
