@@ -556,6 +556,17 @@ export default class RemoteServices {
             });
     }
 
+    static async getCenoteReferences(key: string): Promise<ReferenceDTO[]> {
+        return httpClient
+            .get('/api/cenotes/' + key + '/references')
+            .then((response) => {
+                return response.data;
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
+
     // Users
     static async *usersGenerator(limit?: number): AsyncGenerator<UserDTO[]> {
         let page = 0;
