@@ -1,11 +1,12 @@
 package org.cenoteando.services;
 
+import static org.cenoteando.exceptions.ErrorMessage.*;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.cenoteando.exceptions.CenoteandoException;
 import org.cenoteando.models.*;
 import org.cenoteando.repository.ReferenceRepository;
@@ -24,8 +25,6 @@ import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.io.CsvBeanReader;
 import org.supercsv.io.ICsvBeanReader;
 import org.supercsv.prefs.CsvPreference;
-
-import static org.cenoteando.exceptions.ErrorMessage.*;
 
 @Service
 public class ReferenceService {
@@ -47,19 +46,23 @@ public class ReferenceService {
         return this.referenceRepository.findByArangoId("References/" + id);
     }
 
-    public Reference createReference(Reference reference){
-        if (!reference.validate()) throw new CenoteandoException(INVALID_FORMAT);
+    public Reference createReference(Reference reference) {
+        if (!reference.validate()) throw new CenoteandoException(
+            INVALID_FORMAT
+        );
         return this.referenceRepository.save(reference);
     }
 
-    public Reference updateReference(String id, Reference reference){
-        if (!reference.validate()) throw new CenoteandoException(INVALID_FORMAT);
+    public Reference updateReference(String id, Reference reference) {
+        if (!reference.validate()) throw new CenoteandoException(
+            INVALID_FORMAT
+        );
         Reference oldReference = this.getReference(id);
         oldReference.merge(reference);
         return this.referenceRepository.save(oldReference);
     }
 
-    public void deleteReference(String id){
+    public void deleteReference(String id) {
         try {
             referenceRepository.deleteById(id);
         } catch (Exception e) {
@@ -67,18 +70,21 @@ public class ReferenceService {
         }
     }
 
-    public List<Cenote> getCenotesReferenced(String id){
-        List<CenoteReferences> result = referencesCenoteRepository.findByReference("References/" + id);
+    public List<Cenote> getCenotesReferenced(String id) {
+        List<CenoteReferences> result = referencesCenoteRepository.findByReference(
+            "References/" + id
+        );
         return result.stream().map(CenoteReferences::getCenote).toList();
     }
 
-    public List<Species> getSpeciesReferenced(String id){
-        List<SpeciesReferences> result = referencesSpeciesRepository.findByReference("References/" + id);
+    public List<Species> getSpeciesReferenced(String id) {
+        List<SpeciesReferences> result = referencesSpeciesRepository.findByReference(
+            "References/" + id
+        );
         return result.stream().map(SpeciesReferences::getSpecies).toList();
     }
 
-
-    public String toCsv(){
+    public String toCsv() {
         Iterable<Reference> data = referenceRepository.findAll();
 
         StringBuilder sb = new StringBuilder();
@@ -91,18 +97,17 @@ public class ReferenceService {
         return CDL.rowToString(names) + sb;
     }
 
-    public List<Reference> fromCsv(MultipartFile multipartfile){
+    public List<Reference> fromCsv(MultipartFile multipartfile) {
         ArrayList<Reference> values = new ArrayList<>();
 
         try (
-                Reader file_reader = new InputStreamReader(
-                        multipartfile.getInputStream()
-                )
+            Reader file_reader = new InputStreamReader(
+                multipartfile.getInputStream()
+            )
         ) {
-
             ICsvBeanReader reader = new CsvBeanReader(
-                    file_reader,
-                    CsvPreference.STANDARD_PREFERENCE
+                file_reader,
+                CsvPreference.STANDARD_PREFERENCE
             );
             final String[] header = reader.getHeader(true);
             final CellProcessor[] processors = Reference.getProcessors();
@@ -123,8 +128,7 @@ public class ReferenceService {
                     values.add(ref);
                 }
             }
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             throw new CenoteandoException(READ_FILE);
         }
 

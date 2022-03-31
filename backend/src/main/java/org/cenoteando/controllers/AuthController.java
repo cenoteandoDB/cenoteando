@@ -1,5 +1,7 @@
 package org.cenoteando.controllers;
 
+import static org.cenoteando.exceptions.ErrorMessage.INVALID_LOGIN;
+
 import org.cenoteando.dtos.AuthDto;
 import org.cenoteando.exceptions.CenoteandoException;
 import org.cenoteando.jwt.JwtUtil;
@@ -16,8 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import static org.cenoteando.exceptions.ErrorMessage.INVALID_LOGIN;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -37,7 +37,7 @@ public class AuthController {
     @PostMapping("/login")
     public AuthDto Login(
         @RequestBody AuthenticationRequest authenticationRequest
-    ){
+    ) {
         try {
             authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -65,7 +65,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public AuthDto Register(@RequestBody RegisterRequest registerRequest){
+    public AuthDto Register(@RequestBody RegisterRequest registerRequest) {
         registerRequest.validatePassword();
 
         User user = new User(

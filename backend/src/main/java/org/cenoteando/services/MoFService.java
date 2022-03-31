@@ -1,5 +1,7 @@
 package org.cenoteando.services;
 
+import static org.cenoteando.exceptions.ErrorMessage.*;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -10,7 +12,6 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
 import org.cenoteando.dtos.MofDto;
 import org.cenoteando.dtos.VariableWithValuesDTO;
 import org.cenoteando.exceptions.CenoteandoException;
@@ -23,8 +24,6 @@ import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.io.CsvBeanReader;
 import org.supercsv.io.ICsvBeanReader;
 import org.supercsv.prefs.CsvPreference;
-
-import static org.cenoteando.exceptions.ErrorMessage.*;
 
 @Service
 @SuppressWarnings("unchecked")
@@ -42,9 +41,13 @@ public class MoFService {
     public HashMap<String, VariableWithValuesDTO<Object>> getData(
         String id,
         String theme
-    ){
+    ) {
         String cenoteId = "Cenotes/" + id;
-        if (!cenoteService.hasReadAccess(id)) throw new CenoteandoException(READ_ACCESS, "CENOTE", id);
+        if (!cenoteService.hasReadAccess(id)) throw new CenoteandoException(
+            READ_ACCESS,
+            "CENOTE",
+            id
+        );
         Iterable<Variable> variables = variableService.getVariablesForMoF(
             theme
         );
@@ -87,7 +90,7 @@ public class MoFService {
         return variablesMap;
     }
 
-    public String toCsv(){
+    public String toCsv() {
         Iterable<Object> result = measurementsOrFactsRepository.findMofs();
         Iterator<Object> mofs = result.iterator();
 
@@ -98,14 +101,31 @@ public class MoFService {
         StringBuilder sb = new StringBuilder();
         sb.append("cenoteId,variableId,timestamp,value");
 
-
-        while(mofs.hasNext()){
+        while (mofs.hasNext()) {
             List<Object> mof = (List<Object>) mofs.next();
             String variableId = ((String) mof.get(0)).split("/")[1];
             String cenoteId = ((String) mof.get(1)).split("/")[1];
 
-            if( (checkedVariables.contains(variableId) || variableService.hasReadAccess(variableId)) && (checkedCenotes.contains(cenoteId) || cenoteService.hasReadAccess(cenoteId))){
-                sb.append("\n" + cenoteId + "," + variableId + "," + mof.get(2) + "," + mof.get(3));
+            if (
+                (
+                    checkedVariables.contains(variableId) ||
+                    variableService.hasReadAccess(variableId)
+                ) &&
+                (
+                    checkedCenotes.contains(cenoteId) ||
+                    cenoteService.hasReadAccess(cenoteId)
+                )
+            ) {
+                sb.append(
+                    "\n" +
+                    cenoteId +
+                    "," +
+                    variableId +
+                    "," +
+                    mof.get(2) +
+                    "," +
+                    mof.get(3)
+                );
                 checkedCenotes.add(cenoteId);
                 checkedVariables.add(variableId);
             }
@@ -114,19 +134,17 @@ public class MoFService {
         return sb.toString();
     }
 
-    public List<String> fromCsv(MultipartFile multipartfile){
-
+    public List<String> fromCsv(MultipartFile multipartfile) {
         ArrayList<String> values = new ArrayList<>();
 
         try (
-                Reader file_reader = new InputStreamReader(
-                        multipartfile.getInputStream()
-                )
+            Reader file_reader = new InputStreamReader(
+                multipartfile.getInputStream()
+            )
         ) {
-
             ICsvBeanReader reader = new CsvBeanReader(
-                    file_reader,
-                    CsvPreference.STANDARD_PREFERENCE
+                file_reader,
+                CsvPreference.STANDARD_PREFERENCE
             );
             final String[] header = reader.getHeader(true);
             final CellProcessor[] processors = MofDto.getProcessors();
@@ -134,17 +152,34 @@ public class MoFService {
             MofDto mof;
             MeasurementOrFactBucket mofBucket, oldMofBucket;
             while (
-                    (mof = reader.read(MofDto.class, header, processors)) !=
-                            null
+                (mof = reader.read(MofDto.class, header, processors)) != null
             ) {
                 Cenote cenote = cenoteService.getCenote(mof.getCenoteId());
-                Variable variable = variableService.getVariable(mof.getVariableId());
+                Variable variable = variableService.getVariable(
+                    mof.getVariableId()
+                );
 
-                if(!cenoteService.hasReadAccess(cenote.getId()) || !variableService.hasReadAccess(variable.getId())){
-                    throw new CenoteandoException(UPDATE_PERMISSION, "MEASUREMENTORFACT", mof.getCenoteId());
+                if (
+                    !cenoteService.hasReadAccess(cenote.getId()) ||
+                    !variableService.hasReadAccess(variable.getId())
+                ) {
+                    throw new CenoteandoException(
+                        UPDATE_PERMISSION,
+                        "MEASUREMENTORFACT",
+                        mof.getCenoteId()
+                    );
                 }
 
-                if ((oldMofBucket = measurementsOrFactsRepository.findMof(cenote.getArangoId(), variable.getArangoId())) != null) {
+                if (
+                    (
+                        oldMofBucket =
+                            measurementsOrFactsRepository.findMof(
+                                cenote.getArangoId(),
+                                variable.getArangoId()
+                            )
+                    ) !=
+                    null
+                ) {
                     this.addMoF(oldMofBucket, mof);
                 } else {
                     mofBucket = new MeasurementOrFactBucket(cenote, variable);
@@ -152,23 +187,24 @@ public class MoFService {
                     measurementsOrFactsRepository.save(mofBucket);
                 }
             }
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             throw new CenoteandoException(READ_FILE);
         }
 
         return values;
     }
 
-    private void addMoF(MeasurementOrFactBucket mofBucket, MofDto mof){
+    private void addMoF(MeasurementOrFactBucket mofBucket, MofDto mof) {
         Variable variable = variableService.getVariable(mof.getVariableId());
 
-        MeasurementOrFact new_mof = new MeasurementOrFact(mof.getTimestamp(), mof.getValue());
+        MeasurementOrFact new_mof = new MeasurementOrFact(
+            mof.getTimestamp(),
+            mof.getValue()
+        );
 
-        if(mofBucket.getMeasurements().contains(new_mof))
-            return;
+        if (mofBucket.getMeasurements().contains(new_mof)) return;
 
-        if(variable.getTimeseries() || mofBucket.getMeasurements().isEmpty()){
+        if (variable.getTimeseries() || mofBucket.getMeasurements().isEmpty()) {
             mofBucket.getMeasurements().add(new_mof);
             mofBucket.setFirstTimestamp(mof.getTimestamp());
             mofBucket.setLastTimestamp(mof.getTimestamp());
@@ -177,23 +213,37 @@ public class MoFService {
         }
     }
 
-    public String CenoteMofstoCsv(String id){
-        if(!cenoteService.hasReadAccess(id))
-            throw new CenoteandoException(READ_ACCESS, "CENOTE", id);
+    public String CenoteMofstoCsv(String id) {
+        if (!cenoteService.hasReadAccess(id)) throw new CenoteandoException(
+            READ_ACCESS,
+            "CENOTE",
+            id
+        );
 
-        Iterable<Object> result = measurementsOrFactsRepository.findMofsByCenote("Cenotes/" + id);
+        Iterable<Object> result = measurementsOrFactsRepository.findMofsByCenote(
+            "Cenotes/" + id
+        );
         Iterator<Object> mofs = result.iterator();
 
         StringBuilder sb = new StringBuilder();
         sb.append("cenoteId,variableId,timestamp,value");
 
-        while(mofs.hasNext()){
+        while (mofs.hasNext()) {
             List<Object> mof = (List<Object>) mofs.next();
             String variableId = ((String) mof.get(0)).split("/")[1];
             String cenoteId = ((String) mof.get(1)).split("/")[1];
 
-            if( variableService.hasReadAccess(variableId)){
-                sb.append("\n" + cenoteId + "," + variableId + "," + mof.get(2) + "," + mof.get(3));
+            if (variableService.hasReadAccess(variableId)) {
+                sb.append(
+                    "\n" +
+                    cenoteId +
+                    "," +
+                    variableId +
+                    "," +
+                    mof.get(2) +
+                    "," +
+                    mof.get(3)
+                );
             }
         }
 

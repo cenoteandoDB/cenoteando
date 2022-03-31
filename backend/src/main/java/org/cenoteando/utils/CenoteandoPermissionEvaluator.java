@@ -59,10 +59,9 @@ public class CenoteandoPermissionEvaluator implements PermissionEvaluator {
                     return false;
                 case "VARIABLE.CREATE":
                     variable = variableService.getVariable(id);
-                    if (user.getRole() == CENOTERO_ADVANCED)
-                        return user
-                            .getThemesWhiteList()
-                            .contains(variable.getTheme().toString());
+                    if (user.getRole() == CENOTERO_ADVANCED) return user
+                        .getThemesWhiteList()
+                        .contains(variable.getTheme().toString());
                     return false;
                 case "VARIABLE.UPDATE":
                     variable = variableService.getVariable(id);

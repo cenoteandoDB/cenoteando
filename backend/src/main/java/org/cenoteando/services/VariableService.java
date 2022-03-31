@@ -9,7 +9,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.cenoteando.exceptions.CenoteandoException;
 import org.cenoteando.models.User;
 import org.cenoteando.models.Variable;
@@ -41,7 +40,7 @@ public class VariableService {
         return variablesRepository.findAll(page);
     }
 
-    public Iterable<Variable> getVariablesForMoF(String theme){
+    public Iterable<Variable> getVariablesForMoF(String theme) {
         Authentication auth = SecurityContextHolder
             .getContext()
             .getAuthentication();
@@ -67,7 +66,7 @@ public class VariableService {
             case CENOTERO_ADVANCED:
                 if (
                     !user.getThemesBlackList().contains(theme)
-                        //TODO what about sensitive variables?
+                    //TODO what about sensitive variables?
                 ) return variablesRepository.findByTheme(theme);
                 throw new CenoteandoException(THEME_ACCESS, theme);
             case CENOTERO_BASIC:
@@ -76,29 +75,35 @@ public class VariableService {
                 ) return variablesRepository.findByTheme(theme);
                 throw new CenoteandoException(THEME_ACCESS, theme);
             default:
-            throw new CenoteandoException(INVALID_ROLE);
+                throw new CenoteandoException(INVALID_ROLE);
         }
     }
 
-    public Variable getVariable(String id){
-        Variable variable = variablesRepository.findByArangoId("Variables/" + id);
-        if (!hasReadAccess(id)) throw new CenoteandoException(READ_ACCESS, "VARIABLE", id);
+    public Variable getVariable(String id) {
+        Variable variable = variablesRepository.findByArangoId(
+            "Variables/" + id
+        );
+        if (!hasReadAccess(id)) throw new CenoteandoException(
+            READ_ACCESS,
+            "VARIABLE",
+            id
+        );
         return variable;
     }
 
-    public Variable createVariable(Variable variable){
+    public Variable createVariable(Variable variable) {
         if (!variable.validate()) throw new CenoteandoException(INVALID_FORMAT);
         return variablesRepository.save(variable);
     }
 
-    public Variable updateVariable(String id, Variable variable){
+    public Variable updateVariable(String id, Variable variable) {
         if (!variable.validate()) throw new CenoteandoException(INVALID_FORMAT);
         Variable oldVariable = this.getVariable(id);
         oldVariable.merge(variable);
         return variablesRepository.save(oldVariable);
     }
 
-    public void deleteVariable(String id){
+    public void deleteVariable(String id) {
         try {
             variablesRepository.deleteById(id);
         } catch (Exception e) {
@@ -106,7 +111,7 @@ public class VariableService {
         }
     }
 
-    public String toCsv(){
+    public String toCsv() {
         Iterable<Variable> data = variablesRepository.findAll();
 
         StringBuilder sb = new StringBuilder();
@@ -118,7 +123,7 @@ public class VariableService {
         return CDL.rowToString(names) + sb;
     }
 
-    public List<Variable> fromCsv(MultipartFile multipartfile){
+    public List<Variable> fromCsv(MultipartFile multipartfile) {
         Authentication auth = SecurityContextHolder
             .getContext()
             .getAuthentication();
@@ -127,14 +132,13 @@ public class VariableService {
         ArrayList<Variable> values = new ArrayList<>();
 
         try (
-                Reader file_reader = new InputStreamReader(
-                        multipartfile.getInputStream()
-                )
+            Reader file_reader = new InputStreamReader(
+                multipartfile.getInputStream()
+            )
         ) {
-
             ICsvBeanReader reader = new CsvBeanReader(
-                    file_reader,
-                    CsvPreference.STANDARD_PREFERENCE
+                file_reader,
+                CsvPreference.STANDARD_PREFERENCE
             );
             final String[] header = reader.getHeader(true);
             final CellProcessor[] processors = Variable.getProcessors();
@@ -153,7 +157,11 @@ public class VariableService {
                             user,
                             variable.getTheme().toString()
                         )
-                    ) throw new CenoteandoException(UPDATE_PERMISSION, "VARIABLE", variable.getTheme().toString());
+                    ) throw new CenoteandoException(
+                        UPDATE_PERMISSION,
+                        "VARIABLE",
+                        variable.getTheme().toString()
+                    );
                     oldVariable.merge(variable);
                     variablesRepository.save(oldVariable);
                     values.add(oldVariable);
@@ -163,13 +171,16 @@ public class VariableService {
                             user,
                             variable.getTheme().toString()
                         )
-                    ) throw new CenoteandoException(CREATE_PERMISSION, "VARIABLE", variable.getTheme().toString());
+                    ) throw new CenoteandoException(
+                        CREATE_PERMISSION,
+                        "VARIABLE",
+                        variable.getTheme().toString()
+                    );
                     variablesRepository.save(variable);
                     values.add(variable);
                 }
             }
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             throw new CenoteandoException(READ_FILE);
         }
 
@@ -188,14 +199,13 @@ public class VariableService {
         }
     }
 
-    public boolean hasReadAccess(String id){
+    public boolean hasReadAccess(String id) {
         Variable variable = getVariable(id);
-        if(variable == null)
-            return false;
+        if (variable == null) return false;
 
         Authentication auth = SecurityContextHolder
-                .getContext()
-                .getAuthentication();
+            .getContext()
+            .getAuthentication();
 
         if (auth instanceof AnonymousAuthenticationToken) {
             return variable.getAccessLevel() == PUBLIC;
@@ -206,9 +216,10 @@ public class VariableService {
         switch (user.getRole()) {
             case ADMIN:
             case RESEARCHER:
-                if(variable.getAccessLevel() != SENSITIVE ||
-                        variable.isCreator(user))
-                return true;
+                if (
+                    variable.getAccessLevel() != SENSITIVE ||
+                    variable.isCreator(user)
+                ) return true;
             case CENOTERO_ADVANCED:
                 return !user.getCenoteBlackList().contains(id);
             case CENOTERO_BASIC:

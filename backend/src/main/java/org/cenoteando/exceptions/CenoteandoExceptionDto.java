@@ -1,12 +1,11 @@
 package org.cenoteando.exceptions;
 
-
+import static org.cenoteando.exceptions.ErrorMessage.UNEXPECTED_ERROR;
 
 import java.util.Date;
 
-import static org.cenoteando.exceptions.ErrorMessage.UNEXPECTED_ERROR;
-
 public class CenoteandoExceptionDto {
+
     private final String errorMessage;
     private final Date timestamp;
 

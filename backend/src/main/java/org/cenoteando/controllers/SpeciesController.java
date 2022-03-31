@@ -2,7 +2,6 @@ package org.cenoteando.controllers;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
-
 import org.cenoteando.models.Reference;
 import org.cenoteando.models.Species;
 import org.cenoteando.services.SpeciesService;
@@ -47,7 +46,7 @@ public class SpeciesController {
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Species createSpecie(@RequestBody Species specie){
+    public Species createSpecie(@RequestBody Species specie) {
         return speciesService.createSpecies(specie);
     }
 
@@ -56,25 +55,25 @@ public class SpeciesController {
     public Species updateSpecie(
         @PathVariable String id,
         @RequestBody Species specie
-    ){
+    ) {
         return speciesService.updateSpecies(id, specie);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String deleteSpecie(@PathVariable String id){
+    public String deleteSpecie(@PathVariable String id) {
         speciesService.deleteSpecies(id);
         return "no content";
     }
 
     @GetMapping("/{id}/references")
-    public List<Reference> getSpeciesReferences(@PathVariable String id){
+    public List<Reference> getSpeciesReferences(@PathVariable String id) {
         return speciesService.getSpeciesReferences(id);
     }
 
     @GetMapping("/csv")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String toCsv(HttpServletResponse response){
+    public String toCsv(HttpServletResponse response) {
         response.setContentType("text/csv");
         response.setHeader(
             "Content-Disposition",
@@ -88,7 +87,7 @@ public class SpeciesController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Species> fromCsv(
         @RequestParam("file") MultipartFile multipartfile
-    ){
+    ) {
         return speciesService.fromCsv(multipartfile);
     }
 }

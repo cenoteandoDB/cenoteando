@@ -9,7 +9,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.cenoteando.exceptions.CenoteandoException;
 import org.cenoteando.models.*;
 import org.cenoteando.repository.CenotesRepository;
@@ -106,13 +105,17 @@ public class CenoteService {
         }
     }
 
-    public Cenote getCenote(String id){
+    public Cenote getCenote(String id) {
         Cenote cenote = cenoteRepository.findByArangoId("Cenotes/" + id);
-        if (!hasReadAccess(id)) throw new CenoteandoException(READ_ACCESS, "CENOTE", id);
+        if (!hasReadAccess(id)) throw new CenoteandoException(
+            READ_ACCESS,
+            "CENOTE",
+            id
+        );
         return cenote;
     }
 
-    public Cenote createCenote(Cenote cenote){
+    public Cenote createCenote(Cenote cenote) {
         if (!cenote.validate()) throw new CenoteandoException(INVALID_FORMAT);
 
         Gadm gadm = gadmService.findGadm(cenote.getGeojson().getGeometry());
@@ -125,7 +128,7 @@ public class CenoteService {
         return cenoteRepository.save(cenote);
     }
 
-    public Cenote updateCenote(String id, Cenote cenote){
+    public Cenote updateCenote(String id, Cenote cenote) {
         if (!cenote.validate()) throw new CenoteandoException(INVALID_FORMAT);
         Cenote oldCenote = this.getCenote(id);
 
@@ -139,7 +142,7 @@ public class CenoteService {
         return cenoteRepository.save(oldCenote);
     }
 
-    public void deleteCenote(String id){
+    public void deleteCenote(String id) {
         try {
             cenoteRepository.deleteById(id);
         } catch (Exception e) {
@@ -147,12 +150,14 @@ public class CenoteService {
         }
     }
 
-    public List<Reference> getCenoteReferences(String id){
-        List<CenoteReferences> result = referencesCenoteRepository.findByCenote("Cenotes/" + id);
+    public List<Reference> getCenoteReferences(String id) {
+        List<CenoteReferences> result = referencesCenoteRepository.findByCenote(
+            "Cenotes/" + id
+        );
         return result.stream().map(CenoteReferences::getReference).toList();
     }
 
-    public String toCsv(){
+    public String toCsv() {
         Iterable<Cenote> data = getCenotesCsv();
 
         StringBuilder sb = new StringBuilder();
@@ -168,7 +173,7 @@ public class CenoteService {
         return CDL.rowToString(names) + sb;
     }
 
-    public List<Cenote> fromCsv(MultipartFile multipartfile){
+    public List<Cenote> fromCsv(MultipartFile multipartfile) {
         Authentication auth = SecurityContextHolder
             .getContext()
             .getAuthentication();
@@ -177,14 +182,13 @@ public class CenoteService {
         ArrayList<Cenote> values = new ArrayList<>();
 
         try (
-                Reader file_reader = new InputStreamReader(
-                        multipartfile.getInputStream()
-                )
+            Reader file_reader = new InputStreamReader(
+                multipartfile.getInputStream()
+            )
         ) {
-
             ICsvBeanReader reader = new CsvBeanReader(
-                    file_reader,
-                    CsvPreference.STANDARD_PREFERENCE
+                file_reader,
+                CsvPreference.STANDARD_PREFERENCE
             );
             final String[] header = reader.getHeader(true);
             final CellProcessor[] processors = Cenote.getProcessors();
@@ -194,25 +198,31 @@ public class CenoteService {
             while (
                 (cenote = reader.read(Cenote.class, header, processors)) != null
             ) {
-                if (!cenote.validate()) throw new CenoteandoException(INVALID_FORMAT);
+                if (!cenote.validate()) throw new CenoteandoException(
+                    INVALID_FORMAT
+                );
 
                 if ((oldCenote = getCenote(cenote.getId())) != null) {
                     if (
                         !hasUpdateAccess(user, cenote.getId())
-                    ) throw new CenoteandoException(UPDATE_PERMISSION, "CENOTE", cenote.getId());
+                    ) throw new CenoteandoException(
+                        UPDATE_PERMISSION,
+                        "CENOTE",
+                        cenote.getId()
+                    );
                     oldCenote.merge(cenote);
                     cenoteRepository.save(oldCenote);
                     values.add(oldCenote);
                 } else {
-                    if (
-                        !hasCreateAccess(user)
-                    ) throw new CenoteandoException(CREATE_PERMISSION, "CENOTE");
+                    if (!hasCreateAccess(user)) throw new CenoteandoException(
+                        CREATE_PERMISSION,
+                        "CENOTE"
+                    );
                     cenoteRepository.save(cenote);
                     values.add(cenote);
                 }
             }
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             throw new CenoteandoException(READ_FILE);
         }
 
@@ -260,8 +270,12 @@ public class CenoteService {
         }
     }
 
-    public CommentBucket listComments(String id){
-        if (!hasReadAccess(id)) throw new CenoteandoException(READ_ACCESS, "CENOTE", id);
+    public CommentBucket listComments(String id) {
+        if (!hasReadAccess(id)) throw new CenoteandoException(
+            READ_ACCESS,
+            "CENOTE",
+            id
+        );
         return this.commentBucketRepository.findByCenoteId("Cenotes/" + id);
     }
 

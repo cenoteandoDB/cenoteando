@@ -1,5 +1,7 @@
 package org.cenoteando.services;
 
+import static org.cenoteando.exceptions.ErrorMessage.REFERENCE_NOT_FOUND;
+
 import com.google.api.gax.paging.Page;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.Storage;
@@ -9,12 +11,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import org.cenoteando.exceptions.CenoteandoException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import static org.cenoteando.exceptions.ErrorMessage.REFERENCE_NOT_FOUND;
 
 @Service
 public class CloudStorageService {
@@ -57,7 +56,7 @@ public class CloudStorageService {
         return urls;
     }
 
-    public Blob downloadReference(String id){
+    public Blob downloadReference(String id) {
         Page<Blob> blobs = storage.list(
             BUCKET_NAME,
             Storage.BlobListOption.prefix("references/" + id + "."),

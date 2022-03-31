@@ -39,7 +39,7 @@ public class VariableController {
     }
 
     @GetMapping("/{id}")
-    public Variable getVariable(@PathVariable String id){
+    public Variable getVariable(@PathVariable String id) {
         return variableService.getVariable(id);
     }
 
@@ -47,7 +47,7 @@ public class VariableController {
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasPermission(#id, 'VARIABLE.CREATE')"
     )
-    public Variable createVariable(@RequestBody Variable variable){
+    public Variable createVariable(@RequestBody Variable variable) {
         return variableService.createVariable(variable);
     }
 
@@ -58,7 +58,7 @@ public class VariableController {
     public Variable updateVariable(
         @PathVariable String id,
         @RequestBody Variable variable
-    ){
+    ) {
         return variableService.updateVariable(id, variable);
     }
 
@@ -66,7 +66,7 @@ public class VariableController {
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or hasPermission(#id, 'VARIABLE.DELETE')"
     )
-    public String deleteVariable(@PathVariable String id){
+    public String deleteVariable(@PathVariable String id) {
         variableService.deleteVariable(id);
         return "no content";
     }
@@ -75,7 +75,7 @@ public class VariableController {
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasRole('ROLE_CENOTERO_ADVANCED')"
     )
-    public String toCsv(HttpServletResponse response){
+    public String toCsv(HttpServletResponse response) {
         response.setContentType("text/csv");
         response.setHeader(
             "Content-Disposition",
@@ -90,7 +90,7 @@ public class VariableController {
     )
     public List<Variable> fromCsv(
         @RequestParam("file") MultipartFile multipartfile
-    ){
+    ) {
         return variableService.fromCsv(multipartfile);
     }
 }

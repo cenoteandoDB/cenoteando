@@ -13,7 +13,6 @@ public class CenoteReferences {
     @From
     private Reference reference;
 
-
     public CenoteReferences() {}
 
     public Cenote getCenote() {
@@ -23,5 +22,4 @@ public class CenoteReferences {
     public Reference getReference() {
         return reference;
     }
-
 }

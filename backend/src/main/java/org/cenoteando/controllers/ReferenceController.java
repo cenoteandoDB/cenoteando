@@ -4,7 +4,6 @@ import com.google.cloud.storage.Blob;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
-
 import org.cenoteando.models.Cenote;
 import org.cenoteando.models.CenoteReferences;
 import org.cenoteando.models.Reference;
@@ -56,7 +55,7 @@ public class ReferenceController {
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Reference createReference(@RequestBody Reference reference){
+    public Reference createReference(@RequestBody Reference reference) {
         return referenceService.createReference(reference);
     }
 
@@ -65,13 +64,13 @@ public class ReferenceController {
     public Reference updateReference(
         @PathVariable String id,
         @RequestBody Reference reference
-    ){
+    ) {
         return referenceService.updateReference(id, reference);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String deleteReference(@PathVariable String id){
+    public String deleteReference(@PathVariable String id) {
         referenceService.deleteReference(id);
         return "no content";
     }
@@ -94,22 +93,22 @@ public class ReferenceController {
     }
 
     @GetMapping("{id}/cenotes")
-    public List<Cenote> getCenotesReferenced(@PathVariable String id){
+    public List<Cenote> getCenotesReferenced(@PathVariable String id) {
         return referenceService.getCenotesReferenced(id);
     }
 
     @GetMapping("{id}/species")
-    public List<Species> getSpeciesReferenced(@PathVariable String id){
+    public List<Species> getSpeciesReferenced(@PathVariable String id) {
         return referenceService.getSpeciesReferenced(id);
     }
 
     @GetMapping("/csv")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String toCsv(HttpServletResponse response){
+    public String toCsv(HttpServletResponse response) {
         response.setContentType("text/csv");
         response.setHeader(
-                "Content-Disposition",
-                "attachment; filename=references.csv"
+            "Content-Disposition",
+            "attachment; filename=references.csv"
         );
 
         return referenceService.toCsv();
@@ -118,10 +117,8 @@ public class ReferenceController {
     @PostMapping("/csv")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Reference> fromCsv(
-            @RequestParam("file") MultipartFile multipartfile
-    ){
+        @RequestParam("file") MultipartFile multipartfile
+    ) {
         return referenceService.fromCsv(multipartfile);
     }
-
-
 }

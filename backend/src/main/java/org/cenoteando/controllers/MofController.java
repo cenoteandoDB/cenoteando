@@ -24,13 +24,13 @@ public class MofController {
 
     @GetMapping("/csv")
     @PreAuthorize(
-            "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasRole('ROLE_CENOTERO_ADVANCED')"
+        "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasRole('ROLE_CENOTERO_ADVANCED')"
     )
-    public String MofstoCsv(HttpServletResponse response){
+    public String MofstoCsv(HttpServletResponse response) {
         response.setContentType("text/csv");
         response.setHeader(
-                "Content-Disposition",
-                "attachment; filename=mofs.csv"
+            "Content-Disposition",
+            "attachment; filename=mofs.csv"
         );
 
         return moFService.toCsv();
@@ -38,21 +38,23 @@ public class MofController {
 
     @PostMapping("/csv")
     @PreAuthorize(
-            "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasRole('ROLE_CENOTERO_ADVANCED')"
+        "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasRole('ROLE_CENOTERO_ADVANCED')"
     )
     public List<String> MofFromCsv(
-            @RequestParam("file") MultipartFile multipartfile
-    ){
+        @RequestParam("file") MultipartFile multipartfile
+    ) {
         return moFService.fromCsv(multipartfile);
     }
 
-
     @GetMapping("{id}/csv")
-    public String CenoteMofstoCsv(HttpServletResponse response, @PathVariable String id){
+    public String CenoteMofstoCsv(
+        HttpServletResponse response,
+        @PathVariable String id
+    ) {
         response.setContentType("text/csv");
         response.setHeader(
-                "Content-Disposition",
-                "attachment; filename=" + id + "_mofs.csv"
+            "Content-Disposition",
+            "attachment; filename=" + id + "_mofs.csv"
         );
 
         return moFService.CenoteMofstoCsv(id);

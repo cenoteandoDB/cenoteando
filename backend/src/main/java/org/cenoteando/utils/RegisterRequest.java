@@ -1,8 +1,8 @@
 package org.cenoteando.utils;
 
-import org.cenoteando.exceptions.CenoteandoException;
-
 import static org.cenoteando.exceptions.ErrorMessage.*;
+
+import org.cenoteando.exceptions.CenoteandoException;
 
 public class RegisterRequest {
 
@@ -30,8 +30,12 @@ public class RegisterRequest {
         return name;
     }
 
-    public void validatePassword(){
-        if (password == null || password.isEmpty()) throw new CenoteandoException(PASSWORD_REQUIRED);
-        if (password.length() < 6) throw new CenoteandoException(PASSWORD_LENGTH);
+    public void validatePassword() {
+        if (
+            password == null || password.isEmpty()
+        ) throw new CenoteandoException(PASSWORD_REQUIRED);
+        if (password.length() < 6) throw new CenoteandoException(
+            PASSWORD_LENGTH
+        );
     }
 }

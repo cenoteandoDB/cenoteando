@@ -1,5 +1,6 @@
 package org.cenoteando.exceptions;
 
+import static org.cenoteando.exceptions.ErrorMessage.ACCESS_DENIED;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
@@ -7,8 +8,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
-import static org.cenoteando.exceptions.ErrorMessage.ACCESS_DENIED;
 
 @RestControllerAdvice
 public class CenoteandoExceptionHandler extends ResponseEntityExceptionHandler {
@@ -21,7 +20,9 @@ public class CenoteandoExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public CenoteandoExceptionDto accessDeniedException(AccessDeniedException e) {
+    public CenoteandoExceptionDto accessDeniedException(
+        AccessDeniedException e
+    ) {
         return new CenoteandoExceptionDto(ACCESS_DENIED);
     }
 

@@ -22,7 +22,6 @@ public enum ErrorMessage {
     INVALID_ROLE("Invalid role"),
     READ_FILE("Unable to read file");
 
-
     public final String message;
 
     ErrorMessage(String message) {

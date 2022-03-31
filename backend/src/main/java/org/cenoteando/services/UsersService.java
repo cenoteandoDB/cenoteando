@@ -1,5 +1,7 @@
 package org.cenoteando.services;
 
+import static org.cenoteando.exceptions.ErrorMessage.USER_EXISTS;
+
 import org.cenoteando.exceptions.CenoteandoException;
 import org.cenoteando.models.AuthDetails;
 import org.cenoteando.models.User;
@@ -14,8 +16,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import static org.cenoteando.exceptions.ErrorMessage.USER_EXISTS;
 
 @Service
 public class UsersService implements UserDetailsService {
@@ -38,8 +38,10 @@ public class UsersService implements UserDetailsService {
         return this.usersRepository.findByEmail(email);
     }
 
-    public User createUser(User user){
-        if (userExists(user.getEmail())) throw new CenoteandoException(USER_EXISTS);
+    public User createUser(User user) {
+        if (userExists(user.getEmail())) throw new CenoteandoException(
+            USER_EXISTS
+        );
 
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
@@ -68,7 +70,7 @@ public class UsersService implements UserDetailsService {
         return usersRepository.existsByEmail(email);
     }
 
-    public String toCsv(){
+    public String toCsv() {
         Iterable<User> data = usersRepository.findAll();
 
         JSONArray objs = new JSONArray();
