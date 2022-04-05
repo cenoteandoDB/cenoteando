@@ -7,6 +7,7 @@ import AuthDto from '@/models/user/AuthDto';
 import UserDTO from '@/models/UserDTO';
 import VariableDTO from '@/models/VariableDTO';
 import VariableWithValuesDTO from '@/models/VariableWithValuesDTO';
+import MofsDTO from '@/models/MofsDTO';
 import router from '@/router';
 import Store from '@/store';
 import axios, { AxiosError } from 'axios';
@@ -592,6 +593,108 @@ export default class RemoteServices {
                 throw Error(await this.errorMessage(error));
             });
     }
+
+    //TODO: ADD ENDPOINT LATER
+
+    // static async *mofsGenerator(
+    //     size?: number,
+    // ): AsyncGenerator<MofsDTO[]> {
+    //     let page = 0;
+    //     let hasMore = true;
+    //     try {
+    //         while (hasMore) {
+    //             const response = await httpClient.get('/api/MeasurementsOrFacts', {
+    //                 params: { size, page },
+    //             });
+    //             yield response.data.content.map((v) => new MofsDTO(v));
+    //             hasMore = !response.data.last;
+    //             page = response.data.number + 1;
+    //         }
+    //     } catch (e) {
+    //         if (axios.isAxiosError(e)) throw Error(await this.errorMessage(e));
+    //         // TODO: Throw custom error
+    //         else throw Error('Unkown error in ReferencesGenerator');
+    //     }
+    // }
+
+    // static async createMofs(
+    //     mof: MofsDTO,
+    // ): Promise<MofsDTO> {
+    //     return httpClient
+    //         .post('/api/MeasurementsOrFacts/', mof)
+    //         .then((response) => {
+    //             return new MofsDTO(response.data);
+    //         })
+    //         .catch(async (error) => {
+    //             throw Error(await this.errorMessage(error));
+    //         });
+    // }
+
+    // static async updateMofs(
+    //     mof: MofsDTO,
+    // ): Promise<MofsDTO> {
+    //     return httpClient
+    //         .put('/api/MeasurementsOrFacts/' + mof.id, mof)
+    //         .then((response) => {
+    //             return new MofsDTO(response.data);
+    //         })
+    //         .catch(async (error) => {
+    //             throw Error(await this.errorMessage(error));
+    //         });
+    // }
+
+    // static async deleteMofs(id: string): Promise<void> {
+    //     httpClient.delete('/api/MeasurementsOrFacts/' + id).catch(async (error) => {
+    //         throw Error(await this.errorMessage(error));
+    //     });
+    // }
+
+    // static async MofsToCsv(): Promise<string> {
+    //     return httpClient
+    //         .get('/api/MeasurementsOrFacts/csv')
+    //         .then((response) => {
+    //             return response.data;
+    //         })
+    //         .catch(async (error) => {
+    //             throw Error(await this.errorMessage(error));
+    //         });
+    // }
+
+    // static async MofsToCsvSingle(id: string): Promise<string> {
+    //     return httpClient
+    //         .get('/api/MeasurementsOrFacts/' + id + '/download')
+    //         .then((response) => {
+    //             return response.data;
+    //         })
+    //         .catch(async (error) => {
+    //             throw Error(await this.errorMessage(error));
+    //         });
+    // }
+
+    // static async csvToMofs(
+    //     files: File[],
+    //     onUploadProgress: (Event) => void,
+    // ): Promise<MofsDTO[]> {
+    //     const formData = new FormData();
+    //     files.forEach((file) => {
+    //         formData.append('file', file);
+    //     });
+
+    //     return httpClient
+    //         .post('/api/MeasurementsOrFacts/csv', formData, {
+    //             headers: {
+    //                 'Content-Type': 'multipart/form-data',
+    //             },
+    //             onUploadProgress,
+    //         })
+    //         .then((response) => {
+    //             return response.data.data.map((v) => new MofsDTO(v));
+    //         })
+    //         .catch(async (error) => {
+    //             throw Error(await this.errorMessage(error));
+    //         });
+    // }
+
 
     /* TODO: Not working, too heavy
     static getCoastline(): Promise<FeatureCollection> {
