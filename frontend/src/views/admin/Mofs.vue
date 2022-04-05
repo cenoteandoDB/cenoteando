@@ -4,6 +4,13 @@
             <v-select
                 :items="filteredCenotes()"
                 v-model="selectedCenote"
+                v-on:change="()=> {
+                    this.selectedCenoteFlag = true;
+                    
+                    if(this.selectedThemeFlag === true){
+                        getMofData();
+                    }
+                    }"
                 label="Select Cenote"
                 solo
             >
@@ -11,18 +18,27 @@
             <v-select
                 :items="themes"
                 v-model="selectedTheme"
+                v-on:change="()=> {
+                    this.selectedThemeFlag = true;
+                    if(this.selectedCenoteFlag === true) {
+                        getMofData();
+                    }
+                    }"
                 label="Select Theme"
                 solo
             ></v-select>
         </v-container>
 
         <v-data-table
-            v-if="selectedCenote && selectedTheme"
+            v-if="selectedCenoteFlag === true && selectedThemeFlag === true"
             :headers="headers"
-            :items="variables.filter((v) => v.theme.includes(selectedTheme))"
+            :items="mofs.map((m) => m.variable)"
             :items-per-page="15"
             :search="search"
             class="elevation-1"
+            v-on:change="()=> {
+                    this.selectedThemeFlag = true;
+                    }"
         >
             <template v-slot:top>
                 <v-card-title>
@@ -55,6 +71,13 @@ import FileService from '@/services/FileService';
 import RemoteServices from '@/services/RemoteServices';
 import { Component, Vue } from 'vue-property-decorator';
 import Cenote from '../Cenote.vue';
+import VariableWithValuesDTO from '@/models/VariableWithValuesDTO';
+
+interface MofsData {
+    id: string;
+    values: string;
+    theme: string;
+}
 
 @Component({
     components: {
@@ -67,14 +90,15 @@ export default class Mofs extends Vue {
     uploadProgress = 0;
     headers = [
         { text: 'Name', value: 'name' },
-        { text: 'Origin', value: 'origin'},
+        { text: 'Origin', value: 'origin' },
         { text: 'Theme', value: 'theme' },
-        { text: 'description', value: 'description'},
+        { text: 'description', value: 'description' },
         { text: 'Access Level', value: 'accessLevel' },
         { text: 'Data Type', value: 'type' },
         { text: 'Timeseries', value: 'timeseries' },
         { text: 'Multiple', value: 'multiple' },
         { text: 'Enum Values', value: 'enumValues' },
+        { text: 'Mofs values', value: 'values.timestamp'},
         { text: 'Actions', value: 'action' },
     ];
 
@@ -93,6 +117,8 @@ export default class Mofs extends Vue {
     ];
     selectedCenote = '';
     selectedTheme = '';
+    selectedCenoteFlag = false;
+    selectedThemeFlag = false;
     themeFlag = false;
     hasFile = [true, false];
     item = [];
@@ -100,6 +126,7 @@ export default class Mofs extends Vue {
     newVariable = new VariableDTO();
     variables: VariableDTO[] = [];
     cenotes: CenoteDTO[] = [];
+    mofs: VariableWithValuesDTO[] = [];
     filterType: string[] = [];
     filterHasFile: boolean[] = [];
 
@@ -129,6 +156,19 @@ export default class Mofs extends Vue {
         })().catch(async (error) => {
             await this.$store.dispatch('error', error);
         });
+
+        await this.$store.dispatch('loading');
+
+        // (async () => {
+        //     let generator = RemoteServices.mofsGenerator(30);
+        //     for await (let batch of generator) {
+        //         if (!this.mofs.length)
+        //             await this.$store.dispatch('clearLoading');
+        //         this.mofs.push(...batch);
+        //     }
+        // })().catch(async (error) => {
+        //     await this.$store.dispatch('error', error);
+        // });
     }
 
     cenoteToDisplay(cenote: CenoteDTO): string {
@@ -141,6 +181,23 @@ export default class Mofs extends Vue {
 
     cenoteDisplayToId(display: string): string {
         return display.split(' - ')[0];
+    }
+
+    async getMofData(): Promise<void> {
+        await this.$store.dispatch('loading');
+
+        try {
+            if(this.selectedCenote && this.selectedTheme){
+                
+            this.mofs = await RemoteServices.getData(this.cenoteDisplayToId(this.selectedCenote), this.selectedTheme);
+            console.log(this.mofs.map((m)=> { return m.variable }));
+            
+            }
+        } catch (error) {
+            await this.$store.dispatch('error', error);
+        }
+
+        await this.$store.dispatch('clearLoading');
     }
 
     async createVariable(): Promise<void> {
