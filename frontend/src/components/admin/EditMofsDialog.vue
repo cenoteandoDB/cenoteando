@@ -6,40 +6,22 @@
 
         <v-card class="pt-5 mt-5 justify-center">
             <v-card-title>
-                <span class="text-h6">{{
-                    mofs.name
-                }}</span>
-                
+                <span class="text-h6">{{ mofs.name }}</span>
             </v-card-title>
             <v-card-text>
                 <v-form v-model="valid">
-                    <v-textarea
-                        v-model="mofs.description"
-                        data-cy="description"
-                        label="Description"
-                        :rules="[(v) => !!v || 'Description is required']"
+                    <v-text-field
+                        v-model="mofs.value"
+                        data-cy="value"
+                        label="Value"
                         required
-                    ></v-textarea>
-
-                    <v-select
-                        v-model="mofs.theme"
-                        data-cy="theme"
-                        :items="themes"
-                        label="Theme"
-                        :rules="[(v) => !!v || 'Theme is required']"
+                    ></v-text-field>
+                    <v-text-field
+                        v-model="mofs.timestamp"
+                        data-cy="Timestamp"
+                        label="Timestamp"
                         required
-                    ></v-select>
-
-                    <v-select
-                        v-model="mofs.accessLevel"
-                        data-cy="access-level"
-                        :items="accessLevels"
-                        label="Access Level"
-                        :rules="[(v) => !!v || 'Access Level is required']"
-                        required
-                    ></v-select>
-
-
+                    ></v-text-field>
                 </v-form>
             </v-card-text>
             <v-card-actions>
