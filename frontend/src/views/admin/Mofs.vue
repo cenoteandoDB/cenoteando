@@ -42,7 +42,7 @@
                         (a, obj) => a + Object.keys(obj).length,
                         0,
                     );
-                    return m.variable;
+                    return  Object.assign({}, ...m.variable,...m.values);
                 })
             "
             :items-per-page="15"
@@ -144,11 +144,6 @@ import { Component, Vue } from 'vue-property-decorator';
 import Cenote from '../Cenote.vue';
 import VariableWithValuesDTO from '@/models/VariableWithValuesDTO';
 
-interface MofsData {
-    id: string;
-    values: string;
-    theme: string;
-}
 
 @Component({
     components: {
@@ -165,6 +160,8 @@ export default class Mofs extends Vue {
         { text: 'Access Level', value: 'accessLevel' },
         { text: 'Data Type', value: 'type' },
         { text: 'Count', value: 'count' },
+        { text: 'Value', value: 'value'},
+        { text: 'Timestamp', value: 'timestamp'},
         { text: 'Actions', value: 'action' },
     ];
 
@@ -250,6 +247,7 @@ export default class Mofs extends Vue {
         return display.split(' - ')[0];
     }
 
+
     async getMofData(): Promise<void> {
         await this.$store.dispatch('loading');
 
@@ -259,7 +257,7 @@ export default class Mofs extends Vue {
                     this.cenoteDisplayToId(this.selectedCenote),
                     this.selectedTheme,
                 );
-            }
+            }[]
         } catch (error) {
             await this.$store.dispatch('error', error);
         }
