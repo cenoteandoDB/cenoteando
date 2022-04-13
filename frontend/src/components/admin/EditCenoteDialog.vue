@@ -193,9 +193,9 @@
                             placeholder="Change coordinate format"
                             @input="
                                 () => {
-                                    if (modeSet === 'DMS') {
+                                    if (modeSet === 'Degrees Minutes and Seconds') {
                                         dms = true;
-                                    } else if (modeSet === 'DD') {
+                                    } else if (modeSet === 'Decimal Degrees') {
                                         dms = false;
                                     }
                                 }
@@ -257,7 +257,7 @@ export default class EditCenoteDialog extends Vue {
     issues = Object.values(CenoteIssue);
     latitudeDir = ['N', 'S'];
     longitudeDir = ['W', 'E'];
-    mode = ['DD', 'DMS'];
+    mode = ['Decimal Degrees', 'Degrees Minutes and Seconds'];
 
     remove(item: string): void {
         this.$props.cenote.alternativeNames.splice(
