@@ -1,5 +1,5 @@
 <template>
-    <v-card class="table">
+    <v-container>
         <v-container class="d-flex flex-row">
             <v-select
                 :items="filteredCenotes()"
@@ -32,100 +32,107 @@
                 solo
             ></v-select>
         </v-container>
+        <v-card>
+            <v-data-table
+                v-if="selectedCenoteFlag === true && selectedThemeFlag === true"
+                :headers="headers"
+                :items="
+                    mofs.map((m) => {
+                        m.variable['count'] = m.values.length;
 
-        <v-data-table
-            v-if="selectedCenoteFlag === true && selectedThemeFlag === true"
-            :headers="headers"
-            :items="
-                mofs.map((m) => {
-                    m.variable['count'] = m.values.reduce(
-                        (a, obj) => a + Object.keys(obj).length,
-                        0,
-                    );
-                    return  Object.assign({}, ...m.variable,...m.values);
-                })
-            "
-            :items-per-page="15"
-            :search="search"
-            class="elevation-1"
-            v-on:change="
-                () => {
-                    this.selectedThemeFlag = true;
-                }
-            "
-        >
-            <template v-slot:top>
-                <v-card-title class="flex-column">
-                    <v-text-field
-                        v-model="search"
-                        append-icon="mdi-magnify"
-                        label="Search"
-                        class="mx-2"
-                    />
-                    <v-spacer />
-                    <v-container class="d-flex flex-row justify-center">
-                        <v-dialog max-width="600px">
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-btn
-                                    v-on="on"
-                                    v-bind="attrs"
-                                    data-cy="uploadButton"
-                                    ><v-icon color="primary"
-                                        >mdi-upload</v-icon
-                                    ></v-btn
-                                >
-                            </template>
-                            <v-card class="pt-5 mt-5 justify-center">
-                                <v-card-title>
-                                    <span class="text-h5">Upload Mofs</span>
-                                </v-card-title>
-                                <v-card-text>
-                                    <v-form>
-                                        <v-file-input
-                                            @change="selectFiles"
-                                            multiple
-                                            counter
-                                            show-size
-                                            chips
-                                            accept=".csv"
-                                        />
-                                    </v-form>
-                                    <!-- TODO: Add progressbar
+                        var mofs = Object.assign(
+                            {},
+                            ...m.variable,
+                            ...m.values,
+                        );
+                        return mofs;
+                    })
+                "
+                :items-per-page="15"
+                :search="search"
+                class="elevation-1"
+                v-on:change="
+                    () => {
+                        this.selectedThemeFlag = true;
+                    }
+                "
+            >
+                <template v-slot:top>
+                    <v-card-title class="flex-column">
+                        <v-text-field
+                            v-model="search"
+                            append-icon="mdi-magnify"
+                            label="Search"
+                            class="mx-2"
+                        />
+                        <v-spacer />
+                        <v-container class="d-flex flex-row justify-center">
+                            <v-dialog max-width="600px">
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn
+                                        v-on="on"
+                                        v-bind="attrs"
+                                        data-cy="uploadButton"
+                                        ><v-icon color="primary"
+                                            >mdi-upload</v-icon
+                                        ></v-btn
+                                    >
+                                </template>
+                                <v-card class="pt-5 mt-5 justify-center">
+                                    <v-card-title>
+                                        <span class="text-h5">Upload Mofs</span>
+                                    </v-card-title>
+                                    <v-card-text>
+                                        <v-form>
+                                            <v-file-input
+                                                @change="selectFiles"
+                                                multiple
+                                                counter
+                                                show-size
+                                                chips
+                                                accept=".csv"
+                                            />
+                                        </v-form>
+                                        <!-- TODO: Add progressbar
                                     <v-progress-linear
                                         :value="this.uploadProgress"
                                     ></v-progress-linear>
                                     -->
-                                    <v-btn @click="upload">Upload</v-btn>
-                                </v-card-text>
-                            </v-card>
-                        </v-dialog>
+                                        <v-btn @click="upload">Upload</v-btn>
+                                    </v-card-text>
+                                </v-card>
+                            </v-dialog>
 
-                        <v-btn @click="download" data-cy="downloadButton"
-                            ><v-icon color="primary"
-                                >mdi-download</v-icon
-                            ></v-btn
-                        >
-                    </v-container>
-                </v-card-title>
-            </template>
+                            <v-btn @click="download" data-cy="downloadButton"
+                                ><v-icon color="primary"
+                                    >mdi-download</v-icon
+                                ></v-btn
+                            >
+                        </v-container>
+                    </v-card-title>
+                </template>
 
-            <template v-slot:[`item.action`]="{ item }">
-                <edit-mofs-dialog :mofs="item" @onSave="updateVariable(item)">
-                    <template v-slot:activator="{ on, attrs }">
-                        <v-icon
-                            class="action-button"
-                            :data-cy="'editVariable_' + item.id"
-                            v-on="on"
-                            v-bind="attrs"
-                            color="green"
-                            >mdi-pencil</v-icon
-                        >
-                    </template>
-                </edit-mofs-dialog>
-                <delete-dialog @onConfirm="deleteCenote(item.cenote)" />
-            </template>
-        </v-data-table>
-    </v-card>
+                <template v-slot:[`item.action`]="{ item }">
+                    <edit-mofs-dialog
+                        :mofs="item"
+                        @onSave="updateVariable(item)"
+                    >
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-icon
+                                class="action-button"
+                                :data-cy="'editVariable_' + item.id"
+                                v-on="on"
+                                v-bind="attrs"
+                                color="green"
+                                >mdi-pencil</v-icon
+                            >
+                        </template>
+                    </edit-mofs-dialog>
+                    <delete-dialog @onConfirm="deleteCenote(item.cenote)" />
+                </template>
+            </v-data-table>
+        </v-card>
+    </v-container>
 </template>
 <style scoped>
 .v-text-field {
@@ -144,7 +151,6 @@ import { Component, Vue } from 'vue-property-decorator';
 import Cenote from '../Cenote.vue';
 import VariableWithValuesDTO from '@/models/VariableWithValuesDTO';
 
-
 @Component({
     components: {
         EditMofsDialog,
@@ -160,8 +166,6 @@ export default class Mofs extends Vue {
         { text: 'Access Level', value: 'accessLevel' },
         { text: 'Data Type', value: 'type' },
         { text: 'Count', value: 'count' },
-        { text: 'Value', value: 'value'},
-        { text: 'Timestamp', value: 'timestamp'},
         { text: 'Actions', value: 'action' },
     ];
 
@@ -247,7 +251,6 @@ export default class Mofs extends Vue {
         return display.split(' - ')[0];
     }
 
-
     async getMofData(): Promise<void> {
         await this.$store.dispatch('loading');
 
@@ -257,7 +260,8 @@ export default class Mofs extends Vue {
                     this.cenoteDisplayToId(this.selectedCenote),
                     this.selectedTheme,
                 );
-            }[]
+            }
+            [];
         } catch (error) {
             await this.$store.dispatch('error', error);
         }
