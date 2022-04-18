@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="dialog" max-width="600px">
+    <v-dialog v-model="dialog" max-width="1000px">
         <template v-slot:activator="{ on, attrs }">
             <slot name="activator" v-bind:on="on" v-bind:attrs="attrs"> </slot>
         </template>
@@ -8,22 +8,43 @@
             <v-card-title>
                 <span class="text-h6">{{ mofs.name }}</span>
             </v-card-title>
-            <v-card-text>
-                <v-form v-model="valid">
-                    <v-text-field
-                        v-model="mofs.value"
-                        data-cy="value"
-                        label="Value"
-                        required
-                    ></v-text-field>
-                    <v-text-field
-                        v-model="mofs.timestamp"
-                        data-cy="Timestamp"
-                        label="Timestamp"
-                        required
-                    ></v-text-field>
-                </v-form>
-            </v-card-text>
+            <v-container class="justify-center">
+                <v-data-table
+                    :headers="headers"
+                    :items="[mofs]"
+                    :items-per-page="5"
+                    class="elevation-1"
+                >
+                    <template v-slot:top>
+                        <v-card-title class="flex-column">
+                            <v-text-field
+                                v-model="search"
+                                append-icon="mdi-magnify"
+                                label="Search"
+                                class="mx-2"
+                            />
+                        </v-card-title>
+                    </template>
+                    <template v-slot:[`item.action`]="{ item }">
+                        <edit-mofs-var-dialog
+                            :mofs="item"
+                            @onSave="updateVariable(item)"
+                        >
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-icon
+                                    class="action-button"
+                                    :data-cy="'editVariable_' + item.id"
+                                    v-on="on"
+                                    v-bind="attrs"
+                                    color="green"
+                                    >mdi-pencil</v-icon
+                                >
+                            </template>
+                        </edit-mofs-var-dialog>
+                        <delete-dialog @onConfirm="deleteCenote(item.cenote)" />
+                    </template>
+                </v-data-table>
+            </v-container>
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="dialog = false">
@@ -45,16 +66,28 @@
 <script lang="ts">
 import VariableWithValuesDTO from '@/models/VariableWithValuesDTO';
 import { Component, Vue } from 'vue-property-decorator';
+import EditMofsVarDialog from '@/components/admin/EditMofsVarDialog.vue';
+import DeleteDialog from '@/components/admin/DeleteDialog.vue';
 
 @Component({
+    components: {
+        EditMofsVarDialog,
+        DeleteDialog,
+    },
     props: {
-        mofs: VariableWithValuesDTO,
+        mofs: {},
     },
 })
 export default class EditMofsDialog extends Vue {
     editName = false;
     dialog = false;
     valid = false;
+
+    headers = [
+        { text: 'Value', value: 'value' },
+        { text: 'Timestamp', value: 'timestamp' },
+        { text: 'Actions', value: 'action' },
+    ];
 
     themes = [
         'LOCATION',
