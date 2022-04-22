@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import org.cenoteando.exceptions.CenoteandoException;
 import org.cenoteando.models.User;
@@ -53,22 +54,19 @@ public class VariableService {
 
         switch (user.getRole()) {
             case ADMIN:
-            case RESEARCHER:
-                List<Variable> filteredVariables = new ArrayList<>();
-                List<Variable> variables = variablesRepository.findByTheme(
-                    theme
-                );
-                for (Variable variable : variables) if (
-                    variable.getAccessLevel() != SENSITIVE ||
-                    variable.isCreator(user)
-                ) filteredVariables.add(variable);
-                return filteredVariables;
+                return variablesRepository.findAll();
             case CENOTERO_ADVANCED:
-                if (
-                    !user.getThemesBlackList().contains(theme)
-                    //TODO what about sensitive variables?
-                ) return variablesRepository.findByTheme(theme);
-                throw new CenoteandoException(THEME_ACCESS, theme);
+                if (!user.getThemesWhiteList().contains(theme))
+                    throw new CenoteandoException(THEME_ACCESS, theme);
+
+                Iterable<Variable> variables = variablesRepository.findByTheme(theme);
+                Iterator<Variable> iter = variables.iterator();
+                while(iter.hasNext()){
+                    Variable var = iter.next();
+                    if(var.getAccessLevel() == SENSITIVE &&
+                            !var.isCreator(user))
+                        iter.remove();
+                }
             case CENOTERO_BASIC:
                 if (
                     user.getThemesWhiteList().contains(theme)
@@ -80,13 +78,13 @@ public class VariableService {
     }
 
     public Variable getVariable(String id) {
+        if (!hasReadAccess(id)) throw new CenoteandoException(
+                READ_ACCESS,
+                "VARIABLE",
+                id
+        );
         Variable variable = variablesRepository.findByArangoId(
             "Variables/" + id
-        );
-        if (!hasReadAccess(id)) throw new CenoteandoException(
-            READ_ACCESS,
-            "VARIABLE",
-            id
         );
         return variable;
     }
@@ -153,9 +151,9 @@ public class VariableService {
                 }
                 if ((oldVariable = getVariable(variable.getId())) != null) {
                     if (
-                        !hasCreateUpdateAccess(
+                        !hasUpdateAccess(
                             user,
-                            variable.getTheme().toString()
+                            variable
                         )
                     ) throw new CenoteandoException(
                         UPDATE_PERMISSION,
@@ -167,9 +165,9 @@ public class VariableService {
                     values.add(oldVariable);
                 } else {
                     if (
-                        !hasCreateUpdateAccess(
+                        !hasCreateAccess(
                             user,
-                            variable.getTheme().toString()
+                            variable
                         )
                     ) throw new CenoteandoException(
                         CREATE_PERMISSION,
@@ -187,13 +185,28 @@ public class VariableService {
         return values;
     }
 
-    public boolean hasCreateUpdateAccess(User user, String theme) {
+    public boolean hasCreateAccess(User user, Variable variable) {
         switch (user.getRole()) {
             case ADMIN:
-            case RESEARCHER:
                 return true;
             case CENOTERO_ADVANCED:
-                return user.getCenoteWhiteList().contains(theme);
+                if(variable.getAccessLevel() == SENSITIVE)
+                    return true;
+                return user.getThemesWhiteList().contains(variable.getTheme().toString());
+            default:
+                return false;
+        }
+    }
+
+    //Update and Delete permission are equal for variables
+    public boolean hasUpdateAccess(User user, Variable variable) {
+        switch (user.getRole()) {
+            case ADMIN:
+                return true;
+            case CENOTERO_ADVANCED:
+                if(variable.getAccessLevel() == SENSITIVE)
+                    return variable.isCreator(user);
+                return user.getThemesWhiteList().contains(variable.getTheme().toString());
             default:
                 return false;
         }
@@ -202,28 +215,29 @@ public class VariableService {
     public boolean hasReadAccess(String id) {
         Variable variable = getVariable(id);
         if (variable == null) return false;
+        if(variable.getAccessLevel() == PUBLIC) return true;
 
         Authentication auth = SecurityContextHolder
             .getContext()
             .getAuthentication();
 
         if (auth instanceof AnonymousAuthenticationToken) {
-            return variable.getAccessLevel() == PUBLIC;
+            return false;
         }
 
         User user = (User) auth.getPrincipal();
 
         switch (user.getRole()) {
             case ADMIN:
-            case RESEARCHER:
-                if (
-                    variable.getAccessLevel() != SENSITIVE ||
-                    variable.isCreator(user)
-                ) return true;
+                return true;
             case CENOTERO_ADVANCED:
-                return !user.getCenoteBlackList().contains(id);
+                if(variable.getAccessLevel() == SENSITIVE)
+                    return variable.isCreator(user);
+                return true;
             case CENOTERO_BASIC:
-                return user.getCenoteWhiteList().contains(id);
+                if(variable.getAccessLevel() == SENSITIVE)
+                    return false;
+                return user.getThemesWhiteList().contains(variable.getTheme().toString());
             default:
                 return false;
         }

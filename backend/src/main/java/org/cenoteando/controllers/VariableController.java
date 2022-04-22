@@ -45,7 +45,7 @@ public class VariableController {
 
     @PostMapping
     @PreAuthorize(
-        "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasPermission(#id, 'VARIABLE.CREATE')"
+        "hasRole('ROLE_ADMIN') or hasPermission(#id, 'VARIABLE.CREATE')"
     )
     public Variable createVariable(@RequestBody Variable variable) {
         return variableService.createVariable(variable);
@@ -53,7 +53,7 @@ public class VariableController {
 
     @PutMapping("/{id}")
     @PreAuthorize(
-        "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasPermission(#id, 'VARIABLE.UPDATE')"
+        "hasRole('ROLE_ADMIN') or hasPermission(#id, 'VARIABLE.UPDATE')"
     )
     public Variable updateVariable(
         @PathVariable String id,

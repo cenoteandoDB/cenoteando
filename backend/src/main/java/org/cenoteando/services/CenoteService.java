@@ -2,7 +2,7 @@ package org.cenoteando.services;
 
 import static org.cenoteando.exceptions.ErrorMessage.*;
 import static org.cenoteando.models.User.Role.ADMIN;
-import static org.cenoteando.models.User.Role.RESEARCHER;
+import static org.cenoteando.models.User.Role.CENOTERO_ADVANCED;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -59,14 +59,8 @@ public class CenoteService {
 
         switch (user.getRole()) {
             case ADMIN:
-            case RESEARCHER:
-                return cenoteRepository.findAll(page);
             case CENOTERO_ADVANCED:
-                user.setCenoteBlackList(new ArrayList<>());
-                return cenoteRepository.findByBlackListFilter(
-                    page,
-                    user.getCenoteBlackList()
-                );
+                return cenoteRepository.findAll(page);
             case CENOTERO_BASIC:
                 if (user.getCenoteWhiteList() == null) user.setCenoteWhiteList(
                     new ArrayList<>()
@@ -74,31 +68,6 @@ public class CenoteService {
                 return cenoteRepository.findByWhiteListFilter(
                     page,
                     user.getCenoteWhiteList()
-                );
-            default:
-                return null;
-        }
-    }
-
-    public Iterable<Cenote> getCenotesCsv() {
-        Authentication auth = SecurityContextHolder
-            .getContext()
-            .getAuthentication();
-
-        if (
-            auth instanceof AnonymousAuthenticationToken
-        ) return cenoteRepository.findCenotesByTouristicIsTrue();
-
-        User user = (User) auth.getPrincipal();
-
-        switch (user.getRole()) {
-            case ADMIN:
-            case RESEARCHER:
-                return cenoteRepository.findAll();
-            case CENOTERO_ADVANCED:
-                user.setCenoteBlackList(new ArrayList<>());
-                return cenoteRepository.findByBlackListFilterCsv(
-                    user.getCenoteBlackList()
                 );
             default:
                 return null;
@@ -158,7 +127,7 @@ public class CenoteService {
     }
 
     public String toCsv() {
-        Iterable<Cenote> data = getCenotesCsv();
+        Iterable<Cenote> data = cenoteRepository.findAll();
 
         StringBuilder sb = new StringBuilder();
         JSONArray names = Cenote.getHeaders();
@@ -233,9 +202,8 @@ public class CenoteService {
         Authentication auth = SecurityContextHolder
             .getContext()
             .getAuthentication();
-
+        Cenote cenote = cenoteRepository.findByArangoId("Cenotes/" + id);
         if (auth instanceof AnonymousAuthenticationToken) {
-            Cenote cenote = cenoteRepository.findByArangoId("Cenotes/" + id);
             return cenote.getTouristic();
         }
 
@@ -243,30 +211,30 @@ public class CenoteService {
 
         switch (user.getRole()) {
             case ADMIN:
-            case RESEARCHER:
-                return true;
             case CENOTERO_ADVANCED:
-                return !user.getCenoteBlackList().contains(id);
+                return true;
             case CENOTERO_BASIC:
-                return user.getCenoteWhiteList().contains(id);
+                return cenote.getTouristic() || user.getCenoteWhiteList().contains(id);
             default:
-                return false;
+                throw new CenoteandoException(INVALID_ROLE);
         }
     }
 
     public boolean hasCreateAccess(User user) {
-        return user.getRole() == ADMIN || user.getRole() == RESEARCHER;
+        return user.getRole() == ADMIN || user.getRole() == CENOTERO_ADVANCED;
     }
 
     public boolean hasUpdateAccess(User user, String id) {
         switch (user.getRole()) {
             case ADMIN:
-            case RESEARCHER:
                 return true;
             case CENOTERO_ADVANCED:
+                Cenote cenote = cenoteRepository.findByArangoId("Cenotes/" + id);
+                return user.getCenoteWhiteList().contains(id) || cenote.isCreator(user);
+            case CENOTERO_BASIC:
                 return user.getCenoteWhiteList().contains(id);
             default:
-                return false;
+                throw new CenoteandoException(INVALID_ROLE);
         }
     }
 

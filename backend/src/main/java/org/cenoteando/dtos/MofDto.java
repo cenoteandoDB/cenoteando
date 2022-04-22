@@ -11,6 +11,7 @@ public class MofDto {
     private Instant timestamp;
     private String value;
 
+    //necessary for csv upload
     public MofDto() {}
 
     public String getCenoteId() {

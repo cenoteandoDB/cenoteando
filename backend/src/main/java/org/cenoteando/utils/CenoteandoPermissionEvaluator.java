@@ -1,7 +1,6 @@
 package org.cenoteando.utils;
 
 import static org.cenoteando.models.User.Role.CENOTERO_ADVANCED;
-import static org.cenoteando.models.User.Role.RESEARCHER;
 import static org.cenoteando.models.Variable.AccessLevel.SENSITIVE;
 
 import java.io.Serializable;
@@ -44,44 +43,54 @@ public class CenoteandoPermissionEvaluator implements PermissionEvaluator {
 
             switch (permission) {
                 case "CENOTE.UPDATE":
-                    if (user.getRole() == CENOTERO_ADVANCED) return user
-                        .getCenoteWhiteList()
-                        .contains(id);
-                    return false;
+                    switch (user.getRole()){
+                        case CENOTERO_ADVANCED:
+                            cenote = cenotesRepository.findByArangoId("Cenotes/" + id);
+                            return user.getCenoteWhiteList().contains(id) || cenote.isCreator(user);
+                        case CENOTERO_BASIC:
+                            return user.getCenoteWhiteList().contains(id);
+
+                    }
                 case "CENOTE.DELETE":
                     cenote = cenotesRepository.findByArangoId("Cenotes/" + id);
                     if (
-                        user.getRole() == RESEARCHER ||
                         user.getRole() == CENOTERO_ADVANCED
                     ) {
-                        return cenote.isCreator(user);
+                        return cenote.isCreator(user) || user.getCenoteWhiteList().contains(id);
                     }
                     return false;
                 case "VARIABLE.CREATE":
                     variable = variableService.getVariable(id);
-                    if (user.getRole() == CENOTERO_ADVANCED) return user
-                        .getThemesWhiteList()
-                        .contains(variable.getTheme().toString());
+                    if (user.getRole() == CENOTERO_ADVANCED){
+                        if(variable.getAccessLevel() == SENSITIVE)
+                            return true;
+                        return user
+                                .getThemesWhiteList()
+                                .contains(variable.getTheme().toString());
+                    }
                     return false;
                 case "VARIABLE.UPDATE":
                     variable = variableService.getVariable(id);
                     switch (user.getRole()) {
-                        case ADMIN:
-                        case RESEARCHER:
-                            return (
-                                variable.getAccessLevel() != SENSITIVE ||
-                                variable.isCreator(user)
-                            );
                         case CENOTERO_ADVANCED:
+                            if(variable.getAccessLevel() == SENSITIVE)
+                                return variable.isCreator(user);
                             return user
-                                .getThemesWhiteList()
-                                .contains(variable.getTheme().name());
+                                    .getThemesWhiteList()
+                                    .contains(variable.getTheme().toString());
                         default:
                             return false;
                     }
                 case "VARIABLE.DELETE":
                     variable = variableService.getVariable(id);
-                    return variable.isCreator(user);
+                    if(user.getRole() == CENOTERO_ADVANCED){
+                        if(variable.getAccessLevel() == SENSITIVE)
+                            return variable.isCreator(user);
+                        return user
+                                .getThemesWhiteList()
+                                .contains(variable.getTheme().toString());
+                    }
+                    return false;
             }
         }
 

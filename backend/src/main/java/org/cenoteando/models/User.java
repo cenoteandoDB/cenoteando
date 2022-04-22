@@ -17,7 +17,6 @@ public class User {
 
     public enum Role {
         ADMIN,
-        RESEARCHER,
         CENOTERO_ADVANCED,
         CENOTERO_BASIC,
     }
@@ -36,9 +35,7 @@ public class User {
 
     private Role role;
 
-    private List<String> cenoteBlackList;
     private List<String> cenoteWhiteList;
-    private List<String> themesBlackList;
     private List<String> themesWhiteList;
 
     @CreatedDate
@@ -95,15 +92,6 @@ public class User {
         this.role = role;
     }
 
-    public List<String> getCenoteBlackList() {
-        if (cenoteBlackList == null) return new ArrayList<>();
-        return cenoteBlackList;
-    }
-
-    public void setCenoteBlackList(List<String> cenoteBlackList) {
-        this.cenoteBlackList = cenoteBlackList;
-    }
-
     public List<String> getCenoteWhiteList() {
         if (cenoteWhiteList == null) return new ArrayList<>();
         return cenoteWhiteList;
@@ -111,15 +99,6 @@ public class User {
 
     public void setCenoteWhiteList(List<String> cenoteWhiteList) {
         this.cenoteWhiteList = cenoteWhiteList;
-    }
-
-    public List<String> getThemesBlackList() {
-        if (themesBlackList == null) return new ArrayList<>();
-        return themesBlackList;
-    }
-
-    public void setThemesBlackList(List<String> themesBlackList) {
-        this.themesBlackList = themesBlackList;
     }
 
     public List<String> getThemesWhiteList() {
@@ -145,9 +124,7 @@ public class User {
 
     public void merge(User user) {
         role = user.getRole();
-        cenoteBlackList = user.getCenoteBlackList();
         cenoteWhiteList = user.getCenoteWhiteList();
-        themesBlackList = user.getThemesBlackList();
         themesWhiteList = user.getThemesWhiteList();
     }
 

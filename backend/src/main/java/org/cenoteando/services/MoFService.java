@@ -138,19 +138,20 @@ public class MoFService {
         ArrayList<String> values = new ArrayList<>();
 
         try (
-            Reader file_reader = new InputStreamReader(
+            Reader fileReader = new InputStreamReader(
                 multipartfile.getInputStream()
             )
         ) {
             ICsvBeanReader reader = new CsvBeanReader(
-                file_reader,
+                fileReader,
                 CsvPreference.STANDARD_PREFERENCE
             );
             final String[] header = reader.getHeader(true);
             final CellProcessor[] processors = MofDto.getProcessors();
 
             MofDto mof;
-            MeasurementOrFactBucket mofBucket, oldMofBucket;
+            MeasurementOrFactBucket mofBucket;
+            MeasurementOrFactBucket oldMofBucket;
             while (
                 (mof = reader.read(MofDto.class, header, processors)) != null
             ) {
@@ -197,15 +198,15 @@ public class MoFService {
     private void addMoF(MeasurementOrFactBucket mofBucket, MofDto mof) {
         Variable variable = variableService.getVariable(mof.getVariableId());
 
-        MeasurementOrFact new_mof = new MeasurementOrFact(
+        MeasurementOrFact newMof = new MeasurementOrFact(
             mof.getTimestamp(),
             mof.getValue()
         );
 
-        if (mofBucket.getMeasurements().contains(new_mof)) return;
+        if (mofBucket.getMeasurements().contains(newMof)) return;
 
         if (variable.getTimeseries() || mofBucket.getMeasurements().isEmpty()) {
-            mofBucket.getMeasurements().add(new_mof);
+            mofBucket.getMeasurements().add(newMof);
             mofBucket.setFirstTimestamp(mof.getTimestamp());
             mofBucket.setLastTimestamp(mof.getTimestamp());
             mofBucket.increaseCount();
@@ -213,7 +214,7 @@ public class MoFService {
         }
     }
 
-    public String CenoteMofstoCsv(String id) {
+    public String cenoteMofstoCsv(String id) {
         if (!cenoteService.hasReadAccess(id)) throw new CenoteandoException(
             READ_ACCESS,
             "CENOTE",

@@ -64,7 +64,7 @@ public class CenoteController {
 
     @PutMapping("/{id}")
     @PreAuthorize(
-        "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasPermission('CENOTE.UPDATE')"
+        "hasRole('ROLE_ADMIN') or hasPermission('CENOTE.UPDATE')"
     )
     public Cenote updateCenote(
         @PathVariable String id,
@@ -102,7 +102,7 @@ public class CenoteController {
 
     @GetMapping("/csv")
     @PreAuthorize(
-        "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasRole('ROLE_CENOTERO_ADVANCED')"
+        "hasRole('ROLE_ADMIN') or hasRole('ROLE_CENOTERO_ADVANCED')"
     )
     public String toCsv(HttpServletResponse response) {
         response.setContentType("text/csv");
