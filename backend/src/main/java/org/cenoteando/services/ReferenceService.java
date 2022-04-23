@@ -43,7 +43,10 @@ public class ReferenceService {
     }
 
     public Reference getReference(String id) {
-        return this.referenceRepository.findByArangoId("References/" + id);
+        Reference reference = referenceRepository.findByArangoId("References/" + id);
+        if(reference == null)
+            throw new CenoteandoException(NOT_FOUND, "REFERENCE");
+        return reference;
     }
 
     public Reference createReference(Reference reference) {

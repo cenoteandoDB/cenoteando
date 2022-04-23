@@ -39,6 +39,25 @@ public class MeasurementOrFactBucket<T> {
         this.count = 0;
     }
 
+    public void addMof(MeasurementOrFact mof){
+        if(measurements.contains(mof))
+            return;
+
+        measurements.add(mof);
+        count++;
+        setFirstTimestamp(mof.getTimestamp());
+        setLastTimestamp(mof.getTimestamp());
+    }
+
+    public void deleteMof(MeasurementOrFact mof){
+        measurements.remove(mof);
+        if(mof.getTimestamp().equals(firstTimestamp))
+            setFirstTimestamp();
+        if(mof.getTimestamp().equals(lastTimestamp))
+            setLastTimestamp();
+        count--;
+    }
+
     public String getId() {
         return id;
     }
@@ -65,8 +84,16 @@ public class MeasurementOrFactBucket<T> {
             return;
         }
 
-        if (this.firstTimestamp.isAfter(firstTimestamp)) this.firstTimestamp =
-            firstTimestamp;
+        if (this.firstTimestamp.isAfter(firstTimestamp))
+            this.firstTimestamp = firstTimestamp;
+    }
+
+    public void setFirstTimestamp() {
+        firstTimestamp = measurements.get(0).getTimestamp();
+        for(MeasurementOrFact mof : measurements){
+            if(firstTimestamp.isAfter(mof.getTimestamp()))
+                firstTimestamp = mof.getTimestamp();
+        }
     }
 
     public Instant getLastTimestamp() {
@@ -79,8 +106,16 @@ public class MeasurementOrFactBucket<T> {
             return;
         }
 
-        if (this.lastTimestamp.isBefore(lastTimestamp)) this.lastTimestamp =
-            lastTimestamp;
+        if (this.lastTimestamp.isBefore(lastTimestamp))
+            this.lastTimestamp = lastTimestamp;
+    }
+
+    public void setLastTimestamp() {
+        lastTimestamp = measurements.get(0).getTimestamp();
+        for(MeasurementOrFact mof : measurements){
+            if(lastTimestamp.isBefore(mof.getTimestamp()))
+                lastTimestamp = mof.getTimestamp();
+        }
     }
 
     public int getCount() {

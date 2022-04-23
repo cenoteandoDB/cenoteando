@@ -76,6 +76,8 @@ public class CenoteService {
 
     public Cenote getCenote(String id) {
         Cenote cenote = cenoteRepository.findByArangoId("Cenotes/" + id);
+        if(cenote == null)
+            throw new CenoteandoException(NOT_FOUND, "CENOTE");
         if (!hasReadAccess(id)) throw new CenoteandoException(
             READ_ACCESS,
             "CENOTE",

@@ -6,6 +6,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
+import java.util.Objects;
+
 import org.cenoteando.utils.CsvImportExport;
 
 @JsonDeserialize(using = CsvImportExport.CenoteGeoJsonDeserialize.class)
@@ -77,5 +79,10 @@ public class CenoteGeoJSON {
             this.geometry.equals(that.getGeometry()) &&
             this.type.equals(that.getType())
         );
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(geometry, type);
     }
 }

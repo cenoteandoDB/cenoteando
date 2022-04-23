@@ -78,13 +78,15 @@ public class VariableService {
     }
 
     public Variable getVariable(String id) {
+        Variable variable = variablesRepository.findByArangoId(
+                "Variables/" + id
+        );
+        if(variable == null)
+            throw new CenoteandoException(NOT_FOUND, "VARIABLE");
         if (!hasReadAccess(id)) throw new CenoteandoException(
                 READ_ACCESS,
                 "VARIABLE",
                 id
-        );
-        Variable variable = variablesRepository.findByArangoId(
-            "Variables/" + id
         );
         return variable;
     }
@@ -213,8 +215,9 @@ public class VariableService {
     }
 
     public boolean hasReadAccess(String id) {
-        Variable variable = getVariable(id);
-        if (variable == null) return false;
+        Variable variable = variablesRepository.findByArangoId("Variables/" + id);
+        if (variable == null)
+            throw new CenoteandoException(NOT_FOUND, "VARIABLE");
         if(variable.getAccessLevel() == PUBLIC) return true;
 
         Authentication auth = SecurityContextHolder

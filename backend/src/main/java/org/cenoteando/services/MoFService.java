@@ -18,6 +18,8 @@ import org.cenoteando.exceptions.CenoteandoException;
 import org.cenoteando.models.*;
 import org.cenoteando.repository.MeasurementsOrFactsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.supercsv.cellprocessor.ift.CellProcessor;
@@ -37,6 +39,65 @@ public class MoFService {
 
     @Autowired
     private VariableService variableService;
+
+    public MeasurementOrFactBucket createMof(
+            String cenoteId,
+            String variableId,
+            MofDto mofDto
+    ) {
+        if(!cenoteId.equals(mofDto.getCenoteId()) || !variableId.equals(mofDto.getVariableId())){
+            throw new CenoteandoException(BODY_REQUEST);
+        }
+
+        mofPermissions(cenoteId, variableId);
+
+        MeasurementOrFactBucket bucket = measurementsOrFactsRepository.findMof(
+                "Cenotes/" + cenoteId,
+                "Variables/" + variableId
+        );
+        MeasurementOrFact mof = new MeasurementOrFact(mofDto);
+
+        if(bucket == null){
+            Cenote cenote = cenoteService.getCenote(cenoteId);
+            Variable variable = variableService.getVariable(variableId);
+            MeasurementOrFactBucket newBucket = new MeasurementOrFactBucket<>(cenote, variable);
+            newBucket.addMof(mof);
+            measurementsOrFactsRepository.save(newBucket);
+            return newBucket;
+        } else {
+            bucket.addMof(mof);
+            measurementsOrFactsRepository.save(bucket);
+            return bucket;
+        }
+
+    }
+
+    public String deleteMof(String cenoteId, String variableId, MofDto mofDto){
+        if(!cenoteId.equals(mofDto.getCenoteId()) || !variableId.equals(mofDto.getVariableId())){
+            throw new CenoteandoException(BODY_REQUEST);
+        }
+        mofPermissions(cenoteId, variableId);
+
+        MeasurementOrFactBucket bucket = measurementsOrFactsRepository.findMof(
+                "Cenotes/" + cenoteId,
+                "Variables/" + variableId
+        );
+        if(bucket == null){
+            throw new CenoteandoException(NOT_FOUND, "MeasurementOrFactBucket");
+        }
+        MeasurementOrFact mof = new MeasurementOrFact(mofDto);
+        if(!bucket.getMeasurements().contains(mof)){
+            throw new CenoteandoException(NOT_FOUND, "MOF");
+        }
+
+        if(bucket.getMeasurements().size() == 1){
+            measurementsOrFactsRepository.delete(bucket);
+        } else {
+            bucket.deleteMof(mof);
+            measurementsOrFactsRepository.save(bucket);
+        }
+        return "no content";
+    }
 
     public HashMap<String, VariableWithValuesDTO<Object>> getData(
         String id,
@@ -249,5 +310,19 @@ public class MoFService {
         }
 
         return sb.toString();
+    }
+
+    public void mofPermissions(String cenoteId, String variableId){
+        Authentication auth = SecurityContextHolder
+                .getContext()
+                .getAuthentication();
+        User user = (User) auth.getPrincipal();
+
+        if(!cenoteService.hasUpdateAccess(user, cenoteId))
+            throw new CenoteandoException(UPDATE_PERMISSION, "CENOTE", cenoteId);
+
+        Variable variable = variableService.getVariable(variableId);
+        if(!variableService.hasUpdateAccess(user, variable))
+            throw new CenoteandoException(UPDATE_PERMISSION, "VARIABLE", variableId);
     }
 }

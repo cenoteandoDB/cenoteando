@@ -1,6 +1,6 @@
 package org.cenoteando.services;
 
-import static org.cenoteando.exceptions.ErrorMessage.GADM_NOT_FOUND;
+import static org.cenoteando.exceptions.ErrorMessage.NOT_FOUND;
 
 import com.arangodb.springframework.core.geo.GeoJsonPoint;
 import org.cenoteando.exceptions.CenoteandoException;
@@ -34,7 +34,7 @@ public class GadmService {
 
     public Gadm findGadm(GeoJsonPoint geojson) {
         Gadm gadm = gadmRepository.findGadm(geojson);
-        if (gadm == null) throw new CenoteandoException(GADM_NOT_FOUND);
+        if (gadm == null) throw new CenoteandoException(NOT_FOUND, "GADM");
 
         return gadm;
     }

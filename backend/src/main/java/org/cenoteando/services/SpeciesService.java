@@ -41,7 +41,10 @@ public class SpeciesService {
     }
 
     public Species getSpecies(String id) {
-        return this.speciesRepository.findByArangoId("Species/" + id);
+        Species species = speciesRepository.findByArangoId("Species/" + id);
+        if(species == null)
+            throw new CenoteandoException(NOT_FOUND, "SPECIES");
+        return species;
     }
 
     public Species getSpeciesByAphiaId(String aphiaId) {

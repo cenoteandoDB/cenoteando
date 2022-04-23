@@ -2,14 +2,12 @@ package org.cenoteando.controllers;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import org.cenoteando.dtos.MofDto;
+import org.cenoteando.models.MeasurementOrFactBucket;
 import org.cenoteando.services.MoFService;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
@@ -22,9 +20,33 @@ public class MofController {
         this.moFService = moFService;
     }
 
+    @PostMapping("/{cenoteId}/{variableId}")
+    @PreAuthorize(
+            "hasRole('ROLE_ADMIN') or hasRole('ROLE_CENOTERO_ADVANCED')"
+    )
+    public MeasurementOrFactBucket createMof(
+            @PathVariable String cenoteId,
+            @PathVariable String variableId,
+            @RequestBody MofDto mofDto
+    ) {
+        return moFService.createMof(cenoteId, variableId, mofDto);
+    }
+
+    @DeleteMapping("/{cenoteId}/{variableId}")
+    @PreAuthorize(
+            "hasRole('ROLE_ADMIN') or hasRole('ROLE_CENOTERO_ADVANCED')"
+    )
+    public String deleteMof(
+            @PathVariable String cenoteId,
+            @PathVariable String variableId,
+            @RequestBody MofDto mofDto
+    ) {
+        return moFService.deleteMof(cenoteId, variableId, mofDto);
+    }
+
     @GetMapping("/csv")
     @PreAuthorize(
-        "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasRole('ROLE_CENOTERO_ADVANCED')"
+        "hasRole('ROLE_ADMIN') or hasRole('ROLE_CENOTERO_ADVANCED')"
     )
     public String mofstoCsv(HttpServletResponse response) {
         response.setContentType("text/csv");
@@ -38,7 +60,7 @@ public class MofController {
 
     @PostMapping("/csv")
     @PreAuthorize(
-        "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasRole('ROLE_CENOTERO_ADVANCED')"
+        "hasRole('ROLE_ADMIN') or hasRole('ROLE_CENOTERO_ADVANCED')"
     )
     public List<String> mofFromCsv(
         @RequestParam("file") MultipartFile multipartfile
