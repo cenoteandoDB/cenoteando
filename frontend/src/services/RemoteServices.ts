@@ -605,6 +605,7 @@ export default class RemoteServices {
             });
     }
 
+
     //TODO: ADD ENDPOINT LATER
 
     // static async *mofsGenerator(
@@ -628,83 +629,87 @@ export default class RemoteServices {
     //     }
     // }
 
-    // static async createMofs(
-    //     mof: MofsDTO,
-    // ): Promise<MofsDTO> {
-    //     return httpClient
-    //         .post('/api/MeasurementsOrFacts/', mof)
-    //         .then((response) => {
-    //             return new MofsDTO(response.data);
-    //         })
-    //         .catch(async (error) => {
-    //             throw Error(await this.errorMessage(error));
-    //         });
-    // }
+    static async createMofs(
+        mof: VariableWithValuesDTO,
+        key: string,
+        theme: string,
+    ): Promise<VariableWithValuesDTO> {
+        return httpClient
+            .post('/api/cenotes/' + key + '/data/' + theme, mof)
+            .then((response) => {
+                return new VariableWithValuesDTO(response.data);
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
 
-    // static async updateMofs(
-    //     mof: MofsDTO,
-    // ): Promise<MofsDTO> {
-    //     return httpClient
-    //         .put('/api/MeasurementsOrFacts/' + mof.id, mof)
-    //         .then((response) => {
-    //             return new MofsDTO(response.data);
-    //         })
-    //         .catch(async (error) => {
-    //             throw Error(await this.errorMessage(error));
-    //         });
-    // }
+    static async updateMofs(
+        mof: VariableWithValuesDTO,
+        key: string,
+        theme: string,
+    ): Promise<VariableWithValuesDTO> {
+        return httpClient
+            .put('/api/cenotes/' + key + '/data/' + theme, mof)
+            .then((response) => {
+                return new VariableWithValuesDTO(response.data);
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
 
-    // static async deleteMofs(id: string): Promise<void> {
-    //     httpClient.delete('/api/MeasurementsOrFacts/' + id).catch(async (error) => {
-    //         throw Error(await this.errorMessage(error));
-    //     });
-    // }
+    static async deleteMofs(key:string, theme: string): Promise<void> {
+        httpClient.delete('/api/cenotes/' + key + '/data/' + theme).catch(async (error) => {
+            throw Error(await this.errorMessage(error));
+        });
+    }
 
-    // static async MofsToCsv(): Promise<string> {
-    //     return httpClient
-    //         .get('/api/MeasurementsOrFacts/csv')
-    //         .then((response) => {
-    //             return response.data;
-    //         })
-    //         .catch(async (error) => {
-    //             throw Error(await this.errorMessage(error));
-    //         });
-    // }
+    static async MofsToCsv(): Promise<string> {
+        return httpClient
+            .get('/api/mof/csv')
+            .then((response) => {
+                return response.data;
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
 
-    // static async MofsToCsvSingle(id: string): Promise<string> {
-    //     return httpClient
-    //         .get('/api/MeasurementsOrFacts/' + id + '/download')
-    //         .then((response) => {
-    //             return response.data;
-    //         })
-    //         .catch(async (error) => {
-    //             throw Error(await this.errorMessage(error));
-    //         });
-    // }
+    static async MofsToCsvSingle(id: string): Promise<string> {
+        return httpClient
+            .get('/api/mof/' + id + '/csv')
+            .then((response) => {
+                return response.data;
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
 
-    // static async csvToMofs(
-    //     files: File[],
-    //     onUploadProgress: (Event) => void,
-    // ): Promise<MofsDTO[]> {
-    //     const formData = new FormData();
-    //     files.forEach((file) => {
-    //         formData.append('file', file);
-    //     });
+    static async csvToMofs(
+        files: File[],
+        onUploadProgress: (Event) => void,
+    ): Promise<VariableWithValuesDTO[]> {
+        const formData = new FormData();
+        files.forEach((file) => {
+            formData.append('file', file);
+        });
 
-    //     return httpClient
-    //         .post('/api/MeasurementsOrFacts/csv', formData, {
-    //             headers: {
-    //                 'Content-Type': 'multipart/form-data',
-    //             },
-    //             onUploadProgress,
-    //         })
-    //         .then((response) => {
-    //             return response.data.data.map((v) => new MofsDTO(v));
-    //         })
-    //         .catch(async (error) => {
-    //             throw Error(await this.errorMessage(error));
-    //         });
-    // }
+        return httpClient
+            .post('/api/mof/csv', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                onUploadProgress,
+            })
+            .then((response) => {
+                return response.data.data.map((v) => new MofsDTO(v));
+            })
+            .catch(async (error) => {
+                throw Error(await this.errorMessage(error));
+            });
+    }
 
 
     /* TODO: Not working, too heavy
