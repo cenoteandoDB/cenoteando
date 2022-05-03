@@ -113,22 +113,18 @@
                 </template>
 
                 <template v-slot:[`item.action`]="{ item }">
-                    <edit-mofs-dialog
-                        :mofs="item"
-                        @onSave="updateVariable(item)"
-                    >
+                    <edit-mofs-table :mofs="item" @onSave="updateMofs(item)">
                         <template v-slot:activator="{ on, attrs }">
                             <v-icon
                                 class="action-button"
-                                :data-cy="'editVariable_' + item.id"
+                                :data-cy="'editMofs_' + item.id"
                                 v-on="on"
                                 v-bind="attrs"
                                 color="green"
                                 >mdi-pencil</v-icon
                             >
                         </template>
-                    </edit-mofs-dialog>
-                    <delete-dialog @onConfirm="deleteCenote(item.cenote)" />
+                    </edit-mofs-table>
                 </template>
             </v-data-table>
         </v-card>
@@ -142,7 +138,7 @@
 
 <script lang="ts">
 import DeleteDialog from '@/components/admin/DeleteDialog.vue';
-import EditMofsDialog from '@/components/admin/EditMofsDialog.vue';
+import EditMofsTable from '@/components/admin/EditMofsTable.vue';
 import CenoteDTO from '@/models/CenoteDTO';
 import VariableDTO from '@/models/VariableDTO';
 import FileService from '@/services/FileService';
@@ -153,11 +149,12 @@ import VariableWithValuesDTO from '@/models/VariableWithValuesDTO';
 
 @Component({
     components: {
-        EditMofsDialog,
+        EditMofsTable,
         DeleteDialog,
     },
 })
 export default class Mofs extends Vue {
+    valid = false;
     files: File[] = [];
     uploadProgress = 0;
     headers = [
@@ -190,7 +187,6 @@ export default class Mofs extends Vue {
     hasFile = [true, false];
     item = [];
     search = '';
-    newVariable = new VariableDTO();
     newMofs = new VariableWithValuesDTO();
     variables: VariableDTO[] = [];
     cenotes: CenoteDTO[] = [];
@@ -269,24 +265,32 @@ export default class Mofs extends Vue {
         await this.$store.dispatch('clearLoading');
     }
 
-    async createVariable(): Promise<void> {
+    async createMofs(): Promise<void> {
         await this.$store.dispatch('loading');
 
         try {
-            await RemoteServices.createVariable(this.newVariable);
+            await RemoteServices.createMofs(
+                this.newMofs,
+                this.selectedCenote,
+                this.selectedTheme,
+            );
         } catch (error) {
             await this.$store.dispatch('error', error);
         }
 
         await this.$store.dispatch('clearLoading');
-        this.newVariable = new VariableDTO();
+        this.newMofs = new VariableWithValuesDTO();
     }
 
-    async updateVariable(variable: VariableDTO): Promise<void> {
+    async updateVariable(mofs: VariableWithValuesDTO): Promise<void> {
         await this.$store.dispatch('loading');
 
         try {
-            await RemoteServices.updateVariable(variable);
+            await RemoteServices.updateMofs(
+                mofs,
+                this.cenoteDisplayToId(this.selectedCenote),
+                this.selectedTheme,
+            );
         } catch (error) {
             // TODO: revert to original value in case of failure
             await this.$store.dispatch('error', error);
@@ -295,16 +299,21 @@ export default class Mofs extends Vue {
         await this.$store.dispatch('clearLoading');
     }
 
-    async deleteVariable(variable: VariableDTO): Promise<void> {
-        await RemoteServices.deleteVariable(variable.id);
-        this.variables = this.variables.filter((r) => r.id != variable.id);
+    async deleteMofs(mofs: VariableWithValuesDTO): Promise<void> {
+        await RemoteServices.deleteMofs(
+            this.cenoteDisplayToId(this.selectedCenote),
+            this.selectedTheme,
+        );
+        this.mofs = this.mofs.filter((r) => r.variable.id != mofs.variable.id);
     }
 
     async download(): Promise<void> {
         await this.$store.dispatch('loading');
 
         try {
-            const csv = await RemoteServices.variablesToCsv();
+            const csv = await RemoteServices.MofsToCsvSingle(
+                this.cenoteDisplayToId(this.selectedCenote),
+            );
             FileService.download(csv, 'mofs.csv', 'text/csv');
         } catch (error) {
             await this.$store.dispatch('error', error);
@@ -322,7 +331,7 @@ export default class Mofs extends Vue {
         await this.$store.dispatch('loading');
 
         try {
-            await RemoteServices.csvToVariables(this.files, (event) => {
+            await RemoteServices.csvToMofs(this.files, (event) => {
                 this.uploadProgress = Math.round(
                     (100 * event.loaded) / event.total,
                 );

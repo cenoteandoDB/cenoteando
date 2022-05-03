@@ -7,6 +7,50 @@
         <v-card class="pt-5 mt-5 justify-center">
             <v-card-text>
                 <v-form v-model="valid">
+                    <v-combobox
+                        v-if="
+                            mofs.type == 'TIME' ||
+                            mofs.type == 'UNITLESS_NUMBER' ||
+                            mofs.type == 'JSON' ||
+                            mofs.type == 'NUMBER_WITH_UNITS' ||
+                            mofs.type == 'DATETIME' ||
+                            mofs.type == 'DATE' ||
+                            mofs.type == 'TEXT'
+                        "
+                        v-model="mofs.type"
+                        :items="dataTypes"
+                        data-cy="Type"
+                        label="Type"
+                        required
+                    ></v-combobox>
+
+                    <v-combobox
+                        v-if="mofs.type == 'ENUM'"
+                        v-model="mofs.type"
+                        :items="dataTypes"
+                        data-cy="Type"
+                        label="Type"
+                        required
+                    ></v-combobox>
+
+                    <v-combobox
+                        v-if="mofs.type === '' || mofs.type === undefined"
+                        v-model="mofs.type"
+                        :items="dataTypes"
+                        data-cy="Type"
+                        label="Type"
+                        required
+                    ></v-combobox>
+
+                    <v-combobox
+                        v-if="mofs.type == 'BOOLEAN'"
+                        v-model="mofs.type"
+                        :items="dataTypes"
+                        data-cy="Type"
+                        label="Type"
+                        required
+                    ></v-combobox>
+
                     <v-text-field
                         v-if="
                             mofs.type == 'TIME' ||
@@ -22,6 +66,7 @@
                         label="Value"
                         required
                     ></v-text-field>
+
                     <v-combobox
                         v-if="mofs.type == 'ENUM'"
                         label="Enum Values"
@@ -40,20 +85,22 @@
                         ]"
                         required
                     >
+                        <v-text-field
+                            v-if="mofs.type === '' || mofs.type === undefined"
+                            v-model="mofs.value"
+                            data-cy="Value"
+                            label="Value"
+                            required
+                        ></v-text-field>
                     </v-combobox>
-
-                    <v-text-field
-                        v-model="mofs.timestamp"
-                        data-cy="Timestamp"
-                        label="Timestamp"
-                        required
-                    ></v-text-field>
 
                     <v-checkbox
                         v-if="mofs.type === 'BOOLEAN'"
                         v-model="mofs.value"
                         label="Value"
                     ></v-checkbox>
+                    
+            
                 </v-form>
             </v-card-text>
             <v-card-actions>
@@ -68,7 +115,7 @@
                     :disabled="!this.valid"
                     @click="save()"
                 >
-                    Save
+                    Add
                 </v-btn>
             </v-card-actions>
         </v-card>
@@ -87,7 +134,6 @@ export default class EditMofsVarDialog extends Vue {
     editName = false;
     dialog = false;
     valid = false;
-
     themes = [
         'LOCATION',
         'GEOREFERENCE',

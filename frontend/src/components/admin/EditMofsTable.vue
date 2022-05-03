@@ -13,35 +13,41 @@
                     :headers="headers"
                     :items="[mofs]"
                     :items-per-page="5"
+                    :search="search"
                     class="elevation-1"
                 >
                     <template v-slot:top>
-                        <v-card-title class="flex-column">
-                            <v-text-field
-                                v-model="search"
-                                append-icon="mdi-magnify"
-                                label="Search"
-                                class="mx-2"
-                            />
-                        </v-card-title>
-                    </template>
-                    <template v-slot:[`item.action`]="{ item }">
-                        <edit-mofs-var-dialog
-                            :mofs="item"
-                            @onSave="updateVariable(item)"
-                        >
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-icon
-                                    class="action-button"
-                                    :data-cy="'editVariable_' + item.id"
-                                    v-on="on"
-                                    v-bind="attrs"
-                                    color="green"
-                                    >mdi-pencil</v-icon
+                        <v-container class="row justify-center">
+                            <v-card-title class="flex-column">
+                                <v-text-field
+                                    v-model="search"
+                                    append-icon="mdi-magnify"
+                                    label="Search"
+                                    class="mx-2"
+                                />
+                                <edit-mofs-var-dialog
+                                    :mofs="newMofs"
+                                    :variable="variables"
+                                    @onSave="createMofs()"
                                 >
-                            </template>
-                        </edit-mofs-var-dialog>
-                        <delete-dialog @onConfirm="deleteCenote(item.cenote)" />
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-btn
+                                            v-on="on"
+                                            v-bind="attrs"
+                                            data-cy="createButton"
+                                        >
+                                            <v-icon color="green"
+                                                >mdi-plus</v-icon
+                                            >
+                                        </v-btn>
+                                    </template>
+                                </edit-mofs-var-dialog>
+                            </v-card-title>
+                        </v-container>
+                    </template>
+
+                    <template v-slot:[`item.action`]="{ item }">
+                        <delete-dialog @onConfirm="deleteMofs(item.mofs)" />
                     </template>
                 </v-data-table>
             </v-container>
@@ -54,7 +60,6 @@
                     color="blue darken-1"
                     text
                     data-cy="save"
-                    :disabled="!this.valid"
                     @click="save()"
                 >
                     Save
@@ -65,6 +70,7 @@
 </template>
 <script lang="ts">
 import VariableWithValuesDTO from '@/models/VariableWithValuesDTO';
+import VariableDTO from '@/models/VariableDTO';
 import { Component, Vue } from 'vue-property-decorator';
 import EditMofsVarDialog from '@/components/admin/EditMofsVarDialog.vue';
 import DeleteDialog from '@/components/admin/DeleteDialog.vue';
@@ -78,10 +84,12 @@ import DeleteDialog from '@/components/admin/DeleteDialog.vue';
         mofs: {},
     },
 })
-export default class EditMofsDialog extends Vue {
+export default class EditMofsTable extends Vue {
     editName = false;
     dialog = false;
     valid = false;
+    search = '';
+    variables: VariableDTO[] = [];
 
     headers = [
         { text: 'Value', value: 'value' },
@@ -114,6 +122,7 @@ export default class EditMofsDialog extends Vue {
         'TIME',
     ];
     accessLevels = ['PUBLIC', 'PRIVATE', 'SENSITIVE'];
+    newMofs = new VariableWithValuesDTO();
 
     remove(item: string): void {
         this.$props.mofs.enumValues.splice(
