@@ -258,6 +258,7 @@ export default class Mofs extends Vue {
                 );
             }
             [];
+
         } catch (error) {
             await this.$store.dispatch('error', error);
         }

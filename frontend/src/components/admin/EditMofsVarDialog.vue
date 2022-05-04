@@ -99,8 +99,20 @@
                         v-model="mofs.value"
                         label="Value"
                     ></v-checkbox>
-                    
-            
+
+                    <v-text-field
+                        v-if="mofs.timeseries === false"
+                        v-model="mofs.timestamp"
+                        value="Timestamp"
+                    >
+                    </v-text-field>
+
+                    <v-text-field
+                        v-if="mofs.timeseries === true"
+                        v-model="mofs.timestamp"
+                        value="Timestamp"
+                    >
+                    </v-text-field>
                 </v-form>
             </v-card-text>
             <v-card-actions>
@@ -159,6 +171,10 @@ export default class EditMofsVarDialog extends Vue {
         'TIME',
     ];
     accessLevels = ['PUBLIC', 'PRIVATE', 'SENSITIVE'];
+
+    test(item: boolean): void {
+        console.log(item);
+    }
 
     remove(item: string): void {
         this.$props.mofs.enumValues.splice(

@@ -26,7 +26,7 @@
                                     class="mx-2"
                                 />
                                 <edit-mofs-var-dialog
-                                    :mofs="newMofs"
+                                    :mofs="mofs"
                                     :variable="variables"
                                     @onSave="createMofs()"
                                 >
