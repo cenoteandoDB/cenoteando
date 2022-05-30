@@ -28,6 +28,8 @@
                                 <edit-mofs-var-dialog
                                     :mofs="mofs"
                                     :variable="variables"
+                                    :key="mofs.key" 
+                                    :theme="mofs.theme"
                                     @onSave="createMofs()"
                                 >
                                     <template v-slot:activator="{ on, attrs }">
@@ -74,6 +76,7 @@ import VariableDTO from '@/models/VariableDTO';
 import { Component, Vue } from 'vue-property-decorator';
 import EditMofsVarDialog from '@/components/admin/EditMofsVarDialog.vue';
 import DeleteDialog from '@/components/admin/DeleteDialog.vue';
+import RemoteServices from '@/services/RemoteServices';
 
 @Component({
     components: {
@@ -82,6 +85,8 @@ import DeleteDialog from '@/components/admin/DeleteDialog.vue';
     },
     props: {
         mofs: {},
+        selectedCenote: {},
+        selectedTheme: {}
     },
 })
 export default class EditMofsTable extends Vue {
@@ -123,6 +128,19 @@ export default class EditMofsTable extends Vue {
     ];
     accessLevels = ['PUBLIC', 'PRIVATE', 'SENSITIVE'];
     newMofs = new VariableWithValuesDTO();
+
+    async createMofs(): Promise<void> {
+        await this.$store.dispatch('loading');
+
+        try {
+            await RemoteServices.createMofs(this.newMofs, this.$props.selectedCenote, this.$props.selectedTheme);
+        } catch (error) {
+            await this.$store.dispatch('error', error);
+        }
+
+        await this.$store.dispatch('clearLoading');
+        this.newMofs = new VariableWithValuesDTO();
+    }
 
     remove(item: string): void {
         this.$props.mofs.enumValues.splice(
