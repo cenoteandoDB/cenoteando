@@ -113,7 +113,11 @@
                 </template>
 
                 <template v-slot:[`item.action`]="{ item }">
-                    <edit-mofs-table :mofs="item" :selectedCenote="selectedCenote" :selectedTheme="selectedTheme">
+                    <edit-mofs-table
+                        :mofs="item"
+                        :selectedCenote="cenoteDisplayToId(selectedCenote)"
+                        :selectedTheme="selectedTheme"
+                    >
                         <template v-slot:activator="{ on, attrs }">
                             <v-icon
                                 class="action-button"
@@ -258,7 +262,6 @@ export default class Mofs extends Vue {
                 );
             }
             [];
-
         } catch (error) {
             await this.$store.dispatch('error', error);
         }

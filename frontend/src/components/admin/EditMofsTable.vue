@@ -28,7 +28,7 @@
                                 <edit-mofs-var-dialog
                                     :mofs="mofs"
                                     :variable="variables"
-                                    :key="mofs.key" 
+                                    :key="mofs.key"
                                     :theme="mofs.theme"
                                     @onSave="createMofs()"
                                 >
@@ -86,7 +86,7 @@ import RemoteServices from '@/services/RemoteServices';
     props: {
         mofs: {},
         selectedCenote: {},
-        selectedTheme: {}
+        selectedTheme: {},
     },
 })
 export default class EditMofsTable extends Vue {
@@ -133,7 +133,11 @@ export default class EditMofsTable extends Vue {
         await this.$store.dispatch('loading');
 
         try {
-            await RemoteServices.createMofs(this.newMofs, this.$props.selectedCenote, this.$props.selectedTheme);
+            await RemoteServices.createMofs(
+                this.newMofs,
+                this.$props.selectedCenote,
+                this.$props.selectedTheme,
+            );
         } catch (error) {
             await this.$store.dispatch('error', error);
         }

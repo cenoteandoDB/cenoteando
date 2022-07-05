@@ -7,50 +7,6 @@
         <v-card class="pt-5 mt-5 justify-center">
             <v-card-text>
                 <v-form v-model="valid">
-                    <v-combobox
-                        v-if="
-                            mofs.type == 'TIME' ||
-                            mofs.type == 'UNITLESS_NUMBER' ||
-                            mofs.type == 'JSON' ||
-                            mofs.type == 'NUMBER_WITH_UNITS' ||
-                            mofs.type == 'DATETIME' ||
-                            mofs.type == 'DATE' ||
-                            mofs.type == 'TEXT'
-                        "
-                        v-model="mofs.type"
-                        :items="dataTypes"
-                        data-cy="Type"
-                        label="Type"
-                        required
-                    ></v-combobox>
-
-                    <v-combobox
-                        v-if="mofs.type == 'ENUM'"
-                        v-model="mofs.type"
-                        :items="dataTypes"
-                        data-cy="Type"
-                        label="Type"
-                        required
-                    ></v-combobox>
-
-                    <v-combobox
-                        v-if="mofs.type === '' || mofs.type === undefined"
-                        v-model="mofs.type"
-                        :items="dataTypes"
-                        data-cy="Type"
-                        label="Type"
-                        required
-                    ></v-combobox>
-
-                    <v-combobox
-                        v-if="mofs.type == 'BOOLEAN'"
-                        v-model="mofs.type"
-                        :items="dataTypes"
-                        data-cy="Type"
-                        label="Type"
-                        required
-                    ></v-combobox>
-
                     <v-text-field
                         v-if="
                             mofs.type == 'TIME' ||
@@ -71,7 +27,7 @@
                         v-if="mofs.type == 'ENUM'"
                         label="Enum Values"
                         data-cy="enum-values"
-                        v-model="mofs.value"
+                        v-model="mofValueEnum"
                         append-icon=""
                         chips
                         deletable-chips
@@ -87,7 +43,7 @@
                     >
                         <v-text-field
                             v-if="mofs.type === '' || mofs.type === undefined"
-                            v-model="mofs.value"
+                            v-model="mofValue"
                             data-cy="Value"
                             label="Value"
                             required
@@ -96,20 +52,20 @@
 
                     <v-checkbox
                         v-if="mofs.type === 'BOOLEAN'"
-                        v-model="mofs.value"
+                        v-model="mofValueBool"
                         label="Value"
                     ></v-checkbox>
 
                     <v-text-field
-                        v-if="mofs.timeseries === false"
-                        v-model="mofs.timestamp"
+                        v-if="mofs.timeseries === true"
+                        v-model="mofDateNow"
                         value="Timestamp"
                     >
                     </v-text-field>
 
                     <v-text-field
-                        v-if="mofs.timeseries === true"
-                        v-model="mofs.timestamp"
+                        v-if="mofs.timeseries === false"
+                        v-model="mofDate"
                         value="Timestamp"
                     >
                     </v-text-field>
@@ -171,10 +127,12 @@ export default class EditMofsVarDialog extends Vue {
         'TIME',
     ];
     accessLevels = ['PUBLIC', 'PRIVATE', 'SENSITIVE'];
-
-    test(item: boolean): void {
-        console.log(item);
-    }
+    mofValue = "";
+    mofValueBool = false;
+    mofValueEnum = [];
+    mofDate = "";
+    mofDateNowConversion = new Date();
+    mofDateNow = this.mofDateNowConversion.toISOString();
 
     remove(item: string): void {
         this.$props.mofs.enumValues.splice(
