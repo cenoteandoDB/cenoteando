@@ -17,7 +17,7 @@
                             mofs.type == 'DATE' ||
                             mofs.type == 'TEXT'
                         "
-                        v-model="mofs.value"
+                        v-model="mofValue"
                         data-cy="value"
                         label="Value"
                         required
@@ -57,7 +57,7 @@
                     ></v-checkbox>
 
                     <v-menu
-                        v-if="mofs.timeseries === true"
+                        v-if="mofs.timeseries === false"
                         ref="menu1"
                         v-model="menu1"
                         :close-on-content-click="false"
@@ -86,12 +86,13 @@
                     </v-menu>
 
                     <v-menu
-                     v-if="mofs.timeseries === false"
+                        v-if="mofs.timeseries === true"
                         ref="menu"
                         v-model="menu"
                         :close-on-content-click="false"
                         transition="scale-transition"
                         offset-y
+                        max-width="290px"
                         min-width="auto"
                     >
                         <template v-slot:activator="{ on, attrs }">
@@ -106,6 +107,7 @@
                         </template>
                         <v-date-picker
                             v-model="mofTimestamp"
+                            no-title
                             :active-picker.sync="activePicker"
                             :max="
                                 new Date(
