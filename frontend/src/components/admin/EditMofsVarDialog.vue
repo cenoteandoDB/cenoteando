@@ -56,19 +56,68 @@
                         label="Value"
                     ></v-checkbox>
 
-                    <v-text-field
+                    <v-menu
                         v-if="mofs.timeseries === true"
-                        v-model="mofDateNow"
-                        value="Timestamp"
+                        ref="menu1"
+                        v-model="menu1"
+                        :close-on-content-click="false"
+                        transition="scale-transition"
+                        offset-y
+                        max-width="290px"
+                        min-width="auto"
                     >
-                    </v-text-field>
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-text-field
+                                v-model="mofDateNow"
+                                label="Date"
+                                hint="MM/DD/YYYY format"
+                                persistent-hint
+                                prepend-icon="mdi-calendar"
+                                v-bind="attrs"
+                                @blur="date = parseDate(mofDateNow)"
+                                v-on="on"
+                            ></v-text-field>
+                        </template>
+                        <v-date-picker
+                            v-model="mofDateNow"
+                            no-title
+                            @input="menu1 = false"
+                        ></v-date-picker>
+                    </v-menu>
 
-                    <v-text-field
-                        v-if="mofs.timeseries === false"
-                        v-model="mofDate"
-                        value="Timestamp"
+                    <v-menu
+                     v-if="mofs.timeseries === false"
+                        ref="menu"
+                        v-model="menu"
+                        :close-on-content-click="false"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
                     >
-                    </v-text-field>
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-text-field
+                                v-model="mofTimestamp"
+                                label="Date"
+                                prepend-icon="mdi-calendar"
+                                readonly
+                                v-bind="attrs"
+                                v-on="on"
+                            ></v-text-field>
+                        </template>
+                        <v-date-picker
+                            v-model="mofTimestamp"
+                            :active-picker.sync="activePicker"
+                            :max="
+                                new Date(
+                                    Date.now() -
+                                        new Date().getTimezoneOffset() * 60000,
+                                )
+                                    .toISOString()
+                                    .substr(0, 10)
+                            "
+                            min="1950-01-01"
+                        ></v-date-picker>
+                    </v-menu>
                 </v-form>
             </v-card-text>
             <v-card-actions>
@@ -127,12 +176,14 @@ export default class EditMofsVarDialog extends Vue {
         'TIME',
     ];
     accessLevels = ['PUBLIC', 'PRIVATE', 'SENSITIVE'];
-    mofValue = "";
+    mofValue = '';
     mofValueBool = false;
     mofValueEnum = [];
-    mofDate = "";
+    mofTimestamp = '';
     mofDateNowConversion = new Date();
-    mofDateNow = this.mofDateNowConversion.toISOString();
+    mofDateNow = this.mofDateNowConversion.toISOString().substring(0, 10);
+    menu1 = false;
+    menu = false;
 
     remove(item: string): void {
         this.$props.mofs.enumValues.splice(
