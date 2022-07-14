@@ -26,9 +26,9 @@ public class CenoteandoExceptionHandler extends ResponseEntityExceptionHandler {
         return new CenoteandoExceptionDto(ACCESS_DENIED);
     }
 
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public CenoteandoExceptionDto randomException(Exception e) {
-        return new CenoteandoExceptionDto(e);
-    }
+    // @ExceptionHandler(Exception.class)
+    // @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    // public CenoteandoExceptionDto randomException(Exception e) {
+    //     return new CenoteandoExceptionDto(e);
+    // }
 }

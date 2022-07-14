@@ -120,8 +120,8 @@ public class MoFService {
             .get()
             .map(Variable::getArangoId)
             .toList();
-        HashMap<String, VariableWithValuesDTO<Object>> variablesMap = new HashMap<>();
 
+        HashMap<String, VariableWithValuesDTO<Object>> variablesMap = new HashMap<>();
         variablesStreamSupplier
             .get()
             .forEach(variable -> {

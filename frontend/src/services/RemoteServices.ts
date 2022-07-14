@@ -13,6 +13,7 @@ import Store from '@/store';
 import axios, { AxiosError } from 'axios';
 import L from 'leaflet';
 import { ElementCompact, xml2js } from 'xml-js';
+import MofDTO from '@/models/MofDTO';
 
 const httpClient = axios.create();
 httpClient.defaults.timeout = 100000;
@@ -605,37 +606,11 @@ export default class RemoteServices {
             });
     }
 
-
-    //TODO: ADD ENDPOINT LATER
-
-    // static async *mofsGenerator(
-    //     size?: number,
-    // ): AsyncGenerator<MofsDTO[]> {
-    //     let page = 0;
-    //     let hasMore = true;
-    //     try {
-    //         while (hasMore) {
-    //             const response = await httpClient.get('/api/MeasurementsOrFacts', {
-    //                 params: { size, page },
-    //             });
-    //             yield response.data.content.map((v) => new MofsDTO(v));
-    //             hasMore = !response.data.last;
-    //             page = response.data.number + 1;
-    //         }
-    //     } catch (e) {
-    //         if (axios.isAxiosError(e)) throw Error(await this.errorMessage(e));
-    //         // TODO: Throw custom error
-    //         else throw Error('Unkown error in ReferencesGenerator');
-    //     }
-    // }
-
-    static async createMofs(
-        mof: VariableWithValuesDTO,
-        key: string,
-        theme: string,
+    static async createMof(
+        mof: MofDTO
     ): Promise<VariableWithValuesDTO> {
         return httpClient
-            .post('/api/cenotes/' + key + '/data/' + theme, mof)
+            .post('/api/mof/' + mof.cenoteId + '/' + mof.variableId, mof)
             .then((response) => {
                 return new VariableWithValuesDTO(response.data);
             })
@@ -644,25 +619,14 @@ export default class RemoteServices {
             });
     }
 
-    static async updateMofs(
-        mof: VariableWithValuesDTO,
-        key: string,
-        theme: string,
-    ): Promise<VariableWithValuesDTO> {
-        return httpClient
-            .put('/api/cenotes/' + key + '/data/' + theme, mof)
-            .then((response) => {
-                return new VariableWithValuesDTO(response.data);
-            })
+    static async deleteMof(
+        mof: MofDTO
+    ): Promise<void> {
+        httpClient
+            .delete('/api/mof/' + mof.cenoteId + '/' + mof.variableId, {data: mof})
             .catch(async (error) => {
                 throw Error(await this.errorMessage(error));
             });
-    }
-
-    static async deleteMofs(key:string, theme: string): Promise<void> {
-        httpClient.delete('/api/cenotes/' + key + '/data/' + theme).catch(async (error) => {
-            throw Error(await this.errorMessage(error));
-        });
     }
 
     static async MofsToCsv(): Promise<string> {
@@ -690,7 +654,7 @@ export default class RemoteServices {
     static async csvToMofs(
         files: File[],
         onUploadProgress: (Event) => void,
-    ): Promise<VariableWithValuesDTO[]> {
+    ): Promise<MofDTO[]> {
         const formData = new FormData();
         files.forEach((file) => {
             formData.append('file', file);
@@ -704,7 +668,7 @@ export default class RemoteServices {
                 onUploadProgress,
             })
             .then((response) => {
-                return response.data.data.map((v) => new MofsDTO(v));
+                return response.data.data.map((v) => new MofDTO(v));
             })
             .catch(async (error) => {
                 throw Error(await this.errorMessage(error));

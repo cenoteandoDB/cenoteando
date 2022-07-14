@@ -54,7 +54,7 @@ public class VariableService {
 
         switch (user.getRole()) {
             case ADMIN:
-                return variablesRepository.findAll();
+                return variablesRepository.findByTheme(theme);
             case CENOTERO_ADVANCED:
                 if (!user.getThemesWhiteList().contains(theme))
                     throw new CenoteandoException(THEME_ACCESS, theme);
