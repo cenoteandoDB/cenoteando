@@ -22,33 +22,19 @@
                         label="Value"
                         required
                     ></v-text-field>
-
-                    <v-combobox
+                    <v-select
                         v-if="mofs.type == 'ENUM'"
-                        label="Enum Values"
-                        data-cy="enum-values"
-                        v-model="mofValueEnum"
-                        append-icon=""
+                        v-model="mofValue"
+                        :items="mofs.enumValues"
                         chips
-                        deletable-chips
-                        clearable
-                        multiple
-                        solo
+                        label="Enum"
                         :rules="[
                             (v) =>
                                 (!!v && !!v.length) ||
                                 'Enum Values are required for type ENUM',
                         ]"
                         required
-                    >
-                        <v-text-field
-                            v-if="mofs.type === '' || mofs.type === undefined"
-                            v-model="mofValue"
-                            data-cy="Value"
-                            label="Value"
-                            required
-                        ></v-text-field>
-                    </v-combobox>
+                    ></v-select>
 
                     <v-checkbox
                         v-if="mofs.type === 'BOOLEAN'"
@@ -74,7 +60,6 @@
                                 persistent-hint
                                 prepend-icon="mdi-calendar"
                                 v-bind="attrs"
-                                @blur="date = parseDate(mofDateNow)"
                                 v-on="on"
                             ></v-text-field>
                         </template>
@@ -178,7 +163,7 @@ export default class EditMofsVarDialog extends Vue {
         'TIME',
     ];
     accessLevels = ['PUBLIC', 'PRIVATE', 'SENSITIVE'];
-    mofValue = '';
+    mofValue = [];
     mofValueBool = false;
     mofValueEnum = [];
     mofTimestamp = '';
@@ -195,6 +180,22 @@ export default class EditMofsVarDialog extends Vue {
     }
 
     save(): void {
+        if (this.$props.mofs.value === typeof Boolean) {
+            this.$props.mofs.value = this.mofValueBool;
+            this.$props.mofs.enumValues = this.mofValueEnum;
+        }
+
+        this.$props.mofs.value = this.mofValue;
+        this.$props.mofs.enumValues = this.mofValueEnum;
+
+        if(this.$props.mofs.timeseries === true){
+            this.$props.mofs.timestamp = this.mofTimestamp;
+        }
+
+        if(this.$props.mofs.timeseries === false) {
+            this.$props.mofs.timestamp = this.mofDateNow;
+        }
+
         this.$emit('onSave');
         this.dialog = false;
     }

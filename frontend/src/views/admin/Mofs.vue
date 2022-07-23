@@ -131,6 +131,7 @@ import RemoteServices from '@/services/RemoteServices';
 import { Component, Vue } from 'vue-property-decorator';
 import Cenote from '../Cenote.vue';
 import VariableWithValuesDTO from '@/models/VariableWithValuesDTO';
+import MofDTO from '@/models/MofDTO';
 
 @Component({
     components: {
@@ -168,9 +169,10 @@ export default class Mofs extends Vue {
     selectedTheme = '';
     item = [];
     search = '';
-    newMofs = new VariableWithValuesDTO();
+    newMofs = new MofDTO();
     cenotes: CenoteDTO[] = [];
     mofs: VariableWithValuesDTO[] = [];
+    mof: MofDTO[] = [];
 
     async created(): Promise<void> {
         await this.$store.dispatch('loading');
@@ -213,6 +215,22 @@ export default class Mofs extends Vue {
         }
 
         await this.$store.dispatch('clearLoading');
+    }
+
+
+    async createMof(): Promise<void> {
+        await this.$store.dispatch('loading');
+
+        try {
+            await RemoteServices.createMof(
+                this.newMofs
+            );
+        } catch (error) {
+            await this.$store.dispatch('error', error);
+        }
+
+        await this.$store.dispatch('clearLoading');
+        this.newMofs = new MofDTO();
     }
 
     async download(): Promise<void> {

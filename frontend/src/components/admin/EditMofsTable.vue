@@ -30,7 +30,6 @@
                                     :variable="variables"
                                     :key="mofs.key"
                                     :theme="mofs.theme"
-                                    @onSave="createMofs()"
                                 >
                                     <template v-slot:activator="{ on, attrs }">
                                         <v-btn
@@ -57,14 +56,6 @@
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="dialog = false">
                     Close
-                </v-btn>
-                <v-btn
-                    color="blue darken-1"
-                    text
-                    data-cy="save"
-                    @click="save()"
-                >
-                    Save
                 </v-btn>
             </v-card-actions>
         </v-card>
@@ -127,24 +118,7 @@ export default class EditMofsTable extends Vue {
         'TIME',
     ];
     accessLevels = ['PUBLIC', 'PRIVATE', 'SENSITIVE'];
-    newMofs = new VariableWithValuesDTO();
-
-    async createMofs(): Promise<void> {
-        await this.$store.dispatch('loading');
-
-        try {
-            // await RemoteServices.createMofs(
-            //     this.newMofs,
-            //     this.$props.selectedCenote,
-            //     this.$props.selectedTheme,
-            // );
-        } catch (error) {
-            await this.$store.dispatch('error', error);
-        }
-
-        await this.$store.dispatch('clearLoading');
-        this.newMofs = new VariableWithValuesDTO();
-    }
+    
 
     remove(item: string): void {
         this.$props.mofs.enumValues.splice(
