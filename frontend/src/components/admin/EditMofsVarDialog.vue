@@ -61,6 +61,7 @@
                                 prepend-icon="mdi-calendar"
                                 v-bind="attrs"
                                 v-on="on"
+                                required
                             ></v-text-field>
                         </template>
                         <v-date-picker
@@ -79,6 +80,7 @@
                         offset-y
                         max-width="290px"
                         min-width="auto"
+                        required
                     >
                         <template v-slot:activator="{ on, attrs }">
                             <v-text-field
@@ -179,6 +181,12 @@ export default class EditMofsVarDialog extends Vue {
         );
     }
 
+    async created(): Promise<void> {
+        if (this.$props.mofs.enumValues) {
+            this.mofValueEnum = this.$props.mofs.enumValues;
+        }
+    }
+
     save(): void {
         if (this.$props.mofs.value === typeof Boolean) {
             this.$props.mofs.value = this.mofValueBool;
@@ -188,11 +196,11 @@ export default class EditMofsVarDialog extends Vue {
         this.$props.mofs.value = this.mofValue;
         this.$props.mofs.enumValues = this.mofValueEnum;
 
-        if(this.$props.mofs.timeseries === true){
+        if (this.$props.mofs.timeseries === true) {
             this.$props.mofs.timestamp = this.mofTimestamp;
         }
 
-        if(this.$props.mofs.timeseries === false) {
+        if (this.$props.mofs.timeseries === false) {
             this.$props.mofs.timestamp = this.mofDateNow;
         }
 

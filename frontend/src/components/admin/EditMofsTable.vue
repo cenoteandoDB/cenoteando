@@ -68,6 +68,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import EditMofsVarDialog from '@/components/admin/EditMofsVarDialog.vue';
 import DeleteDialog from '@/components/admin/DeleteDialog.vue';
 import RemoteServices from '@/services/RemoteServices';
+import MofDTO from '@/models/MofDTO';
 
 @Component({
     components: {
@@ -118,6 +119,11 @@ export default class EditMofsTable extends Vue {
         'TIME',
     ];
     accessLevels = ['PUBLIC', 'PRIVATE', 'SENSITIVE'];
+
+    async deleteCenote(mofs: MofDTO): Promise<void> {
+        await RemoteServices.deleteMof(mofs);
+        this.$props.mofs = this.$props.mofs.filter((v) => v.cenoteId != this.$props.mofs.cenoteId);
+    }
     
 
     remove(item: string): void {
@@ -125,11 +131,6 @@ export default class EditMofsTable extends Vue {
             this.$props.mofs.enumValues.indexOf(item),
             1,
         );
-    }
-
-    save(): void {
-        this.$emit('onSave');
-        this.dialog = false;
     }
 }
 </script>

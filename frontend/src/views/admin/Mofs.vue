@@ -230,6 +230,9 @@ export default class Mofs extends Vue {
         }
 
         await this.$store.dispatch('clearLoading');
+        
+        this.mofs.unshift(this.newMofs);
+
         this.newMofs = new MofDTO();
     }
 
