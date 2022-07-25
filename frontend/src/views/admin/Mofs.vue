@@ -24,12 +24,16 @@
                 :items="
                     mofs.map((m) => {
                         m.variable['count'] = m.values.length;
+                        m['cenoteId'] = cenoteDisplayToId(selectedCenote);
+                        m['variableId'] = m.variable.id;
 
                         var mofs = Object.assign(
                             {},
+                            ...m,
                             ...m.variable,
                             ...m.values,
                         );
+
                         return mofs;
                     })
                 "
@@ -209,31 +213,13 @@ export default class Mofs extends Vue {
                     this.cenoteDisplayToId(this.selectedCenote),
                     this.selectedTheme,
                 );
+
             }
         } catch (error) {
             await this.$store.dispatch('error', error);
         }
 
         await this.$store.dispatch('clearLoading');
-    }
-
-
-    async createMof(): Promise<void> {
-        await this.$store.dispatch('loading');
-
-        try {
-            await RemoteServices.createMof(
-                this.newMofs
-            );
-        } catch (error) {
-            await this.$store.dispatch('error', error);
-        }
-
-        await this.$store.dispatch('clearLoading');
-        
-        this.mofs.unshift(this.newMofs);
-
-        this.newMofs = new MofDTO();
     }
 
     async download(): Promise<void> {

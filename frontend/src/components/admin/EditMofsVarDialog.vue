@@ -130,10 +130,12 @@
 <script lang="ts">
 import VariableWithValuesDTO from '@/models/VariableWithValuesDTO';
 import { Component, Vue } from 'vue-property-decorator';
+import MofDTO from '@/models/MofDTO';
+import RemoteServices from '@/services/RemoteServices';
 
 @Component({
     props: {
-        mofs: {},
+        mofs: VariableWithValuesDTO,
     },
 })
 export default class EditMofsVarDialog extends Vue {
@@ -173,6 +175,7 @@ export default class EditMofsVarDialog extends Vue {
     mofDateNow = this.mofDateNowConversion.toISOString().substring(0, 10);
     menu1 = false;
     menu = false;
+    newMofs = new MofDTO();
 
     remove(item: string): void {
         this.$props.mofs.enumValues.splice(
@@ -185,6 +188,21 @@ export default class EditMofsVarDialog extends Vue {
         if (this.$props.mofs.enumValues) {
             this.mofValueEnum = this.$props.mofs.enumValues;
         }
+    }
+
+    async createMof(): Promise<void> {
+         await this.$store.dispatch('loading');
+
+        try {
+            await RemoteServices.createMof(this.newMofs);
+        } catch (error) {
+            await this.$store.dispatch('error', error);
+        }
+
+        await this.$store.dispatch('clearLoading');
+
+        console.log(this.$props.mofs);
+
     }
 
     save(): void {
@@ -203,8 +221,9 @@ export default class EditMofsVarDialog extends Vue {
         if (this.$props.mofs.timeseries === false) {
             this.$props.mofs.timestamp = this.mofDateNow;
         }
+       
+        this.createMof();
 
-        this.$emit('onSave');
         this.dialog = false;
     }
 }

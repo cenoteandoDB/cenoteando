@@ -120,11 +120,13 @@ export default class EditMofsTable extends Vue {
     ];
     accessLevels = ['PUBLIC', 'PRIVATE', 'SENSITIVE'];
 
-    async deleteCenote(mofs: MofDTO): Promise<void> {
+    async deleteMofs(mofs: MofDTO): Promise<void> {
+        console.log(this.$props.mofs);
         await RemoteServices.deleteMof(mofs);
-        this.$props.mofs = this.$props.mofs.filter((v) => v.cenoteId != this.$props.mofs.cenoteId);
+        this.$props.mofs = this.$props.mofs.filter(
+            (v) => v.key != this.$props.mofs.key,
+        );
     }
-    
 
     remove(item: string): void {
         this.$props.mofs.enumValues.splice(
