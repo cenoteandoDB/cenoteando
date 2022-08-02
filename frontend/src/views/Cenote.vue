@@ -18,19 +18,16 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-col>
-                <v-carousel
-                    show-arrows-on-hover
-                    hide-delimiter-background
-                    cycle
-                >
+            <v-col class="d-flex justify-center">
+                <v-carousel v-if="photos" show-arrows-on-hover hide-delimiters>
                     <v-carousel-item
                         v-for="(image, i) in photos"
                         :key="i"
                         :src="image"
                         reverse-transition="fade-transition"
                         transition="fade-transition"
-                        :width="600"
+                        width="1000"
+                        height="auto"
                     ></v-carousel-item>
                 </v-carousel>
             </v-col>
@@ -42,6 +39,7 @@
                     :center="
                         cenote.geojson.geometry.coordinates.slice().reverse()
                     "
+                    width="800"
                     style="min-height: 400px; min-width: 20vw; z-index: 0"
                 >
                     <l-tile-layer
@@ -54,22 +52,23 @@
         </v-row>
         <v-row class="flex-nowrap">
             <v-col>
-                <v-carousel hide-delimiter-background show-arrows-on-hover>
+                <v-carousel v-if="maps" hide-delimiters show-arrows-on-hover>
                     <v-carousel-item
                         v-for="(image, i) in maps"
                         :key="i"
                         :src="image"
                         reverse-transition="fade-transition"
                         transition="fade-transition"
-                        width="600"
+                        width="1000"
+                        height="auto"
                     ></v-carousel-item>
                 </v-carousel>
             </v-col>
-            <v-col>
+            <v-col class="ml-4">
                 <cenote-details />
                 <v-row>
                     <v-col>
-                        <v-expansion-panels>
+                        <v-expansion-panels style="width: 700px;">
                             <v-expansion-panel>
                                 <v-expansion-panel-header>
                                     <v-icon>mdi-alert</v-icon>
@@ -137,6 +136,7 @@ export default class Cenote extends Vue {
             this.cenote = await RemoteServices.getCenote(
                 this.$route.params.key,
             );
+            console.log(this.$route.params.key);
         } catch (error) {
             await this.$store.dispatch('error', error);
         }

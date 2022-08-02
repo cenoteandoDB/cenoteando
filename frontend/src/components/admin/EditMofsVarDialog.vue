@@ -135,7 +135,7 @@ import RemoteServices from '@/services/RemoteServices';
 
 @Component({
     props: {
-        mofs: VariableWithValuesDTO,
+        mofs: {},
     },
 })
 export default class EditMofsVarDialog extends Vue {
