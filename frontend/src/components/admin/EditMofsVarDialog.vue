@@ -20,6 +20,11 @@
                         v-model="mofValue"
                         data-cy="value"
                         label="Value"
+                        :rules="[
+                            (v) =>
+                                (!!v && !!v.length) ||
+                                'Value required',
+                        ]"
                         required
                     ></v-text-field>
                     <v-select
@@ -90,6 +95,7 @@
                                 readonly
                                 v-bind="attrs"
                                 v-on="on"
+                                required
                             ></v-text-field>
                         </template>
                         <v-date-picker
@@ -105,6 +111,7 @@
                                     .substr(0, 10)
                             "
                             min="1950-01-01"
+                            required
                         ></v-date-picker>
                     </v-menu>
                 </v-form>
@@ -194,7 +201,7 @@ export default class EditMofsVarDialog extends Vue {
          await this.$store.dispatch('loading');
 
         try {
-            await RemoteServices.createMof(this.newMofs);
+            await RemoteServices.createMof(this.$props.mofs);
         } catch (error) {
             await this.$store.dispatch('error', error);
         }
