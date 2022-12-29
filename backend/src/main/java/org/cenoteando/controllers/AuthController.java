@@ -65,7 +65,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public AuthDto Register(@RequestBody RegisterRequest registerRequest) {
+    public void Register(@RequestBody RegisterRequest registerRequest) {
         registerRequest.validatePassword();
 
         User user = new User(
@@ -75,28 +75,5 @@ public class AuthController {
             User.Role.CENOTERO_BASIC
         );
         usersService.createUser(user);
-
-        try {
-            authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                    registerRequest.getEmail(),
-                    registerRequest.getPassword()
-                )
-            );
-        } catch (BadCredentialsException e) {
-            throw new CenoteandoException(INVALID_LOGIN);
-        }
-
-        final AuthDetails auth =
-            this.usersService.loadUserByUsername(registerRequest.getEmail());
-
-        final String jwt = jwtTokenUtil.generateToken(auth);
-
-        return new AuthDto(
-            auth.getUser(),
-            jwt,
-            tokenType,
-            jwtTokenUtil.getTTL()
-        );
     }
 }
