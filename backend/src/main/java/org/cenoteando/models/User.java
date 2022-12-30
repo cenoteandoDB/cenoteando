@@ -99,7 +99,9 @@ public class User extends DomainEntity {
     }
 
     public List<String> getCenoteBlackList() {
-        if (cenoteBlackList == null) return new ArrayList<>();
+        if (cenoteBlackList == null) {
+            return new ArrayList<>();
+        }
         return cenoteBlackList;
     }
 
@@ -108,7 +110,9 @@ public class User extends DomainEntity {
     }
 
     public List<String> getCenoteWhiteList() {
-        if (cenoteWhiteList == null) return new ArrayList<>();
+        if (cenoteWhiteList == null) {
+            return new ArrayList<>();
+        }
         return cenoteWhiteList;
     }
 

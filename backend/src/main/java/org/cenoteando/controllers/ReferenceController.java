@@ -4,6 +4,8 @@ import com.google.cloud.storage.Blob;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import org.cenoteando.exceptions.CenoteandoException;
 import org.cenoteando.models.Cenote;
 import org.cenoteando.models.CenoteReferences;
 import org.cenoteando.models.Reference;
@@ -26,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import static org.cenoteando.exceptions.ErrorMessage.WRITE_CSV;
+
 @RestController
 @RequestMapping("/api/references")
 public class ReferenceController {
@@ -33,11 +37,10 @@ public class ReferenceController {
     @Autowired
     private CloudStorageService cloudStorageService;
 
-    private final ReferenceService referenceService;
+    @Autowired
+    private ReferenceService referenceService;
 
-    public ReferenceController(ReferenceService referenceService) {
-        this.referenceService = referenceService;
-    }
+    public ReferenceController() {}
 
     @GetMapping
     public Page<Reference> getReferences(
@@ -79,7 +82,7 @@ public class ReferenceController {
     public void downloadReference(
         HttpServletResponse response,
         @PathVariable String id
-    ) throws IOException {
+    ) {
         Blob reference = cloudStorageService.downloadReference(id);
 
         response.setHeader(
@@ -88,8 +91,12 @@ public class ReferenceController {
         );
         response.setContentType("application/pdf");
 
-        response.getOutputStream().write(reference.getContent());
-        response.flushBuffer();
+        try {
+            response.getOutputStream().write(reference.getContent());
+            response.flushBuffer();
+        } catch (IOException e) {
+            throw new CenoteandoException(WRITE_CSV);
+        }
     }
 
     @GetMapping("{id}/cenotes")

@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.cenoteando.impexp.ExportCSV;
 import org.cenoteando.models.Variable;
 import org.cenoteando.services.VariableService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,11 +26,10 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/variables")
 public class VariableController {
 
-    private final VariableService variableService;
+    @Autowired
+    private VariableService variableService;
 
-    public VariableController(VariableService variableService) {
-        this.variableService = variableService;
-    }
+    public VariableController() {}
 
     @GetMapping
     public Page<Variable> getVariables(

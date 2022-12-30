@@ -2,7 +2,6 @@ package org.cenoteando.exceptions;
 
 public enum ErrorMessage {
     ACCESS_DENIED("Access denied"),
-
     CLASSNAME_NOT_FOUND("Unable to export data type"),
     UNEXPECTED_ERROR("Something went wrong"),
     INVALID_LOGIN("Password and email don't match. Try again"),
@@ -21,7 +20,9 @@ public enum ErrorMessage {
     REFERENCE_NOT_FOUND("Reference not found"),
 
     INVALID_ROLE("Invalid role"),
-    READ_FILE("Unable to read file");
+    READ_FILE("Unable to read file"),
+
+    WRITE_CSV("Unable to write file");
 
     public final String message;
 

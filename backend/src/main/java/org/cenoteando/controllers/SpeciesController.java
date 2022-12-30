@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.cenoteando.models.Reference;
 import org.cenoteando.models.Species;
 import org.cenoteando.services.SpeciesService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,11 +25,10 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/species")
 public class SpeciesController {
 
-    private final SpeciesService speciesService;
+    @Autowired
+    private SpeciesService speciesService;
 
-    public SpeciesController(SpeciesService speciesService) {
-        this.speciesService = speciesService;
-    }
+    public SpeciesController() {}
 
     @GetMapping
     public Page<Species> getSpecies(

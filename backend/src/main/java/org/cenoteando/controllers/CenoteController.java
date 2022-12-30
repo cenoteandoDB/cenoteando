@@ -37,10 +37,10 @@ public class CenoteController {
     @Autowired
     private MoFService moFService;
 
-    private final CenoteService cenoteService;
+    @Autowired
+    private CenoteService cenoteService;
 
-    public CenoteController(CenoteService cenoteService) {
-        this.cenoteService = cenoteService;
+    public CenoteController() {
     }
 
     @GetMapping
@@ -101,6 +101,21 @@ public class CenoteController {
         return cenoteService.getBounds();
     }
 
+    @GetMapping("/{id}/photos")
+    public List<String> getPhotos(@PathVariable String id) {
+        return cloudStorageService.getPhotos(id);
+    }
+
+    @GetMapping("/{id}/maps")
+    public List<String> getMaps(@PathVariable String id) {
+        return cloudStorageService.getMaps(id);
+    }
+
+    @GetMapping("/{id}/references")
+    public List<Reference> getCenoteReferences(@PathVariable String id) {
+        return cenoteService.getCenoteReferences(id);
+    }
+
     @GetMapping("/csv")
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasRole('ROLE_CENOTERO_ADVANCED')"
@@ -108,8 +123,7 @@ public class CenoteController {
     public String toCsv(HttpServletResponse response) {
         response.setContentType("text/csv");
         response.setHeader(
-            "Content-Disposition",
-            "attachment; filename=cenotes.csv"
+            "Content-Disposition", "attachment; filename=cenotes.csv"
         );
 
         return cenoteService.toCsv();
@@ -125,18 +139,5 @@ public class CenoteController {
         return cenoteService.fromCsv(multipartfile);
     }
 
-    @GetMapping("/{id}/photos")
-    public List<String> getPhotos(@PathVariable String id) {
-        return cloudStorageService.getPhotos(id);
-    }
 
-    @GetMapping("/{id}/maps")
-    public List<String> getMaps(@PathVariable String id) {
-        return cloudStorageService.getMaps(id);
-    }
-
-    @GetMapping("/{id}/references")
-    public List<Reference> getCenoteReferences(@PathVariable String id) {
-        return cenoteService.getCenoteReferences(id);
-    }
 }

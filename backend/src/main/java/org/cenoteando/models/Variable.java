@@ -12,7 +12,6 @@ import java.util.List;
 import org.cenoteando.impexp.DomainEntity;
 import org.cenoteando.impexp.Visitor;
 import org.cenoteando.utils.CsvImportExport;
-import org.json.JSONArray;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -247,7 +246,9 @@ public class Variable extends DomainEntity {
 
     @JsonIgnore
     public String getCreator() {
-        if (creator != null) return creator.getName();
+        if (creator != null) {
+            return creator.getName();
+        }
         return null;
     }
 
@@ -287,23 +288,31 @@ public class Variable extends DomainEntity {
     }
     @Override
     public boolean validate() {
-        if (
-            name != null &&
-            description != null &&
-            type != null &&
-            accessLevel != null &&
-            theme != null &&
-            origin != null
-        ) {
-            if (type == VariableType.ENUM) return enumValues != null; else if (
-                type == VariableType.NUMBER_WITH_UNITS
-            ) return units != null; else return true;
+        if(valuesNotNull()){
+            return checkVariableType();
         }
         return false;
     }
 
+    public boolean valuesNotNull(){
+        return name != null && description != null && type != null
+                && accessLevel != null && theme != null && origin != null;
+    }
+
+    public boolean checkVariableType(){
+        if (type == VariableType.ENUM) {
+            return enumValues != null;
+        } else if (type == VariableType.NUMBER_WITH_UNITS) {
+            return units != null;
+        } else {
+            return true;
+        }
+    }
+
     public boolean isCreator(User user) {
-        if (creator == null) return false;
+        if (creator == null) {
+            return false;
+        }
         return user.getEmail().equals(creator.getEmail());
     }
 

@@ -4,6 +4,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 import org.cenoteando.models.User;
 import org.cenoteando.services.UsersService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,11 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/users")
 public class UsersController {
 
-    private final UsersService usersService;
+    @Autowired
+    private UsersService usersService;
 
-    public UsersController(UsersService usersService) {
-        this.usersService = usersService;
-    }
+    public UsersController() {}
 
     @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")

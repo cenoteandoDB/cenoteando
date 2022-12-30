@@ -3,6 +3,7 @@ package org.cenoteando.controllers;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.cenoteando.services.MoFService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,11 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/mof")
 public class MofController {
 
-    private final MoFService moFService;
+    @Autowired
+    private MoFService moFService;
 
-    public MofController(MoFService moFService) {
-        this.moFService = moFService;
-    }
+    public MofController() {}
 
     @GetMapping("/csv")
     public String mofstoCsv(HttpServletResponse response) {

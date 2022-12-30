@@ -6,9 +6,9 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
 import org.cenoteando.impexp.DomainEntity;
 import org.cenoteando.impexp.Visitor;
-import org.json.JSONArray;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -91,10 +91,7 @@ public class Species extends DomainEntity {
 
     @Override
     public boolean validate() {
-        return !(
-            (aphiaId == null || aphiaId.isEmpty()) &&
-            (iNaturalistId == null || iNaturalistId.isEmpty())
-        );
+        return StringUtils.isNotEmpty(aphiaId) || StringUtils.isNotBlank(iNaturalistId);
     }
 
     @Override
