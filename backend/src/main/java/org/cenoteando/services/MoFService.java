@@ -5,10 +5,7 @@ import static org.cenoteando.exceptions.ErrorMessage.*;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -38,7 +35,7 @@ public class MoFService {
     @Autowired
     private VariableService variableService;
 
-    public HashMap<String, VariableWithValuesDTO<Object>> getData(
+    public Map<String, VariableWithValuesDTO<Object>> getData(
         String id,
         String theme
     ) {
@@ -63,12 +60,11 @@ public class MoFService {
 
         variablesStreamSupplier
             .get()
-            .forEach(variable -> {
+            .forEach(variable ->
                 variablesMap.put(
                     variable.getId(),
-                    new VariableWithValuesDTO<Object>(variable, null)
-                );
-            });
+                    new VariableWithValuesDTO<>(variable, null))
+            );
 
         Iterable<MeasurementOrFactBucket<Object>> mofs = measurementsOrFactsRepository.findMeasurementsOrFacts(
             cenoteId,
@@ -138,19 +134,20 @@ public class MoFService {
         ArrayList<String> values = new ArrayList<>();
 
         try (
-            Reader file_reader = new InputStreamReader(
+            Reader fileReader = new InputStreamReader(
                 multipartfile.getInputStream()
             )
         ) {
             ICsvBeanReader reader = new CsvBeanReader(
-                file_reader,
-                CsvPreference.STANDARD_PREFERENCE
+                    fileReader,
+                    CsvPreference.STANDARD_PREFERENCE
             );
             final String[] header = reader.getHeader(true);
             final CellProcessor[] processors = MofDto.getProcessors();
 
             MofDto mof;
-            MeasurementOrFactBucket mofBucket, oldMofBucket;
+            MeasurementOrFactBucket mofBucket;
+            MeasurementOrFactBucket oldMofBucket;
             while (
                 (mof = reader.read(MofDto.class, header, processors)) != null
             ) {
@@ -204,7 +201,7 @@ public class MoFService {
 
         if (mofBucket.getMeasurements().contains(new_mof)) return;
 
-        if (variable.getTimeseries() || mofBucket.getMeasurements().isEmpty()) {
+        if (variable.getTimeseries() == true || mofBucket.getMeasurements().isEmpty()) {
             mofBucket.getMeasurements().add(new_mof);
             mofBucket.setFirstTimestamp(mof.getTimestamp());
             mofBucket.setLastTimestamp(mof.getTimestamp());

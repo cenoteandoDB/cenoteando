@@ -32,7 +32,7 @@ public class MeasurementOrFactBucket<T> {
 
     public MeasurementOrFactBucket() {}
 
-    public <T> MeasurementOrFactBucket(Cenote cenote, Variable variable) {
+    public <V> MeasurementOrFactBucket(Cenote cenote, Variable variable) {
         this.variable = variable;
         this.cenote = cenote;
         this.measurements = new ArrayList<>();

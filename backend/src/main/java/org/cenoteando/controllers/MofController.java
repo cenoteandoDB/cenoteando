@@ -26,7 +26,7 @@ public class MofController {
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasRole('ROLE_CENOTERO_ADVANCED')"
     )
-    public String MofstoCsv(HttpServletResponse response) {
+    public String mofstoCsv(HttpServletResponse response) {
         response.setContentType("text/csv");
         response.setHeader(
             "Content-Disposition",
@@ -40,14 +40,14 @@ public class MofController {
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasRole('ROLE_CENOTERO_ADVANCED')"
     )
-    public List<String> MofFromCsv(
+    public List<String> mofFromCsv(
         @RequestParam("file") MultipartFile multipartfile
     ) {
         return moFService.fromCsv(multipartfile);
     }
 
     @GetMapping("{id}/csv")
-    public String CenoteMofstoCsv(
+    public String cenoteMofstoCsv(
         HttpServletResponse response,
         @PathVariable String id
     ) {

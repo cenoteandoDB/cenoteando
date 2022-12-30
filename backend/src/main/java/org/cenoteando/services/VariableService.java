@@ -52,16 +52,18 @@ public class VariableService {
         User user = (User) auth.getPrincipal();
 
         switch (user.getRole()) {
-            case ADMIN:
-            case RESEARCHER:
+            case ADMIN, RESEARCHER:
                 List<Variable> filteredVariables = new ArrayList<>();
                 List<Variable> variables = variablesRepository.findByTheme(
                     theme
                 );
-                for (Variable variable : variables) if (
-                    variable.getAccessLevel() != SENSITIVE ||
-                    variable.isCreator(user)
-                ) filteredVariables.add(variable);
+                for (Variable variable : variables)
+                    if (
+                        variable.getAccessLevel() != SENSITIVE ||
+                        variable.isCreator(user)
+                    ) {
+                        filteredVariables.add(variable);
+                    }
                 return filteredVariables;
             case CENOTERO_ADVANCED:
                 if (
@@ -132,18 +134,19 @@ public class VariableService {
         ArrayList<Variable> values = new ArrayList<>();
 
         try (
-            Reader file_reader = new InputStreamReader(
+            Reader fileReader = new InputStreamReader(
                 multipartfile.getInputStream()
             )
         ) {
             ICsvBeanReader reader = new CsvBeanReader(
-                file_reader,
+                fileReader,
                 CsvPreference.STANDARD_PREFERENCE
             );
             final String[] header = reader.getHeader(true);
             final CellProcessor[] processors = Variable.getProcessors();
 
-            Variable variable, oldVariable;
+            Variable variable;
+            Variable oldVariable;
             while (
                 (variable = reader.read(Variable.class, header, processors)) !=
                 null
@@ -189,8 +192,7 @@ public class VariableService {
 
     public boolean hasCreateUpdateAccess(User user, String theme) {
         switch (user.getRole()) {
-            case ADMIN:
-            case RESEARCHER:
+            case ADMIN, RESEARCHER:
                 return true;
             case CENOTERO_ADVANCED:
                 return user.getCenoteWhiteList().contains(theme);
@@ -214,8 +216,7 @@ public class VariableService {
         User user = (User) auth.getPrincipal();
 
         switch (user.getRole()) {
-            case ADMIN:
-            case RESEARCHER:
+            case ADMIN, RESEARCHER:
                 if (
                     variable.getAccessLevel() != SENSITIVE ||
                     variable.isCreator(user)

@@ -58,8 +58,7 @@ public class CenoteService {
         User user = (User) auth.getPrincipal();
 
         switch (user.getRole()) {
-            case ADMIN:
-            case RESEARCHER:
+            case ADMIN, RESEARCHER:
                 return cenoteRepository.findAll(page);
             case CENOTERO_ADVANCED:
                 user.setCenoteBlackList(new ArrayList<>());
@@ -92,8 +91,7 @@ public class CenoteService {
         User user = (User) auth.getPrincipal();
 
         switch (user.getRole()) {
-            case ADMIN:
-            case RESEARCHER:
+            case ADMIN, RESEARCHER:
                 return cenoteRepository.findAll();
             case CENOTERO_ADVANCED:
                 user.setCenoteBlackList(new ArrayList<>());
@@ -242,8 +240,7 @@ public class CenoteService {
         User user = (User) auth.getPrincipal();
 
         switch (user.getRole()) {
-            case ADMIN:
-            case RESEARCHER:
+            case ADMIN, RESEARCHER:
                 return true;
             case CENOTERO_ADVANCED:
                 return !user.getCenoteBlackList().contains(id);
@@ -260,8 +257,7 @@ public class CenoteService {
 
     public boolean hasUpdateAccess(User user, String id) {
         switch (user.getRole()) {
-            case ADMIN:
-            case RESEARCHER:
+            case ADMIN, RESEARCHER:
                 return true;
             case CENOTERO_ADVANCED:
                 return user.getCenoteWhiteList().contains(id);
