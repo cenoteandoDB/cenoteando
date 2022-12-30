@@ -8,6 +8,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import org.cenoteando.exceptions.CenoteandoException;
+import org.cenoteando.impexp.ExportCSV;
 import org.cenoteando.models.Reference;
 import org.cenoteando.models.Species;
 import org.cenoteando.models.SpeciesReferences;
@@ -82,13 +83,9 @@ public class SpeciesService {
     public String toCsv() {
         Iterable<Species> data = speciesRepository.findAll();
 
-        StringBuilder sb = new StringBuilder();
-        JSONArray names = Species.getHeaders();
-        for (Species species : data) {
-            JSONObject object = new JSONObject(species);
-            sb.append(CsvImportExport.rowToString(object.toJSONArray(names)));
-        }
-        return CDL.rowToString(names) + sb;
+        ExportCSV exportCSV = new ExportCSV(data, "SPECIES");
+        return exportCSV.export();
+
     }
 
     public List<Species> fromCsv(MultipartFile multipartfile) {

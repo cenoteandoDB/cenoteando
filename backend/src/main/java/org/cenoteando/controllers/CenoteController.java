@@ -2,6 +2,7 @@ package org.cenoteando.controllers;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import org.cenoteando.dtos.VariableWithValuesDTO;
 import org.cenoteando.models.Cenote;
@@ -88,7 +89,7 @@ public class CenoteController {
     }
 
     @GetMapping("/{id}/data/{theme}")
-    public HashMap<String, VariableWithValuesDTO<Object>> getData(
+    public Map<String, VariableWithValuesDTO<Object>> getData(
         @PathVariable String id,
         @PathVariable String theme
     ) {

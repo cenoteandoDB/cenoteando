@@ -2,12 +2,13 @@ package org.cenoteando.exceptions;
 
 public enum ErrorMessage {
     ACCESS_DENIED("Access denied"),
+
+    CLASSNAME_NOT_FOUND("Unable to export data type"),
     UNEXPECTED_ERROR("Something went wrong"),
     INVALID_LOGIN("Password and email don't match. Try again"),
     USER_EXISTS("User with given email already exists"),
     PASSWORD_REQUIRED("Password cannot be empty"),
     PASSWORD_LENGTH("Password too short. Minimum size 6"),
-
     READ_ACCESS("User doesn't have permission to read %s: %s"),
     CREATE_PERMISSION("User doesn't have permission to create %s"),
     UPDATE_PERMISSION("User doesn't have permission to update %s: %s"),

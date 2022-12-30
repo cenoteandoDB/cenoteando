@@ -10,6 +10,8 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import org.cenoteando.exceptions.CenoteandoException;
+import org.cenoteando.impexp.ExportCSV;
+import org.cenoteando.impexp.ExportInterface;
 import org.cenoteando.models.*;
 import org.cenoteando.repository.CenotesRepository;
 import org.cenoteando.repository.CommentBucketRepository;
@@ -158,17 +160,8 @@ public class CenoteService {
     public String toCsv() {
         Iterable<Cenote> data = getCenotesCsv();
 
-        StringBuilder sb = new StringBuilder();
-        JSONArray names = Cenote.getHeaders();
-
-        for (Cenote cenote : data) {
-            JSONObject obj = new JSONObject(cenote);
-            obj.put("social", cenote.getSocial());
-            obj.put("geojson", cenote.getGeojson());
-            sb.append(CsvImportExport.rowToString(obj.toJSONArray(names)));
-        }
-
-        return CDL.rowToString(names) + sb;
+        ExportInterface exp = new ExportCSV(data, "CENOTE");
+        return exp.export();
     }
 
     public List<Cenote> fromCsv(MultipartFile multipartfile) {

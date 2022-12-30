@@ -8,6 +8,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import java.util.Date;
 import java.util.List;
+
+import org.cenoteando.impexp.DomainEntity;
+import org.cenoteando.impexp.Visitor;
 import org.cenoteando.utils.CsvImportExport;
 import org.json.JSONArray;
 import org.springframework.data.annotation.CreatedBy;
@@ -20,7 +23,7 @@ import org.supercsv.cellprocessor.constraint.NotNull;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 
 @Document("Variables")
-public class Variable {
+public class Variable extends DomainEntity {
 
     public enum VariableOrigin {
         FIELD,
@@ -278,6 +281,11 @@ public class Variable {
         this.methodology = variable.getMethodology();
     }
 
+    @Override
+    public void accept(Visitor visitor){
+        visitor.visit(this);
+    }
+    @Override
     public boolean validate() {
         if (
             name != null &&
@@ -297,13 +305,6 @@ public class Variable {
     public boolean isCreator(User user) {
         if (creator == null) return false;
         return user.getEmail().equals(creator.getEmail());
-    }
-
-    public static JSONArray getHeaders() {
-        return new JSONArray(
-            "['id', 'name', 'description', 'type', 'units', 'enumValues', 'timeseries', " +
-            "'multiple', 'accessLevel', 'theme', 'origin', 'methodology']"
-        );
     }
 
     public static CellProcessor[] getProcessors() {

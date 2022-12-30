@@ -10,6 +10,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import org.cenoteando.exceptions.CenoteandoException;
+import org.cenoteando.impexp.ExportCSV;
 import org.cenoteando.models.User;
 import org.cenoteando.models.Variable;
 import org.cenoteando.repository.VariablesRepository;
@@ -116,13 +117,8 @@ public class VariableService {
     public String toCsv() {
         Iterable<Variable> data = variablesRepository.findAll();
 
-        StringBuilder sb = new StringBuilder();
-        JSONArray names = Variable.getHeaders();
-        for (Variable variable : data) {
-            JSONObject object = new JSONObject(variable);
-            sb.append(CsvImportExport.rowToString(object.toJSONArray(names)));
-        }
-        return CDL.rowToString(names) + sb;
+        ExportCSV exportService = new ExportCSV(data, "VARIABLE");
+        return exportService.export();
     }
 
     public List<Variable> fromCsv(MultipartFile multipartfile) {

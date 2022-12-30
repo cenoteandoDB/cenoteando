@@ -23,9 +23,6 @@ public class MofController {
     }
 
     @GetMapping("/csv")
-    @PreAuthorize(
-        "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasRole('ROLE_CENOTERO_ADVANCED')"
-    )
     public String mofstoCsv(HttpServletResponse response) {
         response.setContentType("text/csv");
         response.setHeader(
@@ -33,7 +30,7 @@ public class MofController {
             "attachment; filename=mofs.csv"
         );
 
-        return moFService.toCsv();
+        return moFService.allMofToCsv();
     }
 
     @PostMapping("/csv")
@@ -57,6 +54,6 @@ public class MofController {
             "attachment; filename=" + id + "_mofs.csv"
         );
 
-        return moFService.CenoteMofstoCsv(id);
+        return moFService.cenoteMofstoCsv(id);
     }
 }

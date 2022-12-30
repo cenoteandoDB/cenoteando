@@ -5,6 +5,9 @@ import com.arangodb.springframework.annotation.Document;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import java.util.Date;
+
+import org.cenoteando.impexp.DomainEntity;
+import org.cenoteando.impexp.Visitor;
 import org.json.JSONArray;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -14,7 +17,7 @@ import org.supercsv.cellprocessor.constraint.NotNull;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 
 @Document("Species")
-public class Species {
+public class Species extends DomainEntity {
 
     @Id // db document field: _key
     private String id;
@@ -86,6 +89,7 @@ public class Species {
         this.iNaturalistId = species.getInaturalistId();
     }
 
+    @Override
     public boolean validate() {
         return !(
             (aphiaId == null || aphiaId.isEmpty()) &&
@@ -93,8 +97,9 @@ public class Species {
         );
     }
 
-    public static JSONArray getHeaders() {
-        return new JSONArray("['id', 'aphiaId', 'inaturalistId']");
+    @Override
+    public void accept(Visitor visitor){
+        visitor.visit(this);
     }
 
     public static CellProcessor[] getProcessors() {

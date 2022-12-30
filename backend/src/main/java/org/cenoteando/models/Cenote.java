@@ -8,6 +8,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import java.util.Date;
 import java.util.List;
+
+import org.cenoteando.impexp.DomainEntity;
+import org.cenoteando.impexp.Visitor;
 import org.cenoteando.utils.CsvImportExport;
 import org.json.JSONArray;
 import org.springframework.data.annotation.CreatedBy;
@@ -19,7 +22,7 @@ import org.supercsv.cellprocessor.constraint.NotNull;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 
 @Document("Cenotes")
-public class Cenote {
+public class Cenote extends DomainEntity {
 
     public enum Type {
         NO_TYPE,
@@ -207,21 +210,21 @@ public class Cenote {
         this.geojson = cenote.getGeojson();
     }
 
+    @Override
     public boolean validate() {
         return (
             type != null && name != null && !name.isEmpty() && geojson != null
         );
     }
 
+    @Override
+    public void accept(Visitor visitor){
+        visitor.visit(this);
+    }
+
     public boolean isCreator(User user) {
         if (creator == null) return false;
         return user.getEmail().equals(creator.getEmail());
-    }
-
-    public static JSONArray getHeaders() {
-        return new JSONArray(
-            "['id', 'type', 'name', 'touristic', 'issues', 'alternativeNames', 'coordinates']"
-        );
     }
 
     public static CellProcessor[] getProcessors() {

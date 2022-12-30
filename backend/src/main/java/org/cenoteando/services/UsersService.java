@@ -3,6 +3,8 @@ package org.cenoteando.services;
 import static org.cenoteando.exceptions.ErrorMessage.USER_EXISTS;
 
 import org.cenoteando.exceptions.CenoteandoException;
+import org.cenoteando.impexp.ExportCSV;
+import org.cenoteando.impexp.ExportInterface;
 import org.cenoteando.models.AuthDetails;
 import org.cenoteando.models.User;
 import org.cenoteando.repository.UsersRepository;
@@ -73,11 +75,7 @@ public class UsersService implements UserDetailsService {
     public String toCsv() {
         Iterable<User> data = usersRepository.findAll();
 
-        JSONArray objs = new JSONArray();
-        JSONArray names = User.getHeaders();
-        for (User user : data) {
-            objs.put(new JSONObject(user));
-        }
-        return CDL.rowToString(names) + CDL.toString(names, objs);
+        ExportInterface exp = new ExportCSV(data, "USER");
+        return exp.export();
     }
 }

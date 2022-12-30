@@ -7,11 +7,13 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.*;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import org.cenoteando.dtos.MofDto;
 import org.cenoteando.dtos.VariableWithValuesDTO;
 import org.cenoteando.exceptions.CenoteandoException;
+import org.cenoteando.impexp.ExportCSV;
 import org.cenoteando.models.*;
 import org.cenoteando.repository.MeasurementsOrFactsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,8 @@ public class MoFService {
 
     @Autowired
     private VariableService variableService;
+
+    private static final int HEADER_LENGTH = 4;
 
     public Map<String, VariableWithValuesDTO<Object>> getData(
         String id,
@@ -86,48 +90,9 @@ public class MoFService {
         return variablesMap;
     }
 
-    public String toCsv() {
-        Iterable<Object> result = measurementsOrFactsRepository.findMofs();
-        Iterator<Object> mofs = result.iterator();
 
-        //just for otimization purpose
-        List<String> checkedCenotes = new ArrayList<>();
-        List<String> checkedVariables = new ArrayList<>();
-
-        StringBuilder sb = new StringBuilder();
-        sb.append("cenoteId,variableId,timestamp,value");
-
-        while (mofs.hasNext()) {
-            List<Object> mof = (List<Object>) mofs.next();
-            String variableId = ((String) mof.get(0)).split("/")[1];
-            String cenoteId = ((String) mof.get(1)).split("/")[1];
-
-            if (
-                (
-                    checkedVariables.contains(variableId) ||
-                    variableService.hasReadAccess(variableId)
-                ) &&
-                (
-                    checkedCenotes.contains(cenoteId) ||
-                    cenoteService.hasReadAccess(cenoteId)
-                )
-            ) {
-                sb.append(
-                    "\n" +
-                    cenoteId +
-                    "," +
-                    variableId +
-                    "," +
-                    mof.get(2) +
-                    "," +
-                    mof.get(3)
-                );
-                checkedCenotes.add(cenoteId);
-                checkedVariables.add(variableId);
-            }
-        }
-
-        return sb.toString();
+    public String[] getHeader(){
+        return new String[]{"cenoteId", "variableId", "timestamp", "value"};
     }
 
     public List<String> fromCsv(MultipartFile multipartfile) {
@@ -210,40 +175,54 @@ public class MoFService {
         }
     }
 
-    public String CenoteMofstoCsv(String id) {
+
+    public String allMofToCsv() {
+        Iterable<Object> mofs = measurementsOrFactsRepository.findMofs();
+        return toCsv(mofs);
+    }
+    public String toCsv(Iterable<Object> mofs) {
+        List<String[]> csv = new ArrayList<>();
+        csv.add(getHeader());
+
+        //Used for otimization. No need to verify access multiples times
+        // to same variable or cenote
+        Set<String> allowedCenotes = new HashSet<>();
+
+        Iterator<Object> mofsIterator = mofs.iterator();
+
+
+        while(mofsIterator.hasNext()){
+            List<Object> mof = (List<Object>) mofsIterator.next();
+            String[] line = new String[HEADER_LENGTH];
+
+            String variableId = ((String) mof.get(0)).split("/")[1];
+            String cenoteId = ((String) mof.get(1)).split("/")[1];
+
+            if(allowedCenotes.contains(cenoteId)
+                    || cenoteService.hasReadAccess(cenoteId) == true){
+                line[0] = cenoteId;
+                line[1] = variableId;
+                line[2] = (String) mof.get(2);
+                line[3] = mof.get(3).toString();
+                csv.add(line);
+                allowedCenotes.add(cenoteId);
+            }
+        }
+
+        return csv.stream().map(ExportCSV::convertToCSV).collect(Collectors.joining("\n"));
+    }
+
+    public String cenoteMofstoCsv(String id) {
         if (!cenoteService.hasReadAccess(id)) throw new CenoteandoException(
             READ_ACCESS,
             "CENOTE",
             id
         );
 
-        Iterable<Object> result = measurementsOrFactsRepository.findMofsByCenote(
+        Iterable<Object> mofs = measurementsOrFactsRepository.findMofsByCenote(
             "Cenotes/" + id
         );
-        Iterator<Object> mofs = result.iterator();
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("cenoteId,variableId,timestamp,value");
-
-        while (mofs.hasNext()) {
-            List<Object> mof = (List<Object>) mofs.next();
-            String variableId = ((String) mof.get(0)).split("/")[1];
-            String cenoteId = ((String) mof.get(1)).split("/")[1];
-
-            if (variableService.hasReadAccess(variableId)) {
-                sb.append(
-                    "\n" +
-                    cenoteId +
-                    "," +
-                    variableId +
-                    "," +
-                    mof.get(2) +
-                    "," +
-                    mof.get(3)
-                );
-            }
-        }
-
-        return sb.toString();
+        return toCsv(mofs);
     }
 }

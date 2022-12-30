@@ -7,13 +7,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.cenoteando.impexp.DomainEntity;
+import org.cenoteando.impexp.Visitor;
 import org.json.JSONArray;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 
 @Document("Users")
-public class User {
+public class User extends DomainEntity {
 
     public enum Role {
         ADMIN,
@@ -151,9 +154,15 @@ public class User {
         themesWhiteList = user.getThemesWhiteList();
     }
 
-    public static JSONArray getHeaders() {
-        return new JSONArray(
-            "['id', 'name','email', 'role', 'createdAt', 'updatedAt']"
-        );
+    @Override
+    public boolean validate() {
+        //TODO implement validate User
+        return true;
     }
+
+    @Override
+    public void accept(Visitor visitor){
+        visitor.visit(this);
+    }
+
 }

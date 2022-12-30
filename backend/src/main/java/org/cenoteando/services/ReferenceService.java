@@ -8,6 +8,8 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import org.cenoteando.exceptions.CenoteandoException;
+import org.cenoteando.impexp.ExportCSV;
+import org.cenoteando.impexp.ExportInterface;
 import org.cenoteando.models.*;
 import org.cenoteando.repository.ReferenceRepository;
 import org.cenoteando.repository.ReferencesCenoteRepository;
@@ -87,14 +89,8 @@ public class ReferenceService {
     public String toCsv() {
         Iterable<Reference> data = referenceRepository.findAll();
 
-        StringBuilder sb = new StringBuilder();
-        JSONArray names = Reference.getHeaders();
-
-        for (Reference ref : data) {
-            JSONObject object = new JSONObject(ref);
-            sb.append(CsvImportExport.rowToString(object.toJSONArray(names)));
-        }
-        return CDL.rowToString(names) + sb;
+        ExportInterface exp = new ExportCSV(data, "REFERENCE");
+        return exp.export();
     }
 
     public List<Reference> fromCsv(MultipartFile multipartfile) {

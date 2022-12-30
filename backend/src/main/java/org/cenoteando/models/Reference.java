@@ -4,6 +4,9 @@ import com.arangodb.springframework.annotation.ArangoId;
 import com.arangodb.springframework.annotation.Document;
 import com.arangodb.springframework.annotation.PersistentIndexed;
 import java.util.Date;
+
+import org.cenoteando.impexp.DomainEntity;
+import org.cenoteando.impexp.Visitor;
 import org.json.JSONArray;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -13,7 +16,7 @@ import org.supercsv.cellprocessor.constraint.NotNull;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 
 @Document("References")
-public class Reference {
+public class Reference extends DomainEntity {
 
     public enum Type {
         BOOK,
@@ -153,6 +156,7 @@ public class Reference {
         hasFile = ref.getHasFile();
     }
 
+    @Override
     public boolean validate() {
         return (
             authors != null &&
@@ -162,10 +166,9 @@ public class Reference {
         );
     }
 
-    public static JSONArray getHeaders() {
-        return new JSONArray(
-            "['id', 'authors', 'shortName', 'reference', 'year', 'hasFile']"
-        );
+    @Override
+    public void accept(Visitor visitor){
+        visitor.visit(this);
     }
 
     public static CellProcessor[] getProcessors() {

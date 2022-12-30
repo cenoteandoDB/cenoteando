@@ -56,7 +56,6 @@ public class UsersController {
     }
 
     @GetMapping("/csv")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String toCsv(HttpServletResponse response) {
         response.setContentType("text/csv");
         response.setHeader(
