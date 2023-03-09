@@ -16,10 +16,6 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.supercsv.cellprocessor.Optional;
-import org.supercsv.cellprocessor.ParseBool;
-import org.supercsv.cellprocessor.constraint.NotNull;
-import org.supercsv.cellprocessor.ift.CellProcessor;
 
 @Document("Variables")
 public class Variable extends DomainEntity {
@@ -314,23 +310,6 @@ public class Variable extends DomainEntity {
             return false;
         }
         return user.getEmail().equals(creator.getEmail());
-    }
-
-    public static CellProcessor[] getProcessors() {
-        return new CellProcessor[] {
-            new NotNull(), // id
-            new NotNull(), // name
-            new NotNull(), // description
-            new NotNull(), // type
-            new Optional(), // units
-            new Optional(), // enumValues
-            new NotNull(new ParseBool()), // timeseries
-            new NotNull(new ParseBool()), // mutltiple
-            new NotNull(), // accessLevel
-            new NotNull(), // theme
-            new NotNull(), // origin
-            new Optional(), // methodology
-        };
     }
 
     @Override

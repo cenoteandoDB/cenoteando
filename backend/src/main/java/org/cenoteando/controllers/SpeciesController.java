@@ -2,6 +2,8 @@ package org.cenoteando.controllers;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import org.cenoteando.impexp.DomainEntity;
 import org.cenoteando.models.Reference;
 import org.cenoteando.models.Species;
 import org.cenoteando.services.SpeciesService;
@@ -85,7 +87,7 @@ public class SpeciesController {
 
     @PostMapping("/csv")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public List<Species> fromCsv(
+    public List<DomainEntity> fromCsv(
         @RequestParam("file") MultipartFile multipartfile
     ) {
         return speciesService.fromCsv(multipartfile);

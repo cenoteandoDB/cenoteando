@@ -3,7 +3,7 @@ package org.cenoteando.controllers;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
-import org.cenoteando.impexp.ExportCSV;
+import org.cenoteando.impexp.DomainEntity;
 import org.cenoteando.models.Variable;
 import org.cenoteando.services.VariableService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,7 +90,7 @@ public class VariableController {
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasRole('ROLE_CENOTERO_ADVANCED')"
     )
-    public List<Variable> fromCsv(
+    public List<DomainEntity> fromCsv(
         @RequestParam("file") MultipartFile multipartfile
     ) {
         return variableService.fromCsv(multipartfile);

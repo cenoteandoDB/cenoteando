@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 import static org.cenoteando.exceptions.ErrorMessage.CLASSNAME_NOT_FOUND;
 
 
-public class ExportCSV implements Visitor, ExportInterface {
+public class ExportCSV implements Visitor {
     private final Iterable<DomainEntity> entities;
     List<String[]> csv = new ArrayList<>();
 

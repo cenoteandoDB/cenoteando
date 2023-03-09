@@ -6,8 +6,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.cenoteando.exceptions.CenoteandoException;
+import org.cenoteando.impexp.DomainEntity;
 import org.cenoteando.models.Cenote;
-import org.cenoteando.models.CenoteReferences;
 import org.cenoteando.models.Reference;
 import org.cenoteando.models.Species;
 import org.cenoteando.services.CloudStorageService;
@@ -110,7 +110,6 @@ public class ReferenceController {
     }
 
     @GetMapping("/csv")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String toCsv(HttpServletResponse response) {
         response.setContentType("text/csv");
         response.setHeader(
@@ -122,8 +121,7 @@ public class ReferenceController {
     }
 
     @PostMapping("/csv")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public List<Reference> fromCsv(
+    public List<DomainEntity> fromCsv(
         @RequestParam("file") MultipartFile multipartfile
     ) {
         return referenceService.fromCsv(multipartfile);

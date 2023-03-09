@@ -4,13 +4,9 @@ import static org.cenoteando.exceptions.ErrorMessage.USER_EXISTS;
 
 import org.cenoteando.exceptions.CenoteandoException;
 import org.cenoteando.impexp.ExportCSV;
-import org.cenoteando.impexp.ExportInterface;
 import org.cenoteando.models.AuthDetails;
 import org.cenoteando.models.User;
 import org.cenoteando.repository.UsersRepository;
-import org.json.CDL;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -75,7 +71,7 @@ public class UsersService implements UserDetailsService {
     public String toCsv() {
         Iterable<User> data = usersRepository.findAll();
 
-        ExportInterface exp = new ExportCSV(data, "USER");
+        ExportCSV exp = new ExportCSV(data, "USER");
         return exp.export();
     }
 }

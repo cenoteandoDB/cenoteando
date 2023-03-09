@@ -12,9 +12,6 @@ import org.cenoteando.impexp.Visitor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.supercsv.cellprocessor.Optional;
-import org.supercsv.cellprocessor.constraint.NotNull;
-import org.supercsv.cellprocessor.ift.CellProcessor;
 
 @Document("Species")
 public class Species extends DomainEntity {
@@ -97,13 +94,5 @@ public class Species extends DomainEntity {
     @Override
     public void accept(Visitor visitor){
         visitor.visit(this);
-    }
-
-    public static CellProcessor[] getProcessors() {
-        return new CellProcessor[] {
-            new NotNull(), // id
-            new Optional(), // aphiaId
-            new Optional(), // iNaturalistId
-        };
     }
 }

@@ -7,13 +7,9 @@ import java.util.Date;
 
 import org.cenoteando.impexp.DomainEntity;
 import org.cenoteando.impexp.Visitor;
-import org.json.JSONArray;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.supercsv.cellprocessor.Optional;
-import org.supercsv.cellprocessor.constraint.NotNull;
-import org.supercsv.cellprocessor.ift.CellProcessor;
 
 @Document("References")
 public class Reference extends DomainEntity {
@@ -136,7 +132,7 @@ public class Reference extends DomainEntity {
     }
 
     public void setHasFile(String hasFile) {
-        this.hasFile = Boolean.valueOf(hasFile);
+        this.hasFile = Boolean.parseBoolean(hasFile);
     }
 
     public Date getCreatedAt() {
@@ -171,14 +167,4 @@ public class Reference extends DomainEntity {
         visitor.visit(this);
     }
 
-    public static CellProcessor[] getProcessors() {
-        return new CellProcessor[] {
-            new NotNull(), // id
-            new NotNull(), // authors
-            new Optional(), // shortName
-            new NotNull(), // reference
-            new Optional(), // year
-            new Optional(), // hasFile
-        };
-    }
 }

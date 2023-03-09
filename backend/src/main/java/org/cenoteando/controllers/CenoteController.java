@@ -1,10 +1,10 @@
 package org.cenoteando.controllers;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import org.cenoteando.dtos.VariableWithValuesDTO;
+import org.cenoteando.impexp.DomainEntity;
 import org.cenoteando.models.Cenote;
 import org.cenoteando.models.CommentBucket;
 import org.cenoteando.models.Reference;
@@ -133,7 +133,7 @@ public class CenoteController {
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or hasRole('ROLE_RESEARCHER') or hasRole('ROLE_CENOTERO_ADVANCED')"
     )
-    public List<Cenote> fromCsv(
+    public List<DomainEntity> fromCsv(
         @RequestParam("file") MultipartFile multipartfile
     ) {
         return cenoteService.fromCsv(multipartfile);

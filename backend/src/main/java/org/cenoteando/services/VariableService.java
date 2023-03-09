@@ -10,7 +10,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import org.cenoteando.exceptions.CenoteandoException;
-import org.cenoteando.impexp.ExportCSV;
+import org.cenoteando.impexp.*;
 import org.cenoteando.models.User;
 import org.cenoteando.models.Variable;
 import org.cenoteando.repository.VariablesRepository;
@@ -121,69 +121,10 @@ public class VariableService {
         return exportService.export();
     }
 
-    public List<Variable> fromCsv(MultipartFile multipartfile) {
-        Authentication auth = SecurityContextHolder
-            .getContext()
-            .getAuthentication();
-        User user = (User) auth.getPrincipal();
+    public List<DomainEntity> fromCsv(MultipartFile multipartfile) {
 
-        ArrayList<Variable> values = new ArrayList<>();
-
-        try (
-            Reader fileReader = new InputStreamReader(
-                multipartfile.getInputStream()
-            )
-        ) {
-            ICsvBeanReader reader = new CsvBeanReader(
-                fileReader,
-                CsvPreference.STANDARD_PREFERENCE
-            );
-            final String[] header = reader.getHeader(true);
-            final CellProcessor[] processors = Variable.getProcessors();
-
-            Variable variable;
-            Variable oldVariable;
-            while (
-                (variable = reader.read(Variable.class, header, processors)) !=
-                null
-            ) {
-                if (!variable.validate()) {
-                    throw new CenoteandoException(INVALID_FORMAT);
-                }
-                if ((oldVariable = getVariable(variable.getId())) != null) {
-                    if (
-                        !hasCreateUpdateAccess(
-                            user,
-                            variable.getTheme().toString()
-                        )
-                    ) throw new CenoteandoException(
-                        UPDATE_PERMISSION,
-                        "VARIABLE",
-                        variable.getTheme().toString()
-                    );
-                    oldVariable.merge(variable);
-                    variablesRepository.save(oldVariable);
-                    values.add(oldVariable);
-                } else {
-                    if (
-                        !hasCreateUpdateAccess(
-                            user,
-                            variable.getTheme().toString()
-                        )
-                    ) throw new CenoteandoException(
-                        CREATE_PERMISSION,
-                        "VARIABLE",
-                        variable.getTheme().toString()
-                    );
-                    variablesRepository.save(variable);
-                    values.add(variable);
-                }
-            }
-        } catch (IOException e) {
-            throw new CenoteandoException(READ_FILE);
-        }
-
-        return values;
+        ImportCSV importCSV = new ImportCSVVariables(this);
+        return importCSV.importFile(multipartfile);
     }
 
     public boolean hasCreateUpdateAccess(User user, String theme) {

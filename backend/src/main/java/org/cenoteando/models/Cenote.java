@@ -12,14 +12,12 @@ import java.util.List;
 import org.cenoteando.impexp.DomainEntity;
 import org.cenoteando.impexp.Visitor;
 import org.cenoteando.utils.CsvImportExport;
-import org.json.JSONArray;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.supercsv.cellprocessor.ParseBool;
-import org.supercsv.cellprocessor.constraint.NotNull;
-import org.supercsv.cellprocessor.ift.CellProcessor;
+
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 @Document("Cenotes")
 public class Cenote extends DomainEntity {
@@ -139,6 +137,8 @@ public class Cenote extends DomainEntity {
     }
 
     public void setIssues(String issues) {
+        if(isEmpty(issues))
+            return;
         List<String> string_list = CsvImportExport.stringToList(issues);
         this.issues = string_list.stream().map(Issue::valueOf).toList();
     }
@@ -154,6 +154,8 @@ public class Cenote extends DomainEntity {
     }
 
     public void setAlternativeNames(String alternativeNames) {
+        if(isEmpty(alternativeNames))
+            return;
         this.alternativeNames = CsvImportExport.stringToList(alternativeNames);
     }
 
@@ -169,8 +171,9 @@ public class Cenote extends DomainEntity {
 
     public void setCoordinates(String coordinates) {
         if (coordinates == null || coordinates.equals("[]")) return;
-        coordinates = coordinates.substring(1, coordinates.length() - 1);
-        String[] values = coordinates.split(",");
+        coordinates = coordinates.replace(",",".");
+        coordinates = coordinates.substring(2, coordinates.length() - 2);
+        String[] values = coordinates.split(" ");
 
         this.geojson =
             new CenoteGeoJSON(
@@ -227,15 +230,4 @@ public class Cenote extends DomainEntity {
         return user.getEmail().equals(creator.getEmail());
     }
 
-    public static CellProcessor[] getProcessors() {
-        return new CellProcessor[] {
-            new NotNull(), // id
-            new NotNull(), // type
-            new NotNull(), // name
-            new NotNull(new ParseBool()), // touristic
-            new NotNull(), // issues
-            new NotNull(), // alternativeNames
-            new NotNull(), // coordinates
-        };
-    }
 }
