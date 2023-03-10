@@ -5,9 +5,14 @@ import com.arangodb.springframework.annotation.Document;
 import com.arangodb.springframework.annotation.GeoIndexed;
 import com.arangodb.springframework.core.geo.GeoJson;
 import java.util.ArrayList;
+
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 
 @Document("Gadm")
+@Getter
+@Setter
 public class Gadm {
 
     @Id
@@ -23,35 +28,4 @@ public class Gadm {
 
     private GadmProperties properties;
 
-    public String get_key() {
-        return _key;
-    }
-
-    public String get_id() {
-        return _id;
-    }
-
-    public GeoJson<ArrayList<Double>> getGeometry() {
-        return geometry;
-    }
-
-    public void setGeometry(GeoJson<ArrayList<Double>> geometry) {
-        this.geometry = geometry;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public GadmProperties getGadmProperties() {
-        return properties;
-    }
-
-    public void setGadmProperties(GadmProperties gadmProperties) {
-        this.properties = gadmProperties;
-    }
 }

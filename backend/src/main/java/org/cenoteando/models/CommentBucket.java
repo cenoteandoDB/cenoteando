@@ -4,10 +4,15 @@ import com.arangodb.springframework.annotation.ArangoId;
 import com.arangodb.springframework.annotation.Document;
 import java.util.Date;
 import java.util.List;
+
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Persistent;
 
 @Document("Comments")
+@Getter
+@Setter
 public class CommentBucket {
 
     public enum CommentSource {
@@ -43,43 +48,4 @@ public class CommentBucket {
         for (Comment comment : comments) this.sumRating += comment.getRating();
     }
 
-    public String getCenoteId() {
-        return cenoteId;
-    }
-
-    public void setCenoteId(String cenoteId) {
-        this.cenoteId = cenoteId;
-    }
-
-    public CommentSource getSource() {
-        return source;
-    }
-
-    public void setSource(CommentSource source) {
-        this.source = source;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    public int getSumRating() {
-        return sumRating;
-    }
-
-    public void setSumRating(int sumRating) {
-        this.sumRating = sumRating;
-    }
-
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
 }

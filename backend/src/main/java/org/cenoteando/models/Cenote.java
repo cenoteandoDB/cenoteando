@@ -111,7 +111,7 @@ public class Cenote extends DomainEntity {
     }
 
     public GadmProperties getGadm() {
-        return gadm.getGadmProperties();
+        return gadm.getProperties();
     }
 
     @JsonSetter("type")

@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import java.util.Date;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.cenoteando.impexp.DomainEntity;
 import org.cenoteando.impexp.Visitor;
@@ -14,6 +16,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 
 @Document("Species")
+@Getter
+@Setter
 public class Species extends DomainEntity {
 
     @Id // db document field: _key
@@ -39,41 +43,9 @@ public class Species extends DomainEntity {
         this.iNaturalistId = iNaturalistId;
     }
 
-    public String getId() {
-        return this.id;
-    }
-
-    public String getArangoId() {
-        return this.arangoId;
-    }
-
-    public String getAphiaId() {
-        return this.aphiaId;
-    }
-
     @JsonGetter("iNaturalistId")
     public String getInaturalistId() {
         return this.iNaturalistId;
-    }
-
-    public Date getCreatedAt() {
-        return this.createdAt;
-    }
-
-    public Date getUpdatedAt() {
-        return this.updatedAt;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setArangoId(String arangoId) {
-        this.arangoId = arangoId;
-    }
-
-    public void setAphiaId(String aphiaId) {
-        this.aphiaId = aphiaId;
     }
 
     @JsonSetter("iNaturalistId")
