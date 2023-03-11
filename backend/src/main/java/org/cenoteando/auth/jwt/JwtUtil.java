@@ -1,4 +1,4 @@
-package org.cenoteando.jwt;
+package org.cenoteando.auth.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

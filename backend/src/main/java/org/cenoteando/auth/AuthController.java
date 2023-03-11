@@ -1,15 +1,15 @@
-package org.cenoteando.controllers;
+package org.cenoteando.auth;
 
 import static org.cenoteando.exceptions.ErrorMessage.INVALID_LOGIN;
 
+import org.cenoteando.auth.request.LoginRequest;
+import org.cenoteando.auth.request.RegisterRequest;
 import org.cenoteando.dtos.AuthDto;
 import org.cenoteando.exceptions.CenoteandoException;
-import org.cenoteando.jwt.JwtUtil;
+import org.cenoteando.auth.jwt.JwtUtil;
 import org.cenoteando.models.AuthDetails;
 import org.cenoteando.models.User;
 import org.cenoteando.services.UsersService;
-import org.cenoteando.utils.AuthenticationRequest;
-import org.cenoteando.utils.RegisterRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -32,17 +32,17 @@ public class AuthController {
     @Autowired
     private UsersService usersService;
 
-    private static String tokenType = "Bearer";
+    private static final String tokenType = "Bearer";
 
     @PostMapping("/login")
-    public AuthDto Login(
-        @RequestBody AuthenticationRequest authenticationRequest
+    public AuthDto login(
+        @RequestBody LoginRequest loginRequest
     ) {
         try {
             authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                    authenticationRequest.getEmail(),
-                    authenticationRequest.getPassword()
+                    loginRequest.getEmail(),
+                    loginRequest.getPassword()
                 )
             );
         } catch (BadCredentialsException e) {
@@ -51,7 +51,7 @@ public class AuthController {
 
         final AuthDetails auth =
             this.usersService.loadUserByUsername(
-                    authenticationRequest.getEmail()
+                    loginRequest.getEmail()
                 );
 
         final String jwt = jwtTokenUtil.generateToken(auth);
@@ -65,7 +65,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public void Register(@RequestBody RegisterRequest registerRequest) {
+    public void register(@RequestBody RegisterRequest registerRequest) {
         registerRequest.validatePassword();
 
         User user = new User(

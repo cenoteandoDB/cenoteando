@@ -9,20 +9,24 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import java.util.Date;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.cenoteando.impexp.DomainEntity;
+import org.cenoteando.impexp.ImportCSV;
 import org.cenoteando.impexp.Visitor;
-import org.cenoteando.utils.CsvImportExport;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Document("Cenotes")
+@Getter
+@Setter
 public class Cenote extends DomainEntity {
 
-    public enum Type {
+    public enum CenoteType {
         NO_TYPE,
         CENOTE,
         DRY_CAVE,
@@ -40,7 +44,7 @@ public class Cenote extends DomainEntity {
     @ArangoId
     private String arangoId;
 
-    private Type type;
+    private CenoteType cenoteType;
     private String name;
     private boolean touristic;
     private List<Issue> issues;
@@ -62,85 +66,13 @@ public class Cenote extends DomainEntity {
     @LastModifiedDate
     private Date updatedAt;
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setArangoId(String arangoId) {
-        this.arangoId = arangoId;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getArangoId() {
-        return arangoId;
-    }
-
-    public Type getType() {
-        return type;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public boolean isTouristic() {
-        return getTouristic();
-    }
-
-    public boolean getTouristic() {
+    public boolean getTouristic(){
         return touristic;
     }
 
-    public List<Issue> getIssues() {
-        return issues;
-    }
-
-    public List<String> getAlternativeNames() {
-        return alternativeNames;
-    }
-
-    public Social getSocial() {
-        return social;
-    }
-
-    public CenoteGeoJSON getGeojson() {
-        return geojson;
-    }
-
-    public GadmProperties getGadm() {
-        return gadm.getProperties();
-    }
-
-    @JsonSetter("type")
-    public void setType(Type type) {
-        this.type = type;
-    }
-
-    public void setType(String type) {
-        this.type = Type.valueOf(type);
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setTouristic(boolean touristic) {
-        this.touristic = touristic;
-    }
-
-    @JsonSetter("issues")
-    public void setIssues(List<Issue> issues) {
-        this.issues = issues;
-    }
-
     public void setIssues(String issues) {
-        if(isEmpty(issues))
-            return;
-        List<String> string_list = CsvImportExport.stringToList(issues);
-        this.issues = string_list.stream().map(Issue::valueOf).toList();
+        List<String> list = ImportCSV.toList(issues);
+        this.issues = list.stream().map(Issue::valueOf).toList();
     }
 
     @JsonSetter("social")
@@ -148,23 +80,15 @@ public class Cenote extends DomainEntity {
         this.social = social;
     }
 
-    @JsonSetter("alternativeNames")
-    public void setAlternativeNames(List<String> alternativeNames) {
-        this.alternativeNames = alternativeNames;
-    }
-
-    public void setAlternativeNames(String alternativeNames) {
-        if(isEmpty(alternativeNames))
-            return;
-        this.alternativeNames = CsvImportExport.stringToList(alternativeNames);
-    }
-
-    @JsonSetter("geojson")
-    public void setGeojson(CenoteGeoJSON geojson) {
-        this.geojson = geojson;
+    public GadmProperties getGadm() {
+        return gadm.getProperties();
     }
 
     @JsonIgnore
+    public CenoteGeoJSON getGeojson() {
+        return geojson;
+    }
+
     public List<Double> getCoordinates() {
         return this.geojson.getGeometry().getCoordinates();
     }
@@ -182,30 +106,13 @@ public class Cenote extends DomainEntity {
             );
     }
 
-    public void setGadm(Gadm gadm) {
-        this.gadm = gadm;
-    }
-
     @JsonIgnore
     public String getCreator() {
-        if (creator != null) return creator.getName();
-        return null;
-    }
-
-    public void setCreator(User user) {
-        this.creator = user;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
+        return creator != null ? creator.getName() : null;
     }
 
     public void merge(Cenote cenote) {
-        this.type = cenote.getType();
+        this.cenoteType = cenote.getCenoteType();
         this.name = cenote.getName();
         this.touristic = cenote.getTouristic();
         this.issues = cenote.getIssues();
@@ -215,9 +122,7 @@ public class Cenote extends DomainEntity {
 
     @Override
     public boolean validate() {
-        return (
-            type != null && name != null && !name.isEmpty() && geojson != null
-        );
+        return cenoteType != null && isNotEmpty(name) && geojson != null;
     }
 
     @Override

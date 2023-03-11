@@ -1,6 +1,7 @@
 package org.cenoteando.impexp;
 
 import org.cenoteando.models.Cenote;
+import static org.cenoteando.models.Cenote.CenoteType.valueOf;
 import org.cenoteando.services.CenoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,11 +24,11 @@ public class ImportCSVCenotes extends ImportCSV{
         for(String[] line : lines){
             Cenote cenote = new Cenote();
             cenote.setId(line[0]);
-            cenote.setType(line[1]);
+            cenote.setCenoteType(valueOf(line[1]));
             cenote.setName(line[2]);
             cenote.setTouristic(Boolean.parseBoolean(line[3]));
             cenote.setIssues(line[4]);
-            cenote.setAlternativeNames(line[5]);
+            cenote.setAlternativeNames(toList(line[5]));
             cenote.setCoordinates(line[6]);
 
             checkValid(cenote);

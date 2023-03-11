@@ -1,4 +1,4 @@
-package org.cenoteando;
+package org.cenoteando.config;
 
 import com.arangodb.ArangoDB;
 import com.arangodb.springframework.annotation.EnableArangoAuditing;
@@ -13,7 +13,7 @@ import org.springframework.data.domain.AuditorAware;
 @Configuration
 @EnableArangoAuditing(auditorAwareRef = "auditorProvider")
 @EnableArangoRepositories(basePackages = { "org.cenoteando.repository" })
-public class CenoteandoConfiguration implements ArangoConfiguration {
+public class ArangoDbConfig implements ArangoConfiguration {
 
     @Value("${arango.host:localhost}")
     private String hostname;

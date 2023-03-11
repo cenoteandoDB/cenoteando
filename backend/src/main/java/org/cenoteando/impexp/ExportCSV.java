@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static org.cenoteando.exceptions.ErrorMessage.CLASSNAME_NOT_FOUND;
 
 
@@ -75,7 +76,7 @@ public class ExportCSV implements Visitor {
     @Override
     public void visit(Cenote cenote) {
         line[column++] = cenote.getId();
-        line[column++] = String.valueOf(cenote.getType());
+        line[column++] = String.valueOf(cenote.getCenoteType());
         line[column++] = cenote.getName();
         line[column++] = String.valueOf(cenote.getTouristic());
         line[column++] = StringUtils.join(cenote.getIssues(), "|");
@@ -108,14 +109,14 @@ public class ExportCSV implements Visitor {
         line[column++] = variable.getId();
         line[column++] = variable.getName();
         line[column++] = variable.getDescription();
-        line[column++] = variable.getType().toString();
-        line[column++] = variable.getUnits();
-        line[column++] = StringUtils.join(variable.getEnumValues(), "|");
+        line[column++] = variable.getType().getVariableType();
+        line[column++] = isNotEmpty(variable.getUnits()) ? variable.getUnits() : "";
+        line[column++] = variable.getEnumValues() != null ? StringUtils.join(variable.getEnumValues(), "|") : "";
         line[column++] = variable.getTimeseries().toString();
         line[column++] = variable.getMultiple().toString();
         line[column++] = variable.getAccessLevel().toString();
         line[column++] = variable.getTheme().toString();
-        line[column++] = variable.getOrigin().toString();
-        line[column++] = variable.getMethodology();
+        line[column++] = variable.getOrigin() != null ? variable.getOrigin().toString() : "";
+        line[column++] = isNotEmpty(variable.getMethodology()) ? variable.getMethodology() : "";
     }
 }

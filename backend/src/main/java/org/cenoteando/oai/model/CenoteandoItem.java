@@ -250,7 +250,7 @@ public class CenoteandoItem implements Item {
     }
 
     public boolean isPublic() {
-        return cenote.isTouristic();
+        return cenote.getTouristic();
     }
 
     public String getEntityType() {

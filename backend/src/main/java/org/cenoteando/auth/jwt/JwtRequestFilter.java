@@ -1,4 +1,4 @@
-package org.cenoteando.jwt;
+package org.cenoteando.auth.jwt;
 
 import java.io.IOException;
 import javax.servlet.FilterChain;

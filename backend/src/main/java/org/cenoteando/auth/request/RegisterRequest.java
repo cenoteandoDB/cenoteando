@@ -1,4 +1,4 @@
-package org.cenoteando.utils;
+package org.cenoteando.auth.request;
 
 import static org.cenoteando.exceptions.ErrorMessage.*;
 
@@ -9,14 +9,6 @@ public class RegisterRequest {
     private String email;
     private String name;
     private String password;
-
-    public RegisterRequest() {}
-
-    public RegisterRequest(String email, String password, String name) {
-        this.email = email;
-        this.password = password;
-        this.name = name;
-    }
 
     public String getEmail() {
         return email;

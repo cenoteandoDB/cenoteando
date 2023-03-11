@@ -9,15 +9,19 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import java.util.Date;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.cenoteando.impexp.DomainEntity;
+import org.cenoteando.impexp.ImportCSV;
 import org.cenoteando.impexp.Visitor;
-import org.cenoteando.utils.CsvImportExport;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 
 @Document("Variables")
+@Getter
+@Setter
 public class Variable extends DomainEntity {
 
     public enum VariableOrigin {
@@ -27,15 +31,25 @@ public class Variable extends DomainEntity {
     }
 
     public enum VariableType {
-        TEXT,
-        BOOLEAN,
-        ENUM,
-        JSON,
-        UNITLESS_NUMBER,
-        NUMBER_WITH_UNITS,
-        DATETIME,
-        DATE,
-        TIME,
+        TEXT("TEXT"),
+        BOOLEAN("BOOLEAN"),
+        ENUM("ENUM"),
+        JSON("JSON"),
+        UNITLESS_NUMBER("UNITLESS_NUMBER"),
+        NUMBER_WITH_UNITS("NUMBER_WITH_UNITS"),
+        DATETIME("DATETIME"),
+        DATE("DATE"),
+        TIME("TIME");
+
+        private String type;
+
+        VariableType(String type) {
+            this.type = type;
+        }
+
+        public String getVariableType(){
+            return type;
+        }
     }
 
     public enum AccessLevel {
@@ -115,51 +129,6 @@ public class Variable extends DomainEntity {
 
     public Variable() {}
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setArangoId(String arangoId) {
-        this.arangoId = arangoId;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getArangoId() {
-        return arangoId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public VariableType getType() {
-        return type;
-    }
-
-    @JsonSetter("type")
-    public void setType(VariableType type) {
-        this.type = type;
-    }
-
-    public void setType(String type) {
-        this.type = VariableType.valueOf(type);
-    }
-
     public String getUnits() {
         return units;
     }
@@ -178,7 +147,7 @@ public class Variable extends DomainEntity {
     }
 
     public void setEnumValues(String enumValues) {
-        this.enumValues = CsvImportExport.stringToList(enumValues);
+        this.enumValues = ImportCSV.toList(enumValues);
     }
 
     public Boolean getTimeseries() {

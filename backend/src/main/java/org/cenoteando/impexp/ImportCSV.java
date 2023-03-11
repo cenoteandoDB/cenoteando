@@ -1,6 +1,8 @@
 package org.cenoteando.impexp;
 
 import org.apache.commons.io.IOUtils;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+
 import org.apache.commons.lang3.StringUtils;
 import org.cenoteando.exceptions.CenoteandoException;
 import org.springframework.web.multipart.MultipartFile;
@@ -9,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.cenoteando.exceptions.ErrorMessage.READ_FILE;
@@ -46,4 +49,11 @@ public abstract class ImportCSV{
     }
 
     abstract List<DomainEntity> saveDB(List<DomainEntity> entities);
+
+    public static List<String> toList(String value) {
+        if (isEmpty(value)){
+            return new ArrayList<>();
+        }
+        return Arrays.stream(value.split("\\|")).toList();
+    }
 }

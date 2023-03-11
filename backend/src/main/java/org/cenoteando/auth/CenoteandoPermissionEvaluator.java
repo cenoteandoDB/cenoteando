@@ -1,4 +1,4 @@
-package org.cenoteando.utils;
+package org.cenoteando.auth;
 
 import static org.cenoteando.models.User.Role.CENOTERO_ADVANCED;
 import static org.cenoteando.models.User.Role.RESEARCHER;

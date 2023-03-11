@@ -1,6 +1,7 @@
 package org.cenoteando.impexp;
 
 import org.cenoteando.models.Variable;
+import static org.cenoteando.models.Variable.VariableType;
 import org.cenoteando.services.VariableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,7 +26,7 @@ public class ImportCSVVariables extends ImportCSV{
             variable.setId(line[0]);
             variable.setName(line[1]);
             variable.setDescription(line[2]);
-            variable.setType(line[3]);
+            variable.setType(VariableType.valueOf(line[3]));
             variable.setUnits(line[4]);
             variable.setEnumValues(line[5]);
             variable.setTimeseries(Boolean.valueOf(line[6]));

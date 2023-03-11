@@ -1,4 +1,4 @@
-package org.cenoteando;
+package org.cenoteando.config;
 
 import java.util.Optional;
 import org.cenoteando.models.User;

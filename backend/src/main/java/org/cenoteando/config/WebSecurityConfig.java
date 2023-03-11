@@ -1,6 +1,6 @@
-package org.cenoteando;
+package org.cenoteando.config;
 
-import org.cenoteando.jwt.JwtRequestFilter;
+import org.cenoteando.auth.jwt.JwtRequestFilter;
 import org.cenoteando.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
