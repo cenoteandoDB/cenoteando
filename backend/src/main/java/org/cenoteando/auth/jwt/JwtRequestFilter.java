@@ -5,7 +5,9 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.cenoteando.models.AuthDetails;
+import javax.validation.constraints.NotNull;
+
+import org.cenoteando.auth.AuthDetails;
 import org.cenoteando.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,48 +23,48 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private UsersService usersService;
 
     @Autowired
-    private JwtUtil jwtUtil;
+    private JwtProvider jwtProvider;
 
     @Override
     protected void doFilterInternal(
-        HttpServletRequest request,
-        HttpServletResponse response,
-        FilterChain chain
+        @NotNull HttpServletRequest request,
+        @NotNull HttpServletResponse response,
+        @NotNull FilterChain chain
     ) throws ServletException, IOException {
         final String authorizationHeader = request.getHeader("Authorization");
 
-        String username = null;
-        String jwt = null;
+        String jwt;
+        String username;
 
-        if (
-            authorizationHeader != null &&
-            authorizationHeader.startsWith("Bearer ")
-        ) {
+        if(isValidHeader(authorizationHeader)){
             jwt = authorizationHeader.substring(7);
-            username = jwtUtil.extractUsername(jwt);
-        }
+            username = jwtProvider.parseToken(jwt);
 
-        if (
-            username != null &&
-            SecurityContextHolder.getContext().getAuthentication() == null
-        ) {
             AuthDetails auth = this.usersService.loadUserByUsername(username);
 
-            if (jwtUtil.validateToken(jwt, auth)) {
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+            //Authentication user and it's authorities
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                     auth.getUser(),
                     null,
                     auth.getAuthorities()
-                );
-                usernamePasswordAuthenticationToken.setDetails(
+            );
+
+            //store request data inside Authentication
+            usernamePasswordAuthenticationToken.setDetails(
                     new WebAuthenticationDetailsSource().buildDetails(request)
-                );
-                SecurityContextHolder
+            );
+
+            //set Authentication on SecurityContextHolder from Spring Security
+            // so that it can then check roles in requests
+            SecurityContextHolder
                     .getContext()
                     .setAuthentication(usernamePasswordAuthenticationToken);
-            }
         }
 
         chain.doFilter(request, response);
+    }
+
+    public boolean isValidHeader(String header){
+        return header != null && header.startsWith("Bearer ");
     }
 }

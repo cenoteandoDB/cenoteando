@@ -2,18 +2,19 @@ package org.cenoteando.auth;
 
 import static org.cenoteando.exceptions.ErrorMessage.INVALID_LOGIN;
 
+import org.cenoteando.auth.jwt.JwtProvider;
 import org.cenoteando.auth.request.LoginRequest;
 import org.cenoteando.auth.request.RegisterRequest;
 import org.cenoteando.dtos.AuthDto;
 import org.cenoteando.exceptions.CenoteandoException;
-import org.cenoteando.auth.jwt.JwtUtil;
-import org.cenoteando.models.AuthDetails;
 import org.cenoteando.models.User;
 import org.cenoteando.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +28,10 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private JwtUtil jwtTokenUtil;
+    private JwtProvider jwtProvider;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     private UsersService usersService;
@@ -35,45 +39,42 @@ public class AuthController {
     private static final String tokenType = "Bearer";
 
     @PostMapping("/login")
-    public AuthDto login(
-        @RequestBody LoginRequest loginRequest
-    ) {
+    public AuthDto login(@RequestBody LoginRequest loginRequest) {
+        User user;
         try {
-            authenticationManager.authenticate(
+            Authentication auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                     loginRequest.getEmail(),
                     loginRequest.getPassword()
                 )
             );
+            AuthDetails authDetails = (AuthDetails) auth.getPrincipal();
+            user = authDetails.getUser();
         } catch (BadCredentialsException e) {
             throw new CenoteandoException(INVALID_LOGIN);
         }
 
-        final AuthDetails auth =
-            this.usersService.loadUserByUsername(
-                    loginRequest.getEmail()
-                );
-
-        final String jwt = jwtTokenUtil.generateToken(auth);
+        final String jwt = jwtProvider.generateToken(user.getName());
 
         return new AuthDto(
-            auth.getUser(),
+            user,
             jwt,
             tokenType,
-            jwtTokenUtil.getTTL()
+            jwtProvider.getTtl()
         );
     }
 
     @PostMapping("/register")
-    public void register(@RequestBody RegisterRequest registerRequest) {
+    public User register(@RequestBody RegisterRequest registerRequest) {
         registerRequest.validatePassword();
 
         User user = new User(
             registerRequest.getEmail(),
             registerRequest.getName(),
-            registerRequest.getPassword(),
+            bCryptPasswordEncoder.encode(registerRequest.getPassword()),
             User.Role.CENOTERO_BASIC
         );
-        usersService.createUser(user);
+
+        return usersService.createUser(user);
     }
 }

@@ -1,6 +1,5 @@
 package org.cenoteando.config;
 
-import org.cenoteando.auth.jwt.JwtRequestFilter;
 import org.cenoteando.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -11,9 +10,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -25,9 +22,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    @Autowired
-    private JwtRequestFilter jwtRequestFilter;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth)
@@ -43,17 +37,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .csrf()
             .disable()
             .authorizeRequests()
-            .anyRequest()
-            .permitAll()
+            .antMatchers("/api/auth/**").permitAll()
+            .anyRequest().authenticated()
             .and()
-            .exceptionHandling()
-            .and()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.addFilterBefore(
-            jwtRequestFilter,
-            UsernamePasswordAuthenticationFilter.class
-        );
+            .apply(new JwtTokenFilterConfig());
     }
 
     @Override

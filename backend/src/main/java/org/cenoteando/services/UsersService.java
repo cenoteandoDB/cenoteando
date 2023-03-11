@@ -4,7 +4,7 @@ import static org.cenoteando.exceptions.ErrorMessage.USER_EXISTS;
 
 import org.cenoteando.exceptions.CenoteandoException;
 import org.cenoteando.impexp.ExportCSV;
-import org.cenoteando.models.AuthDetails;
+import org.cenoteando.auth.AuthDetails;
 import org.cenoteando.models.User;
 import org.cenoteando.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,8 +20,6 @@ public class UsersService implements UserDetailsService {
     @Autowired
     private UsersRepository usersRepository;
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public Page<User> getUsers(Pageable pageable) {
         return this.usersRepository.findAll(pageable);
@@ -37,11 +34,9 @@ public class UsersService implements UserDetailsService {
     }
 
     public User createUser(User user) {
-        if (userExists(user.getEmail())) throw new CenoteandoException(
-            USER_EXISTS
-        );
-
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        if (userExists(user.getEmail())){
+            throw new CenoteandoException(USER_EXISTS);
+        }
 
         return this.usersRepository.save(user);
     }
@@ -59,9 +54,8 @@ public class UsersService implements UserDetailsService {
     @Override
     public AuthDetails loadUserByUsername(String email)
         throws UsernameNotFoundException {
-        User user = this.usersRepository.findByEmail(email);
-        AuthDetails auth = new AuthDetails(user);
-        return auth;
+        User user = getUserByEmail(email);
+        return new AuthDetails(user);
     }
 
     public boolean userExists(String email) {

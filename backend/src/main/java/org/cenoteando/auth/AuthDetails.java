@@ -1,15 +1,17 @@
-package org.cenoteando.models;
+package org.cenoteando.auth;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import org.cenoteando.models.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class AuthDetails implements UserDetails {
 
-    private User user;
+    private final User user;
 
     public AuthDetails(User user) {
         this.user = user;
@@ -30,7 +32,7 @@ public class AuthDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(
             new SimpleGrantedAuthority("ROLE_" + user.getRole().toString())
         );

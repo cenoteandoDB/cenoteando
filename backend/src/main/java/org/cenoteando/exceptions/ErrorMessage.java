@@ -14,14 +14,12 @@ public enum ErrorMessage {
     DELETE_PERMISSION("User doesn't have permission to delete %s: %s"),
     INVALID_FORMAT("Object format not valid"),
     GADM_NOT_FOUND("Gadm not found"),
-
     THEME_ACCESS("User doesn't have permission to theme %s"),
-
     REFERENCE_NOT_FOUND("Reference not found"),
-
     INVALID_ROLE("Invalid role"),
     READ_FILE("Unable to read file"),
-
+    WRONG_AUTH_HEADER("Wrong authorization header. Must start with 'Bearer '"),
+    EXPIRED_TOKEN("Authorization token expired. Refresh token."),
     WRITE_CSV("Unable to write file");
 
     public final String message;
