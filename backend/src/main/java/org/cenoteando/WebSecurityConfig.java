@@ -81,7 +81,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE")); // Required for PUT method
-        config.setAllowedOrigins(List.of("https://cenoteando-af8f7.web.app/login"));
+        config.setAllowedOrigins(List.of("https://cenoteando-af8f7.web.app"));
         config.addExposedHeader(headers);
         config.applyPermitDefaultValues();
 
